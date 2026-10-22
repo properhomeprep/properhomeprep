@@ -1,0 +1,1375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Proper Home Prep — Client Portal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              navy: { 50:'#e8ecf0', 100:'#c5cdd8', 200:'#9cadc0', 300:'#7089a5', 400:'#3e6186', 500:'#0D1B2A', 600:'#0b1724', 700:'#09131e', 800:'#070f18', 900:'#050b12' },
+              gold: { 50:'#fef8ed', 100:'#fdecd0', 200:'#fcdba5', 300:'#fac97a', 400:'#F5A623', 500:'#e09415', 600:'#b8790f', 700:'#8f5e0b', 800:'#664307', 900:'#3d2804' },
+              bg: { DEFAULT:'#F7F8FA', card:'#FFFFFF' },
+              success: { light:'#e8f8ef', DEFAULT:'#27AE60', dark:'#1e8449' },
+              danger: { light:'#fde8e8', DEFAULT:'#E74C3C', dark:'#c0392b' },
+              pending: { light:'#fef8ed', DEFAULT:'#F5A623' },
+              muted: { DEFAULT:'#6B7280', light:'#9CA3AF', lighter:'#E5E7EB' }
+            },
+            fontFamily: { sans: ['Inter', 'sans-serif'] },
+            borderRadius: { '2xl':'1rem', '3xl':'1.25rem' }
+          }
+        }
+      };
+    </script>
+    <script src="https://unpkg.com/lucide@latest" defer></script>
+    <style>
+      * { box-sizing: border-box; }
+      body { font-family: 'Inter', sans-serif; background: #F7F8FA; margin: 0; color: #1a1a2e; }
+      .tab-active { border-bottom: 3px solid #F5A623; color: #0D1B2A; font-weight: 600; }
+      .tab-inactive { color: #6B7280; border-bottom: 3px solid transparent; }
+      .tab-inactive:hover { color: #0D1B2A; }
+      .status-paid { background: #e8f8ef; color: #1e8449; }
+      .status-pending { background: #fef8ed; color: #b8790f; }
+      .status-overdue { background: #fde8e8; color: #c0392b; }
+      .status-confirmed { background: #e8f8ef; color: #1e8449; }
+      .status-scheduled { background: #e0ecf7; color: #0D1B2A; }
+      .status-completed { background: #e8f8ef; color: #1e8449; }
+      .stat-card { transition: transform 0.15s ease, box-shadow 0.15s ease; }
+      .stat-card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(13,27,42,0.08); }
+      .modal-overlay { background: rgba(13,27,42,0.5); backdrop-filter: blur(4px); }
+      .star-btn { cursor: pointer; transition: color 0.1s; }
+      .star-btn:hover { color: #F5A623; }
+      .star-filled { color: #F5A623; }
+      .star-empty { color: #D1D5DB; }
+      .message-bubble-them { background: #F0F2F5; border-radius: 1rem 1rem 1rem 0.25rem; }
+      .message-bubble-me { background: #0D1B2A; color: white; border-radius: 1rem 1rem 0.25rem 1rem; }
+      .unread-badge { background: #E74C3C; color: white; font-size: 0.65rem; min-width: 18px; height: 18px; border-radius: 9px; display: inline-flex; align-items: center; justify-content: center; font-weight: 600; }
+      @media print { .no-print { display: none !important; } }
+      .fade-in { animation: fadeIn 0.3s ease; }
+      @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+      input:focus, textarea:focus, select:focus { outline: none; border-color: #F5A623; box-shadow: 0 0 0 3px rgba(245,166,35,0.15); }
+      .quick-action-btn { transition: all 0.15s ease; }
+      .quick-action-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(13,27,42,0.08); }
+    </style>
+<style>
+
+/* === PDF HANDBOOK STYLE OVERRIDE === */
+:root {
+  --navy: #1A2E4A;
+  --navy-light: #243d63;
+  --gold: #C9A84C;
+  --gold-light: #d4b96a;
+  --cream: #FDF6E3;
+  --paper: #f5f4f0;
+  --white: #FFFFFF;
+}
+body { background: var(--paper) !important; font-family: 'Inter', sans-serif !important; }
+
+/* Paper card wrapper */
+.php-doc-wrap { max-width: 1000px; margin: 0 auto; background: #fff; box-shadow: 0 4px 24px rgba(0,0,0,0.10); }
+
+/* Top nav bar */
+.php-topbar {
+  background: var(--navy); color: #fff; padding: 14px 24px;
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+}
+.php-topbar-brand { font-size: 15px; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; display: flex; align-items: center; gap: 10px; }
+.php-topbar-brand svg { color: var(--gold); }
+.php-gold-line { height: 3px; background: var(--gold); width: 100%; }
+.php-badge { background: var(--navy); border: 2px solid var(--gold); color: var(--gold); font-weight: 800; font-size: 13px; padding: 6px 10px; letter-spacing: 0.08em; }
+
+/* Section headers */
+.php-section-hdr {
+  background: var(--navy); color: #fff; padding: 12px 20px;
+  display: flex; align-items: center; gap: 12px; cursor: pointer;
+  font-weight: 700; font-size: 14px; border: none; width: 100%; text-align: left;
+  font-family: 'Inter', sans-serif;
+}
+.php-section-hdr:hover { background: var(--navy-light); }
+.php-sec-badge {
+  background: var(--gold); color: var(--navy); font-weight: 800;
+  font-size: 11px; padding: 4px 10px; min-width: 36px; text-align: center; letter-spacing: 0.04em;
+}
+.php-sec-chevron { margin-left: auto; color: var(--gold); transition: transform 0.25s; }
+.php-sec-chevron.open { transform: rotate(180deg); }
+
+/* Callout boxes */
+.php-callout { background: var(--cream); border-left: 4px solid var(--gold); padding: 14px 18px; font-size: 13px; color: var(--navy); }
+.php-callout-navy { background: var(--navy); border-left: 4px solid var(--gold); padding: 14px 18px; font-size: 13px; color: #fff; }
+
+/* Buttons */
+.php-btn-gold { background: var(--gold); color: var(--navy); border: none; padding: 10px 22px; font-weight: 700; font-size: 13px; cursor: pointer; font-family: 'Inter', sans-serif; text-transform: uppercase; letter-spacing: 0.06em; }
+.php-btn-gold:hover { background: var(--gold-light); }
+.php-btn-navy { background: var(--navy); color: #fff; border: none; padding: 10px 22px; font-weight: 700; font-size: 13px; cursor: pointer; font-family: 'Inter', sans-serif; }
+.php-btn-outline { background: #fff; color: var(--navy); border: 2px solid var(--navy); padding: 8px 20px; font-weight: 600; font-size: 13px; cursor: pointer; font-family: 'Inter', sans-serif; }
+
+/* Table styles */
+.php-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.php-table th { background: var(--navy); color: #fff; padding: 10px 14px; text-align: left; font-weight: 600; border: 1px solid var(--navy); }
+.php-table td { padding: 9px 14px; border: 1px solid #d1d5db; vertical-align: middle; }
+.php-table tbody tr:nth-child(even) { background: #faf8f3; }
+
+/* Status badges */
+.php-badge-active { background: var(--navy); color: #fff; padding: 3px 10px; font-size: 11px; font-weight: 700; letter-spacing: 0.04em; }
+.php-badge-gold { background: var(--gold); color: var(--navy); padding: 3px 10px; font-size: 11px; font-weight: 700; letter-spacing: 0.04em; }
+.php-badge-green { background: #27AE60; color: #fff; padding: 3px 10px; font-size: 11px; font-weight: 700; letter-spacing: 0.04em; }
+.php-badge-red { border: 2px solid #E74C3C; color: #E74C3C; padding: 2px 10px; font-size: 11px; font-weight: 700; }
+
+/* Cards */
+.php-card { background: #fff; border-left: 4px solid var(--gold); padding: 16px 20px; border-top: 1px solid #e5e7eb; border-right: 1px solid #e5e7eb; border-bottom: 1px solid #e5e7eb; }
+.php-card-navy { background: var(--navy); color: #fff; padding: 16px 20px; }
+
+/* Form fields */
+input[type=text], input[type=email], input[type=tel], input[type=number], input[type=date], input[type=time], select, textarea {
+  border: 1px solid #c5c5c5 !important;
+  border-radius: 0 !important;
+  font-family: 'Inter', sans-serif !important;
+  padding: 9px 12px !important;
+  font-size: 13px !important;
+  outline: none !important;
+}
+input:focus, select:focus, textarea:focus { border-color: var(--gold) !important; box-shadow: none !important; }
+
+/* Custom checkbox */
+input[type=checkbox] { accent-color: var(--gold); }
+
+/* Remove ALL rounded corners */
+* { border-radius: 0 !important; }
+
+</style>
+</head>
+<body data-id="0" class="min-h-screen flex flex-col">
+
+<div class="php-topbar">
+  <div class="php-topbar-brand">
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="square" stroke-linejoin="miter"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+    PROPER HOME PREP
+  </div>
+  <div class="php-badge">PHP</div>
+</div>
+<div class="php-gold-line"></div>
+
+<div style="background:#fff; padding: 28px 32px 20px 32px; border-bottom: 2px solid #1A2E4A; position:relative;">
+  <div style="position:absolute; top:20px; right:28px; background:#1A2E4A; border:2px solid #C9A84C; color:#C9A84C; font-weight:800; font-size:14px; padding:8px 14px; letter-spacing:0.1em;">PHP</div>
+  <h1 style="font-size:26px; font-weight:800; color:#1A2E4A; margin:0 0 6px 0; letter-spacing:-0.01em;">Client Portal</h1>
+  <p style="color:#C9A84C; font-style:italic; font-size:14px; margin:0; font-weight:500;">The Proper Standard — Host & Property Management</p>
+</div>
+
+
+    <app-icon data-id="1" hidden data-icon="home" data-palette="Blue"></app-icon>
+
+    <!-- LOGIN SCREEN -->
+    <div data-id="2" id="login-screen-a1b2" class="min-h-screen flex items-center justify-center bg-bg px-4">
+        <div data-id="3" class="bg-white rounded-3xl shadow-lg p-8 md:p-12 max-w-md w-full text-center fade-in">
+            <div data-id="4" class="mx-auto mb-6 w-16 h-16 bg-navy-500 rounded-2xl flex items-center justify-center">
+                <svg data-id="5" class="w-8 h-8 text-gold-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path data-id="6" d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline data-id="7" points="9 22 9 12 15 12 15 22"/></svg>
+            </div>
+            <h1 data-id="8" class="text-2xl font-bold text-navy-500 mb-1">Proper Home Prep</h1>
+            <p data-id="9" class="text-muted text-sm mb-8">Host Client Portal</p>
+            <div data-id="10" class="mb-6">
+                <label data-id="11" class="block text-left text-sm font-medium text-navy-500 mb-2">Enter your Host ID to continue</label>
+                <input data-id="12" id="host-id-input-c3d4" type="text" placeholder="e.g. PHP-HOST-0001" class="w-full px-4 py-3 bg-bg rounded-xl border border-muted-lighter text-base" />
+                <p data-id="13" class="text-xs text-muted-light mt-2 text-left">Your Host ID was provided in your welcome email.</p>
+            </div>
+            <button data-id="14" id="access-portal-btn-e5f6" class="w-full py-3 bg-gold-400 hover:bg-gold-500 text-navy-500 font-semibold rounded-xl transition-colors text-base min-h-[44px]">
+                Access Portal
+            </button>
+        </div>
+    </div>
+
+    <!-- MAIN APP (hidden until login) -->
+    <div data-id="15" id="app-container-g7h8" class="hidden flex flex-col min-h-screen">
+
+        <!-- HEADER -->
+        <header data-id="16" class="bg-navy-500 text-white no-print">
+            <div data-id="17" class="max-w-7xl mx-auto px-4 md:px-6 py-4 flex items-center justify-between gap-4">
+                <div data-id="18" class="flex items-center gap-3 min-w-0">
+                    <div data-id="19" class="w-10 h-10 bg-white/10 rounded-xl flex items-center justify-center flex-shrink-0">
+                        <svg data-id="20" class="w-5 h-5 text-gold-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path data-id="21" d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline data-id="22" points="9 22 9 12 15 12 15 22"/></svg>
+                    </div>
+                    <div data-id="23" class="min-w-0">
+                        <h1 data-id="24" class="text-lg font-bold leading-tight truncate">Proper Home Prep</h1>
+                        <p data-id="25" class="text-xs text-white/60">Host Client Portal</p>
+                    </div>
+                </div>
+                <div data-id="26" class="flex items-center gap-3 flex-shrink-0">
+                    <span data-id="27" id="header-date-i9j0" class="hidden md:block text-xs text-white/60"></span>
+                    <button data-id="28" id="contact-coord-btn-k1l2" class="bg-gold-400 hover:bg-gold-500 text-navy-500 font-semibold text-sm px-4 py-2 rounded-xl transition-colors hidden md:flex items-center gap-2 min-h-[44px]">
+                        <i data-id="29" data-lucide="phone" class="w-4 h-4"></i>
+                        Contact My Coordinator
+                    </button>
+                    <button data-id="30" id="mobile-menu-btn-m3n4" class="md:hidden p-2 hover:bg-white/10 rounded-lg">
+                        <i data-id="31" data-lucide="menu" class="w-6 h-6"></i>
+                    </button>
+                </div>
+            </div>
+            <div data-id="32" class="max-w-7xl mx-auto px-4 md:px-6 pb-3 flex items-center justify-between">
+                <p data-id="33" class="text-sm text-white/80">Welcome back! 👋 <span data-id="34" id="host-display-name-o5p6" class="font-semibold text-white"></span></p>
+                <button data-id="35" id="sign-out-btn-q7r8" class="text-xs text-white/50 hover:text-white/80 underline transition-colors">Sign Out</button>
+            </div>
+        </header>
+
+        <!-- MOBILE NAV OVERLAY -->
+        <nav data-id="36" id="mobile-menu-s9t0" class="hidden fixed inset-0 bg-navy-500 z-50 flex flex-col p-6 md:hidden">
+            <div data-id="37" class="flex items-center justify-between mb-8">
+                <h2 data-id="38" class="text-white font-bold text-lg">Menu</h2>
+                <button data-id="39" id="mobile-menu-close-u1v2" class="p-2 text-white/70 hover:text-white">
+                    <i data-id="40" data-lucide="x" class="w-6 h-6"></i>
+                </button>
+            </div>
+            <div data-id="41" class="flex flex-col gap-2" id="mobile-nav-links-w3x4">
+                <button data-id="42" data-tab="overview" class="mobile-nav-link text-left text-white py-3 px-4 rounded-xl hover:bg-white/10 flex items-center gap-3 min-h-[44px]">
+                    <i data-id="43" data-lucide="layout-dashboard" class="w-5 h-5"></i> Overview
+                </button>
+                <button data-id="44" data-tab="properties" class="mobile-nav-link text-left text-white py-3 px-4 rounded-xl hover:bg-white/10 flex items-center gap-3 min-h-[44px]">
+                    <i data-id="45" data-lucide="building-2" class="w-5 h-5"></i> My Properties
+                </button>
+                <button data-id="46" data-tab="history" class="mobile-nav-link text-left text-white py-3 px-4 rounded-xl hover:bg-white/10 flex items-center gap-3 min-h-[44px]">
+                    <i data-id="47" data-lucide="clock" class="w-5 h-5"></i> Service History
+                </button>
+                <button data-id="48" data-tab="invoices" class="mobile-nav-link text-left text-white py-3 px-4 rounded-xl hover:bg-white/10 flex items-center gap-3 min-h-[44px]">
+                    <i data-id="49" data-lucide="file-text" class="w-5 h-5"></i> Invoices
+                </button>
+                <button data-id="50" data-tab="sop" class="mobile-nav-link text-left text-white py-3 px-4 rounded-xl hover:bg-white/10 flex items-center gap-3 min-h-[44px]">
+                    <i data-id="51" data-lucide="clipboard-list" class="w-5 h-5"></i> My SOP
+                </button>
+                <button data-id="52" data-tab="messages" class="mobile-nav-link text-left text-white py-3 px-4 rounded-xl hover:bg-white/10 flex items-center gap-3 min-h-[44px]">
+                    <i data-id="53" data-lucide="message-square" class="w-5 h-5"></i> Messages <span data-id="54" id="mobile-unread-badge-y5z6" class="unread-badge ml-2 hidden">0</span>
+                </button>
+            </div>
+            <div data-id="55" class="mt-auto pt-6 border-t border-white/10">
+                <button data-id="56" id="mobile-contact-btn-a7b8" class="w-full bg-gold-400 text-navy-500 font-semibold py-3 rounded-xl min-h-[44px]">Contact My Coordinator</button>
+            </div>
+        </nav>
+
+        <!-- TAB NAVIGATION -->
+        <nav data-id="57" class="bg-white border-b border-gray-100 no-print sticky top-0 z-40">
+            <div data-id="58" class="max-w-7xl mx-auto px-4 md:px-6 overflow-x-auto">
+                <div data-id="59" class="flex gap-0 min-w-max" id="tab-nav-c9d0">
+                    <button data-id="60" data-tab="overview" class="tab-btn tab-active px-4 py-3 text-sm font-medium whitespace-nowrap min-h-[44px]">Overview</button>
+                    <button data-id="61" data-tab="properties" class="tab-btn tab-inactive px-4 py-3 text-sm font-medium whitespace-nowrap min-h-[44px]">My Properties</button>
+                    <button data-id="62" data-tab="history" class="tab-btn tab-inactive px-4 py-3 text-sm font-medium whitespace-nowrap min-h-[44px]">Service History</button>
+                    <button data-id="63" data-tab="invoices" class="tab-btn tab-inactive px-4 py-3 text-sm font-medium whitespace-nowrap min-h-[44px]">Invoices</button>
+                    <button data-id="64" data-tab="sop" class="tab-btn tab-inactive px-4 py-3 text-sm font-medium whitespace-nowrap min-h-[44px]">My SOP</button>
+                    <button data-id="65" data-tab="messages" class="tab-btn tab-inactive px-4 py-3 text-sm font-medium whitespace-nowrap min-h-[44px] flex items-center gap-1">Messages <span data-id="66" id="tab-unread-badge-e1f2" class="unread-badge hidden">0</span></button>
+                </div>
+            </div>
+        </nav>
+
+        <!-- MAIN CONTENT -->
+        <main data-id="67" class="flex-1 max-w-7xl mx-auto w-full px-4 md:px-6 py-6 md:py-8">
+
+            <!-- OVERVIEW TAB -->
+            <section data-id="68" id="tab-content-overview" class="tab-content fade-in">
+                <!-- Stat Cards -->
+                <div data-id="69" class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+                    <div data-id="70" class="stat-card bg-white rounded-2xl p-5">
+                        <div data-id="71" class="flex items-center gap-2 mb-3">
+                            <i data-id="72" data-lucide="calendar-check" class="w-5 h-5 text-gold-400"></i>
+                            <span data-id="73" class="text-xs font-medium text-muted uppercase tracking-wide">This Week</span>
+                        </div>
+                        <p data-id="74" class="text-3xl font-bold text-navy-500 tabular-nums">2</p>
+                        <p data-id="75" class="text-xs text-muted mt-1">Upcoming Turnovers</p>
+                    </div>
+                    <div data-id="76" class="stat-card bg-white rounded-2xl p-5">
+                        <div data-id="77" class="flex items-center gap-2 mb-3">
+                            <i data-id="78" data-lucide="clock" class="w-5 h-5 text-success"></i>
+                            <span data-id="79" class="text-xs font-medium text-muted uppercase tracking-wide">Last Service</span>
+                        </div>
+                        <p data-id="80" class="text-3xl font-bold text-navy-500">Jul 21</p>
+                        <p data-id="81" class="text-xs text-muted mt-1">The Gulch Getaway</p>
+                    </div>
+                    <div data-id="82" class="stat-card bg-white rounded-2xl p-5">
+                        <div data-id="83" class="flex items-center gap-2 mb-3">
+                            <i data-id="84" data-lucide="file-text" class="w-5 h-5 text-gold-400"></i>
+                            <span data-id="85" class="text-xs font-medium text-muted uppercase tracking-wide">Open Invoices</span>
+                        </div>
+                        <p data-id="86" class="text-3xl font-bold text-navy-500 tabular-nums">1</p>
+                        <p data-id="87" class="text-xs text-muted mt-1">$85.00 pending</p>
+                    </div>
+                    <div data-id="88" class="stat-card bg-white rounded-2xl p-5">
+                        <div data-id="89" class="flex items-center gap-2 mb-3">
+                            <i data-id="90" data-lucide="building-2" class="w-5 h-5 text-navy-400"></i>
+                            <span data-id="91" class="text-xs font-medium text-muted uppercase tracking-wide">Properties</span>
+                        </div>
+                        <p data-id="92" class="text-3xl font-bold text-navy-500 tabular-nums">1</p>
+                        <p data-id="93" class="text-xs text-muted mt-1">On File</p>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div data-id="94" class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-8">
+                    <button data-id="95" id="qa-request-turnover-g3h4" class="quick-action-btn bg-white rounded-xl p-4 flex flex-col items-center gap-2 text-center min-h-[44px]">
+                        <i data-id="96" data-lucide="plus-circle" class="w-6 h-6 text-gold-400"></i>
+                        <span data-id="97" class="text-xs font-medium text-navy-500">Request a Turnover</span>
+                    </button>
+                    <button data-id="98" id="qa-report-issue-i5j6" class="quick-action-btn bg-white rounded-xl p-4 flex flex-col items-center gap-2 text-center min-h-[44px]">
+                        <i data-id="99" data-lucide="alert-triangle" class="w-6 h-6 text-danger"></i>
+                        <span data-id="100" class="text-xs font-medium text-navy-500">Report an Issue</span>
+                    </button>
+                    <button data-id="101" id="qa-view-sop-k7l8" class="quick-action-btn bg-white rounded-xl p-4 flex flex-col items-center gap-2 text-center min-h-[44px]">
+                        <i data-id="102" data-lucide="clipboard-list" class="w-6 h-6 text-navy-400"></i>
+                        <span data-id="103" class="text-xs font-medium text-navy-500">View My SOP</span>
+                    </button>
+                    <button data-id="104" id="qa-contact-coord-m9n0" class="quick-action-btn bg-white rounded-xl p-4 flex flex-col items-center gap-2 text-center min-h-[44px]">
+                        <i data-id="105" data-lucide="phone" class="w-6 h-6 text-success"></i>
+                        <span data-id="106" class="text-xs font-medium text-navy-500">Contact Coordinator</span>
+                    </button>
+                </div>
+
+                <div data-id="107" class="grid grid-cols-1 lg:grid-cols-5 gap-6">
+                    <!-- Upcoming Services -->
+                    <div data-id="108" class="lg:col-span-3">
+                        <h3 data-id="109" class="text-lg font-semibold text-navy-500 mb-4 flex items-center gap-2">
+                            <i data-id="110" data-lucide="calendar" class="w-5 h-5 text-gold-400"></i>
+                            Upcoming Services
+                        </h3>
+                        <div data-id="111" class="space-y-3">
+                            <div data-id="112" class="bg-white rounded-2xl p-5">
+                                <div data-id="113" class="flex flex-wrap items-start justify-between gap-2 mb-2">
+                                    <div data-id="114">
+                                        <p data-id="115" class="font-semibold text-navy-500">The Gulch Getaway</p>
+                                        <p data-id="116" class="text-sm text-muted">Standard Turnover</p>
+                                    </div>
+                                    <span data-id="117" class="status-confirmed text-xs font-medium px-3 py-1 rounded-full">Confirmed</span>
+                                </div>
+                                <div data-id="118" class="flex flex-wrap gap-4 text-sm text-muted mt-3">
+                                    <span data-id="119" class="flex items-center gap-1"><i data-id="120" data-lucide="calendar-days" class="w-4 h-4"></i> Jul 24, 2026</span>
+                                    <span data-id="121" class="flex items-center gap-1"><i data-id="122" data-lucide="clock" class="w-4 h-4"></i> 11:00 AM – 2:00 PM</span>
+                                    <span data-id="123" class="flex items-center gap-1"><i data-id="124" data-lucide="user" class="w-4 h-4"></i> Maria S.</span>
+                                </div>
+                            </div>
+                            <div data-id="125" class="bg-white rounded-2xl p-5">
+                                <div data-id="126" class="flex flex-wrap items-start justify-between gap-2 mb-2">
+                                    <div data-id="127">
+                                        <p data-id="128" class="font-semibold text-navy-500">The Gulch Getaway</p>
+                                        <p data-id="129" class="text-sm text-muted">Standard Turnover</p>
+                                    </div>
+                                    <span data-id="130" class="status-scheduled text-xs font-medium px-3 py-1 rounded-full">Scheduled</span>
+                                </div>
+                                <div data-id="131" class="flex flex-wrap gap-4 text-sm text-muted mt-3">
+                                    <span data-id="132" class="flex items-center gap-1"><i data-id="133" data-lucide="calendar-days" class="w-4 h-4"></i> Jul 27, 2026</span>
+                                    <span data-id="134" class="flex items-center gap-1"><i data-id="135" data-lucide="clock" class="w-4 h-4"></i> 10:00 AM – 1:00 PM</span>
+                                    <span data-id="136" class="flex items-center gap-1"><i data-id="137" data-lucide="user" class="w-4 h-4"></i> TBD</span>
+                                </div>
+                            </div>
+                            <div data-id="138" class="bg-white rounded-2xl p-5">
+                                <div data-id="139" class="flex flex-wrap items-start justify-between gap-2 mb-2">
+                                    <div data-id="140">
+                                        <p data-id="141" class="font-semibold text-navy-500">The Gulch Getaway</p>
+                                        <p data-id="142" class="text-sm text-muted">Deep Clean</p>
+                                    </div>
+                                    <span data-id="143" class="status-scheduled text-xs font-medium px-3 py-1 rounded-full">Scheduled</span>
+                                </div>
+                                <div data-id="144" class="flex flex-wrap gap-4 text-sm text-muted mt-3">
+                                    <span data-id="145" class="flex items-center gap-1"><i data-id="146" data-lucide="calendar-days" class="w-4 h-4"></i> Jul 31, 2026</span>
+                                    <span data-id="147" class="flex items-center gap-1"><i data-id="148" data-lucide="clock" class="w-4 h-4"></i> 9:00 AM – 1:00 PM</span>
+                                    <span data-id="149" class="flex items-center gap-1"><i data-id="150" data-lucide="user" class="w-4 h-4"></i> Maria S.</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Recent Activity -->
+                    <div data-id="151" class="lg:col-span-2">
+                        <h3 data-id="152" class="text-lg font-semibold text-navy-500 mb-4 flex items-center gap-2">
+                            <i data-id="153" data-lucide="activity" class="w-5 h-5 text-gold-400"></i>
+                            Recent Activity
+                        </h3>
+                        <div data-id="154" class="bg-white rounded-2xl p-5">
+                            <div data-id="155" class="space-y-4">
+                                <div data-id="156" class="flex gap-3">
+                                    <div data-id="157" class="w-2 h-2 rounded-full bg-success mt-2 flex-shrink-0"></div>
+                                    <div data-id="158">
+                                        <p data-id="159" class="text-sm text-navy-500">Service completed at The Gulch Getaway</p>
+                                        <p data-id="160" class="text-xs text-muted">July 21, 2026</p>
+                                    </div>
+                                </div>
+                                <div data-id="161" class="flex gap-3">
+                                    <div data-id="162" class="w-2 h-2 rounded-full bg-gold-400 mt-2 flex-shrink-0"></div>
+                                    <div data-id="163">
+                                        <p data-id="164" class="text-sm text-navy-500">Invoice #1042 sent</p>
+                                        <p data-id="165" class="text-xs text-muted">July 21, 2026</p>
+                                    </div>
+                                </div>
+                                <div data-id="166" class="flex gap-3">
+                                    <div data-id="167" class="w-2 h-2 rounded-full bg-navy-300 mt-2 flex-shrink-0"></div>
+                                    <div data-id="168">
+                                        <p data-id="169" class="text-sm text-navy-500">SOP updated for The Gulch Getaway</p>
+                                        <p data-id="170" class="text-xs text-muted">July 18, 2026</p>
+                                    </div>
+                                </div>
+                                <div data-id="171" class="flex gap-3">
+                                    <div data-id="172" class="w-2 h-2 rounded-full bg-success mt-2 flex-shrink-0"></div>
+                                    <div data-id="173">
+                                        <p data-id="174" class="text-sm text-navy-500">Service completed at The Gulch Getaway</p>
+                                        <p data-id="175" class="text-xs text-muted">July 17, 2026</p>
+                                    </div>
+                                </div>
+                                <div data-id="176" class="flex gap-3">
+                                    <div data-id="177" class="w-2 h-2 rounded-full bg-success mt-2 flex-shrink-0"></div>
+                                    <div data-id="178">
+                                        <p data-id="179" class="text-sm text-navy-500">Invoice #1041 marked as Paid</p>
+                                        <p data-id="180" class="text-xs text-muted">July 16, 2026</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- MY PROPERTIES TAB -->
+            <section data-id="181" id="tab-content-properties" class="tab-content hidden fade-in">
+                <div data-id="182" class="flex flex-wrap items-center justify-between gap-4 mb-6">
+                    <h2 data-id="183" class="text-xl font-bold text-navy-500">My Properties</h2>
+                    <button data-id="184" id="add-property-btn-o1p2" class="bg-gold-400 hover:bg-gold-500 text-navy-500 font-semibold text-sm px-4 py-2.5 rounded-xl flex items-center gap-2 min-h-[44px] transition-colors">
+                        <i data-id="185" data-lucide="plus" class="w-4 h-4"></i> Add a Property
+                    </button>
+                </div>
+                <div data-id="186" id="properties-list-q3r4" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- Populated by JS -->
+                </div>
+            </section>
+
+            <!-- SERVICE HISTORY TAB -->
+            <section data-id="187" id="tab-content-history" class="tab-content hidden fade-in">
+                <h2 data-id="188" class="text-xl font-bold text-navy-500 mb-6">Service History</h2>
+                <!-- Filters -->
+                <div data-id="189" class="bg-white rounded-2xl p-4 mb-6 flex flex-wrap gap-3 items-end">
+                    <div data-id="190" class="flex-1 min-w-[160px]">
+                        <label data-id="191" class="text-xs font-medium text-muted uppercase tracking-wide block mb-1">Property</label>
+                        <select data-id="192" id="filter-property-s5t6" class="w-full px-3 py-2 bg-bg rounded-xl border border-muted-lighter text-sm">
+                            <option data-id="193" value="">All Properties</option>
+                            <option data-id="194" value="The Gulch Getaway">The Gulch Getaway</option>
+                        </select>
+                    </div>
+                    <div data-id="195" class="flex-1 min-w-[140px]">
+                        <label data-id="196" class="text-xs font-medium text-muted uppercase tracking-wide block mb-1">Service Type</label>
+                        <select data-id="197" id="filter-type-u7v8" class="w-full px-3 py-2 bg-bg rounded-xl border border-muted-lighter text-sm">
+                            <option data-id="198" value="">All Types</option>
+                            <option data-id="199" value="Standard Turnover">Standard Turnover</option>
+                            <option data-id="200" value="Deep Clean">Deep Clean</option>
+                            <option data-id="201" value="Linen Refresh">Linen Refresh</option>
+                        </select>
+                    </div>
+                    <div data-id="202" class="flex-1 min-w-[140px]">
+                        <label data-id="203" class="text-xs font-medium text-muted uppercase tracking-wide block mb-1">Date From</label>
+                        <input data-id="204" id="filter-date-from-w9x0" type="date" class="w-full px-3 py-2 bg-bg rounded-xl border border-muted-lighter text-sm" />
+                    </div>
+                    <div data-id="205" class="flex-1 min-w-[140px]">
+                        <label data-id="206" class="text-xs font-medium text-muted uppercase tracking-wide block mb-1">Date To</label>
+                        <input data-id="207" id="filter-date-to-y1z2" type="date" class="w-full px-3 py-2 bg-bg rounded-xl border border-muted-lighter text-sm" />
+                    </div>
+                </div>
+                <div data-id="208" class="bg-white rounded-2xl overflow-hidden">
+                    <div data-id="209" class="overflow-x-auto">
+                        <table data-id="210" class="w-full text-sm">
+                            <thead data-id="211">
+                                <tr data-id="212" class="border-b border-gray-100 text-left">
+                                    <th data-id="213" class="px-5 py-3 font-semibold text-navy-500 text-xs uppercase tracking-wide">Date</th>
+                                    <th data-id="214" class="px-5 py-3 font-semibold text-navy-500 text-xs uppercase tracking-wide">Property</th>
+                                    <th data-id="215" class="px-5 py-3 font-semibold text-navy-500 text-xs uppercase tracking-wide">Service Type</th>
+                                    <th data-id="216" class="px-5 py-3 font-semibold text-navy-500 text-xs uppercase tracking-wide hidden md:table-cell">Tech</th>
+                                    <th data-id="217" class="px-5 py-3 font-semibold text-navy-500 text-xs uppercase tracking-wide hidden md:table-cell">Duration</th>
+                                    <th data-id="218" class="px-5 py-3 font-semibold text-navy-500 text-xs uppercase tracking-wide">Status</th>
+                                    <th data-id="219" class="px-5 py-3 font-semibold text-navy-500 text-xs uppercase tracking-wide">Rating</th>
+                                    <th data-id="220" class="px-5 py-3 font-semibold text-navy-500 text-xs uppercase tracking-wide"></th>
+                                </tr>
+                            </thead>
+                            <tbody data-id="221" id="history-table-body-a3b4"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- INVOICES TAB -->
+            <section data-id="222" id="tab-content-invoices" class="tab-content hidden fade-in">
+                <h2 data-id="223" class="text-xl font-bold text-navy-500 mb-6">Invoices</h2>
+                <div data-id="224" class="bg-white rounded-2xl overflow-hidden">
+                    <div data-id="225" class="overflow-x-auto">
+                        <table data-id="226" class="w-full text-sm">
+                            <thead data-id="227">
+                                <tr data-id="228" class="border-b border-gray-100 text-left">
+                                    <th data-id="229" class="px-5 py-3 font-semibold text-navy-500 text-xs uppercase tracking-wide">Invoice #</th>
+                                    <th data-id="230" class="px-5 py-3 font-semibold text-navy-500 text-xs uppercase tracking-wide">Date</th>
+                                    <th data-id="231" class="px-5 py-3 font-semibold text-navy-500 text-xs uppercase tracking-wide hidden md:table-cell">Property</th>
+                                    <th data-id="232" class="px-5 py-3 font-semibold text-navy-500 text-xs uppercase tracking-wide">Services</th>
+                                    <th data-id="233" class="px-5 py-3 font-semibold text-navy-500 text-xs uppercase tracking-wide">Amount</th>
+                                    <th data-id="234" class="px-5 py-3 font-semibold text-navy-500 text-xs uppercase tracking-wide">Status</th>
+                                    <th data-id="235" class="px-5 py-3 font-semibold text-navy-500 text-xs uppercase tracking-wide">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody data-id="236" id="invoices-table-body-c5d6"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- MY SOP TAB -->
+            <section data-id="237" id="tab-content-sop" class="tab-content hidden fade-in">
+                <div data-id="238" class="flex flex-wrap items-center justify-between gap-4 mb-6">
+                    <div data-id="239">
+                        <h2 data-id="240" class="text-xl font-bold text-navy-500">My Standard Operating Procedures</h2>
+                        <p data-id="241" class="text-sm text-muted mt-1">Last updated: July 18, 2026</p>
+                    </div>
+                    <div data-id="242" class="flex gap-2">
+                        <button data-id="243" id="sop-update-btn-e7f8" class="bg-white border border-muted-lighter text-navy-500 font-medium text-sm px-4 py-2.5 rounded-xl flex items-center gap-2 min-h-[44px] hover:bg-bg transition-colors">
+                            <i data-id="244" data-lucide="edit-3" class="w-4 h-4"></i> Request SOP Update
+                        </button>
+                        <button data-id="245" id="sop-print-btn-g9h0" class="bg-gold-400 hover:bg-gold-500 text-navy-500 font-semibold text-sm px-4 py-2.5 rounded-xl flex items-center gap-2 min-h-[44px] transition-colors">
+                            <i data-id="246" data-lucide="download" class="w-4 h-4"></i> Download SOP PDF
+                        </button>
+                    </div>
+                </div>
+
+                <div data-id="247" class="space-y-4" id="sop-content-i1j2">
+                    <div data-id="248" class="bg-white rounded-2xl p-6">
+                        <h3 data-id="249" class="font-semibold text-navy-500 mb-3 flex items-center gap-2"><i data-id="250" data-lucide="key" class="w-5 h-5 text-gold-400"></i> Access Info</h3>
+                        <div data-id="251" class="text-sm text-muted space-y-2">
+                            <p data-id="252"><span data-id="253" class="font-medium text-navy-500">Lock Type:</span> Smart Lock (August)</p>
+                            <p data-id="254"><span data-id="255" class="font-medium text-navy-500">Access Code:</span> Last 4 digits of guest confirmation # (provided per booking)</p>
+                            <p data-id="256"><span data-id="257" class="font-medium text-navy-500">Parking:</span> Dedicated spot #4 in rear lot, accessible via alley</p>
+                            <p data-id="258"><span data-id="259" class="font-medium text-navy-500">Notes:</span> Ring doorbell — do not disable. Gate code for pool area: 1234#</p>
+                        </div>
+                    </div>
+                    <div data-id="260" class="bg-white rounded-2xl p-6">
+                        <h3 data-id="261" class="font-semibold text-navy-500 mb-3 flex items-center gap-2"><i data-id="262" data-lucide="sparkles" class="w-5 h-5 text-gold-400"></i> Cleaning Standards</h3>
+                        <div data-id="263" class="text-sm text-muted space-y-2">
+                            <p data-id="264"><span data-id="265" class="font-medium text-navy-500">Standard:</span> Full turnover clean between every guest stay</p>
+                            <p data-id="266"><span data-id="267" class="font-medium text-navy-500">Kitchen:</span> All dishes washed/put away, counters sanitized, appliances wiped (inside microwave + oven check)</p>
+                            <p data-id="268"><span data-id="269" class="font-medium text-navy-500">Bathrooms:</span> Scrub tub/shower, sanitize toilet, restock toiletries, mirrors streak-free</p>
+                            <p data-id="270"><span data-id="271" class="font-medium text-navy-500">Floors:</span> Vacuum all carpet, mop hardwood/tile, spot-check under furniture</p>
+                            <p data-id="272"><span data-id="273" class="font-medium text-navy-500">Staging:</span> Fan on low in living room, lights off, thermostat at 72°F, blinds half-open</p>
+                        </div>
+                    </div>
+                    <div data-id="274" class="bg-white rounded-2xl p-6">
+                        <h3 data-id="275" class="font-semibold text-navy-500 mb-3 flex items-center gap-2"><i data-id="276" data-lucide="bed-double" class="w-5 h-5 text-gold-400"></i> Linen Preferences</h3>
+                        <div data-id="277" class="text-sm text-muted space-y-2">
+                            <p data-id="278"><span data-id="279" class="font-medium text-navy-500">Beds:</span> White duvet covers, 2 pillows per guest + 1 decorative throw pillow</p>
+                            <p data-id="280"><span data-id="281" class="font-medium text-navy-500">Towels:</span> 2 bath towels + 1 hand towel + 1 washcloth per guest — rolled, not folded</p>
+                            <p data-id="282"><span data-id="283" class="font-medium text-navy-500">Extras:</span> Extra blanket folded at foot of each bed</p>
+                            <p data-id="284"><span data-id="285" class="font-medium text-navy-500">Laundry:</span> On-site washer/dryer. Wash on hot, dry on medium. Use unscented detergent only.</p>
+                        </div>
+                    </div>
+                    <div data-id="286" class="bg-white rounded-2xl p-6">
+                        <h3 data-id="287" class="font-semibold text-navy-500 mb-3 flex items-center gap-2"><i data-id="288" data-lucide="package" class="w-5 h-5 text-gold-400"></i> Restocking Notes</h3>
+                        <div data-id="289" class="text-sm text-muted space-y-2">
+                            <p data-id="290"><span data-id="291" class="font-medium text-navy-500">Toiletries:</span> Refill wall-mounted dispensers (shampoo, conditioner, body wash) — brand: Public Goods</p>
+                            <p data-id="292"><span data-id="293" class="font-medium text-navy-500">Kitchen:</span> Dish soap, sponge, paper towels (1 roll on holder + 1 backup under sink), trash bags</p>
+                            <p data-id="294"><span data-id="295" class="font-medium text-navy-500">Coffee:</span> 12 K-cups (variety pack), 2 sweetener packets, 4 creamers in mini fridge</p>
+                            <p data-id="296"><span data-id="297" class="font-medium text-navy-500">Supplies Closet:</span> Hall closet, top shelf — backup supplies stored there</p>
+                        </div>
+                    </div>
+                    <div data-id="298" class="bg-white rounded-2xl p-6">
+                        <h3 data-id="299" class="font-semibold text-navy-500 mb-3 flex items-center gap-2"><i data-id="300" data-lucide="star" class="w-5 h-5 text-gold-400"></i> Special Instructions</h3>
+                        <div data-id="301" class="text-sm text-muted space-y-2">
+                            <p data-id="302"><span data-id="303" class="font-medium text-navy-500">Welcome Card:</span> Place on kitchen counter — cards are in drawer next to fridge</p>
+                            <p data-id="304"><span data-id="305" class="font-medium text-navy-500">Pet Policy:</span> Property is pet-friendly. After pet stays, do extra lint roll on furniture + check for accidents</p>
+                            <p data-id="306"><span data-id="307" class="font-medium text-navy-500">Checkout Photos:</span> Take 5 photos (kitchen, living, both bedrooms, bathroom) and text to coordinator after each clean</p>
+                            <p data-id="308"><span data-id="309" class="font-medium text-navy-500">Damage Report:</span> Note and photograph any damage immediately. Do not attempt to fix — notify coordinator.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- MESSAGES TAB -->
+            <section data-id="310" id="tab-content-messages" class="tab-content hidden fade-in">
+                <h2 data-id="311" class="text-xl font-bold text-navy-500 mb-6">Messages</h2>
+                <div data-id="312" class="grid grid-cols-1 md:grid-cols-3 gap-4" style="min-height: 500px;">
+                    <!-- Thread List -->
+                    <div data-id="313" class="bg-white rounded-2xl p-4 md:col-span-1">
+                        <h3 data-id="314" class="text-sm font-semibold text-navy-500 mb-3">Conversations</h3>
+                        <div data-id="315" id="thread-list-k3l4" class="space-y-2">
+                            <button data-id="316" data-thread="team" class="thread-btn w-full text-left p-3 rounded-xl bg-navy-50 flex items-center gap-3 min-h-[44px]">
+                                <div data-id="317" class="w-9 h-9 bg-navy-500 rounded-full flex items-center justify-center flex-shrink-0">
+                                    <span data-id="318" class="text-white text-xs font-bold">PHP</span>
+                                </div>
+                                <div data-id="319" class="min-w-0">
+                                    <p data-id="320" class="text-sm font-semibold text-navy-500 truncate">Team Proper Home Prep</p>
+                                    <p data-id="321" class="text-xs text-muted truncate">Your July 24 turnover is confirmed!</p>
+                                </div>
+                            </button>
+                        </div>
+                    </div>
+                    <!-- Message Content -->
+                    <div data-id="322" class="bg-white rounded-2xl p-4 md:p-6 md:col-span-2 flex flex-col">
+                        <div data-id="323" class="flex items-center gap-3 pb-4 border-b border-gray-100 mb-4">
+                            <div data-id="324" class="w-9 h-9 bg-navy-500 rounded-full flex items-center justify-center flex-shrink-0">
+                                <span data-id="325" class="text-white text-xs font-bold">PHP</span>
+                            </div>
+                            <div data-id="326">
+                                <p data-id="327" class="font-semibold text-navy-500 text-sm">Team Proper Home Prep</p>
+                                <p data-id="328" class="text-xs text-muted">Your dedicated cleaning coordination team</p>
+                            </div>
+                        </div>
+                        <div data-id="329" id="messages-container-m5n6" class="flex-1 overflow-y-auto space-y-4 mb-4 max-h-[400px]">
+                            <!-- Populated by JS -->
+                        </div>
+                        <div data-id="330" class="flex gap-2 pt-3 border-t border-gray-100">
+                            <input data-id="331" id="message-input-o7p8" type="text" placeholder="Type a message..." class="flex-1 px-4 py-3 bg-bg rounded-xl border border-muted-lighter text-sm" />
+                            <button data-id="332" id="send-message-btn-q9r0" class="bg-navy-500 hover:bg-navy-400 text-white px-5 py-3 rounded-xl font-medium text-sm min-h-[44px] transition-colors flex items-center gap-2">
+                                <i data-id="333" data-lucide="send" class="w-4 h-4"></i> Send
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- FOOTER -->
+        <footer data-id="334" class="bg-navy-500 text-white/60 text-center py-6 mt-auto no-print">
+            <p data-id="335" class="text-xs">© 2026 Proper Home Prep | Host Client Portal | Questions? Contact your coordinator.</p>
+            <p data-id="336" class="text-xs mt-2 text-white/40">Made by Copilot</p>
+        </footer>
+    </div>
+
+    <!-- MODALS -->
+
+    <!-- Contact Coordinator Modal -->
+    <div data-id="337" id="modal-contact-s1t2" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 modal-overlay">
+        <div data-id="338" class="bg-white rounded-2xl max-w-md w-full p-6 md:p-8 relative fade-in">
+            <button data-id="339" id="modal-contact-close-u3v4" class="absolute top-4 right-4 text-muted hover:text-navy-500 p-1"><i data-id="340" data-lucide="x" class="w-5 h-5"></i></button>
+            <div data-id="341" class="text-center mb-6">
+                <div data-id="342" class="w-14 h-14 bg-gold-50 rounded-full flex items-center justify-center mx-auto mb-3">
+                    <i data-id="343" data-lucide="headset" class="w-7 h-7 text-gold-400"></i>
+                </div>
+                <h3 data-id="344" class="text-lg font-bold text-navy-500">Your Coordinator</h3>
+                <p data-id="345" class="text-2xl font-bold text-navy-500 mt-1">Brittany</p>
+            </div>
+            <div data-id="346" class="space-y-3 mb-6">
+                <div data-id="347" class="flex items-center gap-3 bg-bg rounded-xl p-3">
+                    <i data-id="348" data-lucide="phone" class="w-5 h-5 text-success"></i>
+                    <span data-id="349" class="text-sm text-navy-500">(615) 555-0100</span>
+                </div>
+                <div data-id="350" class="flex items-center gap-3 bg-bg rounded-xl p-3">
+                    <i data-id="351" data-lucide="mail" class="w-5 h-5 text-gold-400"></i>
+                    <span data-id="352" class="text-sm text-navy-500">coordinator@properhomeprep.com</span>
+                </div>
+            </div>
+            <div data-id="353" class="grid grid-cols-3 gap-3">
+                <a data-id="354" href="tel:6155550100" class="bg-success hover:opacity-90 text-white text-sm font-medium py-3 rounded-xl text-center flex flex-col items-center gap-1 min-h-[44px] transition-opacity">
+                    <i data-id="355" data-lucide="phone" class="w-5 h-5"></i> Call
+                </a>
+                <a data-id="356" href="sms:6155550100" class="bg-navy-500 hover:bg-navy-400 text-white text-sm font-medium py-3 rounded-xl text-center flex flex-col items-center gap-1 min-h-[44px] transition-colors">
+                    <i data-id="357" data-lucide="message-circle" class="w-5 h-5"></i> Text
+                </a>
+                <a data-id="358" href="mailto:coordinator@properhomeprep.com" class="bg-gold-400 hover:bg-gold-500 text-navy-500 text-sm font-medium py-3 rounded-xl text-center flex flex-col items-center gap-1 min-h-[44px] transition-colors">
+                    <i data-id="359" data-lucide="mail" class="w-5 h-5"></i> Email
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Property Modal -->
+    <div data-id="360" id="modal-add-property-w5x6" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 modal-overlay">
+        <div data-id="361" class="bg-white rounded-2xl max-w-lg w-full p-6 md:p-8 relative fade-in max-h-[90vh] overflow-y-auto">
+            <button data-id="362" id="modal-property-close-y7z8" class="absolute top-4 right-4 text-muted hover:text-navy-500 p-1"><i data-id="363" data-lucide="x" class="w-5 h-5"></i></button>
+            <h3 data-id="364" class="text-lg font-bold text-navy-500 mb-6">Add a Property</h3>
+            <div data-id="365" class="space-y-4">
+                <div data-id="366">
+                    <label data-id="367" class="text-sm font-medium text-navy-500 block mb-1">Property Name</label>
+                    <input data-id="368" id="prop-name-a9b0" type="text" placeholder="e.g. The Downtown Loft" class="w-full px-4 py-3 bg-bg rounded-xl border border-muted-lighter text-base" />
+                </div>
+                <div data-id="369">
+                    <label data-id="370" class="text-sm font-medium text-navy-500 block mb-1">Address</label>
+                    <input data-id="371" id="prop-address-c1d2" type="text" placeholder="Full street address" class="w-full px-4 py-3 bg-bg rounded-xl border border-muted-lighter text-base" />
+                </div>
+                <div data-id="372" class="grid grid-cols-2 gap-3">
+                    <div data-id="373">
+                        <label data-id="374" class="text-sm font-medium text-navy-500 block mb-1">Bedrooms</label>
+                        <select data-id="375" id="prop-beds-e3f4" class="w-full px-4 py-3 bg-bg rounded-xl border border-muted-lighter text-sm">
+                            <option data-id="376">1</option><option data-id="377">2</option><option data-id="378" selected>3</option><option data-id="379">4</option><option data-id="380">5</option><option data-id="381">6+</option>
+                        </select>
+                    </div>
+                    <div data-id="382">
+                        <label data-id="383" class="text-sm font-medium text-navy-500 block mb-1">Bathrooms</label>
+                        <select data-id="384" id="prop-baths-g5h6" class="w-full px-4 py-3 bg-bg rounded-xl border border-muted-lighter text-sm">
+                            <option data-id="385">1</option><option data-id="386" selected>2</option><option data-id="387">3</option><option data-id="388">4</option><option data-id="389">5+</option>
+                        </select>
+                    </div>
+                </div>
+                <div data-id="390">
+                    <label data-id="391" class="text-sm font-medium text-navy-500 block mb-1">Lock / Access Type</label>
+                    <select data-id="392" id="prop-lock-i7j8" class="w-full px-4 py-3 bg-bg rounded-xl border border-muted-lighter text-sm">
+                        <option data-id="393">Smart Lock</option><option data-id="394">Lockbox</option><option data-id="395">Key Handoff</option><option data-id="396">Other</option>
+                    </select>
+                </div>
+                <div data-id="397">
+                    <label data-id="398" class="text-sm font-medium text-navy-500 block mb-1">Special Notes</label>
+                    <textarea data-id="399" id="prop-notes-k9l0" rows="3" placeholder="Anything we should know..." class="w-full px-4 py-3 bg-bg rounded-xl border border-muted-lighter text-sm resize-none"></textarea>
+                </div>
+                <button data-id="400" id="save-property-btn-m1n2" class="w-full bg-gold-400 hover:bg-gold-500 text-navy-500 font-semibold py-3 rounded-xl min-h-[44px] transition-colors">Save Property</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- SOP Update Request Modal -->
+    <div data-id="401" id="modal-sop-update-o3p4" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 modal-overlay">
+        <div data-id="402" class="bg-white rounded-2xl max-w-md w-full p-6 md:p-8 relative fade-in">
+            <button data-id="403" id="modal-sop-close-q5r6" class="absolute top-4 right-4 text-muted hover:text-navy-500 p-1"><i data-id="404" data-lucide="x" class="w-5 h-5"></i></button>
+            <h3 data-id="405" class="text-lg font-bold text-navy-500 mb-2">Request SOP Update</h3>
+            <p data-id="406" class="text-sm text-muted mb-4">Describe the changes you'd like made to your SOP. Your coordinator will review and confirm.</p>
+            <textarea data-id="407" id="sop-update-text-s7t8" rows="5" placeholder="Describe your requested changes..." class="w-full px-4 py-3 bg-bg rounded-xl border border-muted-lighter text-sm resize-none mb-4"></textarea>
+            <button data-id="408" id="submit-sop-update-u9v0" class="w-full bg-gold-400 hover:bg-gold-500 text-navy-500 font-semibold py-3 rounded-xl min-h-[44px] transition-colors">Submit Request</button>
+        </div>
+    </div>
+
+    <!-- Invoice View Modal -->
+    <div data-id="409" id="modal-invoice-w1x2" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 modal-overlay">
+        <div data-id="410" id="invoice-print-area-y3z4" class="bg-white rounded-2xl max-w-lg w-full p-6 md:p-8 relative fade-in max-h-[90vh] overflow-y-auto">
+            <button data-id="411" id="modal-invoice-close-a5b6" class="absolute top-4 right-4 text-muted hover:text-navy-500 p-1 no-print"><i data-id="412" data-lucide="x" class="w-5 h-5"></i></button>
+            <div data-id="413" id="invoice-content-c7d8">
+                <!-- Populated by JS -->
+            </div>
+            <div data-id="414" class="flex gap-3 mt-6 no-print">
+                <button data-id="415" id="invoice-print-btn-e9f0" class="flex-1 bg-navy-500 hover:bg-navy-400 text-white font-medium py-3 rounded-xl min-h-[44px] flex items-center justify-center gap-2 transition-colors">
+                    <i data-id="416" data-lucide="download" class="w-4 h-4"></i> Download / Print
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- SOP View Modal (from properties) -->
+    <div data-id="417" id="modal-sop-view-g1h2" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 modal-overlay">
+        <div data-id="418" class="bg-white rounded-2xl max-w-lg w-full p-6 md:p-8 relative fade-in max-h-[90vh] overflow-y-auto">
+            <button data-id="419" id="modal-sop-view-close-i3j4" class="absolute top-4 right-4 text-muted hover:text-navy-500 p-1"><i data-id="420" data-lucide="x" class="w-5 h-5"></i></button>
+            <h3 data-id="421" class="text-lg font-bold text-navy-500 mb-1" id="sop-view-title-k5l6">SOP Summary</h3>
+            <p data-id="422" class="text-xs text-muted mb-4">Last updated: July 18, 2026</p>
+            <div data-id="423" id="sop-view-content-m7n8" class="text-sm text-muted space-y-3">
+                <!-- Populated by JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Rate Service Modal -->
+    <div data-id="424" id="modal-rate-o9p0" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 modal-overlay">
+        <div data-id="425" class="bg-white rounded-2xl max-w-sm w-full p-6 md:p-8 relative fade-in text-center">
+            <button data-id="426" id="modal-rate-close-q1r2" class="absolute top-4 right-4 text-muted hover:text-navy-500 p-1"><i data-id="427" data-lucide="x" class="w-5 h-5"></i></button>
+            <h3 data-id="428" class="text-lg font-bold text-navy-500 mb-2">Rate This Service</h3>
+            <p data-id="429" class="text-sm text-muted mb-4" id="rate-service-label-s3t4"></p>
+            <div data-id="430" id="star-rating-container-u5v6" class="flex justify-center gap-2 mb-6">
+                <button data-id="431" data-star="1" class="star-btn p-1"><svg data-id="432" class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24"><path data-id="433" d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></button>
+                <button data-id="434" data-star="2" class="star-btn p-1"><svg data-id="435" class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24"><path data-id="436" d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></button>
+                <button data-id="437" data-star="3" class="star-btn p-1"><svg data-id="438" class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24"><path data-id="439" d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></button>
+                <button data-id="440" data-star="4" class="star-btn p-1"><svg data-id="441" class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24"><path data-id="442" d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></button>
+                <button data-id="443" data-star="5" class="star-btn p-1"><svg data-id="444" class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24"><path data-id="445" d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></button>
+            </div>
+            <button data-id="446" id="submit-rating-btn-w7x8" class="w-full bg-gold-400 hover:bg-gold-500 text-navy-500 font-semibold py-3 rounded-xl min-h-[44px] transition-colors">Submit Rating</button>
+        </div>
+    </div>
+
+    <!-- Request Turnover Modal -->
+    <div data-id="447" id="modal-turnover-y9z0" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 modal-overlay">
+        <div data-id="448" class="bg-white rounded-2xl max-w-md w-full p-6 md:p-8 relative fade-in">
+            <button data-id="449" id="modal-turnover-close-a1b2x" class="absolute top-4 right-4 text-muted hover:text-navy-500 p-1"><i data-id="450" data-lucide="x" class="w-5 h-5"></i></button>
+            <h3 data-id="451" class="text-lg font-bold text-navy-500 mb-4">Request a Turnover</h3>
+            <div data-id="452" class="space-y-4">
+                <div data-id="453">
+                    <label data-id="454" class="text-sm font-medium text-navy-500 block mb-1">Property</label>
+                    <select data-id="455" id="turnover-prop-c3d4x" class="w-full px-4 py-3 bg-bg rounded-xl border border-muted-lighter text-sm"></select>
+                </div>
+                <div data-id="456">
+                    <label data-id="457" class="text-sm font-medium text-navy-500 block mb-1">Requested Date</label>
+                    <input data-id="458" id="turnover-date-e5f6x" type="date" class="w-full px-4 py-3 bg-bg rounded-xl border border-muted-lighter text-sm" />
+                </div>
+                <div data-id="459">
+                    <label data-id="460" class="text-sm font-medium text-navy-500 block mb-1">Service Type</label>
+                    <select data-id="461" id="turnover-type-g7h8x" class="w-full px-4 py-3 bg-bg rounded-xl border border-muted-lighter text-sm">
+                        <option data-id="462">Standard Turnover</option><option data-id="463">Deep Clean</option><option data-id="464">Linen Refresh</option>
+                    </select>
+                </div>
+                <div data-id="465">
+                    <label data-id="466" class="text-sm font-medium text-navy-500 block mb-1">Notes</label>
+                    <textarea data-id="467" id="turnover-notes-i9j0x" rows="3" placeholder="Any special requests..." class="w-full px-4 py-3 bg-bg rounded-xl border border-muted-lighter text-sm resize-none"></textarea>
+                </div>
+                <button data-id="468" id="submit-turnover-btn-k1l2x" class="w-full bg-gold-400 hover:bg-gold-500 text-navy-500 font-semibold py-3 rounded-xl min-h-[44px] transition-colors">Submit Request</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Report Issue Modal -->
+    <div data-id="469" id="modal-issue-m3n4x" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 modal-overlay">
+        <div data-id="470" class="bg-white rounded-2xl max-w-md w-full p-6 md:p-8 relative fade-in">
+            <button data-id="471" id="modal-issue-close-o5p6x" class="absolute top-4 right-4 text-muted hover:text-navy-500 p-1"><i data-id="472" data-lucide="x" class="w-5 h-5"></i></button>
+            <h3 data-id="473" class="text-lg font-bold text-navy-500 mb-4">Report an Issue</h3>
+            <div data-id="474" class="space-y-4">
+                <div data-id="475">
+                    <label data-id="476" class="text-sm font-medium text-navy-500 block mb-1">Property</label>
+                    <select data-id="477" id="issue-prop-q7r8x" class="w-full px-4 py-3 bg-bg rounded-xl border border-muted-lighter text-sm"></select>
+                </div>
+                <div data-id="478">
+                    <label data-id="479" class="text-sm font-medium text-navy-500 block mb-1">Issue Type</label>
+                    <select data-id="480" id="issue-type-s9t0x" class="w-full px-4 py-3 bg-bg rounded-xl border border-muted-lighter text-sm">
+                        <option data-id="481">Cleaning Quality</option><option data-id="482">Damage Found</option><option data-id="483">Missing Supplies</option><option data-id="484">Access Problem</option><option data-id="485">Other</option>
+                    </select>
+                </div>
+                <div data-id="486">
+                    <label data-id="487" class="text-sm font-medium text-navy-500 block mb-1">Describe the Issue</label>
+                    <textarea data-id="488" id="issue-desc-u1v2x" rows="4" placeholder="Please describe what happened..." class="w-full px-4 py-3 bg-bg rounded-xl border border-muted-lighter text-sm resize-none"></textarea>
+                </div>
+                <button data-id="489" id="submit-issue-btn-w3x4x" class="w-full bg-danger hover:opacity-90 text-white font-semibold py-3 rounded-xl min-h-[44px] transition-opacity">Submit Report</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast notification -->
+    <div data-id="490" id="toast-y5z6x" class="hidden fixed bottom-6 right-6 bg-navy-500 text-white px-5 py-3 rounded-xl shadow-lg z-50 text-sm font-medium fade-in flex items-center gap-2">
+        <i data-id="491" data-lucide="check-circle" class="w-5 h-5 text-green-400"></i>
+        <span data-id="492" id="toast-text-a7b8x"></span>
+    </div>
+
+    <script>
+    // ============================
+    // DATA & STATE
+    // ============================
+    const DEFAULT_PROPERTIES = [
+        { id: 'prop-1', name: 'The Gulch Getaway', address: '123 Main St, Nashville TN', beds: 2, baths: 2, sopStatus: 'on-file', lastService: 'July 21, 2026', nextService: 'July 24, 2026' }
+    ];
+
+    const DEFAULT_HISTORY = [
+        { id: 'h1', date: '2026-07-21', property: 'The Gulch Getaway', type: 'Standard Turnover', tech: 'Maria S.', duration: '2h 15m', status: 'Completed', rating: 5, notes: 'Full turnover clean completed. All areas passed inspection. Restocked toiletries and coffee. Left welcome card on counter. Photos sent to coordinator.' },
+        { id: 'h2', date: '2026-07-17', property: 'The Gulch Getaway', type: 'Standard Turnover', tech: 'Maria S.', duration: '2h 30m', status: 'Completed', rating: 4, notes: 'Standard turnover. Extra time spent on kitchen deep scrub due to heavy cooking by previous guests. All items restocked.' },
+        { id: 'h3', date: '2026-07-10', property: 'The Gulch Getaway', type: 'Deep Clean', tech: 'James R.', duration: '4h 00m', status: 'Completed', rating: 5, notes: 'Quarterly deep clean. Moved all furniture for vacuuming, cleaned inside all cabinets, wiped baseboards, cleaned vents and ceiling fans.' },
+        { id: 'h4', date: '2026-07-03', property: 'The Gulch Getaway', type: 'Standard Turnover', tech: 'Maria S.', duration: '2h 10m', status: 'Completed', rating: 0, notes: 'Standard turnover between guest stays. Everything in good condition. Minor scuff on hallway wall noted and reported.' },
+        { id: 'h5', date: '2026-06-26', property: 'The Gulch Getaway', type: 'Linen Refresh', tech: 'Sarah K.', duration: '1h 15m', status: 'Completed', rating: 0, notes: 'Mid-stay linen refresh for extended guest. Changed all bed linens and towels. Quick wipe-down of bathrooms.' }
+    ];
+
+    const DEFAULT_INVOICES = [
+        { id: 'inv-1', number: '1041', date: 'July 14, 2026', property: 'The Gulch Getaway', services: 'Standard Turnover x2', amount: 160.00, status: 'Paid', lineItems: [{ desc: 'Standard Turnover — Jul 10', qty: 1, price: 80 }, { desc: 'Standard Turnover — Jul 3', qty: 1, price: 80 }] },
+        { id: 'inv-2', number: '1042', date: 'July 21, 2026', property: 'The Gulch Getaway', services: 'Standard Turnover', amount: 85.00, status: 'Pending', lineItems: [{ desc: 'Standard Turnover — Jul 21', qty: 1, price: 85 }] }
+    ];
+
+    const DEFAULT_MESSAGES = [
+        { id: 'm1', from: 'team', text: 'Hi there! Welcome to Proper Home Prep. We\'re excited to be your cleaning partner. If you ever need anything, just message us here or call Brittany directly.', time: '2026-07-15 09:00', read: true },
+        { id: 'm2', from: 'team', text: 'Just a heads up — we\'ve updated your SOP based on the notes you provided. Take a look at the "My SOP" tab when you get a chance and let us know if everything looks right.', time: '2026-07-18 14:30', read: true },
+        { id: 'm3', from: 'team', text: 'Your July 24 turnover is confirmed! Maria S. will be there between 11 AM and 2 PM. 🏠✨', time: '2026-07-21 10:15', read: false }
+    ];
+
+    function getState(key, defaultVal) {
+        try { const v = localStorage.getItem('php_' + key); return v ? JSON.parse(v) : defaultVal; }
+        catch { return defaultVal; }
+    }
+    function setState(key, val) { localStorage.setItem('php_' + key, JSON.stringify(val)); }
+
+    // ============================
+    // AUTH
+    // ============================
+    const hostId = getState('hostId', null);
+    const loginScreen = document.getElementById('login-screen-a1b2');
+    const appContainer = document.getElementById('app-container-g7h8');
+
+    function showApp() {
+        const id = getState('hostId', 'GUEST');
+        loginScreen.classList.add('hidden');
+        appContainer.classList.remove('hidden');
+        document.getElementById('host-display-name-o5p6').textContent = 'Host ' + id;
+        const now = new Date(2026, 6, 21);
+        document.getElementById('header-date-i9j0').textContent = now.toLocaleDateString('en-US', { weekday:'long', year:'numeric', month:'long', day:'numeric' });
+        initApp();
+    }
+
+    if (hostId) { showApp(); }
+
+    document.getElementById('access-portal-btn-e5f6').addEventListener('click', function() {
+        const input = document.getElementById('host-id-input-c3d4').value.trim();
+        if (!input) { document.getElementById('host-id-input-c3d4').style.borderColor = '#E74C3C'; return; }
+        setState('hostId', input);
+        showApp();
+    });
+
+    document.getElementById('host-id-input-c3d4').addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') document.getElementById('access-portal-btn-e5f6').click();
+    });
+
+    document.getElementById('sign-out-btn-q7r8').addEventListener('click', function() {
+        localStorage.removeItem('php_hostId');
+        location.reload();
+    });
+
+    // ============================
+    // TABS
+    // ============================
+    function switchTab(tab) {
+        document.querySelectorAll('.tab-btn').forEach(b => { b.classList.remove('tab-active'); b.classList.add('tab-inactive'); });
+        document.querySelectorAll('.tab-content').forEach(c => c.classList.add('hidden'));
+        document.querySelectorAll('.tab-btn').forEach(b => { if (b.dataset.tab === tab) { b.classList.add('tab-active'); b.classList.remove('tab-inactive'); }});
+        const content = document.getElementById('tab-content-' + tab);
+        if (content) { content.classList.remove('hidden'); }
+        if (tab === 'messages') { markMessagesRead(); }
+    }
+
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.addEventListener('click', function() { switchTab(this.dataset.tab); });
+    });
+
+    document.querySelectorAll('.mobile-nav-link').forEach(btn => {
+        btn.addEventListener('click', function() {
+            switchTab(this.dataset.tab);
+            document.getElementById('mobile-menu-s9t0').classList.add('hidden');
+        });
+    });
+
+    // ============================
+    // MOBILE MENU
+    // ============================
+    document.getElementById('mobile-menu-btn-m3n4').addEventListener('click', function() {
+        document.getElementById('mobile-menu-s9t0').classList.remove('hidden');
+        reinitIcons();
+    });
+    document.getElementById('mobile-menu-close-u1v2').addEventListener('click', function() {
+        document.getElementById('mobile-menu-s9t0').classList.add('hidden');
+    });
+
+    // ============================
+    // MODALS
+    // ============================
+    function openModal(id) { document.getElementById(id).classList.remove('hidden'); reinitIcons(); }
+    function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
+
+    // Contact Coordinator
+    ['contact-coord-btn-k1l2', 'mobile-contact-btn-a7b8', 'qa-contact-coord-m9n0'].forEach(id => {
+        document.getElementById(id).addEventListener('click', () => openModal('modal-contact-s1t2'));
+    });
+    document.getElementById('modal-contact-close-u3v4').addEventListener('click', () => closeModal('modal-contact-s1t2'));
+
+    // Add Property
+    document.getElementById('add-property-btn-o1p2').addEventListener('click', () => openModal('modal-add-property-w5x6'));
+    document.getElementById('modal-property-close-y7z8').addEventListener('click', () => closeModal('modal-add-property-w5x6'));
+
+    // SOP Update
+    document.getElementById('sop-update-btn-e7f8').addEventListener('click', () => openModal('modal-sop-update-o3p4'));
+    document.getElementById('modal-sop-close-q5r6').addEventListener('click', () => closeModal('modal-sop-update-o3p4'));
+
+    // Invoice View
+    document.getElementById('modal-invoice-close-a5b6').addEventListener('click', () => closeModal('modal-invoice-w1x2'));
+
+    // SOP View (from properties)
+    document.getElementById('modal-sop-view-close-i3j4').addEventListener('click', () => closeModal('modal-sop-view-g1h2'));
+
+    // Rate Service
+    document.getElementById('modal-rate-close-q1r2').addEventListener('click', () => closeModal('modal-rate-o9p0'));
+
+    // Request Turnover
+    document.getElementById('qa-request-turnover-g3h4').addEventListener('click', () => { populateTurnoverProps(); openModal('modal-turnover-y9z0'); });
+    document.getElementById('modal-turnover-close-a1b2x').addEventListener('click', () => closeModal('modal-turnover-y9z0'));
+
+    // Report Issue
+    document.getElementById('qa-report-issue-i5j6').addEventListener('click', () => { populateIssueProps(); openModal('modal-issue-m3n4x'); });
+    document.getElementById('modal-issue-close-o5p6x').addEventListener('click', () => closeModal('modal-issue-m3n4x'));
+
+    // SOP quick action
+    document.getElementById('qa-view-sop-k7l8').addEventListener('click', () => switchTab('sop'));
+
+    // SOP Print
+    document.getElementById('sop-print-btn-g9h0').addEventListener('click', () => window.print());
+
+    // Invoice print
+    document.getElementById('invoice-print-btn-e9f0').addEventListener('click', () => window.print());
+
+    // Close modals on overlay click
+    document.querySelectorAll('.modal-overlay').forEach(overlay => {
+        overlay.addEventListener('click', function(e) { if (e.target === this) this.classList.add('hidden'); });
+    });
+
+    // ============================
+    // TOAST
+    // ============================
+    function showToast(text) {
+        const toast = document.getElementById('toast-y5z6x');
+        document.getElementById('toast-text-a7b8x').textContent = text;
+        toast.classList.remove('hidden');
+        reinitIcons();
+        setTimeout(() => toast.classList.add('hidden'), 3000);
+    }
+
+    // ============================
+    // PROPERTIES
+    // ============================
+    function getProperties() { return getState('properties', DEFAULT_PROPERTIES); }
+    function renderProperties() {
+        const props = getProperties();
+        const container = document.getElementById('properties-list-q3r4');
+        container.innerHTML = props.map(p => `
+            <div class="bg-white rounded-2xl p-6">
+                <div class="flex flex-wrap items-start justify-between gap-2 mb-3">
+                    <div>
+                        <h3 class="font-semibold text-navy-500 text-lg">${p.name}</h3>
+                        <p class="text-sm text-muted flex items-center gap-1"><i data-lucide="map-pin" class="w-4 h-4"></i> ${p.address}</p>
+                    </div>
+                    <span class="${p.sopStatus === 'on-file' ? 'status-confirmed' : 'status-pending'} text-xs font-medium px-3 py-1 rounded-full">
+                        SOP: ${p.sopStatus === 'on-file' ? '✓ On File' : '✗ Pending'}
+                    </span>
+                </div>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-3 text-sm mb-4">
+                    <div class="bg-bg rounded-xl p-3 text-center">
+                        <p class="text-xs text-muted">Bedrooms</p>
+                        <p class="font-semibold text-navy-500">${p.beds}</p>
+                    </div>
+                    <div class="bg-bg rounded-xl p-3 text-center">
+                        <p class="text-xs text-muted">Bathrooms</p>
+                        <p class="font-semibold text-navy-500">${p.baths}</p>
+                    </div>
+                    <div class="bg-bg rounded-xl p-3 text-center">
+                        <p class="text-xs text-muted">Last Service</p>
+                        <p class="font-semibold text-navy-500 text-xs">${p.lastService || '—'}</p>
+                    </div>
+                    <div class="bg-bg rounded-xl p-3 text-center">
+                        <p class="text-xs text-muted">Next Service</p>
+                        <p class="font-semibold text-navy-500 text-xs">${p.nextService || '—'}</p>
+                    </div>
+                </div>
+                <button data-prop-sop="${p.name}" class="view-sop-btn text-sm text-gold-600 font-medium flex items-center gap-1 hover:text-gold-700 min-h-[44px]">
+                    <i data-lucide="clipboard-list" class="w-4 h-4"></i> View SOP
+                </button>
+            </div>
+        `).join('');
+        reinitIcons();
+        container.querySelectorAll('.view-sop-btn').forEach(btn => {
+            btn.addEventListener('click', function() { showSOPForProperty(this.dataset.propSop); });
+        });
+    }
+
+    function showSOPForProperty(propName) {
+        document.getElementById('sop-view-title-k5l6').textContent = 'SOP — ' + propName;
+        document.getElementById('sop-view-content-m7n8').innerHTML = `
+            <p><span class="font-medium text-navy-500">Access:</span> Smart Lock (August) — code provided per booking</p>
+            <p><span class="font-medium text-navy-500">Cleaning:</span> Full turnover between every guest stay</p>
+            <p><span class="font-medium text-navy-500">Linens:</span> White duvet, 2 pillows/guest, rolled towels</p>
+            <p><span class="font-medium text-navy-500">Restocking:</span> Toiletries, coffee K-cups, kitchen essentials</p>
+            <p><span class="font-medium text-navy-500">Staging:</span> Fan on low, thermostat 72°F, blinds half-open, welcome card on counter</p>
+        `;
+        openModal('modal-sop-view-g1h2');
+    }
+
+    document.getElementById('save-property-btn-m1n2').addEventListener('click', function() {
+        const name = document.getElementById('prop-name-a9b0').value.trim();
+        const address = document.getElementById('prop-address-c1d2').value.trim();
+        if (!name || !address) { showToast('Please fill in property name and address.'); return; }
+        const props = getProperties();
+        props.push({ id: 'prop-' + Date.now(), name, address, beds: document.getElementById('prop-beds-e3f4').value, baths: document.getElementById('prop-baths-g5h6').value, sopStatus: 'pending', lastService: '', nextService: '' });
+        setState('properties', props);
+        renderProperties();
+        closeModal('modal-add-property-w5x6');
+        document.getElementById('prop-name-a9b0').value = '';
+        document.getElementById('prop-address-c1d2').value = '';
+        document.getElementById('prop-notes-k9l0').value = '';
+        showToast('Property added successfully!');
+    });
+
+    // ============================
+    // SERVICE HISTORY
+    // ============================
+    function getHistory() { return getState('history', DEFAULT_HISTORY); }
+    function renderHistory() {
+        const history = getHistory();
+        const filterProp = document.getElementById('filter-property-s5t6').value;
+        const filterType = document.getElementById('filter-type-u7v8').value;
+        const filterFrom = document.getElementById('filter-date-from-w9x0').value;
+        const filterTo = document.getElementById('filter-date-to-y1z2').value;
+
+        const filtered = history.filter(h => {
+            if (filterProp && h.property !== filterProp) return false;
+            if (filterType && h.type !== filterType) return false;
+            if (filterFrom && h.date < filterFrom) return false;
+            if (filterTo && h.date > filterTo) return false;
+            return true;
+        });
+
+        const tbody = document.getElementById('history-table-body-a3b4');
+        tbody.innerHTML = filtered.map(h => {
+            const dateStr = new Date(h.date + 'T12:00:00').toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' });
+            const stars = renderStars(h.rating);
+            return `
+                <tr class="border-b border-gray-50 hover:bg-bg/50 cursor-pointer history-row" data-id="${h.id}">
+                    <td class="px-5 py-3 text-sm tabular-nums">${dateStr}</td>
+                    <td class="px-5 py-3 text-sm font-medium text-navy-500">${h.property}</td>
+                    <td class="px-5 py-3 text-sm">${h.type}</td>
+                    <td class="px-5 py-3 text-sm hidden md:table-cell">${h.tech}</td>
+                    <td class="px-5 py-3 text-sm hidden md:table-cell tabular-nums">${h.duration}</td>
+                    <td class="px-5 py-3"><span class="status-completed text-xs font-medium px-2.5 py-1 rounded-full">${h.status}</span></td>
+                    <td class="px-5 py-3">${h.rating > 0 ? stars : '<button class="rate-btn text-xs text-gold-600 font-medium hover:text-gold-700" data-id="' + h.id + '">Rate</button>'}</td>
+                    <td class="px-5 py-3"><i data-lucide="chevron-down" class="w-4 h-4 text-muted expand-icon transition-transform"></i></td>
+                </tr>
+                <tr class="history-detail hidden" data-detail="${h.id}">
+                    <td colspan="8" class="px-5 py-4 bg-bg/30">
+                        <div class="text-sm text-muted"><span class="font-medium text-navy-500">Service Notes:</span> ${h.notes}</div>
+                        <div class="md:hidden mt-2 text-sm text-muted"><span class="font-medium text-navy-500">Tech:</span> ${h.tech} · <span class="font-medium text-navy-500">Duration:</span> ${h.duration}</div>
+                    </td>
+                </tr>
+            `;
+        }).join('');
+        reinitIcons();
+
+        tbody.querySelectorAll('.history-row').forEach(row => {
+            row.addEventListener('click', function(e) {
+                if (e.target.closest('.rate-btn')) return;
+                const detail = tbody.querySelector(`[data-detail="${this.dataset.id}"]`);
+                const icon = this.querySelector('.expand-icon');
+                if (detail) { detail.classList.toggle('hidden'); }
+                if (icon) { icon.style.transform = detail && !detail.classList.contains('hidden') ? 'rotate(180deg)' : ''; }
+            });
+        });
+
+        tbody.querySelectorAll('.rate-btn').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                openRatingModal(this.dataset.id);
+            });
+        });
+    }
+
+    function renderStars(rating) {
+        let html = '';
+        for (let i = 1; i <= 5; i++) {
+            html += `<svg class="w-4 h-4 inline ${i <= rating ? 'star-filled' : 'star-empty'}" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>`;
+        }
+        return html;
+    }
+
+    ['filter-property-s5t6', 'filter-type-u7v8', 'filter-date-from-w9x0', 'filter-date-to-y1z2'].forEach(id => {
+        document.getElementById(id).addEventListener('change', renderHistory);
+    });
+
+    // ============================
+    // RATINGS
+    // ============================
+    let currentRatingId = null;
+    let currentRatingVal = 0;
+
+    function openRatingModal(historyId) {
+        currentRatingId = historyId;
+        currentRatingVal = 0;
+        const history = getHistory();
+        const item = history.find(h => h.id === historyId);
+        if (item) {
+            const dateStr = new Date(item.date + 'T12:00:00').toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' });
+            document.getElementById('rate-service-label-s3t4').textContent = item.type + ' — ' + dateStr;
+        }
+        updateStarDisplay(0);
+        openModal('modal-rate-o9p0');
+    }
+
+    function updateStarDisplay(val) {
+        document.querySelectorAll('#star-rating-container-u5v6 .star-btn').forEach(btn => {
+            const sv = parseInt(btn.dataset.star);
+            btn.querySelector('svg').classList.toggle('star-filled', sv <= val);
+            btn.querySelector('svg').classList.toggle('star-empty', sv > val);
+        });
+    }
+
+    document.querySelectorAll('#star-rating-container-u5v6 .star-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            currentRatingVal = parseInt(this.dataset.star);
+            updateStarDisplay(currentRatingVal);
+        });
+    });
+
+    document.getElementById('submit-rating-btn-w7x8').addEventListener('click', function() {
+        if (currentRatingVal === 0) { showToast('Please select a rating.'); return; }
+        const history = getHistory();
+        const item = history.find(h => h.id === currentRatingId);
+        if (item) { item.rating = currentRatingVal; }
+        setState('history', history);
+        renderHistory();
+        closeModal('modal-rate-o9p0');
+        showToast('Rating submitted — thank you!');
+    });
+
+    // ============================
+    // INVOICES
+    // ============================
+    function getInvoices() { return getState('invoices', DEFAULT_INVOICES); }
+    function renderInvoices() {
+        const invoices = getInvoices();
+        const tbody = document.getElementById('invoices-table-body-c5d6');
+        tbody.innerHTML = invoices.map(inv => {
+            const statusClass = inv.status === 'Paid' ? 'status-paid' : inv.status === 'Pending' ? 'status-pending' : 'status-overdue';
+            return `
+                <tr class="border-b border-gray-50 hover:bg-bg/50">
+                    <td class="px-5 py-3 text-sm font-medium text-navy-500 tabular-nums">#${inv.number}</td>
+                    <td class="px-5 py-3 text-sm">${inv.date}</td>
+                    <td class="px-5 py-3 text-sm hidden md:table-cell">${inv.property}</td>
+                    <td class="px-5 py-3 text-sm">${inv.services}</td>
+                    <td class="px-5 py-3 text-sm font-semibold tabular-nums">$${inv.amount.toFixed(2)}</td>
+                    <td class="px-5 py-3"><span class="${statusClass} text-xs font-medium px-2.5 py-1 rounded-full">${inv.status}</span></td>
+                    <td class="px-5 py-3">
+                        <button class="view-invoice-btn text-xs text-gold-600 font-medium hover:text-gold-700 min-h-[44px]" data-id="${inv.id}">View Invoice</button>
+                    </td>
+                </tr>
+            `;
+        }).join('');
+
+        tbody.querySelectorAll('.view-invoice-btn').forEach(btn => {
+            btn.addEventListener('click', function() { showInvoice(this.dataset.id); });
+        });
+    }
+
+    function showInvoice(invId) {
+        const invoices = getInvoices();
+        const inv = invoices.find(i => i.id === invId);
+        if (!inv) return;
+        const statusClass = inv.status === 'Paid' ? 'status-paid' : inv.status === 'Pending' ? 'status-pending' : 'status-overdue';
+        document.getElementById('invoice-content-c7d8').innerHTML = `
+            <div class="flex items-start justify-between mb-6">
+                <div>
+                    <div class="flex items-center gap-2 mb-1">
+                        <svg class="w-6 h-6 text-navy-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                        <span class="text-lg font-bold text-navy-500">Proper Home Prep</span>
+                    </div>
+                    <p class="text-xs text-muted">Nashville, TN · coordinator@properhomeprep.com</p>
+                </div>
+                <span class="${statusClass} text-xs font-medium px-3 py-1 rounded-full">${inv.status}</span>
+            </div>
+            <div class="grid grid-cols-2 gap-4 mb-6 text-sm">
+                <div><p class="text-xs text-muted uppercase tracking-wide font-medium">Invoice #</p><p class="font-semibold text-navy-500">${inv.number}</p></div>
+                <div><p class="text-xs text-muted uppercase tracking-wide font-medium">Date</p><p class="font-semibold text-navy-500">${inv.date}</p></div>
+                <div><p class="text-xs text-muted uppercase tracking-wide font-medium">Property</p><p class="font-semibold text-navy-500">${inv.property}</p></div>
+                <div><p class="text-xs text-muted uppercase tracking-wide font-medium">Host ID</p><p class="font-semibold text-navy-500">${getState('hostId','—')}</p></div>
+            </div>
+            <table class="w-full text-sm mb-6">
+                <thead><tr class="border-b border-gray-200 text-left"><th class="py-2 text-xs uppercase tracking-wide text-muted font-medium">Description</th><th class="py-2 text-xs uppercase tracking-wide text-muted font-medium text-center">Qty</th><th class="py-2 text-xs uppercase tracking-wide text-muted font-medium text-right">Price</th></tr></thead>
+                <tbody>${inv.lineItems.map(li => `<tr class="border-b border-gray-50"><td class="py-3">${li.desc}</td><td class="py-3 text-center tabular-nums">${li.qty}</td><td class="py-3 text-right tabular-nums">$${li.price.toFixed(2)}</td></tr>`).join('')}</tbody>
+            </table>
+            <div class="flex justify-end">
+                <div class="text-right">
+                    <p class="text-xs text-muted uppercase tracking-wide font-medium">Total</p>
+                    <p class="text-2xl font-bold text-navy-500 tabular-nums">$${inv.amount.toFixed(2)}</p>
+                </div>
+            </div>
+            <div class="mt-6 bg-bg rounded-xl p-4 text-xs text-muted">
+                <p class="font-medium text-navy-500 mb-1">Payment Instructions</p>
+                <p>Venmo: @ProperHomePrep · Zelle: payments@properhomeprep.com</p>
+                <p>Please include invoice # in payment memo. Net 15 terms.</p>
+            </div>
+        `;
+        openModal('modal-invoice-w1x2');
+    }
+
+    // ============================
+    // MESSAGES
+    // ============================
+    function getMessages() { return getState('messages', DEFAULT_MESSAGES); }
+    function renderMessages() {
+        const messages = getMessages();
+        const container = document.getElementById('messages-container-m5n6');
+        container.innerHTML = messages.map(m => {
+            const isMe = m.from === 'me';
+            const timeStr = new Date(m.time).toLocaleString('en-US', { month:'short', day:'numeric', hour:'numeric', minute:'2-digit' });
+            return `
+                <div class="flex ${isMe ? 'justify-end' : 'justify-start'}">
+                    <div class="${isMe ? 'message-bubble-me' : 'message-bubble-them'} px-4 py-3 max-w-[80%]">
+                        <p class="text-sm">${m.text}</p>
+                        <p class="text-xs ${isMe ? 'text-white/50' : 'text-muted-light'} mt-1">${timeStr}</p>
+                    </div>
+                </div>
+            `;
+        }).join('');
+        container.scrollTop = container.scrollHeight;
+        updateUnreadBadge();
+    }
+
+    function updateUnreadBadge() {
+        const messages = getMessages();
+        const unread = messages.filter(m => !m.read && m.from !== 'me').length;
+        const tabBadge = document.getElementById('tab-unread-badge-e1f2');
+        const mobileBadge = document.getElementById('mobile-unread-badge-y5z6');
+        if (unread > 0) {
+            tabBadge.textContent = unread; tabBadge.classList.remove('hidden');
+            mobileBadge.textContent = unread; mobileBadge.classList.remove('hidden');
+        } else {
+            tabBadge.classList.add('hidden');
+            mobileBadge.classList.add('hidden');
+        }
+    }
+
+    function markMessagesRead() {
+        const messages = getMessages();
+        messages.forEach(m => m.read = true);
+        setState('messages', messages);
+        updateUnreadBadge();
+    }
+
+    document.getElementById('send-message-btn-q9r0').addEventListener('click', function() {
+        const input = document.getElementById('message-input-o7p8');
+        const text = input.value.trim();
+        if (!text) return;
+        const messages = getMessages();
+        messages.push({ id: 'm-' + Date.now(), from: 'me', text, time: new Date().toISOString().slice(0,16).replace('T',' '), read: true });
+        setState('messages', messages);
+        input.value = '';
+        renderMessages();
+    });
+
+    document.getElementById('message-input-o7p8').addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') document.getElementById('send-message-btn-q9r0').click();
+    });
+
+    // ============================
+    // FORM SUBMISSIONS
+    // ============================
+    document.getElementById('submit-sop-update-u9v0').addEventListener('click', function() {
+        const text = document.getElementById('sop-update-text-s7t8').value.trim();
+        if (!text) { showToast('Please describe the changes.'); return; }
+        closeModal('modal-sop-update-o3p4');
+        document.getElementById('sop-update-text-s7t8').value = '';
+        showToast('SOP update request submitted!');
+    });
+
+    function populateTurnoverProps() {
+        const props = getProperties();
+        const sel = document.getElementById('turnover-prop-c3d4x');
+        sel.innerHTML = props.map(p => `<option value="${p.name}">${p.name}</option>`).join('');
+    }
+
+    function populateIssueProps() {
+        const props = getProperties();
+        const sel = document.getElementById('issue-prop-q7r8x');
+        sel.innerHTML = props.map(p => `<option value="${p.name}">${p.name}</option>`).join('');
+    }
+
+    document.getElementById('submit-turnover-btn-k1l2x').addEventListener('click', function() {
+        const date = document.getElementById('turnover-date-e5f6x').value;
+        if (!date) { showToast('Please select a date.'); return; }
+        closeModal('modal-turnover-y9z0');
+        showToast('Turnover request submitted!');
+    });
+
+    document.getElementById('submit-issue-btn-w3x4x').addEventListener('click', function() {
+        const desc = document.getElementById('issue-desc-u1v2x').value.trim();
+        if (!desc) { showToast('Please describe the issue.'); return; }
+        closeModal('modal-issue-m3n4x');
+        document.getElementById('issue-desc-u1v2x').value = '';
+        showToast('Issue report submitted. Your coordinator will follow up.');
+    });
+
+    // ============================
+    // INIT
+    // ============================
+    function reinitIcons() {
+        if (typeof lucide !== 'undefined' && typeof lucide.createIcons === 'function') {
+            lucide.createIcons();
+        }
+    }
+
+    function initApp() {
+        renderProperties();
+        renderHistory();
+        renderInvoices();
+        renderMessages();
+        reinitIcons();
+    }
+
+    // Initial icon setup
+    if (typeof lucide !== 'undefined' && typeof lucide.createIcons === 'function') {
+        lucide.createIcons();
+    }
+    </script>
+</body>
+</html>

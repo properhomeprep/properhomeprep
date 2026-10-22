@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Proper Home Prep — Social Ad Copy Kit</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            navy: '#1B2A4A',
+            'navy-light': '#253759',
+            'navy-dark': '#111D33',
+            gold: '#C9A84C',
+            'gold-light': '#D4B86A',
+            'gold-dark': '#B08F3A',
+            'gold-tint': '#FDF6E3',
+            'bg-main': '#F4F6F9',
+            success: '#22C55E',
+          },
+          fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] }
+        }
+      }
+    };
+  </script>
+  <script src="https://unpkg.com/lucide@latest" defer></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root { --navy:#1B2A4A; --gold:#C9A84C; --gold-tint:#FDF6E3; --bg:#F4F6F9; --success:#22C55E; }
+    * { box-sizing: border-box; }
+    body { font-family:'Inter',system-ui,sans-serif; background:var(--bg); margin:0; }
+    .template-card { transition:all .2s ease; border-left:4px solid var(--gold); cursor:pointer; }
+    .template-card:hover { background:var(--gold-tint); }
+    .template-card.active { background:var(--navy); color:#fff; border-left-color:var(--gold); box-shadow:0 0 12px rgba(201,168,76,.3); }
+    .template-card.active .tc-desc { color:rgba(255,255,255,.7); }
+    .template-card.active .tc-channel { background:rgba(201,168,76,.2) !important; color:var(--gold) !important; }
+    .fade-in { animation:fadeIn .3s ease; }
+    @keyframes fadeIn { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:translateY(0)} }
+    .copy-btn-success { animation:successPulse .3s ease; }
+    @keyframes successPulse { 0%{transform:scale(1)} 50%{transform:scale(1.05)} 100%{transform:scale(1)} }
+    .counter-btn { transition:all .15s ease; }
+    .counter-btn:active { transform:scale(.9); }
+    .hook-box { background:linear-gradient(135deg,var(--gold-tint),#fff); border:1.5px solid var(--gold); }
+    .tip-card { background:linear-gradient(135deg,var(--gold-tint),#FEFCF5); border:1px solid rgba(201,168,76,.3); }
+    .platform-badge { display:inline-flex; align-items:center; gap:4px; font-size:11px; font-weight:700; padding:3px 10px; border-radius:999px; }
+    .badge-fb  { background:#E7F0FF; color:#1877F2; }
+    .badge-ig  { background:#FDE8FF; color:#C13584; }
+    .badge-nd  { background:#E8F5E9; color:#1D8348; }
+    .badge-mkp { background:#FFF3E0; color:#E65100; }
+    .char-counter { font-size:11px; font-weight:600; padding:2px 8px; border-radius:999px; background:#F4F6F9; color:#64748b; }
+    .char-counter.warn { background:#FEF9C3; color:#92400E; }
+    .char-counter.over { background:#FEE2E2; color:#991B1B; }
+    .sidebar-scroll::-webkit-scrollbar { width:4px; }
+    .sidebar-scroll::-webkit-scrollbar-track { background:transparent; }
+    .sidebar-scroll::-webkit-scrollbar-thumb { background:rgba(201,168,76,.3); border-radius:4px; }
+    .mobile-tabs::-webkit-scrollbar { height:0; display:none; }
+    @media print { .no-print { display:none !important; } }
+  </style>
+</head>
+<body class="min-h-screen bg-bg-main">
+
+<header class="sticky top-0 z-50 bg-navy text-white shadow-lg">
+  <div class="max-w-[1440px] mx-auto px-4 md:px-6 py-3 flex items-center justify-between">
+    <div class="flex items-center gap-2">
+      <span class="text-lg md:text-xl font-extrabold tracking-tight">Proper Home Prep</span>
+      <span class="w-2 h-2 rounded-full bg-gold inline-block"></span>
+    </div>
+    <div class="hidden md:block text-gold font-semibold text-sm tracking-wide">Social Ad Copy Kit</div>
+    <span class="bg-gold/20 text-gold text-xs font-bold px-3 py-1 rounded-full">10 Ad Templates Ready</span>
+  </div>
+</header>
+
+<div class="md:hidden bg-white border-b border-gray-200 shadow-sm sticky top-[52px] z-40">
+  <div class="mobile-tabs flex overflow-x-auto gap-2 px-3 py-2" id="mobile-tabs-container"></div>
+</div>
+
+<div class="max-w-[1440px] mx-auto flex flex-col md:flex-row gap-0 md:gap-6 px-4 md:px-6 py-4 md:py-6">
+
+  <aside class="hidden md:flex flex-col w-[320px] flex-shrink-0 gap-4 sidebar-scroll" style="max-height:calc(100vh - 100px);overflow-y:auto;position:sticky;top:80px;">
+    <div>
+      <div class="text-xs font-bold text-navy/50 uppercase tracking-widest mb-2 px-1">📘 Facebook Templates</div>
+      <div class="flex flex-col gap-2" id="sidebar-facebook"></div>
+    </div>
+    <div>
+      <div class="text-xs font-bold text-navy/50 uppercase tracking-widest mb-2 px-1">📸 Instagram Templates</div>
+      <div class="flex flex-col gap-2" id="sidebar-instagram"></div>
+    </div>
+    <div>
+      <div class="text-xs font-bold text-navy/50 uppercase tracking-widest mb-2 px-1">🏘️ Nextdoor Templates</div>
+      <div class="flex flex-col gap-2" id="sidebar-nextdoor"></div>
+    </div>
+    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-4 mt-2">
+      <h3 class="text-sm font-bold text-gold mb-3 flex items-center gap-1.5">
+        <i data-lucide="bar-chart-3" class="w-4 h-4"></i> My Ad Campaign Progress
+      </h3>
+      <div class="flex flex-col gap-3">
+        <div class="flex items-center justify-between">
+          <span class="text-sm text-navy/70">📣 Ads Published</span>
+          <div class="flex items-center gap-2">
+            <button class="counter-btn w-7 h-7 rounded-full bg-bg-main text-navy hover:bg-gold/20 flex items-center justify-center text-lg font-bold" data-counter="ads" data-dir="minus">−</button>
+            <span id="counter-ads" class="text-base font-bold text-navy w-8 text-center tabular-nums">0</span>
+            <button class="counter-btn w-7 h-7 rounded-full bg-bg-main text-navy hover:bg-gold/20 flex items-center justify-center text-lg font-bold" data-counter="ads" data-dir="plus">+</button>
+          </div>
+        </div>
+        <div class="flex items-center justify-between">
+          <span class="text-sm text-navy/70">💬 Leads / Inquiries</span>
+          <div class="flex items-center gap-2">
+            <button class="counter-btn w-7 h-7 rounded-full bg-bg-main text-navy hover:bg-gold/20 flex items-center justify-center text-lg font-bold" data-counter="leads" data-dir="minus">−</button>
+            <span id="counter-leads" class="text-base font-bold text-navy w-8 text-center tabular-nums">0</span>
+            <button class="counter-btn w-7 h-7 rounded-full bg-bg-main text-navy hover:bg-gold/20 flex items-center justify-center text-lg font-bold" data-counter="leads" data-dir="plus">+</button>
+          </div>
+        </div>
+        <div class="flex items-center justify-between">
+          <span class="text-sm text-navy/70">🤝 Clients Signed</span>
+          <div class="flex items-center gap-2">
+            <button class="counter-btn w-7 h-7 rounded-full bg-bg-main text-navy hover:bg-gold/20 flex items-center justify-center text-lg font-bold" data-counter="clients" data-dir="minus">−</button>
+            <span id="counter-clients" class="text-base font-bold text-navy w-8 text-center tabular-nums">0</span>
+            <button class="counter-btn w-7 h-7 rounded-full bg-bg-main text-navy hover:bg-gold/20 flex items-center justify-center text-lg font-bold" data-counter="clients" data-dir="plus">+</button>
+          </div>
+        </div>
+      </div>
+      <div id="motivational-msg" class="text-xs text-center text-navy/60 mt-3 pt-3 border-t border-gray-100">Post your first ad and start growing! 🌟</div>
+    </div>
+  </aside>
+
+  <main class="flex-1 min-w-0">
+    <div class="bg-white rounded-xl shadow-sm border-2 border-gold/30 p-4 md:p-5 mb-5">
+      <h3 class="text-sm font-bold text-navy flex items-center gap-1.5 mb-3">
+        <span class="text-gold">✦</span> Personalize Your Ad Templates
+      </h3>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+        <div>
+          <label class="text-xs font-semibold text-navy/60 uppercase tracking-wide mb-1 block">Your Name</label>
+          <input id="input-your-name" type="text" placeholder="Brittany" value="Brittany"
+            class="w-full px-3 py-2.5 rounded-lg border border-gray-200 text-sm focus:outline-none focus:border-gold focus:ring-2 focus:ring-gold/20 transition text-base">
+        </div>
+        <div>
+          <label class="text-xs font-semibold text-navy/60 uppercase tracking-wide mb-1 block">Phone / Contact</label>
+          <input id="input-phone" type="text" placeholder="(615) 555-0123"
+            class="w-full px-3 py-2.5 rounded-lg border border-gray-200 text-sm focus:outline-none focus:border-gold focus:ring-2 focus:ring-gold/20 transition text-base">
+        </div>
+        <div>
+          <label class="text-xs font-semibold text-navy/60 uppercase tracking-wide mb-1 block">Website / Booking Link</label>
+          <input id="input-website" type="text" placeholder="properHomePrep.com"
+            class="w-full px-3 py-2.5 rounded-lg border border-gray-200 text-sm focus:outline-none focus:border-gold focus:ring-2 focus:ring-gold/20 transition text-base">
+        </div>
+      </div>
+      <p class="text-xs text-navy/40 mt-2.5">Fill these in once — they update every template automatically.</p>
+    </div>
+
+    <div id="template-display" class="fade-in"></div>
+
+    <div class="md:hidden bg-white rounded-xl shadow-sm border border-gray-100 p-4 mt-5">
+      <h3 class="text-sm font-bold text-gold mb-3 flex items-center gap-1.5">
+        <i data-lucide="bar-chart-3" class="w-4 h-4"></i> My Ad Campaign Progress
+      </h3>
+      <div class="flex flex-col gap-3">
+        <div class="flex items-center justify-between">
+          <span class="text-sm text-navy/70">📣 Ads Published</span>
+          <div class="flex items-center gap-2">
+            <button class="counter-btn w-8 h-8 rounded-full bg-bg-main text-navy hover:bg-gold/20 flex items-center justify-center text-lg font-bold" data-counter="ads" data-dir="minus">−</button>
+            <span class="counter-display-ads text-base font-bold text-navy w-8 text-center tabular-nums">0</span>
+            <button class="counter-btn w-8 h-8 rounded-full bg-bg-main text-navy hover:bg-gold/20 flex items-center justify-center text-lg font-bold" data-counter="ads" data-dir="plus">+</button>
+          </div>
+        </div>
+        <div class="flex items-center justify-between">
+          <span class="text-sm text-navy/70">💬 Leads / Inquiries</span>
+          <div class="flex items-center gap-2">
+            <button class="counter-btn w-8 h-8 rounded-full bg-bg-main text-navy hover:bg-gold/20 flex items-center justify-center text-lg font-bold" data-counter="leads" data-dir="minus">−</button>
+            <span class="counter-display-leads text-base font-bold text-navy w-8 text-center tabular-nums">0</span>
+            <button class="counter-btn w-8 h-8 rounded-full bg-bg-main text-navy hover:bg-gold/20 flex items-center justify-center text-lg font-bold" data-counter="leads" data-dir="plus">+</button>
+          </div>
+        </div>
+        <div class="flex items-center justify-between">
+          <span class="text-sm text-navy/70">🤝 Clients Signed</span>
+          <div class="flex items-center gap-2">
+            <button class="counter-btn w-8 h-8 rounded-full bg-bg-main text-navy hover:bg-gold/20 flex items-center justify-center text-lg font-bold" data-counter="clients" data-dir="minus">−</button>
+            <span class="counter-display-clients text-base font-bold text-navy w-8 text-center tabular-nums">0</span>
+            <button class="counter-btn w-8 h-8 rounded-full bg-bg-main text-navy hover:bg-gold/20 flex items-center justify-center text-lg font-bold" data-counter="clients" data-dir="plus">+</button>
+          </div>
+        </div>
+      </div>
+      <div class="motivational-msg-mobile text-xs text-center text-navy/60 mt-3 pt-3 border-t border-gray-100">Post your first ad and start growing! 🌟</div>
+    </div>
+  </main>
+</div>
+
+<footer class="bg-navy text-white/60 text-center text-xs py-4 mt-8">
+  <p>Proper Home Prep | Social Ad Copy Kit | Nashville, TN | Where Every Detail Matters. ✦</p>
+  <p class="mt-1 text-white/30">Made by Copilot</p>
+</footer>
+
+<script>
+const templates = [
+  {
+    id:1, category:'facebook',
+    label:'Facebook Feed · Awareness Ad',
+    name:'Facebook Feed — Awareness Ad',
+    platform:'Facebook', platformBadge:'badge-fb', platformEmoji:'📘',
+    bestFor:'Paid or boosted Facebook feed post targeting Nashville homeowners & Airbnb hosts',
+    charLimit:125,
+    hook:'🏠 Nashville Airbnb Hosts — your guests deserve better.',
+    body:`🏠 Nashville Airbnb Hosts — your guests deserve better.
+
+Are you still guessing whether your property is actually ready between checkouts?
+
+Proper Home Prep gives you something no ordinary cleaning service does:
+
+✅ A custom SOP for your exact property
+📸 Real-time before + after photos as we clean
+⚡ Live task check-offs you can watch from anywhere
+🚨 Instant damage flagging — before your guest walks in
+
+No more wondering. No more last-minute panic texts.
+
+👉 DM us "READY" or tap the link to book a free consultation.
+
+Proper Home Prep | Nashville's Boutique STR Turnover Service
+"Where Every Detail Matters." ✦
+
+📱 {{phone}}
+🌐 {{website}}`,
+    tip:'Boost this post targeting Nashville zip codes 37201–37221, interests: "Airbnb" + "vacation rental." A $5/day budget for 7 days can reach 2,000–4,000 people.'
+  },
+  {
+    id:2, category:'facebook',
+    label:'Facebook Feed · Problem/Solution Ad',
+    name:'Facebook Feed — Problem/Solution',
+    platform:'Facebook', platformBadge:'badge-fb', platformEmoji:'📘',
+    bestFor:'Hosts frustrated with unreliable cleaners — organic or paid boost',
+    charLimit:125,
+    hook:'😤 "My cleaner flaked AGAIN right before a guest arrived..."',
+    body:`😤 "My cleaner flaked AGAIN right before a guest arrived..."
+
+Sound familiar? You're not alone. Unreliable turnover crews are the #1 complaint of Nashville Airbnb hosts.
+
+That's exactly why we built Proper Home Prep.
+
+We're Nashville's boutique STR turnover service with a tech-powered twist — you watch every job happen through your personal client dashboard in real time. Every task. Every photo. Every time.
+
+🔑 Custom SOP for your property
+📊 Live dashboard access while we clean
+📸 Before & after photos uploaded as we work
+🛡️ Instant damage reports with photos
+
+Stop stressing on turnover day. Start knowing.
+
+💬 Drop a comment or DM us — we'll send your full info + your first turnover discount.
+
+Proper Home Prep | Nashville, TN
+📱 {{phone}} | 🌐 {{website}}`,
+    tip:'Use a split image (messy room vs. perfectly staged room) as your ad visual for maximum scroll-stopping power on Facebook feeds.'
+  },
+  {
+    id:3, category:'facebook',
+    label:'Facebook Group Post · STR Host Community',
+    name:'Facebook Group — Community Post',
+    platform:'Facebook', platformBadge:'badge-fb', platformEmoji:'📘',
+    bestFor:'Nashville Airbnb host groups, STR landlord communities, neighborhood groups',
+    charLimit:null,
+    hook:'👋 Hey Nashville hosts! Introducing Proper Home Prep.',
+    body:`👋 Hey Nashville hosts! Introducing Proper Home Prep.
+
+I'm {{your_name}}, founder of Proper Home Prep — Nashville's boutique STR turnover service built specifically for Airbnb and VRBO hosts who are done guessing.
+
+Here's what makes us different from every other cleaning service in town:
+
+🖥️ The Proper Dashboard — watch your property get cleaned in real time. Every SOP task checked off live. Before + after photos uploaded as they're taken. Guest-ready notification the moment we're done.
+
+🏠 Custom Standard Operating Procedure for YOUR property — so every turnover looks exactly the same, regardless of which technician is on-site.
+
+📸 Real-time photo documentation — proof of condition every single time.
+🚨 Instant damage flagging — you know before your guest does.
+📋 Dedicated account coordinator — one point of contact, always.
+
+Whether you have 1 property or 10, we treat every turnover like it matters. Because it does.
+
+💬 Comment "INFO" below or DM me and I'll send our full details + a first-turnover discount just for this group!
+
+Proper Home Prep | Nashville, TN
+📱 {{phone}} | 🌐 {{website}}
+"Where Every Detail Matters." ✦`,
+    tip:'Post Tuesday–Thursday 7–9 PM for maximum group engagement. Reply to every comment within the first hour — it signals the algorithm to boost your reach.'
+  },
+  {
+    id:4, category:'facebook',
+    label:'Facebook Marketplace · Service Listing',
+    name:'Facebook Marketplace — Service Listing',
+    platform:'Facebook', platformBadge:'badge-mkp', platformEmoji:'🛒',
+    bestFor:'Facebook Marketplace "Services" section — reaches local hosts searching for cleaners',
+    charLimit:null,
+    hook:"✦ Proper Home Prep — Nashville's Premier STR Turnover Service",
+    body:`✦ Proper Home Prep — Nashville's Premier STR Turnover Service
+
+Are you an Airbnb or VRBO host in Nashville who needs a turnover team you can actually trust?
+
+Proper Home Prep is Nashville's boutique short-term rental turnover service — built with technology that gives you full visibility into every job, every time.
+
+WHAT WE OFFER:
+✅ Custom property SOP — your exact standards, followed every time
+📸 Real-time photo documentation (before + after)
+⚡ Live task tracking via your personal client dashboard
+🚨 Instant damage flagging with photo evidence
+📅 Calendar integration + dedicated account coordinator
+
+WHY WE'RE DIFFERENT:
+Most cleaning services leave you in the dark. With Proper Home Prep, you watch the job happen. You get a guest-ready notification when we're done. No wondering. No guessing. Just done.
+
+SERVING: All Nashville metro area | Available 7 days a week
+
+📱 Call or text: {{phone}}
+🌐 Book a free consultation: {{website}}
+
+Proper Home Prep | Nashville, TN | "Where Every Detail Matters." ✦`,
+    tip:'Upload 4–6 high-quality photos of beautifully staged rooms as your listing images. Marketplace listings with photos get 5x more inquiries than those without.'
+  },
+  {
+    id:5, category:'instagram',
+    label:'Instagram Feed · Value Post Caption',
+    name:'Instagram Feed — Value Post',
+    platform:'Instagram', platformBadge:'badge-ig', platformEmoji:'📸',
+    bestFor:'Organic Instagram feed post — carousel or single image of a staged property',
+    charLimit:2200,
+    hook:'The secret Nashville Airbnb hosts are using to never stress on turnover day again. 🏠✨',
+    body:`The secret Nashville Airbnb hosts are using to never stress on turnover day again. 🏠✨
+
+It's not magic. It's a system.
+
+At Proper Home Prep, we built something the cleaning industry was missing — real-time visibility into your own property.
+
+Here's how it works 👇
+
+📋 We create a custom SOP for YOUR property before we ever show up.
+
+🧹 On turnover day, your technician works through every task step by step.
+
+⚡ You watch each task get checked off LIVE on your client dashboard — from anywhere.
+
+📸 Before + after photos upload in real time as we clean.
+
+🚨 Any damage? You get an instant flagged report with photos — before your guest arrives.
+
+✅ Guest-ready notification the moment the job is complete.
+
+No more sitting by your phone wondering. No more bad surprises at check-in.
+
+Just a spotless property and a notification that says "You're good to go."
+
+This is what turnover day should feel like. 💛
+
+Ready to experience it? Link in bio or DM us "READY" to get started.
+
+.
+.
+.
+#NashvilleAirbnb #NashvilleSTR #AirbnbHost #VRBOHost #ShortTermRental #NashvilleVacationRental #AirbnbCleaning #STRManagement #NashvilleBusiness #ProperHomePrep #TurnoverService #AirbnbTips #HostLife #NashvilleTN #PropertyManagement`,
+    tip:'Use a carousel with 5–7 slides: slide 1 = hook graphic, slides 2–6 = each bullet as its own card, slide 7 = CTA. Carousels get 3x more engagement than single images.'
+  },
+  {
+    id:6, category:'instagram',
+    label:'Instagram Reel · Hook + CTA Caption',
+    name:'Instagram Reel — Hook Caption',
+    platform:'Instagram', platformBadge:'badge-ig', platformEmoji:'📸',
+    bestFor:'Caption for a 15–30 second Reel showing a before/after turnover or dashboard walkthrough',
+    charLimit:2200,
+    hook:'POV: You just watched your Nashville Airbnb get cleaned from your couch. 📱✨',
+    body:`POV: You just watched your Nashville Airbnb get cleaned from your couch. 📱✨
+
+That's the Proper Dashboard. Every task. Every photo. Every time. Live.
+
+No texts asking "is it done?" No calling around. No guessing.
+
+Just a notification that says: ✅ Guest Ready.
+
+This is what we do at Proper Home Prep — Nashville's boutique STR turnover service built for hosts who expect more.
+
+DM us "DEMO" to see how it works for your property. 🏠💛
+
+.
+.
+.
+#NashvilleAirbnb #AirbnbTurnover #STRHost #AirbnbCleaning #NashvilleSTR #HostLife #ProperHomePrep #ShortTermRental #NashvilleTN #VacationRentalHost`,
+    tip:'Film a 15–30 second time-lapse of a room transformation (messy → staged) and overlay the dashboard on screen. Reels with before/after content routinely hit 10k+ views organically.'
+  },
+  {
+    id:7, category:'instagram',
+    label:'Instagram Story · Poll Engagement Slide',
+    name:'Instagram Story — Engagement Poll',
+    platform:'Instagram', platformBadge:'badge-ig', platformEmoji:'📸',
+    bestFor:'Story slide series with a poll sticker to generate engagement and surface warm leads',
+    charLimit:null,
+    hook:'🤔 Be honest — do you actually know when your Airbnb is ready?',
+    body:`— STORY SLIDE 1 —
+Graphic text: "Nashville Airbnb hosts... be honest."
+Add a POLL sticker:
+  ✅ "Yes, I have a system"
+  😬 "Honestly... I just hope for the best"
+
+— STORY SLIDE 2 (send to everyone who voted 😬) —
+"Same. That's why we built Proper Home Prep.
+
+Real-time dashboard. Live photo updates. Guest-ready notification the moment we're done.
+
+DM us 'INFO' to see how it works."
+
+— STORY SLIDE 3 —
+Graphic: Before + after photo of a staged room
+Text overlay: "This could be your property after every checkout. 🏠✨"
+CTA link sticker: "Get Started →" → {{website}}
+
+📱 DM us or tap the link in bio!
+Proper Home Prep | Nashville, TN`,
+    tip:"Stories with polls get 20% more replies than stories without. DM everyone who voted 😬 within 24 hours — that's your warm lead list, handed to you automatically."
+  },
+  {
+    id:8, category:'nextdoor',
+    label:'Nextdoor · General Business Introduction',
+    name:'Nextdoor — General Business Post',
+    platform:'Nextdoor', platformBadge:'badge-nd', platformEmoji:'🏘️',
+    bestFor:'Nextdoor neighborhood post or Business page intro — reaches local homeowners and hosts',
+    charLimit:null,
+    hook:'👋 Nashville neighbors — introducing Proper Home Prep!',
+    body:`👋 Nashville neighbors — introducing Proper Home Prep!
+
+I'm {{your_name}}, a local Nashville entrepreneur and founder of Proper Home Prep — a boutique turnover and make-ready service built for Airbnb hosts, VRBO owners, and property managers right here in Nashville.
+
+What makes us different? Technology + trust.
+
+Every client gets access to The Proper Dashboard — a real-time view of your property as we clean it. You see every task get checked off live, photos upload as they're taken, and receive a "Guest Ready" notification the moment we're done.
+
+We also build a custom Standard Operating Procedure for your exact property, so every turnover meets your personal standard — every single time.
+
+✅ Real-time photo documentation
+✅ Live SOP task tracking
+✅ Instant damage flagging
+✅ Dedicated account coordinator
+✅ Serving all Nashville metro neighborhoods
+
+If you're an Airbnb host, VRBO owner, or manage multiple properties and you're tired of unreliable cleaners and zero visibility — let's talk!
+
+📱 {{phone}}
+🌐 {{website}}
+
+Proper Home Prep | Nashville, TN | "Where Every Detail Matters." ✦`,
+    tip:'Post from your personal Nextdoor profile, not a business page — personal posts get significantly more organic reach and feel more authentic to neighbors.'
+  },
+  {
+    id:9, category:'nextdoor',
+    label:'Nextdoor · Referral / Recommendation Reply',
+    name:'Nextdoor — Referral Ask Post',
+    platform:'Nextdoor', platformBadge:'badge-nd', platformEmoji:'🏘️',
+    bestFor:'Reply to a neighbor asking for cleaner recommendations, or proactive post in the Services section',
+    charLimit:null,
+    hook:'✦ Hi neighbors! {{your_name}} here with Proper Home Prep.',
+    body:`✦ Hi neighbors! {{your_name}} here with Proper Home Prep.
+
+If you're looking for a professional, reliable, and tech-forward turnover or cleaning service for your short-term rental property, I'd love to connect!
+
+Proper Home Prep is Nashville's boutique STR turnover company. We specialize in Airbnb and VRBO properties and offer something most services don't:
+
+🖥️ A real-time client dashboard — watch your property being cleaned live, with photos and task check-offs as they happen.
+
+🏠 Custom property SOP — your standards, documented and followed every single time.
+
+🚨 Instant damage flagging — we catch it before your guest does.
+
+Our clients love the peace of mind. No more wondering if the property is ready. You get a notification that says "Done."
+
+If you know any local Airbnb or VRBO hosts in the neighborhood who could use a reliable turnover team — I'd so appreciate the recommendation! For anyone who books through a neighbor's referral, I'll offer 20% off your first turnover.
+
+📱 {{phone}}
+🌐 {{website}}
+
+Happy to answer any questions right here in the comments! 😊
+— {{your_name}}, Proper Home Prep`,
+    tip:'Search Nextdoor weekly for posts asking "Can anyone recommend a cleaner?" — replying with this template converts far better than posting from scratch.'
+  },
+  {
+    id:10, category:'nextdoor',
+    label:'Nextdoor · Local Business Spotlight Listing',
+    name:'Nextdoor — Business Spotlight',
+    platform:'Nextdoor', platformBadge:'badge-nd', platformEmoji:'🏘️',
+    bestFor:'Nextdoor Local Business section — positions Proper Home Prep as a premium Nashville provider',
+    charLimit:null,
+    hook:"🏠 Nashville's Most Trusted Airbnb Turnover Service — Now in Your Neighborhood.",
+    body:`🏠 Nashville's Most Trusted Airbnb Turnover Service — Now in Your Neighborhood.
+
+Proper Home Prep | Nashville, TN
+
+Are you a short-term rental host who wants total peace of mind on turnover day?
+
+We're Proper Home Prep — Nashville's boutique STR turnover and make-ready service designed from the ground up for Airbnb and VRBO hosts.
+
+OUR PROMISE:
+Every property we touch gets a custom Standard Operating Procedure tailored to your exact standards. Every technician follows it. Every time. No exceptions.
+
+THE PROPER DASHBOARD:
+Your personal real-time dashboard shows you:
+→ Every cleaning task checked off as it's completed
+→ Before + after photos uploaded live
+→ Any damage flagged immediately with photo proof
+→ A "Guest Ready" notification the moment we finish
+
+You're never in the dark. You always know.
+
+SERVICES:
+🔄 STR Turnover Cleans
+🏠 Make-Ready Deep Cleans
+📋 Property SOP Creation
+📊 Dashboard Onboarding
+
+SERVING: All Nashville metro | Available 7 days a week
+
+📱 {{phone}}
+🌐 {{website}}
+✦ "Where Every Detail Matters."`,
+    tip:'Upload 4–6 professional staged-room photos to your Nextdoor Business profile. Businesses with photos receive 42% more clicks than those without.'
+  }
+];
+
+let activeTemplateId = 1;
+let counters = { ads:0, leads:0, clients:0 };
+
+const yourInput    = document.getElementById('input-your-name');
+const phoneInput   = document.getElementById('input-phone');
+const websiteInput = document.getElementById('input-website');
+const displayArea  = document.getElementById('template-display');
+const mobileTabs   = document.getElementById('mobile-tabs-container');
+
+function getVars() {
+  return {
+    your_name: yourInput.value.trim() || 'Brittany',
+    phone:     phoneInput.value.trim() || '[Your Phone]',
+    website:   websiteInput.value.trim() || 'properHomePrep.com'
+  };
+}
+function replaceVars(text) {
+  const v = getVars();
+  return text.replace(/\{\{your_name\}\}/g, v.your_name).replace(/\{\{phone\}\}/g, v.phone).replace(/\{\{website\}\}/g, v.website);
+}
+function escapeHtml(str) {
+  const d = document.createElement('div'); d.textContent = str; return d.innerHTML;
+}
+function formatBody(text) {
+  return replaceVars(text).split('\n').map(line =>
+    line.trim() === '' ? '<div class="h-3"></div>' : '<div class="leading-relaxed">' + escapeHtml(line) + '</div>'
+  ).join('');
+}
+function charCountHTML(text, limit) {
+  if (!limit) return '';
+  const len = replaceVars(text).length;
+  let cls = 'char-counter';
+  if (len > limit * 0.9 && len <= limit) cls += ' warn';
+  if (len > limit) cls += ' over';
+  return `<span class="${cls}">${len} / ${limit} chars</span>`;
+}
+
+function buildSidebar() {
+  const groups = { facebook:'sidebar-facebook', instagram:'sidebar-instagram', nextdoor:'sidebar-nextdoor' };
+  Object.entries(groups).forEach(([cat, elId]) => {
+    const el = document.getElementById(elId);
+    el.innerHTML = '';
+    templates.filter(t => t.category === cat).forEach(t => {
+      const card = document.createElement('div');
+      card.className = 'template-card bg-white rounded-lg p-3 shadow-sm ' + (t.id === activeTemplateId ? 'active' : '');
+      card.dataset.templateId = t.id;
+      card.innerHTML = `<div class="font-semibold text-sm">${t.name}</div><div class="tc-desc text-xs text-navy/50 mt-0.5">${t.label}</div><span class="tc-channel platform-badge ${t.platformBadge} mt-1.5">${t.platformEmoji} ${t.platform}</span>`;
+      card.addEventListener('click', () => selectTemplate(t.id));
+      el.appendChild(card);
+    });
+  });
+}
+
+function buildMobileTabs() {
+  mobileTabs.innerHTML = '';
+  templates.forEach(t => {
+    const tab = document.createElement('button');
+    tab.className = 'flex-shrink-0 px-3 py-2 rounded-lg text-xs font-semibold whitespace-nowrap transition-all ' +
+      (t.id === activeTemplateId ? 'bg-navy text-white shadow-sm' : 'bg-white text-navy/70 border border-gray-200');
+    tab.dataset.templateId = t.id;
+    const shortName = t.name.includes('—') ? t.name.split('—')[1].trim() : t.name;
+    tab.textContent = t.platformEmoji + ' ' + shortName;
+    tab.addEventListener('click', () => selectTemplate(t.id));
+    mobileTabs.appendChild(tab);
+  });
+}
+
+function renderTemplate() {
+  const t = templates.find(x => x.id === activeTemplateId);
+  if (!t) return;
+  const hookLabel = t.charLimit
+    ? `<div class="flex items-center gap-2 mb-2"><span class="text-[10px] font-bold uppercase tracking-widest text-gold">Hook / First Line</span>${charCountHTML(t.hook, t.charLimit)}</div>`
+    : `<div class="text-[10px] font-bold uppercase tracking-widest text-gold mb-2">Opening Hook</div>`;
+
+  displayArea.innerHTML = `<div class="fade-in">
+    <div class="flex flex-wrap items-start gap-2 mb-3">
+      <h2 class="text-lg md:text-xl font-bold text-navy flex-1">${t.name}</h2>
+      <span class="platform-badge ${t.platformBadge}">${t.platformEmoji} ${t.platform}</span>
+    </div>
+    <div class="bg-gold-tint/50 rounded-lg px-3 py-2 mb-4 inline-block">
+      <span class="text-xs font-semibold text-gold-dark">Best for:</span>
+      <span class="text-xs text-navy/70 ml-1">${t.bestFor}</span>
+    </div>
+    <div class="hook-box rounded-xl p-4 mb-4">
+      ${hookLabel}
+      <div class="text-base md:text-lg font-bold text-navy">${escapeHtml(replaceVars(t.hook))}</div>
+    </div>
+    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-5 md:p-7 text-sm text-navy/85 leading-relaxed">${formatBody(t.body)}</div>
+    <div class="flex flex-col sm:flex-row gap-3 mt-4">
+      <button id="copy-full-btn" class="flex-1 bg-gold hover:bg-gold-dark text-white font-bold py-3.5 px-6 rounded-xl text-sm transition flex items-center justify-center gap-2 min-h-[48px] shadow-md hover:shadow-lg">
+        <i data-lucide="clipboard-copy" class="w-5 h-5"></i><span>Copy Full Ad</span>
+      </button>
+      <button id="copy-hook-btn" class="bg-white border-2 border-gold/30 text-gold-dark font-semibold py-3 px-5 rounded-xl text-sm hover:bg-gold-tint transition flex items-center justify-center gap-2 min-h-[48px]">
+        <i data-lucide="copy" class="w-4 h-4"></i> Copy Hook Only
+      </button>
+      <button id="reset-btn" class="bg-white border-2 border-gray-200 text-navy/60 font-semibold py-3 px-5 rounded-xl text-sm hover:bg-bg-main transition flex items-center justify-center gap-2 min-h-[48px]">
+        <i data-lucide="rotate-ccw" class="w-4 h-4"></i> Reset
+      </button>
+    </div>
+    <div class="tip-card rounded-xl p-4 mt-4">
+      <div class="flex items-start gap-2">
+        <span class="text-gold font-bold text-sm mt-0.5">✦</span>
+        <div><span class="text-xs font-bold text-gold-dark">Pro Tip:</span><span class="text-xs text-navy/70 ml-1">${t.tip}</span></div>
+      </div>
+    </div>
+  </div>`;
+
+  if (typeof lucide !== 'undefined' && lucide.createIcons) lucide.createIcons();
+
+  document.getElementById('copy-full-btn')?.addEventListener('click', () => copyText(replaceVars(t.body), document.getElementById('copy-full-btn')));
+  document.getElementById('copy-hook-btn')?.addEventListener('click', () => copyText(replaceVars(t.hook), document.getElementById('copy-hook-btn')));
+  document.getElementById('reset-btn')?.addEventListener('click', () => {
+    yourInput.value = 'Brittany'; phoneInput.value = ''; websiteInput.value = ''; renderTemplate();
+  });
+}
+
+function copyText(text, btn) {
+  navigator.clipboard.writeText(text).then(() => {
+    const orig = btn.innerHTML;
+    btn.innerHTML = '<span class="flex items-center gap-2"><svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg> Copied!</span>';
+    btn.classList.remove('bg-gold','border-gold/30','text-gold-dark');
+    btn.classList.add('bg-success','text-white','copy-btn-success');
+    setTimeout(() => {
+      btn.innerHTML = orig;
+      btn.classList.remove('bg-success','text-white','copy-btn-success');
+      btn.classList.add('bg-gold');
+      if (typeof lucide !== 'undefined' && lucide.createIcons) lucide.createIcons();
+    }, 2000);
+  }).catch(() => {
+    const ta = document.createElement('textarea');
+    ta.value = text; ta.style.cssText = 'position:fixed;opacity:0';
+    document.body.appendChild(ta); ta.select();
+    try { document.execCommand('copy'); } catch(e) {}
+    document.body.removeChild(ta);
+  });
+}
+
+function selectTemplate(id) {
+  activeTemplateId = id;
+  buildSidebar(); buildMobileTabs(); renderTemplate();
+  const tab = mobileTabs.querySelector(`[data-template-id="${id}"]`);
+  if (tab) tab.scrollIntoView({ behavior:'smooth', inline:'center', block:'nearest' });
+}
+
+function updateCounters() {
+  ['ads','leads','clients'].forEach(k => {
+    const d = document.getElementById(`counter-${k}`);
+    if (d) d.textContent = counters[k];
+    document.querySelectorAll(`.counter-display-${k}`).forEach(el => el.textContent = counters[k]);
+  });
+  let msg = 'Post your first ad and start growing! 🌟';
+  if (counters.clients >= 5) msg = "You're a Nashville legend! Proper is taking over! 🏆";
+  else if (counters.clients >= 2) msg = "Clients are signing! Proper is GROWING! 🚀";
+  else if (counters.clients >= 1) msg = "First client from ads! Keep that momentum! 🔥";
+  else if (counters.leads >= 5) msg = "Leads are flowing! Time to close! 💛";
+  else if (counters.ads >= 3) msg = "Ads are out there working for you! 📣";
+  document.getElementById('motivational-msg').textContent = msg;
+  document.querySelectorAll('.motivational-msg-mobile').forEach(el => el.textContent = msg);
+}
+
+document.querySelectorAll('.counter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const k = btn.dataset.counter, dir = btn.dataset.dir;
+    counters[k] = dir === 'plus' ? counters[k] + 1 : Math.max(0, counters[k] - 1);
+    updateCounters();
+  });
+});
+
+let rt;
+[yourInput, phoneInput, websiteInput].forEach(el =>
+  el.addEventListener('input', () => { clearTimeout(rt); rt = setTimeout(renderTemplate, 80); })
+);
+
+if (typeof lucide !== 'undefined' && lucide.createIcons) lucide.createIcons();
+buildSidebar(); buildMobileTabs(); renderTemplate(); updateCounters();
+</script>
+</body>
+</html>

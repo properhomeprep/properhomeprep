@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Proper Home Prep — Property SOP Builder</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;border-radius:0!important;font-family:'Inter',sans-serif;}
+:root{--navy:#1A2E4A;--gold:#C9A84C;--cream:#FDF6E3;--paper:#f5f4f0;}
+body{background:var(--paper);color:var(--navy);}
+input,textarea,select,button{border-radius:0!important;font-family:'Inter',sans-serif;}
+input:focus,textarea:focus,select:focus{outline:2px solid var(--gold);outline-offset:-1px;}
+
+/* HEADER */
+.site-header{background:var(--navy);padding:16px 32px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:100;}
+.brand{color:#fff;font-weight:800;font-size:20px;letter-spacing:-0.02em;}
+.brand span{color:var(--gold);}
+.header-right{color:var(--gold);font-size:12px;font-weight:700;text-align:right;line-height:1.7;}
+.gold-bar{height:3px;background:var(--gold);}
+.demo-badge{background:var(--navy);color:var(--gold);font-size:11px;font-weight:700;padding:4px 12px;letter-spacing:0.05em;border:1px solid var(--gold);}
+
+/* PAGE HEADER */
+.page-header{background:var(--cream);border-bottom:2px solid var(--navy);padding:28px 40px;}
+.page-header-inner{max-width:900px;margin:0 auto;}
+.page-header .eyebrow{font-size:10px;font-weight:800;color:var(--gold);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:8px;}
+.page-header h1{font-size:28px;font-weight:800;color:var(--navy);letter-spacing:-0.02em;margin-bottom:6px;}
+.page-header p{font-size:14px;color:#6b7280;line-height:1.65;max-width:560px;}
+.header-badges{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;}
+.hbadge{background:var(--navy);color:var(--gold);font-size:10px;font-weight:800;padding:4px 12px;text-transform:uppercase;letter-spacing:0.06em;}
+.hbadge.outline{background:transparent;border:2px solid var(--navy);color:var(--navy);}
+
+/* FORM WRAP */
+.form-wrap{max-width:900px;margin:32px auto;padding:0 32px 80px;}
+@media(max-width:640px){.form-wrap{padding:0 16px 80px;}.page-header{padding:20px 16px;}}
+
+/* SECTION CARDS */
+.section-card{background:#fff;border:1px solid #e5e7eb;margin-bottom:20px;}
+.section-header{background:var(--navy);padding:13px 22px;display:flex;align-items:center;gap:14px;}
+.section-header .num{background:var(--gold);color:var(--navy);font-weight:800;font-size:12px;padding:3px 11px;min-width:32px;text-align:center;}
+.section-header .title{color:#fff;font-weight:700;font-size:16px;letter-spacing:-0.01em;}
+.section-header .title-note{margin-left:auto;color:rgba(255,255,255,.45);font-size:11px;font-weight:500;}
+.section-body{padding:24px;}
+
+/* FIELDS */
+.field-grid{display:grid;gap:16px;}
+.field-grid.two{grid-template-columns:1fr 1fr;}
+.field-grid.three{grid-template-columns:1fr 1fr 1fr;}
+@media(max-width:580px){.field-grid.two,.field-grid.three{grid-template-columns:1fr;}}
+.field{display:flex;flex-direction:column;gap:6px;}
+.field label{font-size:11px;font-weight:800;color:var(--navy);text-transform:uppercase;letter-spacing:0.07em;}
+.field label .req{color:#dc2626;}
+.field input,.field textarea,.field select{width:100%;padding:10px 14px;border:1px solid #d1d5db;font-size:14px;color:var(--navy);background:#fff;}
+.field textarea{resize:vertical;min-height:80px;}
+.field .helper{font-size:11px;color:#9ca3af;line-height:1.5;}
+.field .err{font-size:11px;color:#dc2626;display:none;}
+.field.has-error input,.field.has-error textarea,.field.has-error select{border-color:#dc2626;}
+.field.has-error .err{display:block;}
+
+/* PHP CHECKBOXES */
+.check-group{display:grid;gap:4px;}
+.check-group.two{grid-template-columns:1fr 1fr;}
+@media(max-width:500px){.check-group.two{grid-template-columns:1fr;}}
+.php-check{display:flex;align-items:flex-start;gap:10px;cursor:pointer;padding:7px 0;min-height:44px;}
+.php-check input{display:none;}
+.php-check .box{flex-shrink:0;width:22px;height:22px;border:2px solid var(--navy);background:#fff;display:flex;align-items:center;justify-content:center;margin-top:1px;transition:all .12s;}
+.php-check input:checked+.box{background:var(--gold);border-color:var(--gold);}
+.php-check .box svg{display:none;width:13px;height:13px;}
+.php-check input:checked+.box svg{display:block;}
+.php-check .lbl{font-size:13px;color:var(--navy);line-height:1.5;padding-top:2px;}
+
+/* RADIO PILLS */
+.pill-group{display:flex;flex-wrap:wrap;gap:8px;margin-top:2px;}
+.pill-group input[type=radio]{display:none;}
+.pill-group label{border:2px solid var(--navy);padding:8px 16px;font-size:13px;font-weight:600;cursor:pointer;color:var(--navy);transition:all .12s;min-height:44px;display:flex;align-items:center;}
+.pill-group input:checked+label{background:var(--navy);color:#fff;}
+
+/* ROOM BLOCKS */
+.room-block{background:var(--paper);border:1px solid #e5e7eb;margin-bottom:12px;}
+.room-header{background:var(--navy);padding:10px 18px;display:flex;align-items:center;justify-content:space-between;}
+.room-header .room-name{color:#fff;font-weight:700;font-size:14px;}
+.room-header .room-icon{color:var(--gold);font-size:16px;}
+.room-body{padding:18px;}
+.room-task-row{display:flex;align-items:flex-start;gap:10px;padding:6px 0;border-bottom:1px solid #f3f4f6;}
+.room-task-row:last-child{border-bottom:none;}
+.room-task-row .task-check{flex-shrink:0;margin-top:2px;}
+.room-task-row .task-text{font-size:13px;color:var(--navy);line-height:1.5;flex:1;}
+.room-task-row .task-priority{font-size:10px;font-weight:800;padding:2px 7px;text-transform:uppercase;letter-spacing:0.05em;flex-shrink:0;}
+.priority-must{background:#fef2f2;color:#dc2626;}
+.priority-std{background:#f0f4f8;color:var(--navy);}
+.priority-note{background:#fef9ee;color:#92600a;}
+.room-notes{width:100%;padding:9px 12px;border:1px solid #d1d5db;font-size:13px;color:var(--navy);background:#fff;resize:vertical;min-height:60px;margin-top:12px;}
+.room-notes:focus{outline:2px solid var(--gold);outline-offset:-1px;}
+
+/* CALLOUT */
+.callout{background:var(--cream);border-left:4px solid var(--gold);padding:12px 16px;font-size:13px;color:var(--navy);line-height:1.65;margin-bottom:16px;}
+.callout.red{background:#fef2f2;border-left-color:#dc2626;color:#7f1d1d;}
+.callout strong{font-weight:700;}
+
+/* SOP ID DISPLAY */
+.sop-id-bar{background:var(--navy);color:var(--gold);font-size:12px;font-weight:700;padding:10px 22px;display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;}
+.sop-id-bar .id-label{color:rgba(255,255,255,.5);font-size:10px;text-transform:uppercase;letter-spacing:0.07em;}
+
+/* SUBMIT */
+.submit-btn{width:100%;background:var(--gold);color:var(--navy);font-weight:800;font-size:17px;padding:20px;border:none;cursor:pointer;letter-spacing:-0.01em;transition:opacity .15s;}
+.submit-btn:hover{opacity:.9;}
+.submit-btn:disabled{opacity:.5;cursor:not-allowed;}
+.btn-row{display:flex;gap:12px;margin-top:8px;}
+.save-btn{flex:1;background:var(--navy);color:#fff;font-weight:700;font-size:14px;padding:14px;border:none;cursor:pointer;transition:opacity .15s;}
+.save-btn:hover{opacity:.85;}
+.print-btn{background:transparent;border:2px solid var(--navy);color:var(--navy);font-weight:700;font-size:14px;padding:12px 24px;cursor:pointer;transition:all .15s;}
+.print-btn:hover{background:var(--navy);color:var(--gold);}
+
+/* SUCCESS */
+#success{display:none;max-width:580px;margin:60px auto;padding:48px 40px;background:#fff;border:1px solid #e5e7eb;text-align:center;}
+.check-circle{width:72px;height:72px;border:3px solid var(--gold);border-radius:50%!important;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;animation:pop .4s ease;}
+@keyframes pop{from{transform:scale(.5);opacity:0;}to{transform:scale(1);opacity:1;}}
+#success h2{font-size:26px;font-weight:800;color:var(--navy);margin-bottom:8px;}
+#success p{font-size:14px;color:#6b7280;line-height:1.7;}
+.ref-badge{display:inline-block;background:var(--navy);color:var(--gold);font-weight:700;font-size:12px;padding:5px 16px;margin:12px 0;}
+
+/* PROGRESS BAR */
+.progress-wrap{background:#fff;border-bottom:1px solid #e5e7eb;padding:10px 32px;position:sticky;top:60px;z-index:90;}
+.progress-inner{max-width:900px;margin:0 auto;display:flex;align-items:center;gap:12px;}
+.progress-track{flex:1;height:4px;background:#e5e7eb;position:relative;}
+.progress-fill{height:4px;background:var(--gold);transition:width .3s;}
+.progress-label{font-size:11px;font-weight:700;color:var(--navy);white-space:nowrap;}
+
+/* FOOTER */
+footer{background:var(--navy);border-top:2px solid var(--gold);padding:14px 32px;text-align:center;color:#fff;font-size:12px;margin-top:40px;}
+
+/* PRINT */
+@media print{
+  .site-header,.progress-wrap,.submit-area,.btn-row{display:none!important;}
+  body{background:#fff;}
+  .section-card{break-inside:avoid;}
+  footer{position:fixed;bottom:0;width:100%;}
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="site-header">
+  <div class="brand">Proper Home Prep <span>·</span> Nashville, TN</div>
+  <div class="header-right">
+    <span id="demoBadge" class="demo-badge" style="display:none;">DEMO MODE</span>
+    <span style="color:rgba(255,255,255,.6);font-size:12px;">SOP Builder — Internal</span>
+  </div>
+</div>
+<div class="gold-bar"></div>
+
+<!-- PROGRESS -->
+<div class="progress-wrap">
+  <div class="progress-inner">
+    <span class="progress-label" id="progressLabel">Section 1 of 7</span>
+    <div class="progress-track"><div class="progress-fill" id="progressFill" style="width:14%;"></div></div>
+    <span class="progress-label" id="progressPct">14%</span>
+  </div>
+</div>
+
+<!-- PAGE HEADER -->
+<div class="page-header">
+  <div class="page-header-inner">
+    <div class="eyebrow">Internal Tool · Admin Only</div>
+    <h1>Property SOP Builder</h1>
+    <p>Build the Standard Operating Procedure for a new or existing property. This document guides every tech on exactly how to clean, stage, and reset this specific home.</p>
+    <div class="header-badges">
+      <span class="hbadge">Room-by-Room</span>
+      <span class="hbadge">Firebase Connected</span>
+      <span class="hbadge outline">Printable &amp; Exportable</span>
+    </div>
+  </div>
+</div>
+
+<div class="form-wrap" id="formWrap">
+
+  <!-- SOP ID -->
+  <div class="sop-id-bar">
+    <div><div class="id-label">SOP Reference ID</div><div id="sopIdDisplay">PHP-SOP-—</div></div>
+    <div><div class="id-label">Created</div><div id="sopDate">—</div></div>
+  </div>
+
+  <!-- SECTION 01 — PROPERTY INFO -->
+  <div class="section-card">
+    <div class="section-header"><div class="num">01</div><div class="title">Property Information</div><div class="title-note">Required</div></div>
+    <div class="section-body">
+      <div class="field-grid two" style="margin-bottom:16px;">
+        <div class="field"><label>Property Nickname <span class="req">*</span></label><input type="text" id="propNickname" placeholder="e.g. The Gulch Suite" oninput="autosave();updateProgress();"/><div class="err">Required</div></div>
+        <div class="field"><label>Host Name <span class="req">*</span></label><input type="text" id="hostName" placeholder="Host's full name" oninput="autosave()"/><div class="err">Required</div></div>
+        <div class="field"><label>Property Address <span class="req">*</span></label><input type="text" id="propAddress" placeholder="123 Main St, Nashville, TN" oninput="autosave()"/><div class="err">Required</div></div>
+        <div class="field"><label>Property Type</label>
+          <div class="pill-group">
+            <input type="radio" name="propType" id="pt1" value="STR/Airbnb"/><label for="pt1">STR / Airbnb</label>
+            <input type="radio" name="propType" id="pt2" value="Residential"/><label for="pt2">Residential</label>
+            <input type="radio" name="propType" id="pt3" value="Vacant"/><label for="pt3">Vacant</label>
+          </div>
+        </div>
+        <div class="field"><label>Bedrooms</label><input type="number" id="bedrooms" min="0" max="20" placeholder="e.g. 2" oninput="autosave();buildRooms();"/></div>
+        <div class="field"><label>Bathrooms</label><input type="number" id="bathrooms" min="0" max="20" step="0.5" placeholder="e.g. 2" oninput="autosave();buildRooms();"/></div>
+      </div>
+      <div class="field"><label>Assigned Tech</label>
+        <div class="pill-group">
+          <input type="radio" name="tech" id="tech1" value="Jenna R."/><label for="tech1">Jenna R.</label>
+          <input type="radio" name="tech" id="tech2" value="Marcus L."/><label for="tech2">Marcus L.</label>
+          <input type="radio" name="tech" id="tech3" value="Taylor B."/><label for="tech3">Taylor B.</label>
+          <input type="radio" name="tech" id="tech4" value="Unassigned"/><label for="tech4">Unassigned</label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 02 — ACCESS & ENTRY -->
+  <div class="section-card">
+    <div class="section-header"><div class="num">02</div><div class="title">Access & Entry</div><div class="title-note">Shared with assigned tech only</div></div>
+    <div class="section-body">
+      <div class="callout">🔒 This information is stored securely. Only the assigned tech sees it on job day.</div>
+      <div class="field-grid two" style="margin-bottom:16px;">
+        <div class="field"><label>Entry Method</label>
+          <div class="pill-group">
+            <input type="radio" name="entry" id="e1" value="Lockbox"/><label for="e1">Lockbox</label>
+            <input type="radio" name="entry" id="e2" value="Smart Lock"/><label for="e2">Smart Lock</label>
+            <input type="radio" name="entry" id="e3" value="Key with Brittany"/><label for="e3">Key w/ Brittany</label>
+            <input type="radio" name="entry" id="e4" value="Key on Site"/><label for="e4">Key On Site</label>
+          </div>
+        </div>
+        <div class="field"><label>Lockbox / Door Code</label><input type="text" id="lockboxCode" placeholder="e.g. 4291 or app instructions" oninput="autosave()"/></div>
+        <div class="field"><label>Lockbox Location</label><input type="text" id="lockboxLocation" placeholder="e.g. front door handle, right side" oninput="autosave()"/></div>
+        <div class="field"><label>Parking Instructions</label><input type="text" id="parking" placeholder="e.g. driveway or visitor space #4" oninput="autosave()"/></div>
+      </div>
+      <div class="field"><label>Entry Notes</label><textarea id="entryNotes" placeholder="Gate codes, building lobby entry, elevator, stairwell, any quirks..." oninput="autosave()"></textarea></div>
+    </div>
+  </div>
+
+  <!-- SECTION 03 — SCHEDULING -->
+  <div class="section-card">
+    <div class="section-header"><div class="num">03</div><div class="title">Scheduling & Timing</div></div>
+    <div class="section-body">
+      <div class="field-grid three" style="margin-bottom:16px;">
+        <div class="field"><label>Standard Checkout Time</label><input type="text" id="checkoutTime" placeholder="e.g. 11:00 AM" oninput="autosave()"/></div>
+        <div class="field"><label>Standard Check-In Time</label><input type="text" id="checkinTime" placeholder="e.g. 3:00 PM" oninput="autosave()"/></div>
+        <div class="field"><label>Turnaround Window</label>
+          <div class="pill-group">
+            <input type="radio" name="window" id="w1" value="2 hours"/><label for="w1">2 hrs</label>
+            <input type="radio" name="window" id="w2" value="3 hours"/><label for="w2">3 hrs</label>
+            <input type="radio" name="window" id="w3" value="4+ hours"/><label for="w3">4+ hrs</label>
+            <input type="radio" name="window" id="w4" value="Flexible"/><label for="w4">Flexible</label>
+          </div>
+        </div>
+      </div>
+      <div class="field"><label>Scheduling Notes</label><textarea id="schedNotes" placeholder="How turnover dates are communicated — iCal link, text, email, etc. Any recurring schedule info." oninput="autosave()"></textarea></div>
+    </div>
+  </div>
+
+  <!-- SECTION 04 — SUPPLIES -->
+  <div class="section-card">
+    <div class="section-header"><div class="num">04</div><div class="title">Supplies & Restocking</div></div>
+    <div class="section-body">
+      <div class="field-grid two" style="margin-bottom:16px;">
+        <div class="field"><label>Cleaning Supplies Provided By</label>
+          <div class="pill-group">
+            <input type="radio" name="supplies" id="s1" value="PHP"/><label for="s1">Proper Home Prep</label>
+            <input type="radio" name="supplies" id="s2" value="Host"/><label for="s2">Host</label>
+            <input type="radio" name="supplies" id="s3" value="Split"/><label for="s3">Split</label>
+          </div>
+        </div>
+        <div class="field"><label>Linen Program</label>
+          <div class="pill-group">
+            <input type="radio" name="linens" id="l1" value="PHP Linen Service"/><label for="l1">PHP Linen Service</label>
+            <input type="radio" name="linens" id="l2" value="Host Provides"/><label for="l2">Host Provides</label>
+            <input type="radio" name="linens" id="l3" value="Mix"/><label for="l3">Mix</label>
+          </div>
+        </div>
+      </div>
+      <div class="field" style="margin-bottom:16px;"><label>Supply Preferences / Restrictions</label><textarea id="supplyNotes" placeholder="e.g. No bleach. Prefer Mrs. Meyer's lavender. Client allergic to fragrance." oninput="autosave()"></textarea></div>
+      <div class="field" style="margin-bottom:16px;"><label>Supply Storage Location</label><textarea id="supplyStorage" placeholder="e.g. Under kitchen sink and hall closet — top shelf, right side." rows="2" oninput="autosave()"></textarea></div>
+      <div class="field"><label>Items PHP Restocks on Every Visit</label>
+        <div class="check-group two" style="margin-top:6px;">
+          <label class="php-check"><input type="checkbox" value="Toilet Paper"/><div class="box"><svg viewBox="0 0 12 10" fill="none" stroke="#1A2E4A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 5 4.5 8.5 11 1"/></svg></div><span class="lbl">Toilet Paper</span></label>
+          <label class="php-check"><input type="checkbox" value="Paper Towels"/><div class="box"><svg viewBox="0 0 12 10" fill="none" stroke="#1A2E4A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 5 4.5 8.5 11 1"/></svg></div><span class="lbl">Paper Towels</span></label>
+          <label class="php-check"><input type="checkbox" value="Hand Soap"/><div class="box"><svg viewBox="0 0 12 10" fill="none" stroke="#1A2E4A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 5 4.5 8.5 11 1"/></svg></div><span class="lbl">Hand Soap</span></label>
+          <label class="php-check"><input type="checkbox" value="Dish Soap"/><div class="box"><svg viewBox="0 0 12 10" fill="none" stroke="#1A2E4A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 5 4.5 8.5 11 1"/></svg></div><span class="lbl">Dish Soap</span></label>
+          <label class="php-check"><input type="checkbox" value="Dishwasher Pods"/><div class="box"><svg viewBox="0 0 12 10" fill="none" stroke="#1A2E4A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 5 4.5 8.5 11 1"/></svg></div><span class="lbl">Dishwasher Pods</span></label>
+          <label class="php-check"><input type="checkbox" value="Trash Bags"/><div class="box"><svg viewBox="0 0 12 10" fill="none" stroke="#1A2E4A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 5 4.5 8.5 11 1"/></svg></div><span class="lbl">Trash Bags</span></label>
+          <label class="php-check"><input type="checkbox" value="Laundry Detergent"/><div class="box"><svg viewBox="0 0 12 10" fill="none" stroke="#1A2E4A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 5 4.5 8.5 11 1"/></svg></div><span class="lbl">Laundry Detergent</span></label>
+          <label class="php-check"><input type="checkbox" value="Coffee &amp; Filters"/><div class="box"><svg viewBox="0 0 12 10" fill="none" stroke="#1A2E4A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 5 4.5 8.5 11 1"/></svg></div><span class="lbl">Coffee &amp; Filters</span></label>
+          <label class="php-check"><input type="checkbox" value="Shampoo/Conditioner"/><div class="box"><svg viewBox="0 0 12 10" fill="none" stroke="#1A2E4A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 5 4.5 8.5 11 1"/></svg></div><span class="lbl">Shampoo / Conditioner</span></label>
+          <label class="php-check"><input type="checkbox" value="Body Wash"/><div class="box"><svg viewBox="0 0 12 10" fill="none" stroke="#1A2E4A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 5 4.5 8.5 11 1"/></svg></div><span class="lbl">Body Wash</span></label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 05 — ROOM BY ROOM -->
+  <div class="section-card">
+    <div class="section-header"><div class="num">05</div><div class="title">Room-by-Room Instructions</div><div class="title-note">Auto-builds from bedroom/bathroom count</div></div>
+    <div class="section-body">
+      <div class="callout">Enter bedroom and bathroom count in Section 01 to auto-generate room blocks. Add specific notes for each room below the standard checklist.</div>
+      <div id="roomBlocks">
+        <div style="color:#9ca3af;font-size:13px;text-align:center;padding:24px 0;">← Enter bedroom and bathroom count in Section 01 to generate room instructions</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 06 — HOST STANDARDS -->
+  <div class="section-card">
+    <div class="section-header"><div class="num">06</div><div class="title">Host Standards & Special Instructions</div></div>
+    <div class="section-body">
+      <div class="field" style="margin-bottom:16px;"><label>Priority Areas for This Property</label>
+        <div class="check-group two" style="margin-top:6px;">
+          <label class="php-check"><input type="checkbox" value="Kitchen deep clean every time"/><div class="box"><svg viewBox="0 0 12 10" fill="none" stroke="#1A2E4A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 5 4.5 8.5 11 1"/></svg></div><span class="lbl">Kitchen deep clean every time</span></label>
+          <label class="php-check"><input type="checkbox" value="Bathroom sanitization priority"/><div class="box"><svg viewBox="0 0 12 10" fill="none" stroke="#1A2E4A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 5 4.5 8.5 11 1"/></svg></div><span class="lbl">Bathroom sanitization priority</span></label>
+          <label class="php-check"><input type="checkbox" value="Hotel-style linen presentation"/><div class="box"><svg viewBox="0 0 12 10" fill="none" stroke="#1A2E4A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 5 4.5 8.5 11 1"/></svg></div><span class="lbl">Hotel-style linen presentation</span></label>
+          <label class="php-check"><input type="checkbox" value="Outdoor/patio reset required"/><div class="box"><svg viewBox="0 0 12 10" fill="none" stroke="#1A2E4A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 5 4.5 8.5 11 1"/></svg></div><span class="lbl">Outdoor / patio reset required</span></label>
+          <label class="php-check"><input type="checkbox" value="Welcome amenity setup"/><div class="box"><svg viewBox="0 0 12 10" fill="none" stroke="#1A2E4A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 5 4.5 8.5 11 1"/></svg></div><span class="lbl">Welcome amenity setup</span></label>
+          <label class="php-check"><input type="checkbox" value="Inspection photos every visit"/><div class="box"><svg viewBox="0 0 12 10" fill="none" stroke="#1A2E4A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 5 4.5 8.5 11 1"/></svg></div><span class="lbl">Inspection photos every visit</span></label>
+          <label class="php-check"><input type="checkbox" value="Restock check every visit"/><div class="box"><svg viewBox="0 0 12 10" fill="none" stroke="#1A2E4A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 5 4.5 8.5 11 1"/></svg></div><span class="lbl">Restock check every visit</span></label>
+          <label class="php-check"><input type="checkbox" value="Damage documentation required"/><div class="box"><svg viewBox="0 0 12 10" fill="none" stroke="#1A2E4A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 5 4.5 8.5 11 1"/></svg></div><span class="lbl">Damage documentation required</span></label>
+        </div>
+      </div>
+      <div class="field" style="margin-bottom:16px;"><label>Guest Experience Notes</label><textarea id="guestNotes" rows="4" placeholder="How should beds be staged? Welcome card placement? Specific staging details, pillow arrangement, what should be visible on counters, etc." oninput="autosave()"></textarea></div>
+      <div class="field" style="margin-bottom:16px;"><label>Things We Should NEVER Do at This Property</label><textarea id="neverDo" rows="3" placeholder="e.g. Never move the artwork in the master bedroom. Do not use the dishwasher. Always lock the back door deadbolt." oninput="autosave()"></textarea></div>
+      <div class="field"><label>Known Issues / Property Quirks</label><textarea id="quirks" rows="3" placeholder="e.g. Second bathroom sink drains slowly. Back door sticks — lift and push. Trash compactor is broken — don't use it." oninput="autosave()"></textarea></div>
+    </div>
+  </div>
+
+  <!-- SECTION 07 — APPROVAL -->
+  <div class="section-card">
+    <div class="section-header"><div class="num">07</div><div class="title">SOP Approval & Sign-Off</div></div>
+    <div class="section-body">
+      <div class="callout">Once saved, this SOP will be available to the assigned tech before every job at this property. Mark as Approved when it has been reviewed and is ready to use.</div>
+      <div class="field-grid two" style="margin-bottom:16px;">
+        <div class="field"><label>SOP Status</label>
+          <div class="pill-group">
+            <input type="radio" name="sopStatus" id="ss1" value="draft"/><label for="ss1">Draft</label>
+            <input type="radio" name="sopStatus" id="ss2" value="pending_review"/><label for="ss2">Pending Review</label>
+            <input type="radio" name="sopStatus" id="ss3" value="approved"/><label for="ss3">Approved ✓</label>
+          </div>
+        </div>
+        <div class="field"><label>Damage Reporting Preference</label>
+          <div class="pill-group">
+            <input type="radio" name="dmgReport" id="dr1" value="Text immediately"/><label for="dr1">Text Immediately</label>
+            <input type="radio" name="dmgReport" id="dr2" value="Email report"/><label for="dr2">Email Report</label>
+            <input type="radio" name="dmgReport" id="dr3" value="Both"/><label for="dr3">Both</label>
+          </div>
+        </div>
+        <div class="field"><label>Approved By</label><input type="text" id="approvedBy" placeholder="Brittany / Host name" oninput="autosave()"/></div>
+        <div class="field"><label>Approval Date</label><input type="date" id="approvalDate" oninput="autosave()"/></div>
+      </div>
+      <div class="field"><label>Internal Notes (Brittany Only)</label><textarea id="internalNotes" rows="3" placeholder="Any notes for your own reference — not visible to techs." oninput="autosave()"></textarea></div>
+    </div>
+  </div>
+
+  <!-- ACTIONS -->
+  <div class="submit-area">
+    <button class="submit-btn" id="submitBtn" onclick="submitSOP()">Save & Publish SOP →</button>
+    <div class="btn-row">
+      <button class="save-btn" onclick="saveDraft()">💾 Save Draft</button>
+      <button class="print-btn" onclick="window.print()">🖨️ Print SOP</button>
+    </div>
+  </div>
+
+</div><!-- end formWrap -->
+
+<!-- SUCCESS -->
+<div id="success">
+  <div class="check-circle"><svg viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+  <h2>SOP Saved</h2>
+  <div class="ref-badge" id="successRef"></div>
+  <p>This SOP is now on file. The assigned tech will have access to it before every scheduled job at this property.</p>
+  <div style="display:flex;gap:12px;justify-content:center;margin-top:24px;flex-wrap:wrap;">
+    <button class="save-btn" style="flex:none;padding:12px 28px;" onclick="window.print()">🖨️ Print SOP</button>
+    <button class="print-btn" onclick="location.reload()">+ New SOP</button>
+  </div>
+</div>
+
+<footer>© 2026 Proper Home Prep · Nashville, TN · Every detail. Every time.</footer>
+
+<script type="module">
+import { initializeApp } from 'https://cdn.jsdelivr.net/npm/firebase@10.12.2/app/+esm';
+import { getFirestore, collection, addDoc, serverTimestamp } from 'https://cdn.jsdelivr.net/npm/firebase@10.12.2/firestore/+esm';
+
+// 🔥 PASTE YOUR FIREBASE CONFIG HERE
+const firebaseConfig = {
+  apiKey: "YOUR_API_KEY",
+  authDomain: "YOUR_PROJECT.firebaseapp.com",
+  projectId: "YOUR_PROJECT_ID",
+  storageBucket: "YOUR_PROJECT.appspot.com",
+  messagingSenderId: "YOUR_SENDER_ID",
+  appId: "YOUR_APP_ID"
+};
+
+const isDemo = firebaseConfig.apiKey === "YOUR_API_KEY";
+let db = null;
+if(isDemo){ document.getElementById('demoBadge').style.display='inline-block'; }
+else{ const app = initializeApp(firebaseConfig); db = getFirestore(app); }
+
+// SOP ID + Date
+const sopId = 'PHP-SOP-' + Date.now();
+document.getElementById('sopIdDisplay').textContent = sopId;
+document.getElementById('sopDate').textContent = new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+document.getElementById('approvalDate').value = new Date().toISOString().split('T')[0];
+
+// Progress bar
+window.updateProgress = function(){
+  const fields = ['propNickname','hostName','propAddress','checkoutTime','checkinTime'];
+  const filled = fields.filter(id=>{const el=document.getElementById(id);return el&&el.value.trim();}).length;
+  const pct = Math.round((filled/fields.length)*100);
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressPct').textContent = pct + '%';
+};
+
+// Room blocks builder
+window.buildRooms = function(){
+  const beds = parseInt(document.getElementById('bedrooms').value)||0;
+  const baths = parseFloat(document.getElementById('bathrooms').value)||0;
+  const container = document.getElementById('roomBlocks');
+  if(!beds && !baths){ container.innerHTML='<div style="color:#9ca3af;font-size:13px;text-align:center;padding:24px 0;">← Enter bedroom and bathroom count in Section 01 to generate room instructions</div>'; return; }
+
+  const roomDefs = [];
+
+  // Common areas
+  roomDefs.push({icon:'🛋️', name:'Living / Common Area', tasks:[
+    {t:'Straighten all furniture to original layout',p:'must'},
+    {t:'Fluff and arrange all cushions and throw pillows',p:'must'},
+    {t:'Wipe all surfaces — coffee table, side tables, shelves',p:'must'},
+    {t:'Check remotes — present and batteries working',p:'must'},
+    {t:'Vacuum carpet or mop hard floors',p:'must'},
+    {t:'Check windows and blinds — straighten',p:'std'},
+    {t:'Check for guest-left items — bag and leave',p:'std'},
+  ]});
+
+  roomDefs.push({icon:'🍳', name:'Kitchen', tasks:[
+    {t:'Empty, run, and unload dishwasher',p:'must'},
+    {t:'Wipe all counters and backsplash',p:'must'},
+    {t:'Clean stovetop — all burners and drip pans',p:'must'},
+    {t:'Wipe microwave inside and out',p:'must'},
+    {t:'Check fridge — remove guest-left food',p:'must'},
+    {t:'Empty trash and replace liner',p:'must'},
+    {t:'Restock per property list',p:'must'},
+    {t:'Sweep and mop floor',p:'must'},
+  ]});
+
+  for(let b=1;b<=beds;b++){
+    roomDefs.push({icon:'🛏️', name:`Bedroom ${b}`, tasks:[
+      {t:'Strip bed completely — all linens to laundry',p:'must'},
+      {t:'Replace with fresh sheet set — hospital corners or tucked tight',p:'must'},
+      {t:'Replace pillowcases on all pillows',p:'must'},
+      {t:'Stage decorative pillows per SOP photo',p:'must'},
+      {t:'Wipe nightstands, lamps, and surfaces',p:'std'},
+      {t:'Check under bed and in closet for guest items',p:'std'},
+      {t:'Vacuum floor or rug',p:'must'},
+    ]});
+  }
+
+  const fullBaths = Math.floor(baths);
+  const hasHalf = baths % 1 !== 0;
+  for(let b=1;b<=fullBaths;b++){
+    roomDefs.push({icon:'🚿', name:`Bathroom ${b}`, tasks:[
+      {t:'Sanitize toilet — bowl, seat, base, hinge, behind',p:'must'},
+      {t:'Clean sink and faucet — no water spots',p:'must'},
+      {t:'Scrub tub / shower — no soap scum, no hair',p:'must'},
+      {t:'Wipe mirror streak-free (check at angle)',p:'must'},
+      {t:'Replace towels — folded hotel-style',p:'must'},
+      {t:'Restock: TP (min 2 rolls visible), hand soap',p:'must'},
+      {t:'Empty trash and replace liner',p:'must'},
+      {t:'Sweep and mop floor',p:'must'},
+    ]});
+  }
+  if(hasHalf){
+    roomDefs.push({icon:'🚽', name:'Half Bath / Powder Room', tasks:[
+      {t:'Sanitize toilet completely',p:'must'},
+      {t:'Clean sink and faucet',p:'must'},
+      {t:'Wipe mirror',p:'must'},
+      {t:'Restock TP and hand soap',p:'must'},
+      {t:'Empty trash and replace liner',p:'must'},
+    ]});
+  }
+
+  roomDefs.push({icon:'🧺', name:'Laundry', tasks:[
+    {t:'Start linen wash on arrival',p:'must'},
+    {t:'Move to dryer mid-job',p:'must'},
+    {t:'Fold and stage completed linens before leaving',p:'must'},
+    {t:'Wipe washer and dryer exterior',p:'std'},
+  ]});
+
+  roomDefs.push({icon:'🌿', name:'Outdoor / Patio (if applicable)', tasks:[
+    {t:'Wipe down all patio furniture',p:'note'},
+    {t:'Arrange chairs and table neatly per layout',p:'note'},
+    {t:'Sweep or hose patio surface',p:'note'},
+    {t:'Pick up any trash or debris',p:'note'},
+    {t:'Check grill — cover on, propane off',p:'note'},
+  ]});
+
+  const priorityColors = {must:'priority-must',std:'priority-std',note:'priority-note'};
+  const priorityLabels = {must:'Must',std:'Standard',note:'If Applicable'};
+
+  container.innerHTML = roomDefs.map((room,idx)=>`
+    <div class="room-block">
+      <div class="room-header">
+        <span class="room-name">${room.icon} ${room.name}</span>
+      </div>
+      <div class="room-body">
+        ${room.tasks.map(task=>`
+          <div class="room-task-row">
+            <span class="task-check">☐</span>
+            <span class="task-text">${task.t}</span>
+            <span class="task-priority ${priorityColors[task.p]}">${priorityLabels[task.p]}</span>
+          </div>
+        `).join('')}
+        <textarea class="room-notes" placeholder="Additional notes for ${room.name} — staging details, specific instructions, quirks..." oninput="autosave()"></textarea>
+      </div>
+    </div>
+  `).join('');
+};
+
+// Autosave
+window.autosave = function(){
+  const data = {};
+  ['propNickname','hostName','propAddress','lockboxCode','lockboxLocation','parking','entryNotes',
+   'checkoutTime','checkinTime','schedNotes','supplyNotes','supplyStorage','guestNotes','neverDo',
+   'quirks','internalNotes','approvedBy','approvalDate','bedrooms','bathrooms'].forEach(id=>{
+    const el=document.getElementById(id); if(el) data[id]=el.value;
+  });
+  localStorage.setItem('php_sop_draft', JSON.stringify(data));
+};
+
+// Restore draft
+const saved = JSON.parse(localStorage.getItem('php_sop_draft')||'{}');
+Object.keys(saved).forEach(id=>{
+  const el=document.getElementById(id); if(el) el.value=saved[id];
+});
+if(saved.bedrooms||saved.bathrooms) buildRooms();
+updateProgress();
+
+// Save draft toast
+window.saveDraft = function(){
+  autosave();
+  const t=document.createElement('div');
+  t.textContent='✓ Draft saved';
+  t.style.cssText='position:fixed;bottom:24px;right:24px;background:#1A2E4A;color:#C9A84C;font-weight:700;font-size:13px;padding:10px 20px;z-index:9999;border-top:2px solid #C9A84C;';
+  document.body.appendChild(t);
+  setTimeout(()=>t.remove(),2500);
+};
+
+// Submit
+window.submitSOP = async function(){
+  let ok = true;
+  ['propNickname','hostName','propAddress'].forEach(id=>{
+    const el=document.getElementById(id); const field=el.closest('.field');
+    if(!el.value.trim()){ field.classList.add('has-error'); ok=false; } else { field.classList.remove('has-error'); }
+  });
+  if(!ok){ document.querySelector('.has-error')?.scrollIntoView({behavior:'smooth',block:'center'}); return; }
+
+  const btn=document.getElementById('submitBtn'); btn.disabled=true; btn.textContent='Saving...';
+
+  const roomNotes = {};
+  document.querySelectorAll('.room-block').forEach((rb,i)=>{
+    const name = rb.querySelector('.room-name')?.textContent||`Room ${i+1}`;
+    const notes = rb.querySelector('.room-notes')?.value||'';
+    if(notes) roomNotes[name]=notes;
+  });
+
+  const getRadio = name=>{ const r=document.querySelector(`input[name="${name}"]:checked`); return r?r.value:''; };
+  const getChecked = sel=>Array.from(document.querySelectorAll(`${sel}:checked`)).map(c=>c.value);
+
+  const data = {
+    sopId, status: getRadio('sopStatus')||'draft',
+    propertyNickname: document.getElementById('propNickname').value,
+    hostName: document.getElementById('hostName').value,
+    propertyAddress: document.getElementById('propAddress').value,
+    propertyType: getRadio('propType'),
+    bedrooms: document.getElementById('bedrooms').value,
+    bathrooms: document.getElementById('bathrooms').value,
+    assignedTech: getRadio('tech'),
+    entryMethod: getRadio('entry'),
+    lockboxCode: document.getElementById('lockboxCode').value,
+    lockboxLocation: document.getElementById('lockboxLocation').value,
+    parking: document.getElementById('parking').value,
+    entryNotes: document.getElementById('entryNotes').value,
+    checkoutTime: document.getElementById('checkoutTime').value,
+    checkinTime: document.getElementById('checkinTime').value,
+    turnaroundWindow: getRadio('window'),
+    schedulingNotes: document.getElementById('schedNotes').value,
+    suppliesBy: getRadio('supplies'),
+    linenProgram: getRadio('linens'),
+    supplyPreferences: document.getElementById('supplyNotes').value,
+    supplyStorage: document.getElementById('supplyStorage').value,
+    restockItems: getChecked('.section-card:nth-child(5) input[type=checkbox]'),
+    priorityAreas: getChecked('.section-card:nth-child(7) input[type=checkbox]'),
+    guestNotes: document.getElementById('guestNotes').value,
+    neverDo: document.getElementById('neverDo').value,
+    quirks: document.getElementById('quirks').value,
+    damageReporting: getRadio('dmgReport'),
+    approvedBy: document.getElementById('approvedBy').value,
+    approvalDate: document.getElementById('approvalDate').value,
+    internalNotes: document.getElementById('internalNotes').value,
+    roomNotes,
+    createdAt: isDemo ? new Date().toISOString() : serverTimestamp()
+  };
+
+  try{
+    if(!isDemo){ await addDoc(collection(db,'sops'),data); }
+    else{ const s=JSON.parse(localStorage.getItem('php_sops')||'[]'); s.push(data); localStorage.setItem('php_sops',JSON.stringify(s)); }
+    localStorage.removeItem('php_sop_draft');
+    document.getElementById('successRef').textContent=sopId;
+    document.getElementById('formWrap').style.display='none';
+    document.getElementById('success').style.display='block';
+    window.scrollTo({top:0,behavior:'smooth'});
+  } catch(e){ btn.disabled=false; btn.textContent='Save & Publish SOP →'; alert('Error saving. Please try again.'); }
+};
+</script>
+</body>
+</html>

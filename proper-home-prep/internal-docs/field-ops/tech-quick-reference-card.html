@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Proper Home Prep — Tech Quick Reference Card</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800;900&family=Lato:wght@300;400;600;700;900&display=swap" rel="stylesheet"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;border-radius:0!important;font-family:'Lato',sans-serif;}
+:root{--navy:#1B2A4A;--gold:#D8B96A;--cream:#FAF7F2;--paper:#f5f4f0;}
+body{background:var(--paper);color:var(--navy);}
+
+/* HEADER */
+.site-header{background:var(--navy);padding:14px 28px;display:flex;justify-content:space-between;align-items:center;}
+.brand{font-family:'Playfair Display',serif;color:#fff;font-weight:800;font-size:18px;letter-spacing:-0.02em;}
+.brand span{color:var(--gold);}
+.header-right{color:var(--gold);font-size:12px;font-weight:700;text-align:right;line-height:1.5;}
+.gold-bar{height:3px;background:var(--gold);}
+
+/* PRINT CONTROLS */
+.print-bar{background:var(--cream);border-bottom:1px solid #d1d5db;padding:10px 28px;display:flex;align-items:center;justify-content:space-between;}
+.print-bar span{font-size:12px;color:#6b7280;}
+.print-btn{background:var(--navy);color:var(--gold);border:none;font-weight:700;font-size:12px;padding:8px 20px;cursor:pointer;letter-spacing:0.05em;}
+.print-btn:hover{opacity:.85;}
+
+/* LAYOUT */
+.page{max-width:900px;margin:24px auto;padding:0 20px 60px;}
+
+/* SECTION HEADERS */
+.sec-header{background:var(--navy);padding:11px 20px;display:flex;align-items:center;gap:14px;margin-bottom:0;}
+.sec-header .num{background:var(--gold);color:var(--navy);font-weight:800;font-size:12px;padding:3px 10px;min-width:30px;text-align:center;}
+.sec-header .title{color:#fff;font-weight:700;font-size:15px;letter-spacing:-0.01em;}
+.sec-body{background:#fff;border:1px solid #e5e7eb;border-top:none;padding:18px 20px;margin-bottom:20px;}
+
+/* CALLOUT */
+.callout{background:var(--cream);border-left:4px solid var(--gold);padding:10px 14px;font-size:13px;color:var(--navy);margin-bottom:14px;line-height:1.6;}
+.callout.red{background:#fef2f2;border-left-color:#dc2626;color:#7f1d1d;}
+.callout.green{background:#f0fdf4;border-left-color:#16a34a;color:#14532d;}
+
+/* GRID CARDS */
+.card-grid{display:grid;gap:12px;}
+.card-grid.two{grid-template-columns:1fr 1fr;}
+.card-grid.three{grid-template-columns:1fr 1fr 1fr;}
+@media(max-width:640px){.card-grid.two,.card-grid.three{grid-template-columns:1fr;}}
+
+.card{background:var(--paper);border:1px solid #e5e7eb;padding:14px 16px;}
+.card .card-title{font-size:11px;font-weight:800;color:var(--gold);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:8px;display:flex;align-items:center;gap:6px;}
+.card .card-title .icon{font-size:14px;}
+.card ul{padding-left:16px;}
+.card ul li{font-size:13px;color:#374151;line-height:1.7;}
+.card p{font-size:13px;color:#374151;line-height:1.7;}
+
+/* CHECKLIST TABLES */
+.checklist{width:100%;border-collapse:collapse;}
+.checklist th{background:var(--navy);color:#fff;font-size:11px;font-weight:700;padding:8px 12px;text-align:left;letter-spacing:0.05em;text-transform:uppercase;}
+.checklist th.gold{background:var(--gold);color:var(--navy);}
+.checklist td{border-bottom:1px solid #f3f4f6;padding:9px 12px;font-size:13px;color:#374151;vertical-align:top;}
+.checklist td.check{width:32px;text-align:center;font-size:16px;color:#d1d5db;}
+.checklist td.area{font-weight:600;color:var(--navy);width:160px;}
+.checklist td.standard{width:220px;font-size:12px;color:#6b7280;}
+.checklist tr:hover{background:var(--cream);}
+
+/* PRIORITY BADGE */
+.badge{display:inline-block;font-size:10px;font-weight:800;padding:2px 8px;text-transform:uppercase;letter-spacing:0.06em;}
+.badge.must{background:#dc2626;color:#fff;}
+.badge.std{background:var(--navy);color:var(--gold);}
+.badge.note{background:#f59e0b;color:var(--navy);}
+
+/* EMERGENCY BOX */
+.emergency-box{background:var(--navy);color:#fff;padding:18px 20px;margin-bottom:20px;}
+.emergency-box h3{color:var(--gold);font-size:14px;font-weight:800;letter-spacing:0.06em;text-transform:uppercase;margin-bottom:12px;}
+.emergency-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+@media(max-width:640px){.emergency-grid{grid-template-columns:1fr;}}
+.e-item{background:rgba(255,255,255,.07);padding:10px 14px;}
+.e-item .e-label{font-size:10px;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:4px;}
+.e-item .e-value{font-size:15px;font-weight:800;color:#fff;}
+.e-item .e-sub{font-size:11px;color:#9ca3af;margin-top:2px;}
+
+/* FLOW STEPS */
+.flow{display:flex;flex-direction:column;gap:0;}
+.flow-step{display:flex;align-items:flex-start;gap:14px;padding:12px 0;border-bottom:1px solid #f3f4f6;}
+.flow-step:last-child{border-bottom:none;}
+.step-num{width:28px;height:28px;min-width:28px;background:var(--navy);color:var(--gold);font-weight:800;font-size:12px;display:flex;align-items:center;justify-content:center;}
+.step-content .step-title{font-size:14px;font-weight:700;color:var(--navy);margin-bottom:3px;}
+.step-content .step-desc{font-size:12px;color:#6b7280;line-height:1.6;}
+
+/* DO / DON'T */
+.do-dont{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+@media(max-width:640px){.do-dont{grid-template-columns:1fr;}}
+.do-col{background:#f0fdf4;border-top:3px solid #16a34a;padding:14px;}
+.dont-col{background:#fef2f2;border-top:3px solid #dc2626;padding:14px;}
+.do-col h4{color:#15803d;font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:10px;}
+.dont-col h4{color:#dc2626;font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:10px;}
+.do-col li,.dont-col li{font-size:13px;line-height:1.8;margin-left:16px;color:#374151;}
+
+/* FOOTER */
+footer{background:var(--navy);border-top:2px solid var(--gold);padding:14px;text-align:center;color:#fff;font-size:12px;margin-top:30px;}
+
+/* PRINT */
+@media print{
+  .print-bar{display:none;}
+  body{background:#fff;}
+  .sec-body{break-inside:avoid;}
+  .site-header{background:#fff !important; border-bottom:3px solid var(--gold); position:static !important;}
+  .site-header .brand{color:var(--navy) !important;}
+  .header-right{color:var(--navy) !important;}
+  .sec-header{background:#fff !important; border-bottom:2px solid var(--gold) !important;}
+  .sec-header .title{color:var(--navy) !important;}
+  .sec-header .num{background:#fff !important; color:var(--navy) !important; border:1.5px solid var(--gold) !important;}
+  .step-num{background:#fff !important; color:var(--navy) !important; border:2px solid var(--gold) !important;}
+  .emergency-box{background:#fff !important; color:var(--navy) !important; border:2px solid var(--navy) !important; break-inside:avoid;}
+  .badge.std{background:#fff !important; color:var(--navy) !important; border:1.5px solid var(--gold) !important;}
+  footer{position:fixed;bottom:0;width:100%;}
+}
+</style>
+</head>
+<body>
+
+<div class="site-header">
+  <div class="brand">Proper Home Prep <span>·</span> Nashville, TN</div>
+  <div class="header-right">TECH QUICK REFERENCE CARD<br/>Field Operations Guide</div>
+</div>
+<div class="gold-bar"></div>
+
+<div class="print-bar">
+  <span>Keep this open on your phone during every job — or print and laminate for your kit.</span>
+  <button class="print-btn" onclick="window.print()">🖨️ Print This Card</button>
+</div>
+
+<div class="page">
+
+  <!-- EMERGENCY CONTACTS -->
+  <div class="emergency-box">
+    <h3>🚨 Emergency Contacts</h3>
+    <div class="emergency-grid">
+      <div class="e-item">
+        <div class="e-label">Brittany — Owner / Coordinator</div>
+        <div class="e-value">(615) 669-4246</div>
+        <div class="e-sub">Call or text · Available 7am–9pm</div>
+      </div>
+      <div class="e-item">
+        <div class="e-label">Emergency Services</div>
+        <div class="e-value">911</div>
+        <div class="e-sub">Fire / Medical / Police</div>
+      </div>
+      <div class="e-item">
+        <div class="e-label">After-Hours Emergency Only</div>
+        <div class="e-value">(615) 669-4246</div>
+        <div class="e-sub">Text first — call if no response in 10 min</div>
+      </div>
+      <div class="e-item">
+        <div class="e-label">Business Email</div>
+        <div class="e-value" style="font-size:13px;">info@properhomeprep.com</div>
+        <div class="e-sub">Non-urgent questions only</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 01 — ARRIVAL PROTOCOL -->
+  <div class="sec-header"><div class="num">01</div><div class="title">Arrival Protocol — Every Job, Every Time</div></div>
+  <div class="sec-body">
+    <div class="callout">📲 The dashboard is your system of record for every job — clock in, photos, task check-offs, and flags all happen there. Text or call Brittany only as a fallback: the dashboard is down, or you have a genuine emergency (see Emergency Contacts above).</div>
+    <div class="flow">
+      <div class="flow-step"><div class="step-num">1</div><div class="step-content"><div class="step-title">Confirm the Job</div><div class="step-desc">Check your assignment in the dashboard. Verify property address, checkout time, and check-in window before leaving home.</div></div></div>
+      <div class="flow-step"><div class="step-num">2</div><div class="step-content"><div class="step-title">Clock In on the Dashboard</div><div class="step-desc">Mark the job STARTED the moment you arrive. Dashboard down? Text Brittany "Arrived" with the property name and time instead.</div></div></div>
+      <div class="flow-step"><div class="step-num">3</div><div class="step-content"><div class="step-title">Initial Walkthrough — Damage Check First</div><div class="step-desc">Walk every room BEFORE cleaning. Note and photograph anything damaged, missing, or unusual. Do not clean around damage — document it first.</div></div></div>
+      <div class="flow-step"><div class="step-num">4</div><div class="step-content"><div class="step-title">Report Any Damage Immediately</div><div class="step-desc">Flag it in the dashboard — photo + description, choose severity. Do not wait until the end. Dashboard down or it's serious? Call or text Brittany immediately instead.</div></div></div>
+      <div class="flow-step"><div class="step-num">5</div><div class="step-content"><div class="step-title">Work the SOP — Room by Room</div><div class="step-desc">Follow the property SOP exactly. If no SOP is on file, follow the standard turnover checklist below.</div></div></div>
+      <div class="flow-step"><div class="step-num">6</div><div class="step-content"><div class="step-title">Final Walkthrough + Photo Check</div><div class="step-desc">Walk every room again before leaving. Take 3–5 completion photos: beds made, kitchen clear, bathrooms staged, front door locked.</div></div></div>
+      <div class="flow-step"><div class="step-num">7</div><div class="step-content"><div class="step-title">Submit Sign-Off &amp; Clock Out on the Dashboard</div><div class="step-desc">Mark every task complete, then submit sign-off — this sends the host their guest-ready notification. Dashboard down? Text Brittany "Complete" with a timestamp instead.</div></div></div>
+    </div>
+  </div>
+
+  <!-- SECTION 02 — STANDARD TURNOVER CHECKLIST -->
+  <div class="sec-header"><div class="num">02</div><div class="title">Standard STR Turnover Checklist</div></div>
+  <div class="sec-body">
+    <div class="callout">Always check the property SOP first — it overrides these defaults. Use this list when no SOP is on file.</div>
+    <table class="checklist">
+      <thead><tr><th class="gold" style="width:32px;"></th><th class="gold">Area</th><th class="gold">Standard Task</th><th class="gold">Priority</th></tr></thead>
+      <tbody>
+        <tr><td class="check">☐</td><td class="area">All Bedrooms</td><td>Strip & remake all beds with fresh linens. Hospital corners. Decorative pillows staged.</td><td><span class="badge must">Must</span></td></tr>
+        <tr><td class="check">☐</td><td class="area">All Bathrooms</td><td>Sanitize toilet, sink, tub/shower. Replace towels. Restock TP, hand soap. Wipe mirror streak-free.</td><td><span class="badge must">Must</span></td></tr>
+        <tr><td class="check">☐</td><td class="area">Kitchen</td><td>Empty/run/unload dishwasher. Wipe all surfaces, stove, microwave inside/out. Empty trash. Restock if needed.</td><td><span class="badge must">Must</span></td></tr>
+        <tr><td class="check">☐</td><td class="area">Living / Common</td><td>Straighten furniture to original layout. Fluff/arrange cushions & pillows. Wipe surfaces. Remote batteries checked.</td><td><span class="badge must">Must</span></td></tr>
+        <tr><td class="check">☐</td><td class="area">Floors</td><td>Vacuum all carpet/rugs. Mop hard floors. Check under furniture and in corners.</td><td><span class="badge must">Must</span></td></tr>
+        <tr><td class="check">☐</td><td class="area">Trash</td><td>Empty ALL bins — kitchen, bathrooms, bedroom, outdoor. Replace liners. Bring bins to curb if trash day.</td><td><span class="badge must">Must</span></td></tr>
+        <tr><td class="check">☐</td><td class="area">Laundry</td><td>Start wash on arrival. Move to dryer mid-job. Fold and stage before leaving.</td><td><span class="badge must">Must</span></td></tr>
+        <tr><td class="check">☐</td><td class="area">Restock Check</td><td>Verify TP, paper towels, soap, coffee, etc. per property list. Note anything running low.</td><td><span class="badge std">Standard</span></td></tr>
+        <tr><td class="check">☐</td><td class="area">Thermostat</td><td>Set to host's default temp (check SOP). Note if HVAC acting unusual.</td><td><span class="badge std">Standard</span></td></tr>
+        <tr><td class="check">☐</td><td class="area">Doors & Windows</td><td>All locked. Check sliding doors, patio doors. Confirm lockbox is reset to correct code.</td><td><span class="badge must">Must</span></td></tr>
+        <tr><td class="check">☐</td><td class="area">Outdoor Areas</td><td>Wipe patio furniture. Pick up trash. Reset chairs/table. Hose/sweep if needed.</td><td><span class="badge note">If Applicable</span></td></tr>
+        <tr><td class="check">☐</td><td class="area">Welcome Setup</td><td>Stage any welcome items per SOP. Welcome card on counter. Towels folded & displayed.</td><td><span class="badge note">Per SOP</span></td></tr>
+        <tr><td class="check">☐</td><td class="area">Completion Photos</td><td>Take 3–5 photos: master bed, main bathroom, kitchen, living room, front door locked.</td><td><span class="badge must">Must</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- SECTION 03 — QUALITY STANDARDS -->
+  <div class="sec-header"><div class="num">03</div><div class="title">Proper Home Prep Quality Standards</div></div>
+  <div class="sec-body">
+    <div class="card-grid two">
+      <div class="card">
+        <div class="card-title"><span class="icon">🛏️</span> Beds</div>
+        <ul>
+          <li>Fresh linens every turnover — no exceptions</li>
+          <li>Hospital corners or tucked tight</li>
+          <li>Decorative pillows placed per SOP photo</li>
+          <li>No wrinkles visible on bedspread</li>
+          <li>Check under beds — guests leave things</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="icon">🚿</span> Bathrooms</div>
+        <ul>
+          <li>Toilet: under rim, seat hinge, base — all sanitized</li>
+          <li>Mirror: streak-free, check at an angle</li>
+          <li>Shower: no hair, no soap scum, drain clear</li>
+          <li>Towels: folded hotel-style or per SOP</li>
+          <li>TP: at least 2 rolls visible per bathroom</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="icon">🍳</span> Kitchen</div>
+        <ul>
+          <li>Dishwasher: run → unload → reset before leaving</li>
+          <li>Stovetop: all burners wiped, drip pans clean</li>
+          <li>Inside microwave: wiped clean</li>
+          <li>Counters: cleared, sanitized, dry</li>
+          <li>Fridge: check for guest-left food — remove it</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="icon">🛋️</span> Living Areas</div>
+        <ul>
+          <li>Furniture in original layout — check SOP photo</li>
+          <li>Cushions/throw pillows fluffed and placed neatly</li>
+          <li>Remotes: present, batteries working</li>
+          <li>No guest belongings left behind</li>
+          <li>Windows, blinds, curtains — straightened</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 04 — DO'S AND DON'TS -->
+  <div class="sec-header"><div class="num">04</div><div class="title">Do's & Don'ts</div></div>
+  <div class="sec-body">
+    <div class="do-dont">
+      <div class="do-col">
+        <h4>✅ Always Do</h4>
+        <ul>
+          <li>Clock in and submit sign-off in the dashboard for every job</li>
+          <li>Document any damage with photos before cleaning</li>
+          <li>Follow the property SOP exactly</li>
+          <li>Leave every light off and door locked</li>
+          <li>Bring your full supply kit to every job</li>
+          <li>Report anything that looks off — better safe than sorry</li>
+          <li>Stage the property exactly as shown in SOP photos</li>
+          <li>Double check the lockbox code is reset before you leave</li>
+        </ul>
+      </div>
+      <div class="dont-col">
+        <h4>🚫 Never Do</h4>
+        <ul>
+          <li>Never share property access codes with anyone</li>
+          <li>Never clean around damage — document it first</li>
+          <li>Never throw away items left by guests — bag & leave</li>
+          <li>Never use bleach unless specified in the SOP</li>
+          <li>Never leave a job without texting Brittany complete</li>
+          <li>Never move furniture that's not in your SOP</li>
+          <li>Never post photos of client properties on social media</li>
+          <li>Never give anyone your login credentials</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 05 — DAMAGE REPORTING -->
+  <div class="sec-header"><div class="num">05</div><div class="title">Damage Reporting — When & How</div></div>
+  <div class="sec-body">
+    <div class="callout red">🚨 Report ALL damage immediately — do not clean around it, do not wait until after the job.</div>
+    <div class="card-grid three">
+      <div class="card">
+        <div class="card-title">📱 Step 1: Flag in the Dashboard</div>
+        <p>Photo + description, right on the job. Choose severity: Routine Note, Needs Host Attention, or Urgent — Stop and Call. Do this the moment you find it.</p>
+      </div>
+      <div class="card">
+        <div class="card-title">📸 Step 2: Photo Log</div>
+        <p>Take 3 photos minimum: wide (room context), mid (damage area), close-up (detail). All attach to the flag automatically.</p>
+      </div>
+      <div class="card">
+        <div class="card-title">🚨 Fallback: Call or Text Brittany</div>
+        <p>Dashboard down, or the damage is serious enough to select "Urgent"? Call or text Brittany immediately — don't wait on the dashboard alone.</p>
+      </div>
+    </div>
+    <div style="margin-top:14px;">
+      <table class="checklist">
+        <thead><tr><th>Situation</th><th>What To Do</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Broken item</strong> (lamp, fixture, furniture)</td><td>Photograph, bag any shards safely, do not discard. Flag it in the dashboard.</td></tr>
+          <tr><td><strong>Stain</strong> (carpet, upholstery, mattress)</td><td>Do not attempt to clean without instructions. Photograph and flag it first.</td></tr>
+          <tr><td><strong>Missing item</strong> (remote, decor, appliance)</td><td>Check everywhere — under beds, in closets. If truly missing, flag it.</td></tr>
+          <tr><td><strong>Safety issue</strong> (exposed wire, water damage, mold)</td><td>Do not continue working. Call Brittany immediately. Leave the area.</td></tr>
+          <tr><td><strong>Guest belongings left behind</strong></td><td>Bag and label. Do not throw away. Leave in a designated spot per SOP. Flag it in the dashboard.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- SECTION 06 — SUPPLIES -->
+  <div class="sec-header"><div class="num">06</div><div class="title">Standard Supply Kit — Bring to Every Job</div></div>
+  <div class="sec-body">
+    <div class="card-grid two">
+      <div class="card">
+        <div class="card-title">🧹 Cleaning Supplies</div>
+        <ul>
+          <li>All-purpose cleaner (spray)</li>
+          <li>Bathroom disinfectant spray</li>
+          <li>Glass/mirror cleaner</li>
+          <li>Microfiber cloths (at least 6, color-coded)</li>
+          <li>Mop + bucket or Swiffer</li>
+          <li>Vacuum with attachments</li>
+          <li>Toilet brush (property-specific or disposable)</li>
+          <li>Scrub sponges</li>
+          <li>Trash bags (various sizes)</li>
+          <li>Rubber gloves</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title">🛏️ Linen & Restock</div>
+        <ul>
+          <li>Fresh sheet sets (qty per property SOP)</li>
+          <li>Fresh towels (bath, hand, washcloth)</li>
+          <li>Toilet paper rolls</li>
+          <li>Paper towels</li>
+          <li>Hand soap (liquid)</li>
+          <li>Dish soap</li>
+          <li>Dishwasher pods</li>
+          <li>Laundry detergent pods</li>
+          <li>Trash bag liners</li>
+          <li>Restock checklist for this property</li>
+        </ul>
+      </div>
+    </div>
+    <div class="callout" style="margin-top:14px;">💡 Running low on supplies mid-job? Flag it in the dashboard so restocking gets ordered — text Brittany directly if you need it before your next job.</div>
+  </div>
+
+  <!-- SECTION 07 — SERVICE-SPECIFIC REMINDERS -->
+  <div class="sec-header"><div class="num">07</div><div class="title">Service-Specific Quick Notes</div></div>
+  <div class="sec-body">
+    <div class="card-grid two">
+      <div class="card">
+        <div class="card-title">🔍 Vacant Property Inspections</div>
+        <ul>
+          <li>Take a photo in every room — front to back, floor to ceiling</li>
+          <li>Check all appliances: running water, HVAC, lights</li>
+          <li>Check exterior: windows, doors, roof visible issues</li>
+          <li>Log any new issues vs. previous inspection</li>
+          <li>Email photo report to Brittany same day</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title">🔧 Light Repairs & Touch-Ups</div>
+        <ul>
+          <li>Photograph before starting any repair work</li>
+          <li>Confirm scope with Brittany before beginning</li>
+          <li>Do not exceed your assigned scope — call if unsure</li>
+          <li>Photograph after completion</li>
+          <li>Log all materials used for reimbursement</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title">🌿 Exterior Refresh & Curb Appeal</div>
+        <ul>
+          <li>Pressure wash: use correct PSI per surface type</li>
+          <li>Protect nearby vehicles and landscaping</li>
+          <li>Stage porch/patio exactly per SOP photo</li>
+          <li>Bag and dispose of all debris before leaving</li>
+          <li>Photo: before and after, from the street</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title">📦 Move-In / Move-Out Prep</div>
+        <ul>
+          <li>Deep clean every surface including inside cabinets</li>
+          <li>Check all fixtures: lights, faucets, door hardware</li>
+          <li>Note any damage on the walkthrough checklist</li>
+          <li>Confirm trash/junk removal is complete before you start</li>
+          <li>Leave a completion note for Brittany and the client</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<footer>© 2026 Proper Home Prep · Nashville, TN · Where Every Detail Matters. · properhomeprep.com</footer>
+
+</body>
+</html>

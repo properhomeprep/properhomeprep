@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Request Service — Proper Home Prep</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;0,900;1,400&family=Lato:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#1B2A4A; --gold:#D8B96A; --gold2:#a98a3a; --cream:#FAF7F2; --slate:#6B7D8F;
+  --line:#e2ddd2;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{
+  font-family:'Lato',sans-serif;
+  background:var(--cream);
+  color:var(--navy);
+  line-height:1.55;
+}
+.hero{
+  background:var(--navy);
+  color:#fff;
+  padding:64px 24px 90px;
+  position:relative;
+}
+.hero-inner{max-width:640px;margin:0 auto;}
+.wordmark{font-family:'Playfair Display',serif;font-weight:800;font-size:26px;letter-spacing:-0.01em;}
+.tagline{font-family: 'Playfair Display', serif;font-style:italic;color:var(--gold);font-size:16px;margin-top:2px;margin-bottom:36px;}
+.hero h1{
+  font-family:'Playfair Display',serif;
+  font-weight:800;
+  font-size:clamp(32px,5vw,44px);
+  line-height:1.15;
+  max-width:520px;
+  margin-bottom:18px;
+}
+.hero p{
+  color:#d8dee8;
+  font-size:17px;
+  max-width:440px;
+}
+.card{
+  max-width:640px;
+  margin:-56px auto 64px;
+  background:#fff;
+  border:1px solid var(--line);
+  padding:40px 32px 36px;
+  position:relative;
+}
+@media(max-width:600px){ .card{padding:30px 20px 28px;margin:-48px 16px 48px;} .hero{padding:48px 20px 78px;} }
+
+fieldset{border:none;margin-bottom:26px;}
+legend{
+  font-family:'Playfair Display',serif;
+  font-weight:700;
+  font-size:19px;
+  color:var(--navy);
+  margin-bottom:16px;
+  padding-bottom:8px;
+  border-bottom:1px solid var(--line);
+  width:100%;
+}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+@media(max-width:520px){.row{grid-template-columns:1fr;}}
+.field{margin-bottom:16px;}
+label{
+  display:block;
+  font-size:13px;
+  font-weight:700;
+  color:var(--slate);
+  margin-bottom:6px;
+}
+input, select, textarea{
+  width:100%;
+  padding:11px 12px;
+  border:1px solid var(--line);
+  background:var(--cream);
+  font-family:'Lato',sans-serif;
+  font-size:15px;
+  color:var(--navy);
+}
+input:focus, select:focus, textarea:focus{
+  outline:2px solid var(--gold);
+  outline-offset:1px;
+  background:#fff;
+}
+textarea{resize:vertical;min-height:90px;}
+.hint{font-size:12px;color:var(--slate);margin-top:5px;}
+.required{color:var(--gold2);}
+
+.radio-group{display:flex;flex-direction:column;gap:9px;}
+.radio-opt{
+  display:flex; align-items:center; gap:10px;
+  border:1px solid var(--line);
+  padding:11px 13px;
+  cursor:pointer;
+  transition:border-color .15s;
+}
+.radio-opt:has(input:checked){border-color:var(--gold); background:#fdfbf5;}
+.radio-opt input{width:auto;margin:0;}
+.radio-opt span{font-size:14.5px;}
+
+.submit-btn{
+  width:100%;
+  background:var(--navy);
+  color:#fff;
+  border:none;
+  padding:16px;
+  font-family:'Lato',sans-serif;
+  font-weight:900;
+  font-size:15.5px;
+  letter-spacing:.01em;
+  cursor:pointer;
+  margin-top:8px;
+}
+.submit-btn:hover{background:#233a63;}
+.submit-btn:disabled{opacity:.6;cursor:default;}
+
+.foot-note{
+  text-align:center;
+  font-size:13px;
+  color:var(--slate);
+  margin-top:18px;
+}
+.foot-note a{color:var(--navy);}
+
+/* success state */
+#success{display:none;text-align:center;padding:20px 8px 8px;}
+#success .check{
+  width:52px;height:52px;border-radius:50%;
+  background:var(--navy);color:var(--gold);
+  display:flex;align-items:center;justify-content:center;
+  font-size:26px; margin:0 auto 18px;
+}
+#success h2{font-family:'Playfair Display',serif;font-size:24px;margin-bottom:10px;}
+#success p{color:var(--slate);max-width:400px;margin:0 auto;}
+
+.hidden-field{position:absolute;left:-9999px;}
+
+@media print {
+  body{background:#fff;}
+  .hero{background:#fff !important; border-bottom:4px solid var(--gold); padding:24px;}
+  .hero .wordmark, .hero h1{color:var(--navy) !important;}
+  .hero .tagline{color:var(--gold2) !important;}
+  .hero p{color:var(--slate) !important;}
+  .card{margin-top:0; box-shadow:none; border:1px solid var(--line);}
+  .submit-btn, .foot-note{display:none !important;}
+  #success .check{background:#fff !important; color:var(--navy) !important; border:2px solid var(--gold);}
+}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-inner">
+    <div class="wordmark">Proper Home Prep</div>
+    <div class="tagline">The Proper Standard</div>
+    <h1>Tell us about your property.</h1>
+    <p>A few details now means a faster, flat-rate quote back from us — usually the same day.</p>
+  </div>
+</div>
+
+<div class="card">
+
+  <form id="intake-form" name="intake" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+    <input type="hidden" name="form-name" value="intake">
+    <p class="hidden-field"><label>Don't fill this out if you're human: <input name="bot-field"></label></p>
+
+    <fieldset>
+      <legend>Your info</legend>
+      <div class="row">
+        <div class="field">
+          <label for="name">Full name <span class="required">*</span></label>
+          <input type="text" id="name" name="name" required>
+        </div>
+        <div class="field">
+          <label for="phone">Phone <span class="required">*</span></label>
+          <input type="tel" id="phone" name="phone" required>
+        </div>
+      </div>
+      <div class="field">
+        <label for="email">Email <span class="required">*</span></label>
+        <input type="email" id="email" name="email" required>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>The property</legend>
+      <div class="field">
+        <label for="address">Property address <span class="required">*</span></label>
+        <input type="text" id="address" name="address" required placeholder="Street, City, State, ZIP">
+      </div>
+      <div class="row">
+        <div class="field">
+          <label for="units">Number of units</label>
+          <input type="text" id="units" name="units" placeholder="e.g. 1, or 4-unit building">
+        </div>
+        <div class="field">
+          <label for="proptype">Property type</label>
+          <select id="proptype" name="property_type">
+            <option value="">Select one</option>
+            <option>Short-term rental / Airbnb</option>
+            <option>Long-term rental</option>
+            <option>Owner-occupied home</option>
+            <option>Vacant / investment property</option>
+            <option>Other</option>
+          </select>
+        </div>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>What do you need?</legend>
+      <div class="radio-group">
+        <label class="radio-opt"><input type="radio" name="service" value="Turnover / Make-Ready" required><span>Turnover & make-ready between tenants or guests</span></label>
+        <label class="radio-opt"><input type="radio" name="service" value="Recurring cleaning"><span>Recurring cleaning</span></label>
+        <label class="radio-opt"><input type="radio" name="service" value="Move-in / move-out"><span>One-time move-in or move-out prep</span></label>
+        <label class="radio-opt"><input type="radio" name="service" value="Inspections"><span>Vacant property inspections</span></label>
+        <label class="radio-opt"><input type="radio" name="service" value="Repairs"><span>Light repairs & touch-ups</span></label>
+        <label class="radio-opt"><input type="radio" name="service" value="Not sure yet"><span>Not sure — let's talk</span></label>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Timeline</legend>
+      <div class="field">
+        <label for="timeline">When do you need this done?</label>
+        <select id="timeline" name="timeline">
+          <option value="">Select one</option>
+          <option>As soon as possible</option>
+          <option>Within a week</option>
+          <option>Within a month</option>
+          <option>Just gathering quotes for now</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="notes">Anything else we should know?</label>
+        <textarea id="notes" name="notes" placeholder="Special access instructions, specific concerns, prior issues, etc."></textarea>
+      </div>
+    </fieldset>
+
+    <button type="submit" class="submit-btn" id="submitBtn">Request my quote</button>
+    <p class="foot-note">We reply to every request — usually same day. Questions first? Call <a href="tel:6156694246">615-669-4246</a>.</p>
+  </form>
+
+  <div id="success">
+    <div class="check">✓</div>
+    <h2>Got it, thank you.</h2>
+    <p>Your request is in. We'll follow up by phone or email — usually the same day — with your flat-rate quote.</p>
+  </div>
+
+</div>
+
+<script>
+document.getElementById('intake-form').addEventListener('submit', function(e){
+  e.preventDefault();
+  var form = e.target;
+  var btn = document.getElementById('submitBtn');
+  btn.disabled = true; btn.textContent = 'Sending...';
+  var data = new FormData(form);
+  fetch('/', {
+    method: 'POST',
+    headers: {'Content-Type':'application/x-www-form-urlencoded'},
+    body: new URLSearchParams(data).toString()
+  }).then(function(){
+    form.style.display = 'none';
+    document.getElementById('success').style.display = 'block';
+  }).catch(function(){
+    btn.disabled = false; btn.textContent = 'Request my quote';
+    alert('Something went wrong sending your request — please call 615-669-4246 or try again.');
+  });
+});
+</script>
+
+</body>
+</html>

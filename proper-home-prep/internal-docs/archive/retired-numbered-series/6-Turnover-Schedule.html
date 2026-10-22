@@ -1,0 +1,1154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Proper Home Prep — Turnover Schedule</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest" defer></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+          },
+          colors: {
+            navy: { DEFAULT: '#1A2E4A', light: '#243d63', dark: '#0F1D30' },
+            gold: { DEFAULT: '#C9A84C', light: '#C9A84C', dark: '#C9A84C', pale: '#FEF5E4' },
+            bg: { DEFAULT: '#f5f4f0', card: '#FFFFFF' },
+            success: { DEFAULT: '#27AE60', light: '#E8F8EF', dark: '#1E8C4D' },
+            warning: { DEFAULT: '#F39C12', light: '#FEF3DC', dark: '#D4850A' },
+            danger: { DEFAULT: '#E74C3C', light: '#FDE8E6', dark: '#C0392B' },
+            info: { DEFAULT: '#3498DB', light: '#E8F4FD', dark: '#2576B8' },
+            muted: { DEFAULT: '#8492A6', light: '#C0CCDA', dark: '#3C4858' },
+          },
+        },
+      },
+    };
+  </script>
+  <style>
+    * { box-sizing: border-box; }
+    body { font-family: 'Inter', sans-serif; background: #f5f4f0; color: #243d63; margin: 0; }
+    .status-scheduled { background: #E8F4FD; color: #2576B8; }
+    .status-in-progress { background: #FEF5E4; color: #C9A84C; }
+    .status-completed { background: #E8F8EF; color: #1E8C4D; }
+    .status-at-risk { background: #FEF3DC; color: #D4850A; }
+    .status-cancelled { background: #FDE8E6; color: #C0392B; }
+    .dot-scheduled { background: #3498DB; }
+    .dot-in-progress { background: #C9A84C; }
+    .dot-completed { background: #27AE60; }
+    .dot-at-risk { background: #F39C12; }
+    .dot-cancelled { background: #E74C3C; }
+    .modal-overlay { background: rgba(13,27,42,0.55); backdrop-filter: blur(4px); }
+    .week-col { min-height: 120px; }
+    th[data-sort] { cursor: pointer; user-select: none; }
+    th[data-sort]:hover { color: #C9A84C; }
+    input[type="time"], input[type="date"], input[type="number"], input[type="text"], select, textarea {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.875rem;
+    }
+    .priority-normal { border-left: 4px solid #3498DB; }
+    .priority-rush { border-left: 4px solid #F39C12; }
+    .priority-vip { border-left: 4px solid #C9A84C; }
+    @media (max-width: 767px) {
+      .week-grid-container { overflow-x: auto; }
+      .week-grid { min-width: 700px; }
+    }
+    .tab-active { background: #1A2E4A; color: #fff; }
+    .tab-inactive { background: #fff; color: #3C4858; }
+    .note-entry { animation: fadeIn 0.2s ease; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: translateY(0); } }
+    .turnover-card { transition: transform 0.15s ease, box-shadow 0.15s ease; }
+    .turnover-card:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(13,27,42,0.1); }
+  </style>
+<style>
+
+/* === PDF HANDBOOK STYLE OVERRIDE === */
+:root {
+  --navy: #1A2E4A;
+  --navy-light: #243d63;
+  --gold: #C9A84C;
+  --gold-light: #d4b96a;
+  --cream: #FDF6E3;
+  --paper: #f5f4f0;
+  --white: #FFFFFF;
+}
+body { background: var(--paper) !important; font-family: 'Inter', sans-serif !important; }
+
+/* Paper card wrapper */
+.php-doc-wrap { max-width: 1000px; margin: 0 auto; background: #fff; box-shadow: 0 4px 24px rgba(0,0,0,0.10); }
+
+/* Top nav bar */
+.php-topbar {
+  background: var(--navy); color: #fff; padding: 14px 24px;
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+}
+.php-topbar-brand { font-size: 15px; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; display: flex; align-items: center; gap: 10px; }
+.php-topbar-brand svg { color: var(--gold); }
+.php-gold-line { height: 3px; background: var(--gold); width: 100%; }
+.php-badge { background: var(--navy); border: 2px solid var(--gold); color: var(--gold); font-weight: 800; font-size: 13px; padding: 6px 10px; letter-spacing: 0.08em; }
+
+/* Section headers */
+.php-section-hdr {
+  background: var(--navy); color: #fff; padding: 12px 20px;
+  display: flex; align-items: center; gap: 12px; cursor: pointer;
+  font-weight: 700; font-size: 14px; border: none; width: 100%; text-align: left;
+  font-family: 'Inter', sans-serif;
+}
+.php-section-hdr:hover { background: var(--navy-light); }
+.php-sec-badge {
+  background: var(--gold); color: var(--navy); font-weight: 800;
+  font-size: 11px; padding: 4px 10px; min-width: 36px; text-align: center; letter-spacing: 0.04em;
+}
+.php-sec-chevron { margin-left: auto; color: var(--gold); transition: transform 0.25s; }
+.php-sec-chevron.open { transform: rotate(180deg); }
+
+/* Callout boxes */
+.php-callout { background: var(--cream); border-left: 4px solid var(--gold); padding: 14px 18px; font-size: 13px; color: var(--navy); }
+.php-callout-navy { background: var(--navy); border-left: 4px solid var(--gold); padding: 14px 18px; font-size: 13px; color: #fff; }
+
+/* Buttons */
+.php-btn-gold { background: var(--gold); color: var(--navy); border: none; padding: 10px 22px; font-weight: 700; font-size: 13px; cursor: pointer; font-family: 'Inter', sans-serif; text-transform: uppercase; letter-spacing: 0.06em; }
+.php-btn-gold:hover { background: var(--gold-light); }
+.php-btn-navy { background: var(--navy); color: #fff; border: none; padding: 10px 22px; font-weight: 700; font-size: 13px; cursor: pointer; font-family: 'Inter', sans-serif; }
+.php-btn-outline { background: #fff; color: var(--navy); border: 2px solid var(--navy); padding: 8px 20px; font-weight: 600; font-size: 13px; cursor: pointer; font-family: 'Inter', sans-serif; }
+
+/* Table styles */
+.php-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.php-table th { background: var(--navy); color: #fff; padding: 10px 14px; text-align: left; font-weight: 600; border: 1px solid var(--navy); }
+.php-table td { padding: 9px 14px; border: 1px solid #d1d5db; vertical-align: middle; }
+.php-table tbody tr:nth-child(even) { background: #faf8f3; }
+
+/* Status badges */
+.php-badge-active { background: var(--navy); color: #fff; padding: 3px 10px; font-size: 11px; font-weight: 700; letter-spacing: 0.04em; }
+.php-badge-gold { background: var(--gold); color: var(--navy); padding: 3px 10px; font-size: 11px; font-weight: 700; letter-spacing: 0.04em; }
+.php-badge-green { background: #27AE60; color: #fff; padding: 3px 10px; font-size: 11px; font-weight: 700; letter-spacing: 0.04em; }
+.php-badge-red { border: 2px solid #E74C3C; color: #E74C3C; padding: 2px 10px; font-size: 11px; font-weight: 700; }
+
+/* Cards */
+.php-card { background: #fff; border-left: 4px solid var(--gold); padding: 16px 20px; border-top: 1px solid #e5e7eb; border-right: 1px solid #e5e7eb; border-bottom: 1px solid #e5e7eb; }
+.php-card-navy { background: var(--navy); color: #fff; padding: 16px 20px; }
+
+/* Form fields */
+input[type=text], input[type=email], input[type=tel], input[type=number], input[type=date], input[type=time], select, textarea {
+  border: 1px solid #c5c5c5 !important;
+  border-radius: 0 !important;
+  font-family: 'Inter', sans-serif !important;
+  padding: 9px 12px !important;
+  font-size: 13px !important;
+  outline: none !important;
+}
+input:focus, select:focus, textarea:focus { border-color: var(--gold) !important; box-shadow: none !important; }
+
+/* Custom checkbox */
+input[type=checkbox] { accent-color: var(--gold); }
+
+/* Remove ALL rounded corners */
+* { border-radius: 0 !important; }
+
+</style>
+</head>
+<body data-id="0" class="min-h-screen flex flex-col">
+
+<div class="php-topbar">
+  <div class="php-topbar-brand">
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="square" stroke-linejoin="miter"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+    PROPER HOME PREP
+  </div>
+  <div class="php-badge">PHP</div>
+</div>
+<div class="php-gold-line"></div>
+
+<div style="background:#fff; padding: 28px 32px 20px 32px; border-bottom: 2px solid #1A2E4A; position:relative;">
+  <div style="position:absolute; top:20px; right:28px; background:#1A2E4A; border:2px solid #C9A84C; color:#C9A84C; font-weight:800; font-size:14px; padding:8px 14px; letter-spacing:0.1em;">PHP</div>
+  <h1 style="font-size:26px; font-weight:800; color:#1A2E4A; margin:0 0 6px 0; letter-spacing:-0.01em;">Turnover Schedule</h1>
+  <p style="color:#C9A84C; font-style:italic; font-size:14px; margin:0; font-weight:500;">The Proper Standard — Every Job, Every Time</p>
+</div>
+
+
+
+<app-icon data-id="1" hidden data-icon="calendar-check" data-palette="Blue"></app-icon>
+
+<!-- AT-RISK ALERT BANNER -->
+<div data-id="2" id="at-risk-banner-abc1" class="hidden bg-danger text-white px-4 py-3 text-sm font-medium flex items-center justify-between flex-wrap gap-2" role="alert">
+  <div data-id="3" class="flex items-center gap-2 flex-wrap">
+    <i data-id="4" data-lucide="alert-triangle" class="w-5 h-5 flex-shrink-0"></i>
+    <span data-id="5" id="at-risk-text-abc2">⚠ At-Risk Turnovers require attention</span>
+  </div>
+  <button data-id="6" id="at-risk-action-abc3" class="bg-white text-danger font-semibold text-xs px-4 py-1.5 rounded-lg hover:bg-danger-light transition min-h-[36px]">Take Action</button>
+</div>
+
+<!-- HEADER -->
+<header data-id="7" class="bg-navy text-white">
+  <div data-id="8" class="max-w-7xl mx-auto px-4 md:px-6 py-3 flex items-center justify-between flex-wrap gap-3">
+    <div data-id="9" class="flex items-center gap-3">
+      <svg data-id="10" class="w-8 h-8 text-gold flex-shrink-0" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path data-id="11" d="M4 28V14L16 4l12 10v14H20v-8h-8v8H4z"/>
+        <path data-id="12" d="M12 28v-8h8v8"/>
+        <circle data-id="13" cx="16" cy="15" r="2" fill="currentColor" stroke="none"/>
+      </svg>
+      <div data-id="14">
+        <h1 data-id="15" class="text-lg md:text-xl font-bold leading-tight">Proper Home Prep</h1>
+        <p data-id="16" class="text-xs text-gold font-medium tracking-wide">TURNOVER SCHEDULE</p>
+      </div>
+    </div>
+    <div data-id="17" class="flex items-center gap-3 flex-wrap">
+      <span data-id="18" class="text-sm text-muted-light hidden sm:block" id="header-date-def1"></span>
+      <button data-id="19" id="add-turnover-btn-ghi1" class="bg-gold hover:bg-gold-dark text-navy font-semibold text-sm px-4 py-2.5 rounded-xl flex items-center gap-2 transition min-h-[44px]">
+        <i data-id="20" data-lucide="plus" class="w-4 h-4"></i>
+        <span data-id="21">Add Turnover</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- MOBILE NAV -->
+<div data-id="22" class="md:hidden bg-white border-b border-gray-100 px-4 py-2 flex items-center justify-between">
+  <span data-id="23" class="text-xs text-muted font-medium" id="mobile-date-mno1"></span>
+  <button data-id="24" id="export-btn-mobile-pqr1" class="text-xs text-info font-medium flex items-center gap-1 min-h-[44px] px-2">
+    <i data-id="25" data-lucide="download" class="w-4 h-4"></i> Export
+  </button>
+</div>
+
+<main data-id="26" class="flex-1 max-w-7xl mx-auto w-full px-4 md:px-6 py-6 space-y-6">
+
+  <!-- STATS BAR -->
+  <section data-id="27" class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4" id="stats-section-stu1">
+    <div data-id="28" class="bg-white rounded-2xl p-4 md:p-5 shadow-sm">
+      <div data-id="29" class="flex items-center gap-2 mb-2">
+        <i data-id="30" data-lucide="calendar-check" class="w-5 h-5 text-info"></i>
+        <span data-id="31" class="text-xs font-medium text-muted uppercase tracking-wide">Today</span>
+      </div>
+      <p data-id="32" class="text-2xl md:text-3xl font-bold text-navy tabular-nums" id="stat-today-vwx1">0</p>
+      <p data-id="33" class="text-xs text-muted mt-1">turnovers</p>
+    </div>
+    <div data-id="34" class="bg-white rounded-2xl p-4 md:p-5 shadow-sm">
+      <div data-id="35" class="flex items-center gap-2 mb-2">
+        <i data-id="36" data-lucide="calendar-days" class="w-5 h-5 text-gold"></i>
+        <span data-id="37" class="text-xs font-medium text-muted uppercase tracking-wide">This Week</span>
+      </div>
+      <p data-id="38" class="text-2xl md:text-3xl font-bold text-navy tabular-nums" id="stat-week-yza1">0</p>
+      <p data-id="39" class="text-xs text-muted mt-1">turnovers</p>
+    </div>
+    <div data-id="40" class="bg-white rounded-2xl p-4 md:p-5 shadow-sm">
+      <div data-id="41" class="flex items-center gap-2 mb-2">
+        <i data-id="42" data-lucide="user-round-search" class="w-5 h-5 text-warning"></i>
+        <span data-id="43" class="text-xs font-medium text-muted uppercase tracking-wide">Pending</span>
+      </div>
+      <p data-id="44" class="text-2xl md:text-3xl font-bold text-navy tabular-nums" id="stat-pending-bcd1">0</p>
+      <p data-id="45" class="text-xs text-muted mt-1">assignment</p>
+    </div>
+    <div data-id="46" class="bg-white rounded-2xl p-4 md:p-5 shadow-sm">
+      <div data-id="47" class="flex items-center gap-2 mb-2">
+        <i data-id="48" data-lucide="circle-check-big" class="w-5 h-5 text-success"></i>
+        <span data-id="49" class="text-xs font-medium text-muted uppercase tracking-wide">Completed</span>
+      </div>
+      <p data-id="50" class="text-2xl md:text-3xl font-bold text-navy tabular-nums" id="stat-completed-efg1">0</p>
+      <p data-id="51" class="text-xs text-muted mt-1">this month</p>
+    </div>
+  </section>
+
+  <!-- CONTROLS BAR -->
+  <section data-id="52" class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+    <div data-id="53" class="flex items-center bg-white rounded-xl p-1 shadow-sm">
+      <button data-id="54" id="view-week-btn-hij1" class="tab-active text-sm font-medium px-4 py-2 rounded-lg transition min-h-[40px]">
+        <i data-id="55" data-lucide="calendar" class="w-4 h-4 inline mr-1"></i>Week View
+      </button>
+      <button data-id="56" id="view-list-btn-klm1" class="tab-inactive text-sm font-medium px-4 py-2 rounded-lg transition min-h-[40px]">
+        <i data-id="57" data-lucide="list" class="w-4 h-4 inline mr-1"></i>List View
+      </button>
+    </div>
+    <div data-id="58" class="flex items-center gap-2">
+      <button data-id="59" id="export-btn-nop1" class="hidden sm:flex bg-white text-navy font-medium text-sm px-4 py-2.5 rounded-xl items-center gap-2 shadow-sm hover:bg-gray-50 transition min-h-[44px]">
+        <i data-id="60" data-lucide="clipboard-copy" class="w-4 h-4"></i> Export Schedule
+      </button>
+    </div>
+  </section>
+
+  <!-- WEEK VIEW -->
+  <section data-id="61" id="week-view-qrs1" class="space-y-4">
+    <div data-id="62" class="flex items-center justify-between">
+      <button data-id="63" id="week-prev-tuv1" class="p-2 bg-white rounded-xl shadow-sm hover:bg-gray-50 transition min-h-[44px] min-w-[44px] flex items-center justify-center">
+        <i data-id="64" data-lucide="chevron-left" class="w-5 h-5 text-navy"></i>
+      </button>
+      <h2 data-id="65" class="text-base md:text-lg font-semibold text-navy" id="week-label-wxy1"></h2>
+      <button data-id="66" id="week-next-zab1" class="p-2 bg-white rounded-xl shadow-sm hover:bg-gray-50 transition min-h-[44px] min-w-[44px] flex items-center justify-center">
+        <i data-id="67" data-lucide="chevron-right" class="w-5 h-5 text-navy"></i>
+      </button>
+    </div>
+    <div data-id="68" class="week-grid-container">
+      <div data-id="69" class="week-grid grid grid-cols-7 gap-2" id="week-grid-cde1"></div>
+    </div>
+  </section>
+
+  <!-- LIST VIEW -->
+  <section data-id="70" id="list-view-fgh1" class="hidden space-y-4">
+    <!-- FILTER BAR -->
+    <div data-id="71" class="bg-white rounded-2xl p-4 shadow-sm space-y-3">
+      <div data-id="72" class="flex items-center gap-2 text-sm font-medium text-navy">
+        <i data-id="73" data-lucide="filter" class="w-4 h-4"></i> Filters
+      </div>
+      <div data-id="74" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+        <div data-id="75">
+          <label data-id="76" class="text-xs font-medium text-muted uppercase tracking-wide block mb-1">Date Range</label>
+          <div data-id="77" class="flex gap-2">
+            <input data-id="78" type="date" id="filter-date-start-ijk1" class="w-full bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gold/40" />
+            <input data-id="79" type="date" id="filter-date-end-lmn1" class="w-full bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gold/40" />
+          </div>
+        </div>
+        <div data-id="80">
+          <label data-id="81" class="text-xs font-medium text-muted uppercase tracking-wide block mb-1">Tech</label>
+          <select data-id="82" id="filter-tech-opq1" class="w-full bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gold/40">
+            <option data-id="83" value="">All Techs</option>
+            <option data-id="84" value="Maria Johnson">Maria Johnson</option>
+            <option data-id="85" value="Darius Wright">Darius Wright</option>
+            <option data-id="86" value="Tamara Reeves">Tamara Reeves</option>
+            <option data-id="87" value="Unassigned">Unassigned</option>
+          </select>
+        </div>
+        <div data-id="88">
+          <label data-id="89" class="text-xs font-medium text-muted uppercase tracking-wide block mb-1">Status</label>
+          <select data-id="90" id="filter-status-rst1" class="w-full bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gold/40">
+            <option data-id="91" value="">All Statuses</option>
+            <option data-id="92" value="Scheduled">Scheduled</option>
+            <option data-id="93" value="In Progress">In Progress</option>
+            <option data-id="94" value="Completed">Completed</option>
+            <option data-id="95" value="At Risk">At Risk</option>
+            <option data-id="96" value="Cancelled">Cancelled</option>
+          </select>
+        </div>
+        <div data-id="97">
+          <label data-id="98" class="text-xs font-medium text-muted uppercase tracking-wide block mb-1">Property</label>
+          <input data-id="99" type="text" id="filter-property-uvw1" placeholder="Search property..." class="w-full bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gold/40" />
+        </div>
+      </div>
+      <button data-id="100" id="clear-filters-xyz1" class="text-xs text-info font-medium hover:underline">Clear Filters</button>
+    </div>
+
+    <!-- TABLE -->
+    <div data-id="101" class="bg-white rounded-2xl shadow-sm overflow-hidden">
+      <div data-id="102" class="overflow-x-auto">
+        <table data-id="103" class="w-full text-left text-sm">
+          <thead data-id="104" class="bg-navy/5 text-xs font-medium uppercase tracking-wide text-muted">
+            <tr data-id="105">
+              <th data-id="106" class="px-4 py-3" data-sort="date">Date <i data-id="107" data-lucide="chevrons-up-down" class="w-3 h-3 inline"></i></th>
+              <th data-id="108" class="px-4 py-3" data-sort="property">Property <i data-id="109" data-lucide="chevrons-up-down" class="w-3 h-3 inline"></i></th>
+              <th data-id="110" class="px-4 py-3 hidden lg:table-cell">Address</th>
+              <th data-id="111" class="px-4 py-3" data-sort="checkout">Checkout <i data-id="112" data-lucide="chevrons-up-down" class="w-3 h-3 inline"></i></th>
+              <th data-id="113" class="px-4 py-3">Check-in</th>
+              <th data-id="114" class="px-4 py-3 hidden md:table-cell">Window</th>
+              <th data-id="115" class="px-4 py-3" data-sort="tech">Tech <i data-id="116" data-lucide="chevrons-up-down" class="w-3 h-3 inline"></i></th>
+              <th data-id="117" class="px-4 py-3" data-sort="status">Status <i data-id="118" data-lucide="chevrons-up-down" class="w-3 h-3 inline"></i></th>
+              <th data-id="119" class="px-4 py-3">Actions</th>
+            </tr>
+          </thead>
+          <tbody data-id="120" id="list-table-body-abc2" class="divide-y divide-gray-100"></tbody>
+        </table>
+      </div>
+      <div data-id="121" class="px-4 py-3 text-xs text-muted flex items-center justify-between border-t border-gray-100">
+        <span data-id="122" id="list-count-def2"></span>
+        <span data-id="123" id="list-showing-ghi2"></span>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ADD/EDIT TURNOVER MODAL -->
+<div data-id="124" id="add-modal-jkl2" class="hidden fixed inset-0 z-50 modal-overlay flex items-center justify-center p-4">
+  <div data-id="125" class="bg-white rounded-3xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto">
+    <div data-id="126" class="p-6 border-b border-gray-100 flex items-center justify-between">
+      <h3 data-id="127" class="text-lg font-semibold text-navy" id="modal-title-mno2">Add Turnover</h3>
+      <button data-id="128" id="modal-close-pqr2" class="p-2 hover:bg-gray-100 rounded-lg transition min-h-[44px] min-w-[44px] flex items-center justify-center">
+        <i data-id="129" data-lucide="x" class="w-5 h-5 text-muted"></i>
+      </button>
+    </div>
+    <form data-id="130" id="turnover-form-stu2" class="p-6 space-y-4">
+      <input data-id="131" type="hidden" id="form-id-vwx2" />
+      <div data-id="132">
+        <label data-id="133" class="text-xs font-medium text-muted uppercase tracking-wide block mb-1">Property Name *</label>
+        <input data-id="134" type="text" id="form-property-yza2" required class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-gold/40 focus:bg-white" placeholder="e.g., The Gulch Getaway" />
+      </div>
+      <div data-id="135">
+        <label data-id="136" class="text-xs font-medium text-muted uppercase tracking-wide block mb-1">Property Address</label>
+        <input data-id="137" type="text" id="form-address-bcd2" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-gold/40 focus:bg-white" placeholder="123 Main St, Nashville TN" />
+      </div>
+      <div data-id="138" class="grid grid-cols-2 gap-3">
+        <div data-id="139">
+          <label data-id="140" class="text-xs font-medium text-muted uppercase tracking-wide block mb-1">Checkout Time *</label>
+          <input data-id="141" type="time" id="form-checkout-efg2" required class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-gold/40 focus:bg-white" />
+        </div>
+        <div data-id="142">
+          <label data-id="143" class="text-xs font-medium text-muted uppercase tracking-wide block mb-1">Check-in Time *</label>
+          <input data-id="144" type="time" id="form-checkin-hij2" required class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-gold/40 focus:bg-white" />
+        </div>
+      </div>
+      <div data-id="145" class="bg-gold/10 rounded-xl px-4 py-2.5 text-sm font-medium text-gold-dark flex items-center gap-2">
+        <i data-id="146" data-lucide="clock" class="w-4 h-4"></i>
+        <span data-id="147">Turnover Window: </span>
+        <span data-id="148" id="form-window-klm2" class="font-semibold">—</span>
+      </div>
+      <div data-id="149" class="grid grid-cols-2 gap-3">
+        <div data-id="150">
+          <label data-id="151" class="text-xs font-medium text-muted uppercase tracking-wide block mb-1">Date *</label>
+          <input data-id="152" type="date" id="form-date-nop2" required class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-gold/40 focus:bg-white" />
+        </div>
+        <div data-id="153">
+          <label data-id="154" class="text-xs font-medium text-muted uppercase tracking-wide block mb-1">Estimated Hours</label>
+          <input data-id="155" type="number" id="form-hours-qrs2" min="0.5" max="24" step="0.5" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-gold/40 focus:bg-white" placeholder="e.g., 3" />
+        </div>
+      </div>
+      <div data-id="156">
+        <label data-id="157" class="text-xs font-medium text-muted uppercase tracking-wide block mb-1">Assigned Tech</label>
+        <select data-id="158" id="form-tech-tuv2" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-gold/40 focus:bg-white">
+          <option data-id="159" value="Unassigned">Unassigned</option>
+          <option data-id="160" value="Maria Johnson">Maria Johnson</option>
+          <option data-id="161" value="Darius Wright">Darius Wright</option>
+          <option data-id="162" value="Tamara Reeves">Tamara Reeves</option>
+        </select>
+      </div>
+      <div data-id="163">
+        <label data-id="164" class="text-xs font-medium text-muted uppercase tracking-wide block mb-1">Priority</label>
+        <div data-id="165" class="flex gap-3">
+          <label data-id="166" class="flex items-center gap-2 cursor-pointer bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 text-sm has-[:checked]:bg-info-light has-[:checked]:border-info has-[:checked]:text-info-dark transition">
+            <input data-id="167" type="radio" name="priority" value="Normal" checked class="accent-[#3498DB]" /> Normal
+          </label>
+          <label data-id="168" class="flex items-center gap-2 cursor-pointer bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 text-sm has-[:checked]:bg-warning-light has-[:checked]:border-warning has-[:checked]:text-warning-dark transition">
+            <input data-id="169" type="radio" name="priority" value="Rush" class="accent-[#F39C12]" /> Rush
+          </label>
+          <label data-id="170" class="flex items-center gap-2 cursor-pointer bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 text-sm has-[:checked]:bg-gold-pale has-[:checked]:border-gold has-[:checked]:text-gold-dark transition">
+            <input data-id="171" type="radio" name="priority" value="VIP" class="accent-[#C9A84C]" /> VIP
+          </label>
+        </div>
+      </div>
+      <div data-id="172">
+        <label data-id="173" class="text-xs font-medium text-muted uppercase tracking-wide block mb-1">Status</label>
+        <select data-id="174" id="form-status-wxy2" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-gold/40 focus:bg-white">
+          <option data-id="175" value="Scheduled">Scheduled</option>
+          <option data-id="176" value="In Progress">In Progress</option>
+          <option data-id="177" value="Completed">Completed</option>
+          <option data-id="178" value="At Risk">At Risk</option>
+          <option data-id="179" value="Cancelled">Cancelled</option>
+        </select>
+      </div>
+      <div data-id="180">
+        <label data-id="181" class="text-xs font-medium text-muted uppercase tracking-wide block mb-1">Special Instructions</label>
+        <textarea data-id="182" id="form-instructions-zab2" rows="3" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-gold/40 focus:bg-white resize-none" placeholder="Any special notes for this turnover..."></textarea>
+      </div>
+      <div data-id="183" class="flex gap-3 pt-2">
+        <button data-id="184" type="submit" class="flex-1 bg-gold hover:bg-gold-dark text-navy font-semibold text-sm py-3 rounded-xl transition min-h-[44px]">
+          Save Turnover
+        </button>
+        <button data-id="185" type="button" id="modal-cancel-cde2" class="flex-1 bg-gray-100 hover:bg-gray-200 text-muted-dark font-medium text-sm py-3 rounded-xl transition min-h-[44px]">
+          Cancel
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- DETAIL MODAL -->
+<div data-id="186" id="detail-modal-fgh2" class="hidden fixed inset-0 z-50 modal-overlay flex items-center justify-center p-4">
+  <div data-id="187" class="bg-white rounded-3xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto">
+    <div data-id="188" class="p-6 border-b border-gray-100 flex items-center justify-between">
+      <h3 data-id="189" class="text-lg font-semibold text-navy" id="detail-title-ijk2">Turnover Details</h3>
+      <button data-id="190" id="detail-close-lmn2" class="p-2 hover:bg-gray-100 rounded-lg transition min-h-[44px] min-w-[44px] flex items-center justify-center">
+        <i data-id="191" data-lucide="x" class="w-5 h-5 text-muted"></i>
+      </button>
+    </div>
+    <div data-id="192" class="p-6 space-y-5" id="detail-content-opq2"></div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer data-id="193" class="bg-navy text-white py-6 mt-auto">
+  <div data-id="194" class="max-w-7xl mx-auto px-4 md:px-6 text-center space-y-2">
+    <p data-id="195" class="text-sm font-medium">© 2026 Proper Home Prep | Turnover Schedule</p>
+    <p data-id="196" class="text-xs text-muted-light">Made by Copilot</p>
+  </div>
+</footer>
+
+<script>
+// ==== ICONS ====
+if (typeof lucide !== "undefined" && typeof lucide.createIcons === "function") {
+  lucide.createIcons();
+}
+
+// ==== DATA LAYER ====
+const STORAGE_KEY = 'php_turnovers';
+const TODAY = '2026-07-21';
+const TECHS = ['Maria Johnson', 'Darius Wright', 'Tamara Reeves', 'Unassigned'];
+
+function generateId() { return 'to_' + Date.now() + '_' + Math.random().toString(36).substr(2, 6); }
+
+function getSampleData() {
+  return [
+    {
+      id: generateId(), property: 'The Gulch Getaway', address: '312 12th Ave S, Nashville TN 37203',
+      checkout: '11:00', checkin: '15:00', date: '2026-07-21', tech: 'Maria Johnson',
+      status: 'Completed', priority: 'Normal', hours: 3, instructions: 'Deep clean master bath. Replace welcome mat.',
+      notes: [{ text: 'All linens replaced, looking great!', time: '2026-07-21T14:30:00' }]
+    },
+    {
+      id: generateId(), property: 'Franklin Farmhouse', address: '890 Main St, Franklin TN 37064',
+      checkout: '10:00', checkin: '16:00', date: '2026-07-21', tech: 'Darius Wright',
+      status: 'In Progress', priority: 'VIP', hours: 5, instructions: 'VIP guest arriving — extra attention to detail. Stock premium amenities.',
+      notes: [{ text: 'Kitchen and living room done. Moving to bedrooms.', time: '2026-07-21T13:15:00' }]
+    },
+    {
+      id: generateId(), property: 'Brentwood Suite', address: '455 Franklin Rd, Brentwood TN 37027',
+      checkout: '12:00', checkin: '17:00', date: '2026-07-21', tech: 'Tamara Reeves',
+      status: 'Scheduled', priority: 'Normal', hours: 3.5, instructions: 'New guest requires hypoallergenic bedding setup.',
+      notes: []
+    }
+  ];
+}
+
+function loadTurnovers() {
+  let data = localStorage.getItem(STORAGE_KEY);
+  if (!data) {
+    const sample = getSampleData();
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(sample));
+    return sample;
+  }
+  return JSON.parse(data);
+}
+
+function saveTurnovers(turnovers) {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(turnovers));
+}
+
+let turnovers = loadTurnovers();
+let currentView = 'week';
+let weekOffset = 0;
+let sortCol = 'date';
+let sortDir = 'asc';
+
+// ==== HELPERS ====
+function formatTime12(t) {
+  if (!t) return '—';
+  const [h, m] = t.split(':').map(Number);
+  const ampm = h >= 12 ? 'PM' : 'AM';
+  const h12 = h % 12 || 12;
+  return h12 + ':' + String(m).padStart(2, '0') + ' ' + ampm;
+}
+
+function calcWindow(checkout, checkin) {
+  if (!checkout || !checkin) return '—';
+  const [ch, cm] = checkout.split(':').map(Number);
+  const [ih, im] = checkin.split(':').map(Number);
+  let diff = (ih * 60 + im) - (ch * 60 + cm);
+  if (diff <= 0) return '—';
+  const hrs = Math.floor(diff / 60);
+  const mins = diff % 60;
+  return hrs + 'h' + (mins > 0 ? ' ' + mins + 'm' : '');
+}
+
+function statusClass(status) {
+  return 'status-' + status.toLowerCase().replace(/\s+/g, '-');
+}
+
+function dotClass(status) {
+  return 'dot-' + status.toLowerCase().replace(/\s+/g, '-');
+}
+
+function priorityBorderClass(p) {
+  return 'priority-' + (p || 'normal').toLowerCase();
+}
+
+function getMonday(d) {
+  const date = new Date(d);
+  const day = date.getDay();
+  const diff = date.getDate() - day + (day === 0 ? -6 : 1);
+  return new Date(date.setDate(diff));
+}
+
+function formatDateShort(dateStr) {
+  const d = new Date(dateStr + 'T00:00:00');
+  return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+}
+
+function formatDateFull(dateStr) {
+  const d = new Date(dateStr + 'T00:00:00');
+  return d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' });
+}
+
+function formatDateDisplay(dateStr) {
+  const d = new Date(dateStr + 'T00:00:00');
+  return d.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' });
+}
+
+function toISODate(d) {
+  return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+}
+
+function isToday(dateStr) { return dateStr === TODAY; }
+
+function getWeekDates() {
+  const base = new Date(TODAY + 'T00:00:00');
+  base.setDate(base.getDate() + (weekOffset * 7));
+  const monday = getMonday(base);
+  const days = [];
+  for (let i = 0; i < 7; i++) {
+    const d = new Date(monday);
+    d.setDate(monday.getDate() + i);
+    days.push(toISODate(d));
+  }
+  return days;
+}
+
+// ==== HEADER DATE ====
+function renderHeaderDate() {
+  const label = formatDateDisplay(TODAY);
+  const el = document.getElementById('header-date-def1');
+  const mob = document.getElementById('mobile-date-mno1');
+  if (el) el.textContent = label;
+  if (mob) mob.textContent = label;
+}
+
+// ==== STATS ====
+function renderStats() {
+  const todayCount = turnovers.filter(t => t.date === TODAY && t.status !== 'Cancelled').length;
+  const weekDates = getWeekDates();
+  const weekCount = turnovers.filter(t => weekDates.includes(t.date) && t.status !== 'Cancelled').length;
+  const pendingCount = turnovers.filter(t => t.tech === 'Unassigned' && t.status !== 'Cancelled').length;
+  const todayDate = new Date(TODAY + 'T00:00:00');
+  const monthStart = todayDate.getFullYear() + '-' + String(todayDate.getMonth() + 1).padStart(2, '0');
+  const completedCount = turnovers.filter(t => t.date.startsWith(monthStart) && t.status === 'Completed').length;
+
+  document.getElementById('stat-today-vwx1').textContent = todayCount;
+  document.getElementById('stat-week-yza1').textContent = weekCount;
+  document.getElementById('stat-pending-bcd1').textContent = pendingCount;
+  document.getElementById('stat-completed-efg2').textContent = completedCount;
+}
+
+// ==== AT-RISK BANNER ====
+function renderAtRiskBanner() {
+  const atRisk = turnovers.filter(t => t.status === 'At Risk');
+  const banner = document.getElementById('at-risk-banner-abc1');
+  const txt = document.getElementById('at-risk-text-abc2');
+  if (atRisk.length > 0) {
+    const names = atRisk.map(t => t.property).join(', ');
+    txt.innerHTML = '<strong>⚠ At-Risk:</strong> ' + names + ' — immediate attention required';
+    banner.classList.remove('hidden');
+    banner.classList.add('flex');
+  } else {
+    banner.classList.add('hidden');
+    banner.classList.remove('flex');
+  }
+}
+
+// ==== WEEK VIEW ====
+function renderWeekView() {
+  const weekDates = getWeekDates();
+  const grid = document.getElementById('week-grid-cde1');
+  const label = document.getElementById('week-label-wxy1');
+
+  const startLabel = formatDateShort(weekDates[0]);
+  const endLabel = formatDateShort(weekDates[6]);
+  const yr = new Date(weekDates[0] + 'T00:00:00').getFullYear();
+  label.textContent = startLabel + ' – ' + endLabel + ', ' + yr;
+
+  let html = '';
+  const dayNames = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+  weekDates.forEach((dateStr, i) => {
+    const dayTurnovers = turnovers.filter(t => t.date === dateStr && t.status !== 'Cancelled');
+    const today = isToday(dateStr);
+    const dateObj = new Date(dateStr + 'T00:00:00');
+    const dayNum = dateObj.getDate();
+
+    html += '<div class="bg-white rounded-2xl shadow-sm overflow-hidden week-col flex flex-col">';
+    html += '<div class="px-3 py-2 text-center border-b ' + (today ? 'bg-navy text-white' : 'bg-gray-50 text-muted-dark') + '">';
+    html += '<div class="text-xs font-medium uppercase tracking-wide ' + (today ? 'text-gold' : '') + '">' + dayNames[i] + '</div>';
+    html += '<div class="text-lg font-bold">' + dayNum + '</div>';
+    html += '</div>';
+    html += '<div class="flex-1 p-2 space-y-2 ' + (dayTurnovers.length > 0 ? '' : 'flex items-center justify-center') + '">';
+
+    if (dayTurnovers.length === 0) {
+      html += '<p class="text-xs text-muted text-center">No turnovers</p>';
+    } else {
+      dayTurnovers.forEach(t => {
+        html += '<div class="turnover-card ' + priorityBorderClass(t.priority) + ' bg-gray-50 rounded-xl p-2.5 cursor-pointer text-xs space-y-1" data-detail="' + t.id + '">';
+        html += '<div class="font-semibold text-navy truncate">' + t.property + '</div>';
+        html += '<div class="text-muted">' + formatTime12(t.checkout) + ' – ' + formatTime12(t.checkin) + '</div>';
+        html += '<div class="flex items-center justify-between">';
+        html += '<span class="text-muted truncate max-w-[80px]">' + (t.tech === 'Unassigned' ? '<em>Unassigned</em>' : t.tech.split(' ')[0]) + '</span>';
+        html += '<span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full inline-block ' + dotClass(t.status) + '"></span><span class="' + statusClass(t.status) + ' text-[10px] font-medium px-1.5 py-0.5 rounded-md">' + t.status + '</span></span>';
+        html += '</div></div>';
+      });
+    }
+    html += '</div></div>';
+  });
+
+  grid.innerHTML = html;
+  attachWeekCardListeners();
+}
+
+function attachWeekCardListeners() {
+  document.querySelectorAll('[data-detail]').forEach(card => {
+    card.addEventListener('click', () => openDetailModal(card.dataset.detail));
+  });
+}
+
+// ==== LIST VIEW ====
+function getFilteredTurnovers() {
+  let filtered = [...turnovers];
+  const startDate = document.getElementById('filter-date-start-ijk1').value;
+  const endDate = document.getElementById('filter-date-end-lmn1').value;
+  const tech = document.getElementById('filter-tech-opq1').value;
+  const status = document.getElementById('filter-status-rst1').value;
+  const property = document.getElementById('filter-property-uvw1').value.toLowerCase();
+
+  if (startDate) filtered = filtered.filter(t => t.date >= startDate);
+  if (endDate) filtered = filtered.filter(t => t.date <= endDate);
+  if (tech) filtered = filtered.filter(t => t.tech === tech);
+  if (status) filtered = filtered.filter(t => t.status === status);
+  if (property) filtered = filtered.filter(t => t.property.toLowerCase().includes(property));
+
+  filtered.sort((a, b) => {
+    let va = a[sortCol] || '';
+    let vb = b[sortCol] || '';
+    if (sortCol === 'date') {
+      va = a.date + ' ' + (a.checkout || '');
+      vb = b.date + ' ' + (b.checkout || '');
+    }
+    if (va < vb) return sortDir === 'asc' ? -1 : 1;
+    if (va > vb) return sortDir === 'asc' ? 1 : -1;
+    return 0;
+  });
+
+  return filtered;
+}
+
+function renderListView() {
+  const filtered = getFilteredTurnovers();
+  const tbody = document.getElementById('list-table-body-abc2');
+  let html = '';
+
+  filtered.forEach(t => {
+    const window = calcWindow(t.checkout, t.checkin);
+    html += '<tr class="hover:bg-gray-50 transition text-sm">';
+    html += '<td class="px-4 py-3 whitespace-nowrap font-medium tabular-nums">' + formatDateShort(t.date) + '</td>';
+    html += '<td class="px-4 py-3 font-semibold text-navy">' + t.property + '</td>';
+    html += '<td class="px-4 py-3 text-muted hidden lg:table-cell text-xs">' + (t.address || '—') + '</td>';
+    html += '<td class="px-4 py-3 tabular-nums">' + formatTime12(t.checkout) + '</td>';
+    html += '<td class="px-4 py-3 tabular-nums">' + formatTime12(t.checkin) + '</td>';
+    html += '<td class="px-4 py-3 hidden md:table-cell font-medium">' + window + '</td>';
+    html += '<td class="px-4 py-3">' + (t.tech === 'Unassigned' ? '<span class="text-warning italic">Unassigned</span>' : t.tech) + '</td>';
+    html += '<td class="px-4 py-3"><span class="' + statusClass(t.status) + ' text-xs font-medium px-2.5 py-1 rounded-lg">' + t.status + '</span></td>';
+    html += '<td class="px-4 py-3"><div class="flex items-center gap-1">';
+    html += '<button class="list-view-btn p-1.5 hover:bg-gray-100 rounded-lg" data-detail="' + t.id + '" title="View"><i data-lucide="eye" class="w-4 h-4 text-info"></i></button>';
+    html += '<button class="list-edit-btn p-1.5 hover:bg-gray-100 rounded-lg" data-edit="' + t.id + '" title="Edit"><i data-lucide="pencil" class="w-4 h-4 text-muted"></i></button>';
+    html += '<button class="list-delete-btn p-1.5 hover:bg-gray-100 rounded-lg" data-delete="' + t.id + '" title="Delete"><i data-lucide="trash-2" class="w-4 h-4 text-danger"></i></button>';
+    html += '</div></td></tr>';
+  });
+
+  tbody.innerHTML = html;
+  document.getElementById('list-count-def2').textContent = filtered.length + ' turnover' + (filtered.length !== 1 ? 's' : '');
+  document.getElementById('list-showing-ghi2').textContent = 'Showing all results';
+
+  if (typeof lucide !== "undefined" && typeof lucide.createIcons === "function") {
+    lucide.createIcons();
+  }
+  attachListListeners();
+}
+
+function attachListListeners() {
+  document.querySelectorAll('.list-view-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      openDetailModal(btn.dataset.detail);
+    });
+  });
+  document.querySelectorAll('.list-edit-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      openEditModal(btn.dataset.edit);
+    });
+  });
+  document.querySelectorAll('.list-delete-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      deleteTurnover(btn.dataset.delete);
+    });
+  });
+}
+
+// ==== ADD/EDIT MODAL ====
+function openAddModal() {
+  document.getElementById('modal-title-mno2').textContent = 'Add Turnover';
+  document.getElementById('form-id-vwx2').value = '';
+  document.getElementById('form-property-yza2').value = '';
+  document.getElementById('form-address-bcd2').value = '';
+  document.getElementById('form-checkout-efg2').value = '';
+  document.getElementById('form-checkin-hij2').value = '';
+  document.getElementById('form-date-nop2').value = TODAY;
+  document.getElementById('form-tech-tuv2').value = 'Unassigned';
+  document.getElementById('form-hours-qrs2').value = '';
+  document.getElementById('form-status-wxy2').value = 'Scheduled';
+  document.getElementById('form-instructions-zab2').value = '';
+  document.querySelector('input[name="priority"][value="Normal"]').checked = true;
+  document.getElementById('form-window-klm2').textContent = '—';
+  document.getElementById('add-modal-jkl2').classList.remove('hidden');
+}
+
+function openEditModal(id) {
+  const t = turnovers.find(x => x.id === id);
+  if (!t) return;
+  document.getElementById('modal-title-mno2').textContent = 'Edit Turnover';
+  document.getElementById('form-id-vwx2').value = t.id;
+  document.getElementById('form-property-yza2').value = t.property;
+  document.getElementById('form-address-bcd2').value = t.address || '';
+  document.getElementById('form-checkout-efg2').value = t.checkout;
+  document.getElementById('form-checkin-hij2').value = t.checkin;
+  document.getElementById('form-date-nop2').value = t.date;
+  document.getElementById('form-tech-tuv2').value = t.tech;
+  document.getElementById('form-hours-qrs2').value = t.hours || '';
+  document.getElementById('form-status-wxy2').value = t.status;
+  document.getElementById('form-instructions-zab2').value = t.instructions || '';
+  const pRadio = document.querySelector('input[name="priority"][value="' + (t.priority || 'Normal') + '"]');
+  if (pRadio) pRadio.checked = true;
+  updateWindowCalc();
+  document.getElementById('add-modal-jkl2').classList.remove('hidden');
+}
+
+function closeAddModal() {
+  document.getElementById('add-modal-jkl2').classList.add('hidden');
+}
+
+function updateWindowCalc() {
+  const co = document.getElementById('form-checkout-efg2').value;
+  const ci = document.getElementById('form-checkin-hij2').value;
+  document.getElementById('form-window-klm2').textContent = calcWindow(co, ci);
+}
+
+function saveTurnover(e) {
+  e.preventDefault();
+  const id = document.getElementById('form-id-vwx2').value;
+  const priority = document.querySelector('input[name="priority"]:checked').value;
+  const data = {
+    property: document.getElementById('form-property-yza2').value.trim(),
+    address: document.getElementById('form-address-bcd2').value.trim(),
+    checkout: document.getElementById('form-checkout-efg2').value,
+    checkin: document.getElementById('form-checkin-hij2').value,
+    date: document.getElementById('form-date-nop2').value,
+    tech: document.getElementById('form-tech-tuv2').value,
+    hours: parseFloat(document.getElementById('form-hours-qrs2').value) || null,
+    status: document.getElementById('form-status-wxy2').value,
+    instructions: document.getElementById('form-instructions-zab2').value.trim(),
+    priority: priority,
+  };
+
+  if (id) {
+    const idx = turnovers.findIndex(t => t.id === id);
+    if (idx > -1) {
+      turnovers[idx] = { ...turnovers[idx], ...data };
+    }
+  } else {
+    turnovers.push({ id: generateId(), ...data, notes: [] });
+  }
+
+  saveTurnovers(turnovers);
+  closeAddModal();
+  renderAll();
+}
+
+// ==== DETAIL MODAL ====
+function openDetailModal(id) {
+  const t = turnovers.find(x => x.id === id);
+  if (!t) return;
+  const container = document.getElementById('detail-content-opq2');
+  document.getElementById('detail-title-ijk2').textContent = t.property;
+
+  const window = calcWindow(t.checkout, t.checkin);
+  let notesHtml = '';
+  if (t.notes && t.notes.length > 0) {
+    t.notes.forEach(n => {
+      const nDate = new Date(n.time);
+      const timeStr = nDate.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+      const dateStr = nDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+      notesHtml += '<div class="note-entry bg-gray-50 rounded-xl p-3 text-sm"><p class="text-navy">' + n.text + '</p><p class="text-xs text-muted mt-1">' + dateStr + ' at ' + timeStr + '</p></div>';
+    });
+  } else {
+    notesHtml = '<p class="text-xs text-muted italic">No notes yet</p>';
+  }
+
+  let priorityBadge = '';
+  if (t.priority === 'Rush') priorityBadge = '<span class="bg-warning-light text-warning-dark text-xs font-medium px-2.5 py-1 rounded-lg">🔥 Rush</span>';
+  else if (t.priority === 'VIP') priorityBadge = '<span class="bg-gold-pale text-gold-dark text-xs font-medium px-2.5 py-1 rounded-lg">⭐ VIP</span>';
+  else priorityBadge = '<span class="bg-info-light text-info-dark text-xs font-medium px-2.5 py-1 rounded-lg">Normal</span>';
+
+  container.innerHTML = `
+    <div class="flex items-center gap-2 flex-wrap">
+      <span class="${statusClass(t.status)} text-xs font-semibold px-3 py-1.5 rounded-lg">${t.status}</span>
+      ${priorityBadge}
+    </div>
+    <div class="space-y-3">
+      <div class="grid grid-cols-2 gap-3">
+        <div>
+          <p class="text-xs font-medium text-muted uppercase tracking-wide">Date</p>
+          <p class="text-sm font-medium text-navy">${formatDateFull(t.date)}</p>
+        </div>
+        <div>
+          <p class="text-xs font-medium text-muted uppercase tracking-wide">Window</p>
+          <p class="text-sm font-semibold text-gold-dark">${window}</p>
+        </div>
+        <div>
+          <p class="text-xs font-medium text-muted uppercase tracking-wide">Checkout</p>
+          <p class="text-sm font-medium text-navy tabular-nums">${formatTime12(t.checkout)}</p>
+        </div>
+        <div>
+          <p class="text-xs font-medium text-muted uppercase tracking-wide">Check-in</p>
+          <p class="text-sm font-medium text-navy tabular-nums">${formatTime12(t.checkin)}</p>
+        </div>
+        <div>
+          <p class="text-xs font-medium text-muted uppercase tracking-wide">Assigned Tech</p>
+          <p class="text-sm font-medium ${t.tech === 'Unassigned' ? 'text-warning italic' : 'text-navy'}">${t.tech}</p>
+        </div>
+        <div>
+          <p class="text-xs font-medium text-muted uppercase tracking-wide">Est. Hours</p>
+          <p class="text-sm font-medium text-navy tabular-nums">${t.hours ? t.hours + 'h' : '—'}</p>
+        </div>
+      </div>
+      ${t.address ? '<div><p class="text-xs font-medium text-muted uppercase tracking-wide">Address</p><p class="text-sm text-navy">' + t.address + '</p></div>' : ''}
+      ${t.instructions ? '<div><p class="text-xs font-medium text-muted uppercase tracking-wide">Special Instructions</p><p class="text-sm text-navy bg-gold-pale/50 rounded-xl p-3">' + t.instructions + '</p></div>' : ''}
+    </div>
+
+    <div class="border-t border-gray-100 pt-4">
+      <p class="text-xs font-medium text-muted uppercase tracking-wide mb-2">Quick Status Update</p>
+      <div class="flex flex-wrap gap-2">
+        <button class="detail-status-btn bg-gold-pale hover:bg-gold-light text-gold-dark text-xs font-semibold px-3 py-2 rounded-lg transition min-h-[36px]" data-sid="${t.id}" data-sstatus="In Progress">Mark In Progress</button>
+        <button class="detail-status-btn bg-success-light hover:bg-success/20 text-success-dark text-xs font-semibold px-3 py-2 rounded-lg transition min-h-[36px]" data-sid="${t.id}" data-sstatus="Completed">Mark Complete</button>
+        <button class="detail-status-btn bg-warning-light hover:bg-warning/20 text-warning-dark text-xs font-semibold px-3 py-2 rounded-lg transition min-h-[36px]" data-sid="${t.id}" data-sstatus="At Risk">Flag At Risk</button>
+      </div>
+    </div>
+
+    <div class="border-t border-gray-100 pt-4">
+      <p class="text-xs font-medium text-muted uppercase tracking-wide mb-2">Notes Log</p>
+      <div class="space-y-2 mb-3" id="detail-notes-list-rst2">${notesHtml}</div>
+      <div class="flex gap-2">
+        <input type="text" id="detail-note-input-uvw2" placeholder="Add a note..." class="flex-1 bg-gray-50 border border-gray-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gold/40" />
+        <button id="detail-add-note-xyz2" class="bg-navy text-white text-sm font-medium px-4 py-2 rounded-xl hover:bg-navy-light transition min-h-[40px]" data-nid="${t.id}">Add</button>
+      </div>
+    </div>
+
+    <div class="border-t border-gray-100 pt-4 flex flex-wrap gap-2">
+      <a href="tel:+16155551234" class="flex items-center gap-1.5 bg-success-light text-success-dark text-xs font-semibold px-3 py-2 rounded-lg hover:bg-success/20 transition min-h-[36px]">
+        <i data-lucide="phone" class="w-3.5 h-3.5"></i> Call Tech
+      </a>
+      <button class="detail-edit-btn flex items-center gap-1.5 bg-info-light text-info-dark text-xs font-semibold px-3 py-2 rounded-lg hover:bg-info/20 transition min-h-[36px]" data-eid="${t.id}">
+        <i data-lucide="pencil" class="w-3.5 h-3.5"></i> Edit Job
+      </button>
+      <button class="detail-delete-btn flex items-center gap-1.5 bg-danger-light text-danger-dark text-xs font-semibold px-3 py-2 rounded-lg hover:bg-danger/20 transition min-h-[36px]" data-did="${t.id}">
+        <i data-lucide="trash-2" class="w-3.5 h-3.5"></i> Delete Job
+      </button>
+    </div>
+  `;
+
+  document.getElementById('detail-modal-fgh2').classList.remove('hidden');
+
+  if (typeof lucide !== "undefined" && typeof lucide.createIcons === "function") {
+    lucide.createIcons();
+  }
+
+  // Status buttons
+  container.querySelectorAll('.detail-status-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const tid = btn.dataset.sid;
+      const newStatus = btn.dataset.sstatus;
+      const idx = turnovers.findIndex(x => x.id === tid);
+      if (idx > -1) {
+        turnovers[idx].status = newStatus;
+        saveTurnovers(turnovers);
+        closeDetailModal();
+        renderAll();
+      }
+    });
+  });
+
+  // Add note
+  const addNoteBtn = document.getElementById('detail-add-note-xyz2');
+  if (addNoteBtn) {
+    addNoteBtn.addEventListener('click', () => {
+      const input = document.getElementById('detail-note-input-uvw2');
+      const text = input.value.trim();
+      if (!text) return;
+      const nid = addNoteBtn.dataset.nid;
+      const idx = turnovers.findIndex(x => x.id === nid);
+      if (idx > -1) {
+        if (!turnovers[idx].notes) turnovers[idx].notes = [];
+        turnovers[idx].notes.push({ text: text, time: new Date().toISOString() });
+        saveTurnovers(turnovers);
+        openDetailModal(nid);
+      }
+    });
+  }
+
+  // Edit
+  container.querySelectorAll('.detail-edit-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      closeDetailModal();
+      openEditModal(btn.dataset.eid);
+    });
+  });
+
+  // Delete
+  container.querySelectorAll('.detail-delete-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      closeDetailModal();
+      deleteTurnover(btn.dataset.did);
+    });
+  });
+}
+
+function closeDetailModal() {
+  document.getElementById('detail-modal-fgh2').classList.add('hidden');
+}
+
+function deleteTurnover(id) {
+  if (!confirm('Delete this turnover? This cannot be undone.')) return;
+  turnovers = turnovers.filter(t => t.id !== id);
+  saveTurnovers(turnovers);
+  renderAll();
+}
+
+// ==== EXPORT ====
+function exportSchedule() {
+  let txt = '=== PROPER HOME PREP — TURNOVER SCHEDULE ===\n';
+  txt += 'Exported: ' + formatDateDisplay(TODAY) + '\n\n';
+  const sorted = [...turnovers].sort((a, b) => (a.date + a.checkout).localeCompare(b.date + b.checkout));
+  sorted.forEach(t => {
+    txt += '▸ ' + t.property + '\n';
+    txt += '  Date: ' + formatDateFull(t.date) + '\n';
+    txt += '  Time: ' + formatTime12(t.checkout) + ' → ' + formatTime12(t.checkin) + ' (' + calcWindow(t.checkout, t.checkin) + ')\n';
+    txt += '  Tech: ' + t.tech + '\n';
+    txt += '  Status: ' + t.status + ' | Priority: ' + (t.priority || 'Normal') + '\n';
+    if (t.address) txt += '  Address: ' + t.address + '\n';
+    if (t.instructions) txt += '  Notes: ' + t.instructions + '\n';
+    txt += '\n';
+  });
+  txt += '— Total: ' + turnovers.length + ' turnovers —\n';
+
+  navigator.clipboard.writeText(txt).then(() => {
+    const btn = document.getElementById('export-btn-nop1');
+    if (btn) {
+      const orig = btn.innerHTML;
+      btn.innerHTML = '<i data-lucide="check" class="w-4 h-4"></i> Copied!';
+      if (typeof lucide !== "undefined" && typeof lucide.createIcons === "function") lucide.createIcons();
+      setTimeout(() => { btn.innerHTML = orig; if (typeof lucide !== "undefined" && typeof lucide.createIcons === "function") lucide.createIcons(); }, 2000);
+    }
+    alert('Schedule copied to clipboard!');
+  }).catch(() => {
+    alert('Could not copy. Please try again.');
+  });
+}
+
+// ==== VIEW TOGGLE ====
+function setView(view) {
+  currentView = view;
+  const weekBtn = document.getElementById('view-week-btn-hij1');
+  const listBtn = document.getElementById('view-list-btn-klm1');
+  const weekSection = document.getElementById('week-view-qrs1');
+  const listSection = document.getElementById('list-view-fgh1');
+
+  if (view === 'week') {
+    weekBtn.classList.add('tab-active');
+    weekBtn.classList.remove('tab-inactive');
+    listBtn.classList.add('tab-inactive');
+    listBtn.classList.remove('tab-active');
+    weekSection.classList.remove('hidden');
+    listSection.classList.add('hidden');
+    renderWeekView();
+  } else {
+    listBtn.classList.add('tab-active');
+    listBtn.classList.remove('tab-inactive');
+    weekBtn.classList.add('tab-inactive');
+    weekBtn.classList.remove('tab-active');
+    listSection.classList.remove('hidden');
+    weekSection.classList.add('hidden');
+    renderListView();
+  }
+}
+
+// ==== RENDER ALL ====
+function renderAll() {
+  turnovers = loadTurnovers();
+  renderStats();
+  renderAtRiskBanner();
+  if (currentView === 'week') {
+    renderWeekView();
+  } else {
+    renderListView();
+  }
+}
+
+// ==== EVENT BINDINGS ====
+document.getElementById('add-turnover-btn-ghi1').addEventListener('click', openAddModal);
+document.getElementById('modal-close-pqr2').addEventListener('click', closeAddModal);
+document.getElementById('modal-cancel-cde2').addEventListener('click', closeAddModal);
+document.getElementById('detail-close-lmn2').addEventListener('click', closeDetailModal);
+
+document.getElementById('add-modal-jkl2').addEventListener('click', (e) => {
+  if (e.target === document.getElementById('add-modal-jkl2')) closeAddModal();
+});
+document.getElementById('detail-modal-fgh2').addEventListener('click', (e) => {
+  if (e.target === document.getElementById('detail-modal-fgh2')) closeDetailModal();
+});
+
+document.getElementById('turnover-form-stu2').addEventListener('submit', saveTurnover);
+
+document.getElementById('form-checkout-efg2').addEventListener('input', updateWindowCalc);
+document.getElementById('form-checkin-hij2').addEventListener('input', updateWindowCalc);
+
+document.getElementById('view-week-btn-hij1').addEventListener('click', () => setView('week'));
+document.getElementById('view-list-btn-klm1').addEventListener('click', () => setView('list'));
+
+document.getElementById('week-prev-tuv1').addEventListener('click', () => { weekOffset--; renderWeekView(); });
+document.getElementById('week-next-zab1').addEventListener('click', () => { weekOffset++; renderWeekView(); });
+
+document.getElementById('export-btn-nop1').addEventListener('click', exportSchedule);
+document.getElementById('export-btn-mobile-pqr1').addEventListener('click', exportSchedule);
+
+// At-risk banner action
+document.getElementById('at-risk-action-abc3').addEventListener('click', () => {
+  const atRisk = turnovers.find(t => t.status === 'At Risk');
+  if (atRisk) openDetailModal(atRisk.id);
+});
+
+// Sort headers
+document.querySelectorAll('th[data-sort]').forEach(th => {
+  th.addEventListener('click', () => {
+    if (sortCol === th.dataset.sort) {
+      sortDir = sortDir === 'asc' ? 'desc' : 'asc';
+    } else {
+      sortCol = th.dataset.sort;
+      sortDir = 'asc';
+    }
+    renderListView();
+  });
+});
+
+// Filters
+['filter-date-start-ijk1', 'filter-date-end-lmn1', 'filter-tech-opq1', 'filter-status-rst1'].forEach(id => {
+  document.getElementById(id).addEventListener('change', renderListView);
+});
+document.getElementById('filter-property-uvw1').addEventListener('input', renderListView);
+document.getElementById('clear-filters-xyz1').addEventListener('click', () => {
+  document.getElementById('filter-date-start-ijk1').value = '';
+  document.getElementById('filter-date-end-lmn1').value = '';
+  document.getElementById('filter-tech-opq1').value = '';
+  document.getElementById('filter-status-rst1').value = '';
+  document.getElementById('filter-property-uvw1').value = '';
+  renderListView();
+});
+
+// ==== INIT ====
+renderHeaderDate();
+renderAll();
+</script>
+</body>
+</html>

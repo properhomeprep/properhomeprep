@@ -1,0 +1,23 @@
+# ---- secrets: never commit these ----
+.env
+.env.*
+*.pem
+*.key
+serviceAccount*.json
+*-firebase-adminsdk-*.json
+*credentials*.json
+
+# ---- dependencies and tool output ----
+node_modules/
+firebase-debug.log*
+firestore-debug.log*
+ui-debug.log*
+*.log
+.firebase/
+.netlify/
+
+# ---- operating system / editor files ----
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/

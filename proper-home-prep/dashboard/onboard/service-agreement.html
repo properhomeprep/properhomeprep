@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Proper Home Prep — Client Service Agreement</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800;900&family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;border-radius:0!important;font-family:'Lato',sans-serif;}
+:root{--navy:#1B2A4A;--gold:#D8B96A;--cream:#FAF7F2;--paper:#f5f4f0;--slate:#6B7D8F;}
+body{background:var(--paper);color:var(--navy);}
+
+/* HEADER */
+.site-header{background:var(--navy);padding:16px 40px;display:flex;justify-content:space-between;align-items:center;}
+.brand{color:#fff;font-weight:800;font-size:20px;letter-spacing:-0.02em;font-family:'Playfair Display',serif;}
+.brand span{color:var(--gold);}
+.header-right{color:var(--gold);font-size:12px;font-weight:600;text-align:right;line-height:1.8;}
+.gold-bar{height:3px;background:var(--gold);}
+
+/* CONTROLS */
+.controls{background:var(--cream);border-bottom:1px solid #d1d5db;padding:12px 40px;display:flex;gap:12px;align-items:center;}
+.ctrl-btn{background:var(--navy);color:var(--gold);border:none;font-weight:700;font-size:12px;padding:8px 20px;cursor:pointer;letter-spacing:0.05em;text-transform:uppercase;}
+.ctrl-btn:hover{opacity:.85;}
+.ctrl-btn.outline{background:transparent;border:2px solid var(--navy);color:var(--navy);}
+.ctrl-btn.outline:hover{background:var(--navy);color:var(--gold);}
+
+/* DOCUMENT */
+.doc-wrap{max-width:820px;margin:32px auto;padding:0 24px 80px;}
+.doc-card{background:#fff;border:1px solid #e5e7eb;padding:52px 56px;}
+@media(max-width:640px){.doc-card{padding:28px 24px;}}
+
+/* DOC HEADER */
+.doc-header{text-align:center;border-bottom:3px solid var(--navy);padding-bottom:28px;margin-bottom:32px;}
+.doc-header .logo-line{font-size:22px;font-weight:800;color:var(--navy);letter-spacing:-0.02em;margin-bottom:4px;font-family:'Playfair Display',serif;}
+.doc-header .logo-line span{color:var(--gold);}
+.doc-header .doc-title{font-size:17px;font-weight:700;color:var(--navy);text-transform:uppercase;letter-spacing:0.08em;margin-top:10px;}
+.doc-header .doc-sub{font-size:12px;color:#6b7280;margin-top:4px;}
+.doc-id{display:inline-block;background:var(--navy);color:var(--gold);font-size:11px;font-weight:700;padding:4px 14px;letter-spacing:0.05em;margin-top:10px;}
+
+/* SECTIONS */
+.section{margin-bottom:28px;}
+.section-title{background:var(--navy);color:#fff;font-size:12px;font-weight:700;padding:8px 14px;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:12px;display:flex;align-items:center;gap:10px;}
+.section-title .num{background:var(--gold);color:var(--navy);font-weight:800;font-size:11px;padding:2px 8px;}
+.section p{font-size:13.5px;line-height:1.85;color:#374151;margin-bottom:10px;}
+.section ul{padding-left:20px;margin-bottom:10px;}
+.section ul li{font-size:13.5px;line-height:1.85;color:#374151;margin-bottom:4px;}
+.section strong{color:var(--navy);}
+
+/* PARTIES TABLE */
+.parties-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:0;}
+@media(max-width:560px){.parties-grid{grid-template-columns:1fr;}}
+.party-box{border:1px solid #d1d5db;padding:16px;}
+.party-box .party-label{font-size:10px;font-weight:800;color:var(--gold);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:10px;}
+.party-box .party-name{font-size:15px;font-weight:700;color:var(--navy);margin-bottom:4px;}
+.party-box .party-detail{font-size:12px;color:#6b7280;line-height:1.8;}
+
+/* SERVICES TABLE */
+.services-table{width:100%;border-collapse:collapse;margin-bottom:10px;}
+.services-table th{background:var(--navy);color:#fff;font-size:11px;font-weight:700;padding:9px 12px;text-align:left;text-transform:uppercase;letter-spacing:0.05em;}
+.services-table th.gold{background:var(--gold);color:var(--navy);}
+.services-table td{border-bottom:1px solid #f3f4f6;padding:10px 12px;font-size:13px;color:#374151;vertical-align:top;}
+.services-table tr:hover{background:var(--cream);}
+
+/* CALLOUT */
+.callout{background:var(--cream);border-left:4px solid var(--gold);padding:14px 18px;font-size:13px;color:var(--navy);margin:12px 0;line-height:1.7;}
+.callout.red{background:#fef2f2;border-left-color:#dc2626;color:#7f1d1d;}
+
+/* FILL-IN FIELDS */
+.fill-wrap{margin-bottom:16px;}
+.fill-label{font-size:11px;font-weight:700;color:var(--navy);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:5px;}
+.fill-line{border:none;border-bottom:2px solid var(--navy);width:100%;padding:6px 4px;font-size:14px;color:var(--navy);background:transparent;font-family:'Lato',sans-serif;}
+.fill-line:focus{outline:none;border-bottom-color:var(--gold);}
+.fill-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+@media(max-width:560px){.fill-grid{grid-template-columns:1fr;}}
+.fill-grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;}
+@media(max-width:560px){.fill-grid-3{grid-template-columns:1fr;}}
+
+/* INITIAL BOXES */
+.initial-row{display:flex;align-items:center;gap:12px;margin:10px 0;}
+.initial-box{border:2px solid var(--navy);width:56px;height:36px;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;color:var(--navy);background:var(--cream);}
+.initial-label{font-size:12px;color:#6b7280;flex:1;line-height:1.5;}
+
+/* SIGNATURE BLOCK */
+.sig-section{margin-top:32px;border-top:2px solid var(--navy);padding-top:28px;}
+.sig-grid{display:grid;grid-template-columns:1fr 1fr;gap:32px;}
+@media(max-width:560px){.sig-grid{grid-template-columns:1fr;}}
+.sig-block .sig-label{font-size:10px;font-weight:800;color:var(--gold);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:12px;}
+.sig-block .sig-canvas-wrap{border:1px solid #d1d5db;background:var(--cream);margin-bottom:10px;}
+.sig-block canvas{display:block;width:100%;height:100px;cursor:crosshair;}
+.sig-block .sig-clear{font-size:11px;color:var(--gold);cursor:pointer;text-decoration:underline;background:none;border:none;padding:2px 0;font-family:'Lato',sans-serif;font-weight:700;}
+.sig-block .sig-line{border:none;border-bottom:1.5px solid #d1d5db;width:100%;padding:6px 0;font-size:13px;color:var(--navy);background:transparent;font-family:'Lato',sans-serif;margin-bottom:8px;}
+.sig-block .sig-field-label{font-size:10px;color:#9ca3af;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:6px;}
+
+/* SUBMIT */
+.submit-area{text-align:center;margin-top:32px;padding-top:24px;border-top:1px solid #e5e7eb;}
+.submit-btn{background:var(--gold);color:var(--navy);border:none;font-weight:800;font-size:16px;padding:18px 48px;cursor:pointer;letter-spacing:-0.01em;}
+.submit-btn:hover{opacity:.9;}
+.submit-btn:disabled{opacity:.5;cursor:not-allowed;}
+.save-btn{background:var(--navy);color:#fff;border:none;font-weight:700;font-size:13px;padding:12px 28px;cursor:pointer;margin-right:12px;}
+.save-btn:hover{opacity:.85;}
+
+/* SUCCESS */
+#success{display:none;max-width:560px;margin:60px auto;padding:48px 40px;background:#fff;border:1px solid #e5e7eb;text-align:center;}
+.check-circle{width:72px;height:72px;border:3px solid var(--gold);border-radius:50%!important;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;animation:pop .4s ease;}
+@keyframes pop{from{transform:scale(.5);opacity:0;}to{transform:scale(1);opacity:1;}}
+#success h2{font-size:24px;font-weight:800;color:var(--navy);margin-bottom:8px;}
+#success p{font-size:14px;color:#6b7280;}
+.ref-badge{display:inline-block;background:var(--navy);color:var(--gold);font-weight:700;font-size:12px;padding:5px 16px;margin:12px 0;}
+
+/* FOOTER */
+footer{background:var(--navy);border-top:2px solid var(--gold);padding:14px;text-align:center;color:#fff;font-size:12px;margin-top:40px;}
+
+/* PRINT */
+@media print{
+  .controls,.submit-area{display:none!important;}
+  body{background:#fff;}
+  .doc-wrap{margin:0;padding:0;}
+  .doc-card{border:none;padding:32px 40px;}
+  footer{position:fixed;bottom:0;width:100%;}
+  .sig-block canvas{border:1px solid #000;}
+  .site-header{background:#fff !important; border-bottom:3px solid var(--gold);}
+  .site-header .brand{color:var(--navy) !important;}
+  .doc-id{background:#fff !important; color:var(--navy) !important; border:1.5px solid var(--gold) !important;}
+  .section-title{background:#fff !important; color:var(--navy) !important; border-bottom:2px solid var(--gold) !important;}
+  .section-title .num{background:#fff !important; color:var(--navy) !important; border:1.5px solid var(--gold) !important;}
+  .ref-badge{background:#fff !important; color:var(--navy) !important; border:1.5px solid var(--gold) !important;}
+}
+</style>
+</head>
+<body>
+
+<div class="site-header">
+  <div class="brand">Proper Home Prep <span>·</span> Nashville, TN</div>
+  <div class="header-right">CLIENT SERVICE AGREEMENT<br/>Confidential Document</div>
+</div>
+<div class="gold-bar"></div>
+
+<div class="controls" id="controlsBar">
+  <button class="ctrl-btn" onclick="window.print()">🖨️ Print / Save as PDF</button>
+  <span id="stageMsg" style="font-size:12px;color:#6b7280;margin-left:8px;"></span>
+</div>
+<div id="adminGate" style="display:none;background:var(--navy);padding:40px 24px;text-align:center;">
+  <div style="color:#fff;font-weight:800;font-family:'Playfair Display',serif;font-size:18px;margin-bottom:14px;">Admin Log In Required</div>
+  <input id="ag-email" type="email" placeholder="Email" style="padding:9px 12px;border:none;border-radius:4px;margin-right:8px;font-size:14px;">
+  <input id="ag-pw" type="password" placeholder="Password" style="padding:9px 12px;border:none;border-radius:4px;margin-right:8px;font-size:14px;">
+  <button id="ag-btn" style="background:var(--gold);color:var(--navy);border:none;font-weight:800;padding:9px 20px;border-radius:4px;cursor:pointer;">Log In</button>
+  <div id="ag-err" style="color:#fca5a5;font-size:12px;margin-top:10px;"></div>
+</div>
+<div id="linkPanel" style="display:none;background:var(--cream);padding:24px;text-align:center;border-bottom:1px solid #d1d5db;">
+  <div style="font-weight:800;color:var(--navy);margin-bottom:10px;">✅ Agreement created — send this link to your client:</div>
+  <input id="clientLink" readonly style="width:90%;max-width:500px;padding:10px;font-size:13px;border:1px solid var(--navy);text-align:center;">
+  <br><button onclick="copyClientLink()" style="margin-top:10px;background:var(--navy);color:#fff;border:none;padding:9px 20px;border-radius:4px;cursor:pointer;font-weight:700;">Copy Link</button>
+</div>
+
+<div class="doc-wrap">
+<div id="form-wrap">
+<div class="doc-card">
+
+  <!-- DOCUMENT HEADER -->
+  <div class="doc-header">
+    <div class="logo-line">Proper Home Prep <span>·</span> Nashville, TN</div>
+    <div class="doc-title">Client Service Agreement</div>
+    <div class="doc-sub">This agreement is entered into between Proper Home Prep ("Company") and the Client named below.</div>
+    <div class="doc-id" id="docId">Agreement #: PHP-SA-<span id="agreementNum">—</span></div>
+  </div>
+
+  <!-- SECTION 1 — PARTIES -->
+  <div class="section">
+    <div class="section-title"><span class="num">01</span> Parties to This Agreement</div>
+    <div class="parties-grid">
+      <div class="party-box">
+        <div class="party-label">Service Provider</div>
+        <div class="party-name">Proper Home Prep</div>
+        <div class="party-detail">
+          Nashville, Tennessee<br/>
+          Phone: (615) 669-4246<br/>
+          Email: info@properhomeprep.com<br/>
+          Owner: Brittany Smartt & Kevin Weldon
+        </div>
+      </div>
+      <div class="party-box">
+        <div class="party-label">Client (Property Owner / Authorized Agent)</div>
+        <div class="fill-wrap" style="margin-bottom:10px;">
+          <div class="fill-label">Full Name</div>
+          <input class="fill-line stage-client" id="clientName" type="text" placeholder="Client's full name" oninput="autosave()"/>
+        </div>
+        <div class="fill-wrap" style="margin-bottom:10px;">
+          <div class="fill-label">Phone</div>
+          <input class="fill-line stage-client" id="clientPhone" type="text" placeholder="(615) 000-0000" oninput="autosave()"/>
+        </div>
+        <div class="fill-wrap" style="margin-bottom:0;">
+          <div class="fill-label">Email</div>
+          <input class="fill-line stage-client" id="clientEmail" type="text" placeholder="email@example.com" oninput="autosave()"/>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 2 — PROPERTY -->
+  <div class="section">
+    <div class="section-title"><span class="num">02</span> Property Information</div>
+    <div class="fill-wrap">
+      <div class="fill-label">Property Address *</div>
+      <input class="fill-line stage-admin" id="propAddress" type="text" placeholder="Street address, City, State, ZIP" oninput="autosave()"/>
+    </div>
+    <div class="fill-grid" style="margin-top:14px;">
+      <div class="fill-wrap">
+        <div class="fill-label">Property Nickname (if applicable)</div>
+        <input class="fill-line stage-admin" id="propNickname" type="text" placeholder="e.g. The Gulch Suite" oninput="autosave()"/>
+      </div>
+      <div class="fill-wrap">
+        <div class="fill-label">Property Type</div>
+        <input class="fill-line stage-admin" id="propType" type="text" placeholder="e.g. STR / Airbnb, Residential, Vacant" oninput="autosave()"/>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 3 — SERVICES -->
+  <div class="section">
+    <div class="section-title"><span class="num">03</span> Services Requested</div>
+    <p>Client is enrolling in the following Proper Home Prep service(s). Check all that apply and specify frequency where indicated.</p>
+    <table class="services-table">
+      <thead>
+        <tr>
+          <th class="gold" style="width:32px;"></th>
+          <th class="gold">Service</th>
+          <th class="gold">Frequency / Notes</th>
+          <th class="gold" style="width:110px;">Rate</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="text-align:center;font-size:18px;"><input type="checkbox" id="svc1-chk" class="stage-admin" onchange="autosave()"></td>
+          <td><strong>⭐ STR / Airbnb Make-Ready & Turnover</strong><br/><span style="font-size:11px;color:#6b7280;">Full reset between guest stays</span></td>
+          <td><input class="fill-line stage-admin" id="svc1-freq" style="width:100%;" placeholder="Every turnover / as scheduled" oninput="autosave()"/></td>
+          <td><input class="fill-line stage-admin" id="svc1-rate" placeholder="$___" oninput="autosave()"/></td>
+        </tr>
+        <tr>
+          <td style="text-align:center;font-size:18px;"><input type="checkbox" id="svc2-chk" class="stage-admin" onchange="autosave()"></td>
+          <td><strong>General Home Prep Cleaning</strong><br/><span style="font-size:11px;color:#6b7280;">Residential deep & maintenance cleans</span></td>
+          <td><input class="fill-line stage-admin" id="svc2-freq" style="width:100%;" placeholder="Weekly / Bi-weekly / Monthly" oninput="autosave()"/></td>
+          <td><input class="fill-line stage-admin" id="svc2-rate" placeholder="$___" oninput="autosave()"/></td>
+        </tr>
+        <tr>
+          <td style="text-align:center;font-size:18px;"><input type="checkbox" id="svc3-chk" class="stage-admin" onchange="autosave()"></td>
+          <td><strong>Move-In / Move-Out Prep</strong><br/><span style="font-size:11px;color:#6b7280;">Full property transition clean</span></td>
+          <td><input class="fill-line stage-admin" id="svc3-freq" style="width:100%;" placeholder="One-time / Date: ________" oninput="autosave()"/></td>
+          <td><input class="fill-line stage-admin" id="svc3-rate" placeholder="$___" oninput="autosave()"/></td>
+        </tr>
+        <tr>
+          <td style="text-align:center;font-size:18px;"><input type="checkbox" id="svc4-chk" class="stage-admin" onchange="autosave()"></td>
+          <td><strong>Vacant Property Inspections</strong><br/><span style="font-size:11px;color:#6b7280;">Scheduled check-ins with photo documentation</span></td>
+          <td><input class="fill-line stage-admin" id="svc4-freq" style="width:100%;" placeholder="Weekly / Monthly / Other" oninput="autosave()"/></td>
+          <td><input class="fill-line stage-admin" id="svc4-rate" placeholder="$___" oninput="autosave()"/></td>
+        </tr>
+        <tr>
+          <td style="text-align:center;font-size:18px;"><input type="checkbox" id="svc5-chk" class="stage-admin" onchange="autosave()"></td>
+          <td><strong>Light Repairs & Touch-Ups</strong><br/><span style="font-size:11px;color:#6b7280;">Minor paint, caulking, hardware, fixtures</span></td>
+          <td><input class="fill-line stage-admin" id="svc5-freq" style="width:100%;" placeholder="As needed / per scope" oninput="autosave()"/></td>
+          <td><input class="fill-line stage-admin" id="svc5-rate" placeholder="Per quote" oninput="autosave()"/></td>
+        </tr>
+        <tr>
+          <td style="text-align:center;font-size:18px;"><input type="checkbox" id="svc6-chk" class="stage-admin" onchange="autosave()"></td>
+          <td><strong>Exterior Refresh & Curb Appeal</strong><br/><span style="font-size:11px;color:#6b7280;">Pressure washing, windows, porch reset</span></td>
+          <td><input class="fill-line stage-admin" id="svc6-freq" style="width:100%;" placeholder="As needed / per scope" oninput="autosave()"/></td>
+          <td><input class="fill-line stage-admin" id="svc6-rate" placeholder="Per quote" oninput="autosave()"/></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="fill-grid" style="margin-top:14px;">
+      <div class="fill-wrap">
+        <div class="fill-label">Agreement Start Date</div>
+        <input class="fill-line stage-admin" id="startDate" type="date" oninput="autosave()"/>
+      </div>
+      <div class="fill-wrap">
+        <div class="fill-label">Initial Term</div>
+        <input class="fill-line stage-admin" id="term" type="text" placeholder="Month-to-month / 3 months / 6 months" oninput="autosave()"/>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 4 — PAYMENT TERMS -->
+  <div class="section">
+    <div class="section-title"><span class="num">04</span> Payment Terms</div>
+    <p><strong>Invoicing:</strong> Invoices are issued following each completed service visit, or on a recurring schedule as agreed. Payment is due within <strong>5 business days</strong> of invoice date unless otherwise specified in writing.</p>
+    <p><strong>Accepted Payment Methods:</strong> Venmo, Zelle, cash, check, or credit card (processing fee may apply).</p>
+    <p><strong>Late Payment:</strong> Invoices unpaid after 10 business days are subject to a <strong>$25 late fee</strong> plus $10 per additional 7-day period. Proper Home Prep reserves the right to suspend service on accounts with outstanding balances.</p>
+    <p><strong>Returned Checks:</strong> A $35 returned check fee applies to any check returned for insufficient funds.</p>
+    <div class="callout">💡 For STR clients: Invoices are typically sent within 24 hours of each completed turnover. Setting up automatic payment is strongly recommended.</div>
+    <div class="fill-grid" style="margin-top:10px;">
+      <div class="fill-wrap">
+        <div class="fill-label">Preferred Payment Method</div>
+        <input class="fill-line stage-client" id="payMethod" type="text" placeholder="Venmo / Zelle / Check / Card" oninput="autosave()"/>
+      </div>
+      <div class="fill-wrap">
+        <div class="fill-label">Billing Email (if different)</div>
+        <input class="fill-line stage-client" id="billingEmail" type="text" placeholder="billing@example.com" oninput="autosave()"/>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 5 — SCHEDULING & ACCESS -->
+  <div class="section">
+    <div class="section-title"><span class="num">05</span> Scheduling & Property Access</div>
+    <p><strong>Scheduling:</strong> Client is responsible for notifying Proper Home Prep of upcoming service needs with reasonable advance notice (minimum 24 hours for standard services; same-day availability is not guaranteed). STR clients are encouraged to share their iCal link for automated scheduling.</p>
+    <p><strong>Access:</strong> Client authorizes Proper Home Prep staff to access the property on scheduled service dates using the access method on file (lockbox code, smart lock, key, etc.). Access information is stored securely and shared only with the assigned tech on job day.</p>
+    <p><strong>Property Readiness:</strong> For turnover services, Client agrees to communicate checkout times. If property is not accessible at the scheduled time, a <strong>trip fee of $35</strong> may be charged.</p>
+    <div class="initial-row">
+      <div class="initial-box stage-client" id="initial-scheduling" contenteditable="true" title="Initial here" oninput="autosave()"></div>
+      <div class="initial-label">Client initials confirm they understand and agree to the scheduling and access terms above.</div>
+    </div>
+  </div>
+
+  <!-- SECTION 6 — DAMAGE & LIABILITY -->
+  <div class="section">
+    <div class="section-title"><span class="num">06</span> Damage Policy & Liability</div>
+    <p><strong>Pre-Existing Damage:</strong> Proper Home Prep performs a walkthrough and documents the property condition upon arrival. Any damage discovered is photographed and reported immediately. Proper Home Prep is not responsible for pre-existing damage.</p>
+    <p><strong>Accidental Damage:</strong> If damage is caused by Proper Home Prep staff during service, Client will be notified promptly. Claims must be submitted in writing within <strong>48 hours</strong> of the completed service date. Proper Home Prep's liability for any single incident is limited to the cost of the service performed on that date.</p>
+    <p><strong>Breakage:</strong> Proper Home Prep takes care with all items in the property. Items of extraordinary value (collectibles, art, antiques) should be noted in the property SOP. Proper Home Prep is not liable for breakage of fragile items not disclosed in the SOP.</p>
+    <p><strong>Keys & Access Devices:</strong> Client assumes all costs associated with re-keying or replacing locks in the event of a lost key.</p>
+    <div class="callout red">⚠️ Proper Home Prep carries general liability insurance. A certificate of insurance is available upon request.</div>
+    <div class="initial-row">
+      <div class="initial-box stage-client" id="initial-damage" contenteditable="true" title="Initial here" oninput="autosave()"></div>
+      <div class="initial-label">Client initials confirm they have read and understood the damage and liability terms above.</div>
+    </div>
+  </div>
+
+  <!-- SECTION 7 — CANCELLATION -->
+  <div class="section">
+    <div class="section-title"><span class="num">07</span> Cancellation Policy</div>
+    <p><strong>By Client:</strong></p>
+    <ul>
+      <li>Cancellations with <strong>24+ hours notice</strong>: No charge.</li>
+      <li>Cancellations with <strong>less than 24 hours notice</strong>: 50% of the scheduled service fee is due.</li>
+      <li>Same-day cancellations or no-shows (tech arrives and cannot access property): Full service fee is due.</li>
+    </ul>
+    <p style="margin-top:10px;"><strong>By Proper Home Prep:</strong> In the event of emergency or staffing issue, Proper Home Prep will provide as much notice as possible and will not charge a cancellation fee. Rescheduling will be offered at the next available date.</p>
+    <p><strong>Termination of Agreement:</strong> Either party may terminate this agreement with <strong>14 days written notice</strong>. Outstanding invoices remain due upon termination. Proper Home Prep reserves the right to terminate immediately if the property poses safety risks to staff.</p>
+    <div class="initial-row">
+      <div class="initial-box stage-client" id="initial-cancellation" contenteditable="true" title="Initial here" oninput="autosave()"></div>
+      <div class="initial-label">Client initials confirm agreement to the cancellation and termination terms above.</div>
+    </div>
+  </div>
+
+  <!-- SECTION 8 — CONFIDENTIALITY -->
+  <div class="section">
+    <div class="section-title"><span class="num">08</span> Confidentiality & Privacy</div>
+    <p>All property access information, guest data, and client information is kept strictly confidential. Proper Home Prep staff are required to sign confidentiality agreements. Property access codes and sensitive information are never shared outside of operational necessity.</p>
+    <p>Proper Home Prep may use before/after photos of completed work for marketing purposes (social media, website, portfolio) <strong>unless Client explicitly opts out below:</strong></p>
+    <div class="initial-row">
+      <div class="initial-box stage-client" id="initial-optout" contenteditable="true" title="Opt-out initial" oninput="autosave()"></div>
+      <div class="initial-label"><strong>Opt-out initial (optional):</strong> By initialing here, Client declines permission for Proper Home Prep to use photos of this property for any marketing purposes.</div>
+    </div>
+  </div>
+
+  <!-- SECTION 9 — GENERAL TERMS -->
+  <div class="section">
+    <div class="section-title"><span class="num">09</span> General Terms</div>
+    <p><strong>Governing Law:</strong> This agreement is governed by the laws of the State of Tennessee. Any disputes shall be resolved in Davidson County, Tennessee.</p>
+    <p><strong>Entire Agreement:</strong> This document constitutes the entire agreement between the parties. Any modifications must be made in writing and signed by both parties.</p>
+    <p><strong>Severability:</strong> If any provision of this agreement is found to be unenforceable, the remaining provisions remain in full effect.</p>
+    <p><strong>Independent Contractor:</strong> Proper Home Prep operates as an independent contractor. Nothing in this agreement creates an employer-employee relationship.</p>
+    <p><strong>Force Majeure:</strong> Neither party shall be held liable for delays or failure to perform due to circumstances beyond reasonable control (weather, natural disasters, public health emergencies, etc.).</p>
+  </div>
+
+  <!-- SECTION 10 — SIGNATURES -->
+  <div class="section">
+    <div class="section-title"><span class="num">10</span> Signatures & Execution</div>
+    <div class="callout">By signing below, both parties agree to all terms and conditions of this Service Agreement. This agreement becomes effective on the date of the last signature.</div>
+
+    <div class="sig-section">
+      <div class="sig-grid">
+
+        <!-- CLIENT SIGNATURE -->
+        <div class="sig-block">
+          <div class="sig-label">Client Signature</div>
+          <div class="sig-canvas-wrap">
+            <canvas id="clientSig" class="stage-client" width="600" height="100"></canvas>
+          </div>
+          <button class="sig-clear stage-client" onclick="clearCanvas('clientSig')">Clear</button>
+          <div style="margin-top:10px;">
+            <div class="sig-field-label">Printed Name</div>
+            <input class="sig-line stage-client" id="clientPrint" type="text" placeholder="Type your full name" oninput="autosave()"/>
+          </div>
+          <div style="margin-top:10px;">
+            <div class="sig-field-label">Date</div>
+            <input class="sig-line stage-client" id="clientSigDate" type="date" oninput="autosave()"/>
+          </div>
+        </div>
+
+        <!-- COMPANY SIGNATURE -->
+        <div class="sig-block">
+          <div class="sig-label">Proper Home Prep — Authorized Representative</div>
+          <div class="sig-canvas-wrap">
+            <canvas id="companySig" class="stage-company" width="600" height="100"></canvas>
+          </div>
+          <button class="sig-clear stage-company" onclick="clearCanvas('companySig')">Clear</button>
+          <div style="margin-top:10px;">
+            <div class="sig-field-label">Printed Name</div>
+            <input class="sig-line stage-company" id="companyPrint" type="text" placeholder="Brittany [Last Name]" oninput="autosave()"/>
+          </div>
+          <div style="margin-top:10px;">
+            <div class="sig-field-label">Date</div>
+            <input class="sig-line stage-company" id="companySigDate" type="date" oninput="autosave()"/>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- SUBMIT -->
+  <div class="submit-area">
+    <button class="submit-btn" id="submitBtn" onclick="submitAgreement()">Execute Agreement →</button>
+    <p id="submitHint" style="font-size:12px;color:#9ca3af;margin-top:12px;"></p>
+  </div>
+
+</div>
+</div>
+
+<!-- SUCCESS -->
+<div id="success">
+  <div class="check-circle">
+    <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#D8B96A" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+  </div>
+  <h2>Agreement Executed</h2>
+  <div class="ref-badge" id="successRef"></div>
+  <p style="margin-top:8px;">Print or save as PDF for your records.<br/>A copy should be shared with your client.</p>
+  <div style="margin-top:24px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+    <button class="ctrl-btn" onclick="window.print()">🖨️ Print / Save PDF</button>
+    <button class="ctrl-btn outline" onclick="location.reload()">Start New Agreement</button>
+  </div>
+</div>
+
+</div><!-- end doc-wrap -->
+
+<footer>© 2026 Proper Home Prep · Nashville, TN · Client Service Agreement · properhomeprep.com</footer>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js";
+import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-auth.js";
+import { getFirestore, doc, getDoc, setDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBKWf4Js9_pUs1kE5LBybhWKInF4uMFHUU",
+  authDomain: "php--claude.firebaseapp.com",
+  projectId: "php--claude",
+  storageBucket: "php--claude.firebasestorage.app",
+  messagingSenderId: "91666340651",
+  appId: "1:91666340651:web:a9c53f4c8b53026909036e"
+};
+const fbApp = initializeApp(firebaseConfig);
+const auth = getAuth(fbApp);
+const db = getFirestore(fbApp);
+
+const ADMIN_FIELDS = ['propAddress','propNickname','propType','startDate','term',
+  'svc1-chk','svc1-freq','svc1-rate','svc2-chk','svc2-freq','svc2-rate',
+  'svc3-chk','svc3-freq','svc3-rate','svc4-chk','svc4-freq','svc4-rate',
+  'svc5-chk','svc5-freq','svc5-rate','svc6-chk','svc6-freq','svc6-rate'];
+const CLIENT_FIELDS = ['clientName','clientPhone','clientEmail','payMethod','billingEmail',
+  'initial-scheduling','initial-damage','initial-cancellation','initial-optout',
+  'clientPrint','clientSigDate'];
+const COMPANY_FIELDS = ['companyPrint','companySigDate'];
+
+const params = new URLSearchParams(location.search);
+const agreementId = params.get('id');
+let curUser=null, curRole=null, agreementDoc=null;
+
+function fieldVal(id){
+  const el=document.getElementById(id);
+  if(!el)return '';
+  if(el.tagName==='INPUT' && el.type==='checkbox')return el.checked;
+  if(el.classList.contains('initial-box'))return el.textContent;
+  return el.value;
+}
+function setFieldVal(id,val){
+  const el=document.getElementById(id);
+  if(!el||val===undefined)return;
+  if(el.tagName==='INPUT' && el.type==='checkbox'){el.checked=!!val;return;}
+  if(el.classList.contains('initial-box')){el.textContent=val;return;}
+  el.value=val;
+}
+function lockFields(ids,locked){
+  ids.forEach(function(id){
+    const el=document.getElementById(id);
+    if(!el)return;
+    if(el.tagName==='CANVAS'){ el.style.pointerEvents=locked?'none':'auto'; el.style.opacity=locked?'.6':'1'; return; }
+    if(el.classList.contains('initial-box')){ el.contentEditable = locked? 'false':'true'; el.style.opacity=locked?'.6':'1'; return; }
+    if(el.tagName==='BUTTON'){ el.style.display=locked?'none':'inline-block'; return; }
+    el.disabled=locked; el.style.opacity=locked?'.6':'1';
+  });
+}
+
+// Signature canvases
+var sigStates = { clientSig:false, companySig:false };
+function initCanvas(id){
+  var c=document.getElementById(id); var ctx=c.getContext('2d');
+  ctx.strokeStyle='#1A2E4A'; ctx.lineWidth=2; ctx.lineCap='round';
+  ctx.font='13px Lato'; ctx.fillStyle='#9ca3af'; ctx.fillText('Sign here',12,62);
+  var drawing=false;
+  c.addEventListener('mousedown',function(e){drawing=true;sigStates[id]=true;ctx.clearRect(0,0,c.width,c.height);ctx.beginPath();ctx.moveTo(e.offsetX,e.offsetY);});
+  c.addEventListener('mousemove',function(e){if(!drawing)return;ctx.lineTo(e.offsetX,e.offsetY);ctx.stroke();});
+  c.addEventListener('mouseup',function(){drawing=false;});
+  c.addEventListener('touchstart',function(e){e.preventDefault();drawing=true;sigStates[id]=true;var r=c.getBoundingClientRect();var t=e.touches[0];ctx.clearRect(0,0,c.width,c.height);ctx.beginPath();ctx.moveTo(t.clientX-r.left,t.clientY-r.top);},{passive:false});
+  c.addEventListener('touchmove',function(e){e.preventDefault();if(!drawing)return;var r=c.getBoundingClientRect();var t=e.touches[0];ctx.lineTo(t.clientX-r.left,t.clientY-r.top);ctx.stroke();},{passive:false});
+  c.addEventListener('touchend',function(){drawing=false;});
+}
+window.clearCanvas=function(id){
+  var c=document.getElementById(id); var ctx=c.getContext('2d');
+  ctx.clearRect(0,0,c.width,c.height); sigStates[id]=false;
+  ctx.font='13px Lato'; ctx.fillStyle='#9ca3af'; ctx.fillText('Sign here',12,62);
+};
+initCanvas('clientSig'); initCanvas('companySig');
+function loadSigImage(canvasId,dataUrl){
+  if(!dataUrl)return;
+  var c=document.getElementById(canvasId); var ctx=c.getContext('2d');
+  var img=new Image();
+  img.onload=function(){ctx.clearRect(0,0,c.width,c.height);ctx.drawImage(img,0,0,c.width,c.height);sigStates[canvasId]=true;};
+  img.src=dataUrl;
+}
+
+document.getElementById('agreementNum').textContent = agreementId || 'DRAFT';
+var today = new Date().toISOString().split('T')[0];
+
+function collect(ids){
+  var o={}; ids.forEach(function(id){o[id]=fieldVal(id);}); return o;
+}
+function populate(data){
+  Object.keys(data).forEach(function(k){ setFieldVal(k,data[k]); });
+}
+window.autosave = function(){}; // no-op placeholder; real saves happen via explicit action buttons below
+
+async function boot(){
+  if(!agreementId){
+    // CREATE MODE — admin only
+    if(curRole!=='admin'){ showGate('Log in to create a new Service Agreement.'); return; }
+    hideGate();
+    lockFields(ADMIN_FIELDS,false);
+    lockFields(CLIENT_FIELDS,true);
+    lockFields(COMPANY_FIELDS,true);
+    document.getElementById('startDate').value=today;
+    document.getElementById('stageMsg').textContent='Creating a new agreement — fill in property & service details, then generate a client link.';
+    document.getElementById('submitBtn').textContent='Generate Client Link →';
+    document.getElementById('submitHint').textContent='This creates the agreement and gives you a link to send your client.';
+    return;
+  }
+  const snap = await getDoc(doc(db,'agreements',agreementId));
+  if(!snap.exists()){
+    document.getElementById('stageMsg').textContent='This agreement link is invalid or was not found.';
+    document.getElementById('submitBtn').style.display='none';
+    return;
+  }
+  agreementDoc = snap.data();
+  populate(agreementDoc);
+  loadSigImage('clientSig',agreementDoc.clientSignature);
+  loadSigImage('companySig',agreementDoc.companySignature);
+  document.getElementById('agreementNum').textContent = agreementId;
+
+  if(agreementDoc.status==='awaiting_client'){
+    hideGate();
+    lockFields(ADMIN_FIELDS,true);
+    lockFields(CLIENT_FIELDS,false);
+    lockFields(COMPANY_FIELDS,true);
+    document.getElementById('stageMsg').textContent='Please review, fill in your info, and sign below.';
+    document.getElementById('submitBtn').textContent='Sign & Submit Agreement →';
+    document.getElementById('submitBtn').style.display='inline-block';
+    document.getElementById('submitHint').textContent='After you submit, Proper Home Prep will countersign to finalize.';
+  } else if(agreementDoc.status==='awaiting_company'){
+    lockFields(ADMIN_FIELDS,true);
+    lockFields(CLIENT_FIELDS,true);
+    if(curRole!=='admin'){
+      showGate('This agreement has been signed by the client and is awaiting company countersignature. Log in to finish.');
+      lockFields(COMPANY_FIELDS,true);
+      document.getElementById('submitBtn').style.display='none';
+      return;
+    }
+    hideGate();
+    lockFields(COMPANY_FIELDS,false);
+    document.getElementById('stageMsg').textContent='Client has signed. Review and countersign to execute.';
+    document.getElementById('submitBtn').textContent='Countersign & Execute →';
+    document.getElementById('submitBtn').style.display='inline-block';
+    document.getElementById('submitHint').textContent='';
+  } else if(agreementDoc.status==='executed'){
+    hideGate();
+    lockFields(ADMIN_FIELDS,true);
+    lockFields(CLIENT_FIELDS,true);
+    lockFields(COMPANY_FIELDS,true);
+    document.getElementById('stageMsg').textContent='✅ This agreement is fully executed.';
+    document.getElementById('submitBtn').style.display='none';
+    document.getElementById('form-wrap').style.display='block';
+  }
+}
+
+function showGate(msg){
+  document.getElementById('adminGate').style.display='block';
+  document.getElementById('ag-err').textContent='';
+  document.getElementById('stageMsg').textContent=msg;
+  document.getElementById('form-wrap').style.display='none';
+}
+function hideGate(){
+  document.getElementById('adminGate').style.display='none';
+  document.getElementById('form-wrap').style.display='block';
+}
+
+document.getElementById('ag-btn').addEventListener('click', function(){
+  var email=document.getElementById('ag-email').value.trim();
+  var pw=document.getElementById('ag-pw').value;
+  signInWithEmailAndPassword(auth,email,pw).catch(function(err){
+    document.getElementById('ag-err').textContent=err.message.replace('Firebase: ','');
+  });
+});
+
+window.copyClientLink=function(){
+  var el=document.getElementById('clientLink');
+  el.select(); document.execCommand('copy');
+};
+
+window.submitAgreement = async function(){
+  var btn=document.getElementById('submitBtn');
+  if(!agreementId){
+    // CREATE
+    if(!document.getElementById('propAddress').value.trim()){
+      alert('Please enter the property address before generating a client link.');
+      return;
+    }
+    btn.disabled=true; btn.textContent='Creating...';
+    var newId = 'PHP-SA-' + Date.now() + '-' + Math.random().toString(36).slice(2,8);
+    var record = collect(ADMIN_FIELDS);
+    record.status='awaiting_client';
+    record.createdAt=new Date().toISOString();
+    await setDoc(doc(db,'agreements',newId), record);
+    var url = location.origin + location.pathname + '?id=' + newId;
+    document.getElementById('linkPanel').style.display='block';
+    document.getElementById('clientLink').value=url;
+    document.getElementById('form-wrap').style.display='none';
+    document.getElementById('submitBtn').style.display='none';
+    return;
+  }
+  if(agreementDoc.status==='awaiting_client'){
+    if(!document.getElementById('clientName').value.trim()||!document.getElementById('clientPrint').value.trim()){
+      alert('Please fill in your name and printed name before submitting.');
+      return;
+    }
+    if(!sigStates.clientSig){ alert('Please sign in the signature box before submitting.'); return; }
+    btn.disabled=true; btn.textContent='Submitting...';
+    var upd = collect(CLIENT_FIELDS);
+    upd.clientSignature = document.getElementById('clientSig').toDataURL();
+    upd.status='awaiting_company';
+    upd.clientSubmittedAt=new Date().toISOString();
+    await updateDoc(doc(db,'agreements',agreementId), upd);
+    document.getElementById('form-wrap').style.display='none';
+    document.getElementById('success').style.display='block';
+    document.getElementById('success').querySelector('h2').textContent='Signed & Submitted';
+    document.getElementById('success').querySelector('p').innerHTML='Thanks! Proper Home Prep will countersign to finalize.<br>You will receive a copy once fully executed.';
+    document.getElementById('successRef').textContent=agreementId;
+    window.scrollTo({top:0,behavior:'smooth'});
+    return;
+  }
+  if(agreementDoc.status==='awaiting_company'){
+    if(!document.getElementById('companyPrint').value.trim()){
+      alert('Please enter the printed name before executing.');
+      return;
+    }
+    if(!sigStates.companySig){ alert('Please sign in the company signature box before executing.'); return; }
+    btn.disabled=true; btn.textContent='Executing...';
+    var upd2 = collect(COMPANY_FIELDS);
+    upd2.companySignature = document.getElementById('companySig').toDataURL();
+    upd2.status='executed';
+    upd2.executedDate=new Date().toISOString();
+    await updateDoc(doc(db,'agreements',agreementId), upd2);
+    document.getElementById('form-wrap').style.display='none';
+    document.getElementById('success').style.display='block';
+    document.getElementById('successRef').textContent=agreementId;
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+};
+
+onAuthStateChanged(auth, async function(user){
+  curUser=user;
+  if(user){
+    var uSnap=await getDoc(doc(db,'users',user.uid));
+    curRole = uSnap.exists()? uSnap.data().role : null;
+  } else { curRole=null; }
+  boot();
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Proper Home Prep — Services & Pricing</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800;900&family=Lato:wght@300;400;600;700;900&display=swap" rel="stylesheet"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;border-radius:0!important;font-family:'Lato',sans-serif;}
+:root{--navy:#1B2A4A;--gold:#D8B96A;--cream:#FAF7F2;--paper:#f5f4f0;}
+html{scroll-behavior:smooth;}
+body{background:var(--paper);color:var(--navy);}
+a{text-decoration:none;color:inherit;}
+
+/* ── HEADER ── */
+.site-header{background:var(--navy);padding:0 48px;display:flex;justify-content:space-between;align-items:center;min-height:68px;position:sticky;top:0;z-index:100;}
+.brand{font-family:'Playfair Display',serif;color:#fff;font-weight:800;font-size:20px;letter-spacing:-0.02em;}
+.brand span{color:var(--gold);}
+.header-nav{display:flex;align-items:center;gap:28px;}
+.header-nav a{color:rgba(255,255,255,.65);font-size:13px;font-weight:600;transition:color .15s;}
+.header-nav a:hover{color:#fff;}
+.header-cta{background:var(--gold);color:var(--navy);font-weight:800;font-size:13px;padding:10px 24px;transition:opacity .15s;border:none;cursor:pointer;}
+.header-cta:hover{opacity:.88;}
+.gold-bar{height:3px;background:var(--gold);}
+
+/* ── HERO ── */
+.hero{background:var(--navy);padding:72px 48px 64px;}
+.hero-inner{max-width:1080px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;}
+@media(max-width:860px){.hero-inner{grid-template-columns:1fr;gap:36px;}}
+.hero-left{}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:8px;background:rgba(216,185,106,.12);border:1px solid rgba(216,185,106,.3);color:var(--gold);font-size:11px;font-weight:800;padding:6px 14px;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:20px;}
+.hero h1{font-family:'Playfair Display',serif;font-size:44px;font-weight:800;color:#fff;letter-spacing:-0.03em;line-height:1.1;margin-bottom:16px;}
+.hero h1 span{color:var(--gold);}
+.hero-sub{color:rgba(255,255,255,.6);font-size:16px;line-height:1.75;margin-bottom:28px;max-width:440px;}
+.hero-actions{display:flex;gap:12px;flex-wrap:wrap;}
+.btn-gold{background:var(--gold);color:var(--navy);font-weight:800;font-size:14px;padding:14px 32px;border:none;cursor:pointer;transition:opacity .15s;}
+.btn-gold:hover{opacity:.9;}
+.btn-outline{background:transparent;border:2px solid rgba(255,255,255,.3);color:#fff;font-weight:700;font-size:14px;padding:13px 28px;cursor:pointer;transition:all .15s;}
+.btn-outline:hover{border-color:var(--gold);color:var(--gold);}
+.hero-right{}
+.hero-stats{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:rgba(255,255,255,.08);}
+.hero-stat{background:rgba(255,255,255,.04);padding:24px 20px;text-align:center;border:1px solid rgba(255,255,255,.07);}
+.hero-stat .num{font-size:36px;font-weight:800;color:var(--gold);line-height:1;}
+.hero-stat .lbl{font-size:11px;color:rgba(255,255,255,.45);text-transform:uppercase;letter-spacing:0.08em;margin-top:5px;}
+.hero-trust{margin-top:20px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+.trust-item{color:rgba(255,255,255,.5);font-size:12px;font-weight:500;display:flex;align-items:center;gap:5px;}
+.trust-item::before{content:'✓';color:var(--gold);font-weight:800;}
+
+/* ── PAGE WRAPPER ── */
+.page{max-width:1080px;margin:0 auto;padding:0 48px;}
+@media(max-width:640px){.page{padding:0 20px;}}
+section{padding:56px 0;}
+
+/* ── SECTION HEADERS ── */
+.sec-label{display:inline-flex;align-items:center;gap:8px;margin-bottom:12px;}
+.sec-label .bar{width:28px;height:3px;background:var(--gold);}
+.sec-label .text{font-size:11px;font-weight:800;color:var(--gold);text-transform:uppercase;letter-spacing:0.1em;}
+.sec-title{font-family:'Playfair Display',serif;font-size:32px;font-weight:800;color:var(--navy);letter-spacing:-0.02em;line-height:1.15;margin-bottom:10px;}
+.sec-sub{font-size:15px;color:#6b7280;line-height:1.7;max-width:540px;}
+
+/* ── NAVY SECTION HEADERS ── */
+.navy-header{background:var(--navy);padding:14px 24px;display:flex;align-items:center;gap:14px;}
+.navy-header .badge{background:var(--gold);color:var(--navy);font-weight:800;font-size:12px;padding:3px 12px;min-width:32px;text-align:center;}
+.navy-header .title{color:#fff;font-weight:700;font-size:16px;letter-spacing:-0.01em;}
+.navy-header .title-right{margin-left:auto;color:rgba(255,255,255,.45);font-size:12px;}
+
+/* ── SERVICES ── */
+.services-grid{display:grid;grid-template-columns:1fr 1fr;gap:2px;background:#e5e7eb;border:1px solid #e5e7eb;margin-top:0;}
+@media(max-width:700px){.services-grid{grid-template-columns:1fr;}}
+.service-card{background:#fff;padding:28px 28px 24px;display:flex;flex-direction:column;gap:0;border-bottom:3px solid transparent;transition:border-color .2s,background .2s;}
+.service-card:hover{border-bottom-color:var(--gold);background:var(--cream);}
+.service-card.flagship{border-bottom-color:var(--gold);background:var(--cream);}
+.service-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:14px;}
+.service-icon{font-size:28px;line-height:1;}
+.service-badge{font-size:10px;font-weight:800;color:var(--navy);background:var(--gold);padding:3px 10px;text-transform:uppercase;letter-spacing:0.06em;white-space:nowrap;}
+.service-name{font-size:17px;font-weight:800;color:var(--navy);letter-spacing:-0.01em;margin-bottom:8px;line-height:1.25;}
+.service-desc{font-size:13px;color:#6b7280;line-height:1.75;flex:1;margin-bottom:16px;}
+.service-includes{margin-bottom:16px;}
+.service-includes .inc-label{font-size:10px;font-weight:800;color:var(--navy);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:8px;}
+.service-includes ul{padding:0;list-style:none;}
+.service-includes ul li{font-size:12px;color:#4b5563;line-height:1.7;display:flex;align-items:flex-start;gap:7px;}
+.service-includes ul li::before{content:'—';color:var(--gold);font-weight:700;min-width:12px;}
+.service-footer{display:flex;align-items:center;justify-content:space-between;border-top:1px solid #f3f4f6;padding-top:14px;margin-top:auto;}
+.service-price{font-size:13px;font-weight:700;color:var(--navy);}
+.service-price span{color:var(--gold);}
+.service-link{font-size:12px;font-weight:700;color:var(--gold);border:1.5px solid var(--gold);padding:6px 16px;transition:all .15s;}
+.service-link:hover{background:var(--gold);color:var(--navy);}
+
+/* ── HOW IT WORKS ── */
+.steps-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border:1px solid #e5e7eb;background:#e5e7eb;margin-top:0;}
+@media(max-width:700px){.steps-grid{grid-template-columns:1fr 1fr;}}
+@media(max-width:400px){.steps-grid{grid-template-columns:1fr;}}
+.step-card{background:#fff;padding:28px 22px;}
+.step-num{width:36px;height:36px;background:var(--navy);color:var(--gold);font-weight:800;font-size:16px;display:flex;align-items:center;justify-content:center;margin-bottom:16px;}
+.step-title{font-size:15px;font-weight:800;color:var(--navy);margin-bottom:8px;line-height:1.25;}
+.step-desc{font-size:13px;color:#6b7280;line-height:1.7;}
+
+/* ── WHY PHP ── */
+.why-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:2px;background:#e5e7eb;border:1px solid #e5e7eb;margin-top:0;}
+@media(max-width:700px){.why-grid{grid-template-columns:1fr;}}
+.why-card{background:#fff;padding:26px 24px;}
+.why-icon{font-size:24px;margin-bottom:12px;}
+.why-title{font-size:15px;font-weight:800;color:var(--navy);margin-bottom:8px;}
+.why-desc{font-size:13px;color:#6b7280;line-height:1.7;}
+
+/* ── SERVICE AREAS ── */
+.areas-wrap{background:#fff;border:1px solid #e5e7eb;margin-top:0;padding:28px;}
+.areas-grid{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px;}
+.area-pill{border:2px solid var(--navy);color:var(--navy);font-size:13px;font-weight:700;padding:8px 18px;transition:all .15s;}
+.area-pill:hover,.area-pill.active{background:var(--navy);color:var(--gold);}
+
+/* ── TESTIMONIALS ── */
+.testi-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:2px;background:#e5e7eb;border:1px solid #e5e7eb;margin-top:0;}
+@media(max-width:700px){.testi-grid{grid-template-columns:1fr;}}
+.testi-card{background:#fff;padding:26px 24px;}
+.testi-stars{color:var(--gold);font-size:16px;letter-spacing:2px;margin-bottom:12px;}
+.testi-text{font-size:14px;color:#374151;line-height:1.75;font-style:italic;margin-bottom:16px;}
+.testi-author{font-size:12px;font-weight:700;color:var(--navy);text-transform:uppercase;letter-spacing:0.06em;}
+.testi-prop{font-size:11px;color:#9ca3af;margin-top:2px;}
+
+/* ── FAQ ── */
+.faq-list{border:1px solid #e5e7eb;margin-top:0;}
+.faq-item{background:#fff;border-bottom:1px solid #f3f4f6;}
+.faq-item:last-child{border-bottom:none;}
+.faq-q{display:flex;align-items:center;justify-content:space-between;padding:18px 24px;cursor:pointer;gap:16px;}
+.faq-q-text{font-size:14px;font-weight:700;color:var(--navy);}
+.faq-toggle{font-size:20px;font-weight:300;color:var(--gold);min-width:24px;text-align:center;transition:transform .2s;}
+.faq-item.open .faq-toggle{transform:rotate(45deg);}
+.faq-a{display:none;padding:0 24px 18px;font-size:13px;color:#6b7280;line-height:1.8;}
+.faq-item.open .faq-a{display:block;}
+
+/* ── CTA SECTION ── */
+.cta-section{background:var(--navy);padding:64px 48px;text-align:center;}
+.cta-section h2{font-family:'Playfair Display',serif;font-size:36px;font-weight:800;color:#fff;letter-spacing:-0.02em;margin-bottom:12px;}
+.cta-section h2 span{color:var(--gold);}
+.cta-section p{color:rgba(255,255,255,.6);font-size:15px;margin-bottom:32px;line-height:1.7;}
+.cta-actions{display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;}
+.cta-contact{color:rgba(255,255,255,.5);font-size:13px;margin-top:20px;}
+.cta-contact strong{color:var(--gold);}
+
+/* ── CALLOUT ── */
+.callout-bar{background:var(--cream);border-left:4px solid var(--gold);padding:14px 20px;font-size:13px;color:var(--navy);line-height:1.7;margin-top:0;}
+.callout-bar strong{font-weight:700;}
+
+/* ── FOOTER ── */
+footer{background:var(--navy);border-top:2px solid var(--gold);padding:28px 48px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;}
+.footer-brand{color:#fff;font-weight:800;font-size:15px;letter-spacing:-0.01em;}
+.footer-brand span{color:var(--gold);}
+.footer-links{display:flex;gap:24px;flex-wrap:wrap;}
+.footer-links a{color:rgba(255,255,255,.45);font-size:12px;font-weight:500;transition:color .15s;}
+.footer-links a:hover{color:var(--gold);}
+.footer-copy{color:rgba(255,255,255,.3);font-size:11px;width:100%;}
+
+/* ── MOBILE NAV ── */
+@media(max-width:768px){
+  .site-header{padding:0 20px;}
+  .header-nav{display:none;}
+  .hero{padding:48px 20px 40px;}
+  .hero h1{font-size:32px;}
+  .sec-title{font-size:26px;}
+  .cta-section{padding:48px 20px;}
+  .cta-section h2{font-size:26px;}
+  footer{padding:20px;}
+}@media print {
+  body{background:#fff;}
+  .site-header{background:#fff !important; border-bottom:3px solid var(--gold); position:static !important;}
+  .site-header .brand{color:var(--navy) !important;}
+  .header-nav{display:none !important;}
+  .hero{background:#fff !important; color:var(--navy) !important; border-bottom:4px solid var(--gold); padding:32px 24px;}
+  .hero *{color:var(--navy) !important;}
+  .navy-header{background:#fff !important; border-bottom:2px solid var(--gold); padding:10px 0 !important;}
+  .navy-header *{color:var(--navy) !important;}
+  .area-pill.active{background:#fff !important; color:var(--navy) !important; border:1.5px solid var(--gold) !important;}
+  .step-num, .service-num{background:#fff !important; color:var(--navy) !important; border:2px solid var(--gold) !important;}
+  .cta-section{background:#fff !important; border-top:4px solid var(--gold); padding:32px 24px;}
+  .cta-section *{color:var(--navy) !important;}
+  .cta-section .btn-outline, .cta-section a{border-color:var(--gold) !important;}
+  a[href^="tel:"]{color:var(--navy) !important;}
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="site-header">
+  <div class="brand">Proper Home Prep <span>·</span> Nashville</div>
+  <nav class="header-nav">
+    <a href="#services">Services</a>
+    <a href="#how-it-works">How It Works</a>
+    <a href="#areas">Service Areas</a>
+    <a href="#faq">FAQ</a>
+  </nav>
+  <a class="header-cta" href="request-a-quote.html">Get a Quote</a>
+</div>
+<div class="gold-bar"></div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-left">
+      <div class="hero-eyebrow"><span>⭐</span> Nashville's Premier Property Prep</div>
+      <h1>Where Every<br/><span>Detail Matters.</span></h1>
+      <p class="hero-sub">Professional cleaning, turnover, and property prep services for STR hosts and homeowners across Nashville and Middle Tennessee.</p>
+      <div class="hero-actions">
+        <a class="btn-gold" href="request-a-quote.html">Request a Quote →</a>
+        <a class="btn-outline" href="#services">View Services</a>
+      </div>
+      <div class="hero-trust" style="margin-top:28px;">
+        <span class="trust-item">Locally owned & operated</span>
+        <span class="trust-item">24-hr response</span>
+        <span class="trust-item">Insured & professional</span>
+      </div>
+    </div>
+    <div class="hero-right">
+      <div class="hero-stats">
+        <div class="hero-stat"><div class="num">6</div><div class="lbl">Services Offered</div></div>
+        <div class="hero-stat"><div class="num">24h</div><div class="lbl">Response Time</div></div>
+        <div class="hero-stat"><div class="num">STR</div><div class="lbl">Specialist</div></div>
+        <div class="hero-stat"><div class="num">TN</div><div class="lbl">Licensed</div></div>
+      </div>
+      <div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);padding:20px;margin-top:2px;">
+        <div style="font-size:11px;font-weight:800;color:var(--gold);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:10px;">Serving Greater Nashville</div>
+        <div style="font-size:13px;color:rgba(255,255,255,.55);line-height:1.9;">Downtown · The Gulch · East Nashville<br/>Germantown · Brentwood · Franklin<br/>Antioch · Donelson · Berry Hill</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SERVICES -->
+<div id="services" class="page">
+  <section>
+    <div class="sec-label"><div class="bar"></div><div class="text">What We Do</div></div>
+    <div class="sec-title">Our Services</div>
+    <p class="sec-sub">From STR turnovers to vacant property inspections — we handle the details so you don't have to.</p>
+
+    <div style="height:24px;"></div>
+
+    <div class="navy-header">
+      <div class="badge">⭐</div>
+      <div class="title">Flagship & Core Services</div>
+      <div class="title-right">All 6 services · Custom quoted</div>
+    </div>
+    <div class="services-grid">
+
+      <div class="service-card flagship">
+        <div class="service-top">
+          <div class="service-icon">🏠</div>
+          <div class="service-badge">Flagship Service</div>
+        </div>
+        <div class="service-name">STR / Airbnb Make-Ready & Turnover</div>
+        <div class="service-desc">Our most popular service. A complete property reset between guest stays — cleaned, restocked, staged, and guest-ready before your next check-in.</div>
+        <div class="service-includes">
+          <div class="inc-label">Includes</div>
+          <ul>
+            <li>Full clean of all rooms and bathrooms</li>
+            <li>Fresh linens and towel staging</li>
+            <li>Restock of consumables (TP, soap, etc.)</li>
+            <li>Trash removal and reset</li>
+            <li>Completion photos sent to you</li>
+            <li>Damage documentation if found</li>
+          </ul>
+        </div>
+        <div class="service-footer">
+          <div class="service-price">Pricing: <span>Custom quoted per property</span></div>
+          <a class="service-link" href="request-a-quote.html">Get Quote</a>
+        </div>
+      </div>
+
+      <div class="service-card">
+        <div class="service-top">
+          <div class="service-icon">🧹</div>
+        </div>
+        <div class="service-name">General Home Prep Cleaning</div>
+        <div class="service-desc">Residential deep and maintenance cleans for homeowners who want a consistently clean home without the hassle. Available weekly, bi-weekly, or monthly.</div>
+        <div class="service-includes">
+          <div class="inc-label">Includes</div>
+          <ul>
+            <li>Kitchen deep clean</li>
+            <li>Bathroom sanitization</li>
+            <li>Floors vacuumed and mopped</li>
+            <li>Surfaces wiped and organized</li>
+            <li>Trash removal</li>
+          </ul>
+        </div>
+        <div class="service-footer">
+          <div class="service-price">Pricing: <span>Custom quoted by size</span></div>
+          <a class="service-link" href="request-a-quote.html">Get Quote</a>
+        </div>
+      </div>
+
+      <div class="service-card">
+        <div class="service-top">
+          <div class="service-icon">📦</div>
+        </div>
+        <div class="service-name">Move-In / Move-Out Prep</div>
+        <div class="service-desc">Full property transition cleans for landlords, sellers, and renters. We leave the property spotless and ready for the next chapter — inspection-ready every time.</div>
+        <div class="service-includes">
+          <div class="inc-label">Includes</div>
+          <ul>
+            <li>Inside cabinets and drawers</li>
+            <li>Appliance deep clean (oven, fridge)</li>
+            <li>Baseboards, vents, light fixtures</li>
+            <li>Windows (interior)</li>
+            <li>Full documentation available</li>
+          </ul>
+        </div>
+        <div class="service-footer">
+          <div class="service-price">Pricing: <span>Custom quoted per property</span></div>
+          <a class="service-link" href="request-a-quote.html">Get Quote</a>
+        </div>
+      </div>
+
+      <div class="service-card">
+        <div class="service-top">
+          <div class="service-icon">🔍</div>
+        </div>
+        <div class="service-name">Vacant Property Inspections</div>
+        <div class="service-desc">Scheduled check-ins with photo documentation for your vacant or investment property. We catch issues early so small problems don't become expensive ones.</div>
+        <div class="service-includes">
+          <div class="inc-label">Includes</div>
+          <ul>
+            <li>Room-by-room photo documentation</li>
+            <li>Appliance and utility check</li>
+            <li>Exterior condition review</li>
+            <li>Written report after each visit</li>
+            <li>Immediate notification of issues</li>
+          </ul>
+        </div>
+        <div class="service-footer">
+          <div class="service-price">Pricing: <span>Monthly packages available</span></div>
+          <a class="service-link" href="request-a-quote.html">Get Quote</a>
+        </div>
+      </div>
+
+      <div class="service-card">
+        <div class="service-top">
+          <div class="service-icon">🔧</div>
+        </div>
+        <div class="service-name">Light Repairs & Touch-Ups</div>
+        <div class="service-desc">Minor paint touch-ups, caulking, hardware replacement, fixture tightening, and small repairs that keep your property looking sharp and well-maintained.</div>
+        <div class="service-includes">
+          <div class="inc-label">Includes</div>
+          <ul>
+            <li>Paint touch-ups (small areas)</li>
+            <li>Caulking — bath, kitchen, windows</li>
+            <li>Hardware and fixture replacement</li>
+            <li>Door, hinge, and lock adjustments</li>
+            <li>Before & after photos</li>
+          </ul>
+        </div>
+        <div class="service-footer">
+          <div class="service-price">Pricing: <span>Quoted per scope of work</span></div>
+          <a class="service-link" href="request-a-quote.html">Get Quote</a>
+        </div>
+      </div>
+
+      <div class="service-card">
+        <div class="service-top">
+          <div class="service-icon">🌿</div>
+        </div>
+        <div class="service-name">Exterior Refresh & Curb Appeal</div>
+        <div class="service-desc">First impressions matter. Pressure washing, window cleaning, porch and patio staging, and exterior reset to make your property shine from the street.</div>
+        <div class="service-includes">
+          <div class="inc-label">Includes</div>
+          <ul>
+            <li>Pressure washing — driveway, walkways</li>
+            <li>Exterior window cleaning</li>
+            <li>Porch and patio reset & staging</li>
+            <li>Debris and cobweb removal</li>
+            <li>Before & after photos</li>
+          </ul>
+        </div>
+        <div class="service-footer">
+          <div class="service-price">Pricing: <span>Quoted per property</span></div>
+          <a class="service-link" href="request-a-quote.html">Get Quote</a>
+        </div>
+      </div>
+
+    </div><!-- end services-grid -->
+
+    <div class="callout-bar" style="margin-top:2px;">
+      <strong>Not sure which service you need?</strong> Fill out a quick quote request and Brittany will reach out within 24 hours to help you figure out exactly what fits your property.
+      &nbsp; <a href="request-a-quote.html" style="color:var(--gold);font-weight:700;">Request a Quote →</a>
+    </div>
+
+  </section>
+</div>
+
+<!-- HOW IT WORKS -->
+<div style="background:#fff;border-top:1px solid #e5e7eb;border-bottom:1px solid #e5e7eb;">
+  <div id="how-it-works" class="page">
+    <section>
+      <div class="sec-label"><div class="bar"></div><div class="text">The Process</div></div>
+      <div class="sec-title">How It Works</div>
+      <p class="sec-sub" style="margin-bottom:24px;">Getting started is simple. We do the heavy lifting.</p>
+      <div class="navy-header"><div class="badge">FLOW</div><div class="title">From first contact to first visit</div></div>
+      <div class="steps-grid">
+        <div class="step-card">
+          <div class="step-num">1</div>
+          <div class="step-title">Submit a Quote Request</div>
+          <div class="step-desc">Fill out our 3-step form. Tell us about your property, the services you need, and your schedule. Takes about 3 minutes.</div>
+        </div>
+        <div class="step-card">
+          <div class="step-num">2</div>
+          <div class="step-title">Brittany Calls You</div>
+          <div class="step-desc">We review your request and reach out within 24 hours to go over details, pricing, and answer any questions.</div>
+        </div>
+        <div class="step-card">
+          <div class="step-num">3</div>
+          <div class="step-title">Agreement & Onboarding</div>
+          <div class="step-desc">Sign your service agreement and complete our host intake form. We build your custom property SOP — the blueprint for every visit.</div>
+        </div>
+        <div class="step-card">
+          <div class="step-num">4</div>
+          <div class="step-title">We Show Up & Handle It</div>
+          <div class="step-desc">Your tech arrives, works the SOP, and sends you completion photos. You get a spotless property — no supervision required.</div>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+
+<!-- WHY PHP -->
+<div class="page">
+  <section>
+    <div class="sec-label"><div class="bar"></div><div class="text">Why Choose Us</div></div>
+    <div class="sec-title">The Proper Home Prep Difference</div>
+    <p class="sec-sub" style="margin-bottom:24px;">We're not a cleaning app. We're your property partner.</p>
+    <div class="navy-header"><div class="badge">PHP</div><div class="title">What sets us apart</div></div>
+    <div class="why-grid">
+      <div class="why-card">
+        <div class="why-icon">📋</div>
+        <div class="why-title">Custom SOP for Every Property</div>
+        <div class="why-desc">We build a written standard operating procedure specific to your property. Every tech follows it exactly — every single time.</div>
+      </div>
+      <div class="why-card">
+        <div class="why-icon">📸</div>
+        <div class="why-title">Completion Photos Every Visit</div>
+        <div class="why-desc">You get photos after every service. You'll know what was done, what was found, and that your property is guest-ready — without being there.</div>
+      </div>
+      <div class="why-card">
+        <div class="why-icon">🚨</div>
+        <div class="why-title">Real-Time Damage Reporting</div>
+        <div class="why-desc">Any damage found is photographed, documented, and reported to you immediately. Never find out about a problem days after the fact.</div>
+      </div>
+      <div class="why-card">
+        <div class="why-icon">⏱️</div>
+        <div class="why-title">Tight Turnaround Windows</div>
+        <div class="why-desc">We work within your checkout-to-check-in window. Typically 2–4 hours. Rush service available for last-minute gaps.</div>
+      </div>
+      <div class="why-card">
+        <div class="why-icon">🤝</div>
+        <div class="why-title">Locally Owned, Personally Run</div>
+        <div class="why-desc">Brittany runs every client relationship personally. You're not dealing with a call center — you have a real Nashville contact who knows your property.</div>
+      </div>
+      <div class="why-card">
+        <div class="why-icon">🔒</div>
+        <div class="why-title">Secure Access Management</div>
+        <div class="why-desc">Access codes and entry info are stored securely and shared only with the assigned tech on job day. Your property's security is taken seriously.</div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- TESTIMONIALS — removed pending real client reviews.
+     Styles (.testi-grid / .testi-card / .testi-stars / .testi-text /
+     .testi-author / .testi-prop) are kept in the stylesheet above so a real
+     testimonials section can be dropped back in here unchanged. -->
+
+<!-- SERVICE AREAS -->
+<div id="areas" class="page">
+  <section>
+    <div class="sec-label"><div class="bar"></div><div class="text">Where We Work</div></div>
+    <div class="sec-title">Service Areas</div>
+    <p class="sec-sub" style="margin-bottom:24px;">We serve Nashville and the surrounding Middle Tennessee area.</p>
+    <div class="navy-header"><div class="badge">TN</div><div class="title">Greater Nashville & Middle Tennessee</div></div>
+    <div class="areas-wrap">
+      <div style="font-size:13px;color:#6b7280;line-height:1.7;margin-bottom:16px;">Not sure if we serve your area? <a href="request-a-quote.html" style="color:var(--gold);font-weight:700;">Submit a quote request</a> and we'll let you know.</div>
+      <div class="areas-grid">
+        <div class="area-pill active">Downtown Nashville</div>
+        <div class="area-pill">The Gulch</div>
+        <div class="area-pill">East Nashville</div>
+        <div class="area-pill">Germantown</div>
+        <div class="area-pill">12 South</div>
+        <div class="area-pill">Berry Hill</div>
+        <div class="area-pill">Brentwood</div>
+        <div class="area-pill">Franklin</div>
+        <div class="area-pill">Antioch</div>
+        <div class="area-pill">Donelson</div>
+        <div class="area-pill">Bellevue</div>
+        <div class="area-pill">Goodlettsville</div>
+        <div class="area-pill">Hendersonville</div>
+        <div class="area-pill">Smyrna</div>
+        <div class="area-pill">Murfreesboro</div>
+        <div class="area-pill">+ Surrounding Areas</div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- FAQ -->
+<div style="background:#fff;border-top:1px solid #e5e7eb;border-bottom:1px solid #e5e7eb;">
+  <div id="faq" class="page">
+    <section>
+      <div class="sec-label"><div class="bar"></div><div class="text">Questions</div></div>
+      <div class="sec-title">Frequently Asked Questions</div>
+      <p class="sec-sub" style="margin-bottom:24px;">Everything you need to know before getting started.</p>
+      <div class="navy-header"><div class="badge">FAQ</div><div class="title">Common questions answered</div></div>
+      <div class="faq-list">
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">
+            <span class="faq-q-text">How do I get started?</span>
+            <span class="faq-toggle">+</span>
+          </div>
+          <div class="faq-a">Fill out our quote request form — it takes about 3 minutes. Brittany will reach out within 24 hours to discuss your property, pricing, and get you scheduled. From there, you'll complete our host intake form and we'll build your custom SOP before the first visit.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">
+            <span class="faq-q-text">Do you provide your own cleaning supplies?</span>
+            <span class="faq-toggle">+</span>
+          </div>
+          <div class="faq-a">Yes — we bring our own professional-grade cleaning supplies to every job. If you have specific product preferences (fragrance-free, specific brands, no bleach, etc.) just let us know during onboarding and we'll note it in your property SOP.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">
+            <span class="faq-q-text">How do you handle property access?</span>
+            <span class="faq-toggle">+</span>
+          </div>
+          <div class="faq-a">We work with whatever access method you have in place — lockbox, smart lock, key with Brittany, or key on site. Access codes are stored securely and shared only with the assigned tech on job day. Your access information is never distributed or stored insecurely.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">
+            <span class="faq-q-text">What happens if damage is found during a turnover?</span>
+            <span class="faq-toggle">+</span>
+          </div>
+          <div class="faq-a">Our tech documents it immediately with photos and a written damage report before cleaning around it. You're notified right away — not after the job is finished. We do not clean around or conceal damage. Every report is filed in our system and shared with you with a reference number.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">
+            <span class="faq-q-text">What is an SOP and why does it matter?</span>
+            <span class="faq-toggle">+</span>
+          </div>
+          <div class="faq-a">SOP stands for Standard Operating Procedure — it's a property-specific guide that tells our team exactly how your home should be cleaned, staged, and reset. It covers everything from how the throw pillows should be arranged to which cleaning products to avoid. It's what makes every visit consistent, even with different techs.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">
+            <span class="faq-q-text">What is your cancellation policy?</span>
+            <span class="faq-toggle">+</span>
+          </div>
+          <div class="faq-a">Cancellations with 24+ hours notice: no charge. Cancellations with less than 24 hours notice: 50% of the service fee. Same-day cancellations or no-shows (tech arrives and cannot access property): full service fee applies. We understand things come up — please just give us as much notice as possible.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">
+            <span class="faq-q-text">Are you insured?</span>
+            <span class="faq-toggle">+</span>
+          </div>
+          <div class="faq-a">Yes. Proper Home Prep carries general liability insurance. A certificate of insurance is available upon request. All team members operate under a signed confidentiality agreement.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">
+            <span class="faq-q-text">Do you offer same-day or rush service?</span>
+            <span class="faq-toggle">+</span>
+          </div>
+          <div class="faq-a">Same-day availability is not guaranteed but we do our best to accommodate urgent requests based on team availability. Rush jobs may carry an additional fee. Reach out to Brittany directly via text for fastest response on time-sensitive requests.</div>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+
+<!-- CTA -->
+<div class="cta-section">
+  <div style="max-width:580px;margin:0 auto;">
+    <div style="display:inline-flex;align-items:center;gap:8px;background:rgba(216,185,106,.12);border:1px solid rgba(216,185,106,.3);color:var(--gold);font-size:11px;font-weight:800;padding:6px 14px;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:20px;">Ready to get started?</div>
+    <h2>Let's talk about <span>your property.</span></h2>
+    <p>No commitment. Just a quick conversation about what you need and how we can help. Brittany responds within 24 hours.</p>
+    <div class="cta-actions">
+      <a class="btn-gold" href="request-a-quote.html">Request a Quote →</a>
+      <a class="btn-outline" href="tel:6156694246">Call (615) 669-4246</a>
+    </div>
+    <div class="cta-contact">Prefer to text? <strong>(615) 669-4246</strong> · <strong>info@properhomeprep.com</strong></div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-brand">Proper Home Prep <span>·</span> Nashville, TN</div>
+  <div class="footer-links">
+    <a href="#services">Services</a>
+    <a href="#how-it-works">How It Works</a>
+    <a href="#areas">Service Areas</a>
+    <a href="#faq">FAQ</a>
+    <a href="request-a-quote.html">Get a Quote</a>
+  </div>
+  <div class="footer-copy">© 2026 Proper Home Prep · Nashville, TN · Where Every Detail Matters. · properhomeprep.com</div>
+</footer>
+
+<script>
+function toggleFaq(el){
+  var item = el.closest('.faq-item');
+  var isOpen = item.classList.contains('open');
+  document.querySelectorAll('.faq-item').forEach(function(i){ i.classList.remove('open'); });
+  if(!isOpen) item.classList.add('open');
+}
+// Active area pill on click
+document.querySelectorAll('.area-pill').forEach(function(p){
+  p.addEventListener('click', function(){
+    document.querySelectorAll('.area-pill').forEach(function(a){ a.classList.remove('active'); });
+    p.classList.add('active');
+  });
+});
+</script>
+</body>
+</html>

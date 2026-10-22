@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Proper Home Prep — Host Welcome Packet</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,600;1,700&amp;family=Lato:wght@300;400;700;900&amp;display=swap" rel="stylesheet"/>
+<style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --navy:      #1B2A4A;
+      --navy-dark: #111E35;
+      --gold:      #D8B96A;
+      --gold-light:#E8C97A;
+      --slate:     #6B7D8F;
+      --cream:     #FAF7F2;
+      --charcoal:  #3D3D3D;
+      --white:     #FFFFFF;
+      --surface:   #F4F6F9;
+      --border:    rgba(27,42,74,0.12);
+      --success:   #27AE60;
+    }
+
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Lato', sans-serif; background: var(--surface); color: var(--charcoal); }
+
+    /* ── SCREEN CONTROLS ── */
+    .screen-bar {
+      background: var(--navy); padding: 0.75rem 1.5rem;
+      display: flex; align-items: center; justify-content: space-between;
+      position: sticky; top: 0; z-index: 100;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.2);
+    }
+    .screen-brand { display: flex; align-items: center; gap: 0.6rem; text-decoration: none; }
+    .sb-icon { width: 30px; height: 30px; background: var(--gold); border-radius: 6px; display: flex; align-items: center; justify-content: center; }
+    .sb-icon svg { width: 15px; height: 15px; fill: var(--navy); }
+    .sb-name { font-family: 'Playfair Display', serif; font-style: italic; font-size: 0.95rem; font-weight: 700; color: var(--white); }
+    .sb-title { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold); background: rgba(216,185,106,0.12); border: 1px solid rgba(216,185,106,0.25); padding: 0.25rem 0.75rem; border-radius: 100px; }
+    .sb-actions { display: flex; gap: 0.6rem; }
+    .btn-print { background: var(--gold); color: var(--navy); border: none; border-radius: 6px; padding: 0.5rem 1.1rem; font-family: 'Lato', sans-serif; font-size: 0.78rem; font-weight: 900; cursor: pointer; display: flex; align-items: center; gap: 0.4rem; transition: background 0.2s; }
+    .btn-print:hover { background: var(--gold-light); }
+    .btn-print svg { width: 14px; height: 14px; stroke: var(--navy); fill: none; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+    .btn-back-sm { background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.7); border: 1px solid rgba(255,255,255,0.15); border-radius: 6px; padding: 0.5rem 1rem; font-family: 'Lato', sans-serif; font-size: 0.78rem; font-weight: 700; cursor: pointer; text-decoration: none; display: flex; align-items: center; gap: 0.4rem; transition: all 0.2s; }
+    .btn-back-sm:hover { background: rgba(255,255,255,0.15); color: var(--white); }
+    .btn-back-sm svg { width: 13px; height: 13px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+    /* ── PAGE WRAPPER ── */
+    .packet-wrap { max-width: 860px; margin: 2rem auto; padding: 0 1.5rem 4rem; }
+
+    /* ── PAGE SHARED ── */
+    .page {
+      background: var(--white);
+      border-radius: 16px;
+      border: 1.5px solid var(--border);
+      overflow: hidden;
+      margin-bottom: 2rem;
+      box-shadow: 0 4px 24px rgba(27,42,74,0.08);
+    }
+    .gold-rule { height: 4px; background: linear-gradient(90deg, var(--gold), var(--gold-light), var(--gold)); }
+    .navy-rule { height: 4px; background: var(--navy); }
+    .page-body { padding: 3rem 3.5rem; }
+    .page-footer-bar {
+      background: var(--navy-dark); padding: 0.85rem 3.5rem;
+      display: flex; align-items: center; justify-content: space-between;
+      font-size: 0.7rem; color: rgba(255,255,255,0.35); letter-spacing: 0.04em;
+    }
+    .page-footer-bar .tagline { font-family: 'Playfair Display', serif; font-style: italic; color: var(--gold); font-size: 0.82rem; }
+
+    /* ── PAGE LABELS ── */
+    .page-label {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      font-size: 0.65rem; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 0.75rem;
+    }
+    .page-label::before { content: ''; width: 20px; height: 1px; background: var(--gold); }
+
+    /* ════════════════════════════════════
+       PAGE 1 — COVER
+    ════════════════════════════════════ */
+    .cover-page { position: relative; min-height: 600px; overflow: hidden; }
+    .cover-bg {
+      position: absolute; inset: 0;
+      background-image: url('https://images.prismic.io/meredithbaer/65aed5db38f662e9dd2127f3_Meridith-Baer-Home-Genesta-Organic-Modern-2.jpg?auto=format,compress');
+      background-size: cover; background-position: center;
+      filter: brightness(0.25);
+    }
+    .cover-overlay { position: absolute; inset: 0; background: linear-gradient(160deg, rgba(27,42,74,0.9) 0%, rgba(17,30,53,0.7) 60%, rgba(0,0,0,0.4) 100%); }
+    .cover-content { position: relative; z-index: 2; padding: 4rem 3.5rem 3rem; }
+    .cover-logo-wrap { display: flex; align-items: center; gap: 1rem; margin-bottom: 3rem; }
+    .cover-logo-icon { width: 52px; height: 52px; background: var(--gold); border-radius: 12px; display: flex; align-items: center; justify-content: center; }
+    .cover-logo-icon svg { width: 26px; height: 26px; fill: var(--navy); }
+    .cover-logo-text .brand { font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.3rem; font-weight: 700; color: var(--white); }
+    .cover-logo-text .location { font-size: 0.7rem; color: var(--gold); letter-spacing: 0.1em; text-transform: uppercase; }
+    .cover-eyebrow { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold); margin-bottom: 1rem; }
+    .cover-title { font-family: 'Playfair Display', serif; font-style: italic; font-size: clamp(2.5rem, 5vw, 3.8rem); font-weight: 700; color: var(--white); line-height: 1.1; margin-bottom: 0.75rem; }
+    .cover-title em { color: var(--gold); font-style: italic; }
+    .cover-subtitle { font-size: 1rem; color: rgba(255,255,255,0.65); line-height: 1.65; max-width: 480px; margin-bottom: 2.5rem; font-weight: 300; }
+    .cover-divider { width: 60px; height: 3px; background: var(--gold); border-radius: 2px; margin-bottom: 2.5rem; }
+    .cover-meta { display: flex; gap: 2.5rem; flex-wrap: wrap; }
+    .cover-meta-item .label { font-size: 0.62rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.4); margin-bottom: 0.2rem; }
+    .cover-meta-item .value { font-size: 0.88rem; color: var(--white); font-weight: 700; }
+    .cover-bottom { position: relative; z-index: 2; padding: 1.5rem 3.5rem 2rem; border-top: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: space-between; }
+    .cover-tagline { font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.1rem; color: var(--gold); }
+    .cover-page-num { font-size: 0.7rem; color: rgba(255,255,255,0.3); letter-spacing: 0.08em; }
+
+    /* ════════════════════════════════════
+       PAGE 2 — WELCOME LETTER
+    ════════════════════════════════════ */
+    .letter-header { background: var(--navy); padding: 2rem 3.5rem; display: flex; align-items: center; justify-content: space-between; }
+    .letter-header-left .eyebrow { font-size: 0.65rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.3rem; }
+    .letter-header-left h2 { font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.6rem; font-weight: 700; color: var(--white); }
+    .letter-header-icon { width: 48px; height: 48px; background: rgba(216,185,106,0.15); border-radius: 10px; display: flex; align-items: center; justify-content: center; border: 1px solid rgba(216,185,106,0.3); }
+    .letter-header-icon svg { width: 22px; height: 22px; stroke: var(--gold); fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+    .letter-salutation { font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.2rem; font-weight: 600; color: var(--navy); margin-bottom: 1.5rem; }
+    .letter-body p { font-size: 0.95rem; color: var(--charcoal); line-height: 1.85; margin-bottom: 1.25rem; }
+    .letter-body p strong { color: var(--navy); }
+    .letter-body .highlight {
+      background: rgba(216,185,106,0.08); border-left: 4px solid var(--gold);
+      padding: 1.25rem 1.5rem; border-radius: 0 8px 8px 0; margin: 1.5rem 0;
+      font-family: 'Playfair Display', serif; font-style: italic;
+      font-size: 1.1rem; color: var(--navy); line-height: 1.6;
+    }
+    .letter-signature { margin-top: 2rem; }
+    .letter-signature .closing { font-size: 0.95rem; color: var(--charcoal); margin-bottom: 1rem; }
+    .letter-signature .sig-name { font-family: 'Playfair Display', serif; font-size: 1.8rem; font-style: italic; color: var(--navy); border-bottom: 2px solid var(--navy); display: inline-block; padding-bottom: 0.25rem; margin-bottom: 0.4rem; }
+    .letter-signature .sig-title { font-size: 0.78rem; color: var(--slate); font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; }
+
+    /* ════════════════════════════════════
+       PAGE 3 — WHAT TO EXPECT
+    ════════════════════════════════════ */
+    .expect-header { background: var(--cream); padding: 2rem 3.5rem; border-bottom: 1px solid var(--border); }
+    .expect-header h2 { font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.8rem; font-weight: 700; color: var(--navy); margin-bottom: 0.3rem; }
+    .expect-header p { font-size: 0.88rem; color: var(--slate); line-height: 1.65; }
+    .services-list { display: flex; flex-direction: column; gap: 1rem; }
+    .service-row {
+      display: flex; align-items: flex-start; gap: 1.25rem;
+      padding: 1.25rem; border-radius: 10px;
+      border: 1px solid var(--border); background: var(--surface);
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .service-row:hover { border-color: rgba(216,185,106,0.3); background: rgba(216,185,106,0.03); }
+    .service-num { width: 36px; height: 36px; border-radius: 8px; background: var(--navy); color: var(--gold); font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.1rem; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .service-row-body h4 { font-size: 0.95rem; font-weight: 900; color: var(--navy); margin-bottom: 0.25rem; }
+    .service-row-body p { font-size: 0.83rem; color: var(--slate); line-height: 1.6; }
+    .promise-box {
+      background: var(--navy); border-radius: 10px; padding: 1.5rem 1.75rem;
+      margin-top: 1.5rem; display: flex; align-items: flex-start; gap: 1rem;
+    }
+    .promise-box svg { width: 24px; height: 24px; stroke: var(--gold); fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; margin-top: 2px; }
+    .promise-box-text .label { font-size: 0.65rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.3rem; }
+    .promise-box-text p { font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.05rem; color: var(--white); line-height: 1.55; }
+
+    /* ════════════════════════════════════
+       PAGE 4 — DASHBOARD QUICK-START
+    ════════════════════════════════════ */
+    .dash-header { background: var(--navy); padding: 2rem 3.5rem; }
+    .dash-header .eyebrow { font-size: 0.65rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.3rem; }
+    .dash-header h2 { font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.8rem; font-weight: 700; color: var(--white); margin-bottom: 0.3rem; }
+    .dash-header p { font-size: 0.85rem; color: rgba(255,255,255,0.6); line-height: 1.6; }
+    .dash-steps { display: flex; flex-direction: column; gap: 0; }
+    .dash-step { display: flex; gap: 1.5rem; padding: 1.5rem 0; border-bottom: 1px solid var(--border); }
+    .dash-step:last-child { border-bottom: none; }
+    .dash-step-left { display: flex; flex-direction: column; align-items: center; gap: 0; flex-shrink: 0; }
+    .dash-step-num { width: 40px; height: 40px; border-radius: 50%; background: var(--navy); color: var(--gold); font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.2rem; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .dash-step-line { width: 2px; flex: 1; background: var(--border); margin: 4px 0; min-height: 20px; }
+    .dash-step:last-child .dash-step-line { display: none; }
+    .dash-step-body { padding-top: 0.5rem; }
+    .dash-step-body h4 { font-size: 1rem; font-weight: 900; color: var(--navy); margin-bottom: 0.35rem; }
+    .dash-step-body p { font-size: 0.85rem; color: var(--slate); line-height: 1.65; }
+    .dash-step-body .step-tag { display: inline-flex; align-items: center; gap: 0.3rem; background: rgba(27,42,74,0.06); border: 1px solid var(--border); border-radius: 100px; font-size: 0.7rem; font-weight: 700; color: var(--navy); padding: 0.2rem 0.65rem; margin-top: 0.5rem; }
+    .dash-features { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1.5rem; }
+    .dash-feature { padding: 1rem 1.25rem; background: var(--surface); border-radius: 8px; border: 1px solid var(--border); }
+    .dash-feature-icon { width: 32px; height: 32px; background: var(--navy); border-radius: 7px; display: flex; align-items: center; justify-content: center; margin-bottom: 0.6rem; }
+    .dash-feature-icon svg { width: 15px; height: 15px; stroke: var(--gold); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    .dash-feature h5 { font-size: 0.85rem; font-weight: 900; color: var(--navy); margin-bottom: 0.2rem; }
+    .dash-feature p { font-size: 0.78rem; color: var(--slate); line-height: 1.55; }
+
+    /* ════════════════════════════════════
+       PAGE 5 — ONBOARDING CHECKLIST
+    ════════════════════════════════════ */
+    .checklist-header { background: var(--cream); padding: 2rem 3.5rem; border-bottom: 1px solid var(--border); }
+    .checklist-header h2 { font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.8rem; font-weight: 700; color: var(--navy); margin-bottom: 0.3rem; }
+    .checklist-header p { font-size: 0.88rem; color: var(--slate); line-height: 1.65; }
+    .onboard-phases { display: flex; flex-direction: column; gap: 1.5rem; }
+    .onboard-phase {}
+    .phase-title-row { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.85rem; }
+    .phase-badge { background: var(--navy); color: var(--gold); font-size: 0.65rem; font-weight: 900; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.3rem 0.85rem; border-radius: 100px; }
+    .phase-title-row h3 { font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.15rem; font-weight: 700; color: var(--navy); }
+    .check-list { display: flex; flex-direction: column; gap: 0.45rem; }
+    .check-row { display: flex; align-items: flex-start; gap: 0.85rem; padding: 0.65rem 0.85rem; background: var(--surface); border-radius: 8px; border: 1px solid var(--border); font-size: 0.85rem; color: var(--charcoal); line-height: 1.45; }
+    .check-box-empty { width: 18px; height: 18px; border-radius: 4px; border: 2px solid var(--border); background: var(--white); flex-shrink: 0; margin-top: 1px; }
+    .check-row.done { background: rgba(39,174,96,0.05); border-color: rgba(39,174,96,0.2); }
+    .check-row.done .check-box-empty { background: var(--success); border-color: var(--success); position: relative; }
+    .check-row.done .check-box-empty::after { content: '✓'; position: absolute; top: -1px; left: 2px; font-size: 11px; color: white; font-weight: 900; }
+    .check-row.done span { color: var(--slate); }
+    .timeline-box { background: var(--navy); border-radius: 10px; padding: 1.5rem; margin-top: 1.5rem; }
+    .timeline-box h4 { font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.1rem; font-weight: 700; color: var(--gold); margin-bottom: 1rem; }
+    .timeline-steps { display: flex; gap: 0; }
+    .timeline-step { flex: 1; text-align: center; position: relative; }
+    .timeline-step::after { content: '→'; position: absolute; right: -8px; top: 12px; color: rgba(255,255,255,0.3); font-size: 1rem; }
+    .timeline-step:last-child::after { display: none; }
+    .timeline-dot { width: 28px; height: 28px; border-radius: 50%; background: var(--gold); color: var(--navy); font-size: 0.75rem; font-weight: 900; display: flex; align-items: center; justify-content: center; margin: 0 auto 0.5rem; }
+    .timeline-step .t-label { font-size: 0.68rem; font-weight: 700; color: rgba(255,255,255,0.5); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 0.2rem; }
+    .timeline-step .t-action { font-size: 0.75rem; color: var(--white); line-height: 1.4; }
+
+    /* ════════════════════════════════════
+       PAGE 6 — CONTACT & NEXT STEPS
+    ════════════════════════════════════ */
+    .contact-hero { background: var(--navy); padding: 2.5rem 3.5rem; position: relative; overflow: hidden; }
+    .contact-hero::before { content: ''; position: absolute; top: -40px; right: -40px; width: 200px; height: 200px; border-radius: 50%; background: rgba(216,185,106,0.08); }
+    .contact-hero .eyebrow { font-size: 0.65rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.4rem; position: relative; }
+    .contact-hero h2 { font-family: 'Playfair Display', serif; font-style: italic; font-size: 2rem; font-weight: 700; color: var(--white); margin-bottom: 0.5rem; position: relative; }
+    .contact-hero p { font-size: 0.88rem; color: rgba(255,255,255,0.6); line-height: 1.65; max-width: 480px; position: relative; }
+    .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 2rem; }
+    .contact-card { padding: 1.5rem; background: var(--surface); border-radius: 10px; border: 1px solid var(--border); }
+    .contact-card-icon { width: 40px; height: 40px; background: var(--navy); border-radius: 9px; display: flex; align-items: center; justify-content: center; margin-bottom: 0.85rem; }
+    .contact-card-icon svg { width: 18px; height: 18px; stroke: var(--gold); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    .contact-card h4 { font-size: 0.85rem; font-weight: 900; color: var(--navy); margin-bottom: 0.3rem; }
+    .contact-card p { font-size: 0.82rem; color: var(--slate); line-height: 1.55; }
+    .contact-card .contact-value { font-size: 0.9rem; font-weight: 700; color: var(--navy); margin-top: 0.4rem; }
+    .next-steps-title { font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.3rem; font-weight: 700; color: var(--navy); margin-bottom: 1rem; }
+    .next-steps-list { display: flex; flex-direction: column; gap: 0.6rem; }
+    .next-step { display: flex; align-items: flex-start; gap: 1rem; padding: 1rem 1.25rem; background: var(--surface); border-radius: 8px; border: 1px solid var(--border); }
+    .next-step-num { width: 28px; height: 28px; border-radius: 50%; background: var(--gold); color: var(--navy); font-size: 0.8rem; font-weight: 900; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .next-step-body h5 { font-size: 0.88rem; font-weight: 900; color: var(--navy); margin-bottom: 0.15rem; }
+    .next-step-body p { font-size: 0.8rem; color: var(--slate); line-height: 1.55; }
+    .closing-banner { background: var(--navy); border-radius: 10px; padding: 2rem; text-align: center; margin-top: 2rem; }
+    .closing-banner .closing-icon { width: 52px; height: 52px; background: rgba(216,185,106,0.15); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; border: 1px solid rgba(216,185,106,0.3); }
+    .closing-banner .closing-icon svg { width: 24px; height: 24px; stroke: var(--gold); fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+    .closing-banner h3 { font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.5rem; font-weight: 700; color: var(--white); margin-bottom: 0.5rem; }
+    .closing-banner p { font-size: 0.85rem; color: rgba(255,255,255,0.6); line-height: 1.65; max-width: 420px; margin: 0 auto 1.25rem; }
+    .closing-banner .closing-tagline { font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.1rem; color: var(--gold); }
+
+    /* ── PRINT STYLES ── */
+    @media print {
+      .screen-bar { display: none !important; }
+      body { background: #fff !important; }
+      .packet-wrap { margin: 0; padding: 0; max-width: 100%; }
+      .page { border-radius: 0; box-shadow: none; margin-bottom: 0; page-break-after: always; border: none; }
+      .page:last-child { page-break-after: avoid; }
+
+      /* Cover: drop the photo/overlay (external image, unreliable to print anyway)
+         for a clean white cover with a strong gold rule and navy title. */
+      .cover-page { min-height: 0 !important; background: #fff !important; border-bottom: 4px solid var(--gold); padding-bottom: 2rem; }
+      .cover-bg, .cover-overlay { display: none !important; }
+      .cover-logo-text .brand, .cover-title, .cover-title em { color: var(--navy) !important; }
+      .cover-page-num { color: var(--slate) !important; }
+
+      /* Every other navy block block → white + gold border + navy text, matching the rest of the document suite. */
+      .letter-header, .dash-header, .contact-hero, .closing-banner, .timeline-box, .navy-rule {
+        background: #fff !important; border: 1.5px solid var(--gold) !important;
+      }
+      .letter-header *, .dash-header *, .contact-hero *, .closing-banner *, .timeline-box * { color: var(--navy) !important; }
+      .closing-banner .closing-tagline, .contact-hero .cover-eyebrow, .dash-header .cover-eyebrow { color: var(--gold2, var(--gold)) !important; }
+      .phase-badge, .dash-step-num, .service-num, .contact-card-icon, .dash-feature-icon, .next-step-num, .closing-banner .closing-icon {
+        background: #fff !important; color: var(--navy) !important; border: 1.5px solid var(--gold) !important;
+      }
+      .promise-box { background: var(--cream) !important; border-left: 4px solid var(--gold) !important; }
+      .promise-box * { color: var(--navy) !important; }
+      .page-footer-bar { background: #fff !important; border-top: 2px solid var(--gold) !important; }
+      .page-footer-bar * { color: var(--navy) !important; }
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 700px) {
+      .page-body { padding: 2rem 1.5rem; }
+      .cover-content { padding: 2.5rem 1.5rem 2rem; }
+      .cover-bottom { padding: 1rem 1.5rem; flex-direction: column; gap: 0.5rem; }
+      .letter-header, .dash-header, .expect-header, .checklist-header, .contact-hero { padding: 1.5rem; }
+      .page-footer-bar { padding: 0.75rem 1.5rem; }
+      .contact-grid { grid-template-columns: 1fr; }
+      .dash-features { grid-template-columns: 1fr; }
+      .timeline-steps { flex-direction: column; gap: 0.75rem; }
+      .timeline-step::after { display: none; }
+      .sb-title { display: none; }
+    }
+  </style>
+</head>
+<body>
+<!-- SCREEN BAR -->
+<div class="screen-bar">
+<a class="screen-brand" href="../">
+<div class="sb-icon"><svg viewbox="0 0 24 24"><path d="M3 9.5L12 3l9 6.5V21H15v-5h-6v5H3V9.5z"></path></svg></div>
+<span class="sb-name">Proper Home Prep</span>
+</a>
+<span class="sb-title">Host Welcome Packet</span>
+<div class="sb-actions">
+<a class="btn-back-sm" href="../">
+<svg viewbox="0 0 24 24"><path d="M19 12H5M12 5l-7 7 7 7"></path></svg>
+      Hub
+    </a>
+<button class="btn-print" onclick="window.print()">
+<svg viewbox="0 0 24 24"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect height="8" width="12" x="6" y="14"></rect></svg>
+      Print / Save PDF
+    </button>
+</div>
+</div>
+<div class="packet-wrap">
+<!-- ══════════════════════════════════
+       PAGE 1 — COVER
+  ══════════════════════════════════ -->
+<div class="page">
+<div class="cover-page">
+<div class="cover-bg"></div>
+<div class="cover-overlay"></div>
+<div class="cover-content">
+<div class="cover-logo-wrap">
+<div class="cover-logo-icon">
+<svg viewbox="0 0 24 24"><path d="M3 9.5L12 3l9 6.5V21H15v-5h-6v5H3V9.5z"></path></svg>
+</div>
+<div class="cover-logo-text">
+<div class="brand">Proper Home Prep</div>
+<div class="location">Nashville, Tennessee</div>
+</div>
+</div>
+<div class="cover-eyebrow">Host Welcome Packet</div>
+<h1 class="cover-title">Welcome to<br/><em>The Proper Standard.</em></h1>
+<p class="cover-subtitle">Everything you need to know about your new property preparation partnership — how we work, what to expect, and how to get the most out of your Proper Home Prep experience.</p>
+<div class="cover-divider"></div>
+<div class="cover-meta">
+<div class="cover-meta-item">
+<div class="label">Prepared For</div>
+<div class="value">New Host Partner</div>
+</div>
+<div class="cover-meta-item">
+<div class="label">Service Area</div>
+<div class="value">Nashville &amp; Middle Tennessee</div>
+</div>
+<div class="cover-meta-item">
+<div class="label">Edition</div>
+<div class="value">2026</div>
+</div>
+</div>
+</div>
+<div class="cover-bottom">
+<div class="cover-tagline">"Where Every Detail Matters."</div>
+<div class="cover-page-num">Page 1 of 5 · Confidential</div>
+</div>
+</div>
+<div class="gold-rule"></div>
+</div>
+<!-- ══════════════════════════════════
+       PAGE 2 — WELCOME LETTER
+  ══════════════════════════════════ -->
+<div class="page">
+<div class="letter-header">
+<div class="letter-header-left">
+<div class="eyebrow">A Personal Note</div>
+<h2>Welcome to the Family</h2>
+</div>
+<div class="letter-header-icon">
+<svg viewbox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+</div>
+</div>
+<div class="gold-rule"></div>
+<div class="page-body">
+<p class="letter-salutation">Dear Host Partner,</p>
+<div class="letter-body">
+<p>Welcome — and thank you for trusting Proper Home Prep with your property. That trust is something we take seriously, and we want you to feel it from the very first turnover.</p>
+<p>We built Proper Home Prep because we saw a gap in Nashville's short-term rental market: property owners needed a preparation partner they could genuinely rely on. Not someone who showed up late, cut corners, or left them guessing. A real partner — <strong>fast, consistent, accountable, and transparent.</strong></p>
+<p>Every job we do follows the same documented standard. Every room is photographed before and after. Every issue is flagged immediately — not discovered by your next guest. And every technician who walks through your door has been trained to treat your property like it belongs to someone they care about.</p>
+<div class="highlight">"We treat every property like a five-star guest experience depends on it — because it does. That's not a tagline. It's how we operate, on every property, every single time."</div>
+<p>This welcome packet contains everything you need to get started — how our process works, how to access your host dashboard, your onboarding checklist, and how to reach us. Read it, save it, and know that we're here whenever you need us.</p>
+<p>We're genuinely glad you're here. Let's build something great together.</p>
+</div>
+<div class="letter-signature">
+<p class="closing">With gratitude,</p>
+<div class="sig-name">Proper Home Prep</div>
+<div class="sig-title">Leadership Team · Nashville, Tennessee · 2026</div>
+</div>
+</div>
+<div class="page-footer-bar">
+<span>Proper Home Prep · Nashville, Tennessee · Confidential</span>
+<span class="tagline">"Where Every Detail Matters."</span>
+<span>Page 2 of 5</span>
+</div>
+</div>
+<!-- ══════════════════════════════════
+       PAGE 3 — WHAT TO EXPECT
+  ══════════════════════════════════ -->
+<div class="page">
+<div class="expect-header">
+<div class="page-label">Our Services</div>
+<h2>What We Do — Every Time We Visit</h2>
+<p>Every Proper Home Prep service follows the same documented standard. No guesswork, no variability — just consistent, hospitality-grade results on every property, every visit.</p>
+</div>
+<div class="gold-rule"></div>
+<div class="page-body">
+<div class="services-list">
+<div class="service-row">
+<div class="service-num">01</div>
+<div class="service-row-body">
+<h4>Rental Make-Ready &amp; STR Turnover</h4>
+<p>Our core service — complete turnover preparation between guests. Cleaning, linen setup, restocking, staging, and photo documentation, all completed within your window. Your property is guest-ready before your next check-in, every time.</p>
+</div>
+</div>
+<div class="service-row">
+<div class="service-num">02</div>
+<div class="service-row-body">
+<h4>Home Prep Cleaning</h4>
+<p>Deep, thorough cleaning that prepares any property for immediate use — whether for a new guest, a showing, or a fresh start. Every surface, every corner, cleaned to a five-star hotel standard.</p>
+</div>
+</div>
+<div class="service-row">
+<div class="service-num">03</div>
+<div class="service-row-body">
+<h4>Vacant Property Inspections</h4>
+<p>Systematic inspection and condition reporting for unoccupied properties. Every room documented with timestamped photos — so you always know exactly what's happening at your property, even when you're not there.</p>
+</div>
+</div>
+<div class="service-row">
+<div class="service-num">04</div>
+<div class="service-row-body">
+<h4>Light Repairs &amp; Touch-Ups</h4>
+<p>Minor repairs, paint touch-ups, and punch-list completion. We handle the small things that make a big difference — so your property is truly guest-ready, not just clean.</p>
+</div>
+</div>
+<div class="service-row">
+<div class="service-num">05</div>
+<div class="service-row-body">
+<h4>Exterior Refresh &amp; Curb Appeal</h4>
+<p>Because the guest experience starts before they open the door. Exterior cleaning, tidying, and first-impression enhancement — so every arrival feels like a five-star welcome.</p>
+</div>
+</div>
+<div class="service-row">
+<div class="service-num">06</div>
+<div class="service-row-body">
+<h4>Move-In / Move-Out Prep &amp; Junk Removal</h4>
+<p>Full transition cleaning for residents and new occupants, plus complete cleanout services for estates, vacancies, and repositioning properties.</p>
+</div>
+</div>
+</div>
+<div class="promise-box">
+<svg viewbox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+<div class="promise-box-text">
+<div class="label">The Proper Promise</div>
+<p>Every job is photo documented. Every checklist is completed in real time. Every issue is flagged before your next guest arrives. If it's not in the dashboard, it didn't happen.</p>
+</div>
+</div>
+</div>
+<div class="page-footer-bar">
+<span>Proper Home Prep · Nashville, Tennessee · Confidential</span>
+<span class="tagline">"Where Every Detail Matters."</span>
+<span>Page 3 of 5</span>
+</div>
+</div>
+<!-- ══════════════════════════════════
+       PAGE 4 — DASHBOARD QUICK-START
+  ══════════════════════════════════ -->
+<div class="page">
+<div class="dash-header">
+<div class="eyebrow">Your Host Dashboard</div>
+<h2>Real-Time Visibility Into Every Turnover</h2>
+<p>The Proper Dashboard gives you live visibility into every job — from the moment your technician arrives to the moment your property is guest-ready. Here's how it works.</p>
+</div>
+<div class="gold-rule"></div>
+<div class="page-body">
+<div class="dash-steps">
+<div class="dash-step">
+<div class="dash-step-left">
+<div class="dash-step-num">1</div>
+<div class="dash-step-line"></div>
+</div>
+<div class="dash-step-body">
+<h4>You Receive Your Welcome Packet &amp; Onboarding Code</h4>
+<p>After signing your service agreement, you'll receive this packet along with a unique onboarding code (e.g. <strong>PHP-A3K9</strong>) and a link to your host portal. Your code expires in 30 days.</p>
+<span class="step-tag">📧 Delivered via email</span>
+</div>
+</div>
+<div class="dash-step">
+<div class="dash-step-left">
+<div class="dash-step-num">2</div>
+<div class="dash-step-line"></div>
+</div>
+<div class="dash-step-body">
+<h4>Complete Your Property SOP Online</h4>
+<p>Visit your host portal and complete your Property Standard Operating Procedure — room layout, linen preferences, restocking lists, access info, and scheduling preferences. This becomes the master profile for every technician assigned to your property.</p>
+<span class="step-tag">🔗 dashboard.properhomeprep.com/onboard</span>
+</div>
+</div>
+<div class="dash-step">
+<div class="dash-step-left">
+<div class="dash-step-num">3</div>
+<div class="dash-step-line"></div>
+</div>
+<div class="dash-step-body">
+<h4>Your Property Goes Live</h4>
+<p>Our team reviews your SOP, confirms your property profile, and activates your account. You'll receive a confirmation that your property is live and ready to schedule.</p>
+<span class="step-tag">✅ Typically within 1 business day</span>
+</div>
+</div>
+<div class="dash-step">
+<div class="dash-step-left">
+<div class="dash-step-num">4</div>
+<div class="dash-step-line"></div>
+</div>
+<div class="dash-step-body">
+<h4>Watch Your First Turnover in Real Time</h4>
+<p>Log into your host dashboard and watch as your technician checks in, uploads before photos, completes each task, and flags any issues — all in real time. When the job is complete, you receive an instant notification that your property is guest-ready.</p>
+<span class="step-tag">📱 Works on any device</span>
+</div>
+</div>
+</div>
+<div class="dash-features">
+<div class="dash-feature">
+<div class="dash-feature-icon"><svg viewbox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg></div>
+<h5>Live Photo Stream</h5>
+<p>Photos appear in your dashboard as they're uploaded — organized by room, timestamped, and permanently linked to the job record.</p>
+</div>
+<div class="dash-feature">
+<div class="dash-feature-icon"><svg viewbox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" x2="12" y1="9" y2="13"></line><line x1="12" x2="12.01" y1="17" y2="17"></line></svg></div>
+<h5>Instant Issue Flags</h5>
+<p>Any damage, missing items, or maintenance concerns are flagged immediately with photos — giving you a recovery window before your next guest arrives.</p>
+</div>
+<div class="dash-feature">
+<div class="dash-feature-icon"><svg viewbox="0 0 24 24"><path d="M17 1l4 4-4 4"></path><path d="M3 11V9a4 4 0 0 1 4-4h14"></path><path d="M7 23l-4-4 4-4"></path><path d="M21 13v2a4 4 0 0 1-4 4H3"></path></svg></div>
+<h5>Real-Time Task Feed</h5>
+<p>Watch each task get checked off as it's completed — "Kitchen counters ✓ 2:34 PM" — so you always know exactly where your turnover stands.</p>
+</div>
+<div class="dash-feature">
+<div class="dash-feature-icon"><svg viewbox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg></div>
+<h5>Guest-Ready Notification</h5>
+<p>The moment your technician signs off, you receive an instant push notification confirming your property is complete and guest-ready.</p>
+</div>
+</div>
+</div>
+<div class="page-footer-bar">
+<span>Proper Home Prep · Nashville, Tennessee · Confidential</span>
+<span class="tagline">"Where Every Detail Matters."</span>
+<span>Page 4 of 5</span>
+</div>
+</div>
+<!-- ══════════════════════════════════
+       PAGE 5 — ONBOARDING CHECKLIST & CONTACT
+  ══════════════════════════════════ -->
+<div class="page">
+<div class="checklist-header">
+<div class="page-label">Getting Started</div>
+<h2>Your Onboarding Checklist</h2>
+<p>Complete these steps to get your property live in the Proper Home Prep system. Most hosts are fully onboarded within 48 hours.</p>
+</div>
+<div class="gold-rule"></div>
+<div class="page-body">
+<div class="onboard-phases">
+<div class="onboard-phase">
+<div class="phase-title-row">
+<span class="phase-badge">Step 1</span>
+<h3>Review &amp; Sign</h3>
+</div>
+<div class="check-list">
+<div class="check-row done"><div class="check-box-empty"></div><span>Read and sign your Proper Home Prep Service Agreement</span></div>
+<div class="check-row done"><div class="check-box-empty"></div><span>Review this Welcome Packet in full</span></div>
+<div class="check-row"><div class="check-box-empty"></div><span>Save your onboarding code: <strong>PHP-____</strong> (provided separately)</span></div>
+</div>
+</div>
+<div class="onboard-phase">
+<div class="phase-title-row">
+<span class="phase-badge">Step 2</span>
+<h3>Complete Your Property SOP</h3>
+</div>
+<div class="check-list">
+<div class="check-row"><div class="check-box-empty"></div><span>Visit your onboarding portal and enter your code</span></div>
+<div class="check-row"><div class="check-box-empty"></div><span>Complete Section A — Property Profile &amp; Access Information</span></div>
+<div class="check-row"><div class="check-box-empty"></div><span>Complete Section B — Room Layout &amp; Linen Inventory</span></div>
+<div class="check-row"><div class="check-box-empty"></div><span>Complete Section C — Cleaning Standards &amp; Preferences</span></div>
+<div class="check-row"><div class="check-box-empty"></div><span>Complete Section D — Restocking &amp; Amenities</span></div>
+<div class="check-row"><div class="check-box-empty"></div><span>Complete Sections E–I — Damage, Scheduling, Special Instructions, Sign-Off</span></div>
+<div class="check-row"><div class="check-box-empty"></div><span>Upload any staging reference photos to your property profile</span></div>
+</div>
+</div>
+<div class="onboard-phase">
+<div class="phase-title-row">
+<span class="phase-badge">Step 3</span>
+<h3>Set Up Your Dashboard</h3>
+</div>
+<div class="check-list">
+<div class="check-row"><div class="check-box-empty"></div><span>Log into your host dashboard at dashboard.properhomeprep.com</span></div>
+<div class="check-row"><div class="check-box-empty"></div><span>Set your notification preferences (email / SMS / push)</span></div>
+<div class="check-row"><div class="check-box-empty"></div><span>Connect your calendar (Airbnb / VRBO / iCal) for automatic scheduling</span></div>
+<div class="check-row"><div class="check-box-empty"></div><span>Add a billing method to your account</span></div>
+</div>
+</div>
+<div class="onboard-phase">
+<div class="phase-title-row">
+<span class="phase-badge">Step 4</span>
+<h3>Schedule Your First Service</h3>
+</div>
+<div class="check-list">
+<div class="check-row"><div class="check-box-empty"></div><span>Contact your coordinator to schedule your first turnover or walkthrough</span></div>
+<div class="check-row"><div class="check-box-empty"></div><span>Confirm access method and entry code with your coordinator</span></div>
+<div class="check-row"><div class="check-box-empty"></div><span>Watch your first job live in the dashboard — and enjoy the peace of mind</span></div>
+</div>
+</div>
+</div>
+<div class="timeline-box">
+<h4>Typical Onboarding Timeline</h4>
+<div class="timeline-steps">
+<div class="timeline-step">
+<div class="timeline-dot">1</div>
+<div class="t-label">Day 1</div>
+<div class="t-action">Receive welcome packet &amp; onboarding code</div>
+</div>
+<div class="timeline-step">
+<div class="timeline-dot">2</div>
+<div class="t-label">Day 1–2</div>
+<div class="t-action">Complete property SOP online</div>
+</div>
+<div class="timeline-step">
+<div class="timeline-dot">3</div>
+<div class="t-label">Day 2</div>
+<div class="t-action">Team reviews &amp; activates property</div>
+</div>
+<div class="timeline-step">
+<div class="timeline-dot">4</div>
+<div class="t-label">Day 3+</div>
+<div class="t-action">First service scheduled &amp; completed</div>
+</div>
+</div>
+</div>
+</div>
+<div class="page-footer-bar">
+<span>Proper Home Prep · Nashville, Tennessee · Confidential</span>
+<span class="tagline">"Where Every Detail Matters."</span>
+<span>Page 5 of 5</span>
+</div>
+</div>
+<!-- ══════════════════════════════════
+       BONUS PAGE — CONTACT & NEXT STEPS
+  ══════════════════════════════════ -->
+<div class="page">
+<div class="contact-hero">
+<div class="eyebrow">We're Here For You</div>
+<h2>Contact &amp; Next Steps</h2>
+<p>Your coordinator is your single point of contact for everything — scheduling, questions, billing, and support. We respond within one business day, always.</p>
+</div>
+<div class="gold-rule"></div>
+<div class="page-body">
+<div class="contact-grid">
+<div class="contact-card">
+<div class="contact-card-icon"><svg viewbox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.4 2 2 0 0 1 3.6 1.22h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.8a16 16 0 0 0 6.29 6.29l.95-.95a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"></path></svg></div>
+<h4>Phone &amp; Text</h4>
+<p>For urgent day-of issues, call or text your coordinator directly.</p>
+<div class="contact-value">Contact info provided separately</div>
+</div>
+<div class="contact-card">
+<div class="contact-card-icon"><svg viewbox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg></div>
+<h4>Email</h4>
+<p>For non-urgent questions, scheduling requests, and billing inquiries.</p>
+<div class="contact-value">Contact info provided separately</div>
+</div>
+<div class="contact-card">
+<div class="contact-card-icon"><svg viewbox="0 0 24 24"><rect height="7" width="7" x="3" y="3"></rect><rect height="7" width="7" x="14" y="3"></rect><rect height="7" width="7" x="14" y="14"></rect><rect height="7" width="7" x="3" y="14"></rect></svg></div>
+<h4>Host Dashboard</h4>
+<p>Your primary channel for job updates, photo streams, flags, and history.</p>
+<div class="contact-value">dashboard.properhomeprep.com</div>
+</div>
+<div class="contact-card">
+<div class="contact-card-icon"><svg viewbox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg></div>
+<h4>Response Time</h4>
+<p>We respond to all non-urgent inquiries within one business day.</p>
+<div class="contact-value">Same day for urgent issues</div>
+</div>
+</div>
+<h3 class="next-steps-title">Your Next Steps</h3>
+<div class="next-steps-list">
+<div class="next-step">
+<div class="next-step-num">1</div>
+<div class="next-step-body">
+<h5>Complete Your Property SOP</h5>
+<p>Visit your onboarding portal and complete your property profile. The more detail you provide, the better every turnover will go.</p>
+</div>
+</div>
+<div class="next-step">
+<div class="next-step-num">2</div>
+<div class="next-step-body">
+<h5>Connect Your Calendar</h5>
+<p>Link your Airbnb, VRBO, or iCal feed so turnovers are automatically scheduled around your bookings — no manual coordination needed.</p>
+</div>
+</div>
+<div class="next-step">
+<div class="next-step-num">3</div>
+<div class="next-step-body">
+<h5>Schedule Your First Service</h5>
+<p>Reach out to your coordinator to schedule your first turnover or a property walkthrough. We'll take it from there.</p>
+</div>
+</div>
+<div class="next-step">
+<div class="next-step-num">4</div>
+<div class="next-step-body">
+<h5>Relax — We've Got Your Property</h5>
+<p>From this point forward, every turnover is documented, every issue is flagged, and every guest walks into a five-star experience. That's The Proper Standard.</p>
+</div>
+</div>
+</div>
+<div class="closing-banner">
+<div class="closing-icon">
+<svg viewbox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+</div>
+<h3>Thank You for Choosing Proper Home Prep</h3>
+<p>Every technician who walks through your door will deliver the same exceptional, hospitality-grade result. Your guests will feel it in every detail — the perfectly made bed, the streak-free mirror, the carefully staged welcome.</p>
+<div class="closing-tagline">"Where Every Detail Matters."</div>
+</div>
+</div>
+<div class="page-footer-bar">
+<span>© 2026 Proper Home Prep · Nashville, TN · All Rights Reserved · properhomeprep.com</span>
+<span class="tagline">"Where Every Detail Matters."</span>
+<span>Confidential</span>
+</div>
+</div>
+</div><!-- /packet-wrap -->
+</body>
+</html>

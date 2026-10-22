@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Proper Home Prep — Linen & Supply Log</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;border-radius:0!important;font-family:'Inter',sans-serif;}
+:root{--navy:#1A2E4A;--gold:#C9A84C;--cream:#FDF6E3;--paper:#f5f4f0;}
+body{background:var(--paper);color:var(--navy);}
+input,textarea,select,button{border-radius:0!important;font-family:'Inter',sans-serif;}
+input:focus,textarea:focus,select:focus{outline:2px solid var(--gold);outline-offset:-1px;}
+
+/* HEADER */
+.site-header{background:var(--navy);padding:16px 32px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:100;}
+.brand{color:#fff;font-weight:800;font-size:20px;letter-spacing:-0.02em;}
+.brand span{color:var(--gold);}
+.header-right{display:flex;align-items:center;gap:12px;}
+.demo-badge{background:var(--navy);color:var(--gold);font-size:11px;font-weight:700;padding:4px 12px;letter-spacing:0.05em;border:1px solid var(--gold);}
+.gold-bar{height:3px;background:var(--gold);}
+
+/* PAGE HEADER */
+.page-header{background:var(--cream);border-bottom:2px solid var(--navy);padding:24px 40px;}
+.page-header-inner{max-width:1100px;margin:0 auto;display:flex;align-items:flex-end;justify-content:space-between;gap:20px;flex-wrap:wrap;}
+.page-header-left .eyebrow{font-size:10px;font-weight:800;color:var(--gold);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:6px;}
+.page-header-left h1{font-size:26px;font-weight:800;color:var(--navy);letter-spacing:-0.02em;}
+.page-header-left p{font-size:13px;color:#6b7280;margin-top:4px;}
+.header-actions{display:flex;gap:10px;flex-wrap:wrap;}
+.hdr-btn{font-weight:800;font-size:12px;padding:10px 22px;border:none;cursor:pointer;transition:opacity .15s;text-transform:uppercase;letter-spacing:0.05em;}
+.hdr-btn.gold{background:var(--gold);color:var(--navy);}
+.hdr-btn.gold:hover{opacity:.88;}
+.hdr-btn.navy{background:var(--navy);color:var(--gold);}
+.hdr-btn.navy:hover{opacity:.85;}
+.hdr-btn.outline{background:transparent;border:2px solid var(--navy);color:var(--navy);}
+.hdr-btn.outline:hover{background:var(--navy);color:var(--gold);}
+
+/* MAIN */
+.main{max-width:1100px;margin:0 auto;padding:28px 32px 80px;}
+@media(max-width:640px){.main{padding:20px 16px 60px;}.page-header{padding:20px 16px;}}
+
+/* TABS */
+.tab-bar{display:flex;gap:0;border-bottom:2px solid var(--navy);margin-bottom:24px;}
+.tab{padding:11px 24px;font-size:13px;font-weight:700;color:#6b7280;cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-2px;transition:all .12s;background:none;border-top:none;border-left:none;border-right:none;}
+.tab:hover{color:var(--navy);}
+.tab.active{color:var(--navy);border-bottom-color:var(--gold);}
+
+/* STATS */
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;background:#e5e7eb;border:1px solid #e5e7eb;margin-bottom:24px;}
+@media(max-width:640px){.stats-row{grid-template-columns:1fr 1fr;}}
+.stat-card{background:#fff;padding:18px 20px;}
+.stat-card .stat-num{font-size:28px;font-weight:800;color:var(--gold);line-height:1;}
+.stat-card .stat-label{font-size:11px;font-weight:700;color:var(--navy);text-transform:uppercase;letter-spacing:0.06em;margin-top:4px;}
+.stat-card .stat-sub{font-size:11px;color:#9ca3af;margin-top:2px;}
+.stat-card.border-red{border-top:3px solid #dc2626;}
+.stat-card.border-gold{border-top:3px solid var(--gold);}
+.stat-card.border-green{border-top:3px solid #16a34a;}
+.stat-card.border-navy{border-top:3px solid var(--navy);}
+
+/* SECTION HEADER */
+.sec-header{background:var(--navy);padding:12px 20px;display:flex;align-items:center;gap:14px;margin-bottom:0;}
+.sec-header .badge{background:var(--gold);color:var(--navy);font-weight:800;font-size:11px;padding:3px 10px;}
+.sec-header .title{color:#fff;font-weight:700;font-size:14px;letter-spacing:0.02em;text-transform:uppercase;}
+.sec-header .title-right{margin-left:auto;color:rgba(255,255,255,.4);font-size:11px;}
+
+/* FILTER BAR */
+.filter-bar{background:#fff;border:1px solid #e5e7eb;border-top:none;padding:12px 20px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:2px;}
+.filter-pill{border:2px solid var(--navy);background:#fff;color:var(--navy);font-size:11px;font-weight:700;padding:5px 14px;cursor:pointer;text-transform:uppercase;letter-spacing:0.05em;transition:all .12s;}
+.filter-pill:hover{background:var(--navy);color:#fff;}
+.filter-pill.active{background:var(--navy);color:var(--gold);}
+.search-input{border:1px solid #d1d5db;padding:8px 14px;font-size:13px;color:var(--navy);background:#fff;width:200px;}
+.search-input:focus{outline:2px solid var(--gold);outline-offset:-1px;}
+
+/* LINEN TABLE */
+.table-wrap{background:#fff;border:1px solid #e5e7eb;border-top:none;overflow-x:auto;margin-bottom:24px;}
+table{width:100%;border-collapse:collapse;}
+thead tr{background:var(--navy);}
+thead th{color:#fff;font-size:11px;font-weight:700;padding:11px 14px;text-align:left;text-transform:uppercase;letter-spacing:0.05em;white-space:nowrap;}
+thead th.gold{color:var(--gold);}
+tbody tr{border-bottom:1px solid #f3f4f6;transition:background .12s;}
+tbody tr:hover{background:var(--cream);}
+tbody td{padding:12px 14px;font-size:13px;color:#374151;vertical-align:middle;}
+tbody td.bold{font-weight:700;color:var(--navy);}
+tbody td.center{text-align:center;}
+
+/* STATUS BADGES */
+.status-badge{font-size:10px;font-weight:800;padding:3px 9px;text-transform:uppercase;letter-spacing:0.05em;display:inline-block;}
+.status-good{background:#f0fdf4;color:#16a34a;border:1px solid #bbf7d0;}
+.status-low{background:#fef9ee;color:#d97706;border:1px solid #fde68a;}
+.status-out{background:#fef2f2;color:#dc2626;border:1px solid #fecaca;}
+.status-replace{background:#fef2f2;color:#dc2626;border:1px solid #fecaca;}
+.status-ordered{background:#eff6ff;color:#1d4ed8;border:1px solid #bfdbfe;}
+
+/* STOCK BAR */
+.stock-bar-wrap{display:flex;align-items:center;gap:8px;}
+.stock-bar-track{flex:1;height:6px;background:#f3f4f6;min-width:60px;}
+.stock-bar-fill{height:6px;transition:width .3s;}
+.stock-bar-fill.good{background:#16a34a;}
+.stock-bar-fill.low{background:#d97706;}
+.stock-bar-fill.out{background:#dc2626;}
+.stock-num{font-size:12px;font-weight:700;color:var(--navy);min-width:28px;text-align:right;}
+
+/* ACTION BTNS IN TABLE */
+.tbl-btn{font-size:11px;font-weight:700;padding:5px 11px;border:none;cursor:pointer;text-transform:uppercase;letter-spacing:0.04em;transition:all .12s;}
+.tbl-btn.gold{background:var(--gold);color:var(--navy);}
+.tbl-btn.gold:hover{opacity:.85;}
+.tbl-btn.navy{background:var(--navy);color:var(--gold);}
+.tbl-btn.navy:hover{opacity:.85;}
+.tbl-btn.outline{background:transparent;border:1.5px solid var(--navy);color:var(--navy);}
+.tbl-btn.outline:hover{background:var(--navy);color:var(--gold);}
+
+/* LOG ENTRIES */
+.log-card{background:#fff;border:1px solid #e5e7eb;border-left:4px solid var(--navy);margin-bottom:8px;padding:16px 20px;display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+.log-card.restock{border-left-color:var(--gold);}
+.log-card.issue{border-left-color:#dc2626;}
+.log-card.order{border-left-color:#1d4ed8;}
+.log-card.delivery{border-left-color:#16a34a;}
+.log-left .log-title{font-size:14px;font-weight:700;color:var(--navy);margin-bottom:3px;}
+.log-left .log-detail{font-size:12px;color:#6b7280;line-height:1.6;}
+.log-right{text-align:right;flex-shrink:0;}
+.log-right .log-date{font-size:11px;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:0.05em;}
+.log-right .log-type{font-size:10px;color:#9ca3af;margin-top:2px;}
+
+/* ORDER CARDS */
+.order-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:2px;background:#e5e7eb;border:1px solid #e5e7eb;border-top:none;margin-bottom:24px;}
+.order-card{background:#fff;padding:20px;}
+.order-card .order-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:12px;}
+.order-card .order-item{font-size:15px;font-weight:800;color:var(--navy);margin-bottom:3px;}
+.order-card .order-detail{font-size:12px;color:#6b7280;line-height:1.6;}
+.order-card .order-actions{display:flex;gap:7px;margin-top:14px;border-top:1px solid #f3f4f6;padding-top:12px;}
+
+/* CALLOUT */
+.callout{background:var(--cream);border-left:4px solid var(--gold);padding:12px 16px;font-size:13px;color:var(--navy);line-height:1.65;margin-bottom:16px;}
+.callout.red{background:#fef2f2;border-left-color:#dc2626;color:#7f1d1d;}
+
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(26,46,74,.55);z-index:200;display:flex;align-items:center;justify-content:center;padding:20px;}
+.modal-overlay.hidden{display:none;}
+.modal{background:#fff;width:100%;max-width:540px;max-height:90vh;overflow-y:auto;}
+.modal-header{background:var(--navy);padding:16px 22px;display:flex;align-items:center;justify-content:space-between;}
+.modal-header .modal-title{color:#fff;font-weight:700;font-size:16px;}
+.modal-header .modal-badge{background:var(--gold);color:var(--navy);font-weight:800;font-size:11px;padding:3px 10px;}
+.modal-close{background:none;border:none;color:rgba(255,255,255,.6);font-size:22px;cursor:pointer;line-height:1;padding:0;}
+.modal-close:hover{color:#fff;}
+.modal-body{padding:24px;}
+.modal-footer{padding:16px 24px;border-top:1px solid #e5e7eb;display:flex;gap:10px;justify-content:flex-end;}
+.modal-btn{font-weight:700;font-size:13px;padding:10px 24px;border:none;cursor:pointer;transition:all .12s;}
+.modal-btn.primary{background:var(--gold);color:var(--navy);}
+.modal-btn.primary:hover{opacity:.88;}
+.modal-btn.cancel{background:transparent;border:2px solid var(--navy);color:var(--navy);}
+.modal-btn.cancel:hover{background:var(--navy);color:var(--gold);}
+.field{display:flex;flex-direction:column;gap:6px;margin-bottom:14px;}
+.field label{font-size:11px;font-weight:800;color:var(--navy);text-transform:uppercase;letter-spacing:0.07em;}
+.field input,.field textarea,.field select{width:100%;padding:10px 14px;border:1px solid #d1d5db;font-size:14px;color:var(--navy);background:#fff;}
+.field-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+@media(max-width:480px){.field-grid-2{grid-template-columns:1fr;}}
+.pill-group{display:flex;flex-wrap:wrap;gap:7px;margin-top:2px;}
+.pill-group input[type=radio]{display:none;}
+.pill-group label{border:2px solid var(--navy);padding:7px 14px;font-size:12px;font-weight:700;cursor:pointer;color:var(--navy);transition:all .12s;}
+.pill-group input:checked+label{background:var(--navy);color:var(--gold);}
+
+/* TOAST */
+.toast{position:fixed;bottom:24px;right:24px;background:var(--navy);color:var(--gold);font-weight:700;font-size:13px;padding:12px 22px;z-index:999;animation:slideUp .25s ease;border-left:3px solid var(--gold);}
+@keyframes slideUp{from{transform:translateY(20px);opacity:0;}to{transform:translateY(0);opacity:1;}}
+
+/* VIEW TOGGLE */
+.view-panel{display:none;}
+.view-panel.active{display:block;}
+
+/* PRINT */
+@media print{
+  .site-header,.tab-bar,.filter-bar,.header-actions,.hdr-btn,.tbl-btn,.order-actions,.modal-overlay{display:none!important;}
+  body{background:#fff;}
+  .table-wrap{border:1px solid #000;}
+}
+
+/* FOOTER */
+footer{background:var(--navy);border-top:2px solid var(--gold);padding:14px 32px;text-align:center;color:#fff;font-size:12px;margin-top:40px;}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="site-header">
+  <div class="brand">Proper Home Prep <span>·</span> Nashville, TN</div>
+  <div class="header-right">
+    <span id="demoBadge" class="demo-badge" style="display:none;">DEMO MODE</span>
+    <span style="color:rgba(255,255,255,.6);font-size:12px;">Linen & Supply Log — Admin</span>
+  </div>
+</div>
+<div class="gold-bar"></div>
+
+<!-- PAGE HEADER -->
+<div class="page-header">
+  <div class="page-header-inner">
+    <div class="page-header-left">
+      <div class="eyebrow">Internal Tool · Admin Only</div>
+      <h1>Linen & Supply Log</h1>
+      <p>Track linen inventory, supply levels, restock needs, and order history across all properties.</p>
+    </div>
+    <div class="header-actions">
+      <button class="hdr-btn gold" onclick="openAddModal('linen')">+ Add Linen Entry</button>
+      <button class="hdr-btn navy" onclick="openAddModal('supply')">+ Log Supply</button>
+      <button class="hdr-btn outline" onclick="window.print()">🖨️ Print</button>
+    </div>
+  </div>
+</div>
+
+<div class="main">
+
+  <!-- STATS -->
+  <div class="stats-row">
+    <div class="stat-card border-gold"><div class="stat-num" id="statTotal">0</div><div class="stat-label">Total Items Tracked</div><div class="stat-sub">Linens + supplies</div></div>
+    <div class="stat-card border-red"><div class="stat-num" id="statLow">0</div><div class="stat-label">Low / Out of Stock</div><div class="stat-sub">Needs attention</div></div>
+    <div class="stat-card border-navy"><div class="stat-num" id="statOrders">0</div><div class="stat-label">Pending Orders</div><div class="stat-sub">Awaiting delivery</div></div>
+    <div class="stat-card border-green"><div class="stat-num" id="statProps">0</div><div class="stat-label">Properties Tracked</div><div class="stat-sub">In this log</div></div>
+  </div>
+
+  <!-- TABS -->
+  <div class="tab-bar">
+    <button class="tab active" onclick="switchTab('linens',this)">🛏️ Linens</button>
+    <button class="tab" onclick="switchTab('supplies',this)">📦 Supplies</button>
+    <button class="tab" onclick="switchTab('orders',this)">🛒 Orders</button>
+    <button class="tab" onclick="switchTab('log',this)">📋 Activity Log</button>
+  </div>
+
+  <!-- ── LINENS TAB ── -->
+  <div id="tab-linens" class="view-panel active">
+    <div class="sec-header">
+      <div class="badge">LINEN</div>
+      <div class="title">Linen Inventory by Property</div>
+      <div class="title-right" id="linenCount">0 items</div>
+    </div>
+    <div class="filter-bar">
+      <button class="filter-pill active" onclick="filterLinens('all',this)">All</button>
+      <button class="filter-pill" onclick="filterLinens('good',this)">Good Stock</button>
+      <button class="filter-pill" onclick="filterLinens('low',this)">Low</button>
+      <button class="filter-pill" onclick="filterLinens('out',this)">Out of Stock</button>
+      <button class="filter-pill" onclick="filterLinens('replace',this)">Needs Replace</button>
+      <input class="search-input" id="linenSearch" type="text" placeholder="Search property..." oninput="renderLinens()"/>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr>
+          <th class="gold">Property</th>
+          <th>Item</th>
+          <th>Size / Type</th>
+          <th class="center">Qty on Hand</th>
+          <th class="center">Min Required</th>
+          <th>Status</th>
+          <th>Last Updated</th>
+          <th>Actions</th>
+        </tr></thead>
+        <tbody id="linenTableBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ── SUPPLIES TAB ── -->
+  <div id="tab-supplies" class="view-panel">
+    <div class="sec-header">
+      <div class="badge">SUPPLY</div>
+      <div class="title">Supply Inventory</div>
+      <div class="title-right" id="supplyCount">0 items</div>
+    </div>
+    <div class="filter-bar">
+      <button class="filter-pill active" onclick="filterSupplies('all',this)">All</button>
+      <button class="filter-pill" onclick="filterSupplies('cleaning',this)">Cleaning</button>
+      <button class="filter-pill" onclick="filterSupplies('consumable',this)">Consumables</button>
+      <button class="filter-pill" onclick="filterSupplies('amenity',this)">Amenities</button>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr>
+          <th class="gold">Item</th>
+          <th>Category</th>
+          <th>Property / General</th>
+          <th>Stock Level</th>
+          <th>Status</th>
+          <th>Last Restocked</th>
+          <th>Actions</th>
+        </tr></thead>
+        <tbody id="supplyTableBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ── ORDERS TAB ── -->
+  <div id="tab-orders" class="view-panel">
+    <div class="sec-header">
+      <div class="badge">ORDERS</div>
+      <div class="title">Pending & Recent Orders</div>
+      <div class="title-right"><button class="tbl-btn gold" onclick="openAddModal('order')" style="font-size:11px;">+ New Order</button></div>
+    </div>
+    <div class="order-grid" id="orderGrid"></div>
+  </div>
+
+  <!-- ── ACTIVITY LOG TAB ── -->
+  <div id="tab-log" class="view-panel">
+    <div class="sec-header">
+      <div class="badge">LOG</div>
+      <div class="title">Activity Log</div>
+      <div class="title-right" id="logCount">0 entries</div>
+    </div>
+    <div style="background:#fff;border:1px solid #e5e7eb;border-top:none;padding:20px;">
+      <div id="activityLog"></div>
+    </div>
+  </div>
+
+</div><!-- end main -->
+
+<!-- MODAL -->
+<div class="modal-overlay hidden" id="itemModal">
+  <div class="modal">
+    <div class="modal-header">
+      <div style="display:flex;align-items:center;gap:12px;">
+        <div class="modal-badge" id="modalBadge">ADD</div>
+        <div class="modal-title" id="modalTitle">Add Item</div>
+      </div>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+    <div class="modal-footer">
+      <button class="modal-btn cancel" onclick="closeModal()">Cancel</button>
+      <button class="modal-btn primary" id="modalSaveBtn">Save →</button>
+    </div>
+  </div>
+</div>
+
+<footer>© 2026 Proper Home Prep · Nashville, TN · Every detail. Every time.</footer>
+
+<script type="module">
+import { initializeApp } from 'https://cdn.jsdelivr.net/npm/firebase@10.12.2/app/+esm';
+import { getFirestore, collection, getDocs, addDoc, updateDoc, doc, serverTimestamp } from 'https://cdn.jsdelivr.net/npm/firebase@10.12.2/firestore/+esm';
+
+// 🔥 PASTE YOUR FIREBASE CONFIG HERE
+const firebaseConfig = {
+  apiKey: "YOUR_API_KEY",
+  authDomain: "YOUR_PROJECT.firebaseapp.com",
+  projectId: "YOUR_PROJECT_ID",
+  storageBucket: "YOUR_PROJECT.appspot.com",
+  messagingSenderId: "YOUR_SENDER_ID",
+  appId: "YOUR_APP_ID"
+};
+
+const isDemo = firebaseConfig.apiKey === "YOUR_API_KEY";
+let db = null;
+if(isDemo){ document.getElementById('demoBadge').style.display='inline-block'; }
+else{ const app = initializeApp(firebaseConfig); db = getFirestore(app); }
+
+// ── DEMO DATA ──
+let linens = [
+  {id:'l1', property:'The Gulch Suite', item:'Sheet Set', size:'Queen', qty:6, minQty:4, status:'good', updated:'Aug 28, 2026'},
+  {id:'l2', property:'The Gulch Suite', item:'Bath Towels', size:'Standard', qty:8, minQty:6, status:'good', updated:'Aug 28, 2026'},
+  {id:'l3', property:'The Gulch Suite', item:'Hand Towels', size:'Standard', qty:4, minQty:4, status:'good', updated:'Aug 26, 2026'},
+  {id:'l4', property:'Germantown Studio', item:'Sheet Set', size:'Full', qty:2, minQty:3, status:'low', updated:'Aug 27, 2026'},
+  {id:'l5', property:'Germantown Studio', item:'Bath Towels', size:'Standard', qty:4, minQty:4, status:'good', updated:'Aug 27, 2026'},
+  {id:'l6', property:'Brentwood Family Home', item:'Sheet Set (King)', size:'King', qty:3, minQty:2, status:'good', updated:'Aug 25, 2026'},
+  {id:'l7', property:'Brentwood Family Home', item:'Sheet Set (Queen)', size:'Queen', qty:4, minQty:4, status:'good', updated:'Aug 25, 2026'},
+  {id:'l8', property:'Brentwood Family Home', item:'Bath Towels', size:'Standard', qty:1, minQty:6, status:'out', updated:'Aug 29, 2026'},
+  {id:'l9', property:'General Stock', item:'Washcloths', size:'Standard', qty:12, minQty:10, status:'good', updated:'Aug 24, 2026'},
+  {id:'l10', property:'General Stock', item:'Pillow Cases', size:'Standard', qty:2, minQty:6, status:'low', updated:'Aug 22, 2026'},
+];
+let supplies = [
+  {id:'s1', item:'All-Purpose Cleaner', category:'cleaning', property:'General', qty:3, minQty:2, status:'good', lastRestock:'Aug 20, 2026'},
+  {id:'s2', item:'Bathroom Disinfectant', category:'cleaning', property:'General', qty:1, minQty:2, status:'low', lastRestock:'Aug 15, 2026'},
+  {id:'s3', item:'Glass / Mirror Cleaner', category:'cleaning', property:'General', qty:4, minQty:2, status:'good', lastRestock:'Aug 20, 2026'},
+  {id:'s4', item:'Toilet Paper (48-pack)', category:'consumable', property:'General', qty:2, minQty:2, status:'good', lastRestock:'Aug 18, 2026'},
+  {id:'s5', item:'Paper Towels (12-pack)', category:'consumable', property:'General', qty:0, minQty:2, status:'out', lastRestock:'Aug 10, 2026'},
+  {id:'s6', item:'Hand Soap (refill)', category:'amenity', property:'General', qty:5, minQty:3, status:'good', lastRestock:'Aug 20, 2026'},
+  {id:'s7', item:'Dish Soap', category:'consumable', property:'General', qty:3, minQty:2, status:'good', lastRestock:'Aug 18, 2026'},
+  {id:'s8', item:'Dishwasher Pods (60ct)', category:'consumable', property:'General', qty:1, minQty:2, status:'low', lastRestock:'Aug 5, 2026'},
+  {id:'s9', item:'Trash Bags (variety)', category:'consumable', property:'General', qty:4, minQty:2, status:'good', lastRestock:'Aug 20, 2026'},
+  {id:'s10', item:'Laundry Detergent Pods', category:'consumable', property:'General', qty:0, minQty:1, status:'out', lastRestock:'Aug 12, 2026'},
+];
+let orders = [
+  {id:'o1', item:'Bath Towels (set of 6)', qty:2, supplier:'Amazon', orderDate:'Aug 28, 2026', expectedDate:'Sep 1, 2026', status:'ordered', notes:'For Brentwood — urgent'},
+  {id:'o2', item:'Paper Towels 12-pack', qty:3, supplier:'Costco', orderDate:'Aug 29, 2026', expectedDate:'Aug 31, 2026', status:'ordered', notes:'General stock'},
+  {id:'o3', item:'Laundry Detergent Pods', qty:2, supplier:'Costco', orderDate:'Aug 27, 2026', expectedDate:'Aug 30, 2026', status:'pending', notes:'General stock'},
+];
+let actLog = [
+  {type:'restock', title:'Restocked — The Gulch Suite', detail:'6 Queen sheet sets delivered and logged', date:'Aug 28, 2026'},
+  {type:'issue', title:'Out of Stock — Bath Towels', detail:'Brentwood Family Home — qty dropped to 1, minimum is 6', date:'Aug 29, 2026'},
+  {type:'order', title:'Order Placed — Bath Towels', detail:'2 sets ordered from Amazon, expected Sep 1', date:'Aug 28, 2026'},
+  {type:'delivery', title:'Delivery Received — All-Purpose Cleaner', detail:'3 bottles added to general stock', date:'Aug 20, 2026'},
+  {type:'issue', title:'Low Stock — Pillow Cases', detail:'General stock at 2, minimum is 6', date:'Aug 22, 2026'},
+];
+
+let currentTab = 'linens';
+let linenFilter = 'all';
+let supplyFilter = 'all';
+let modalMode = 'linen';
+
+// ── STATS ──
+function updateStats(){
+  const allItems = [...linens, ...supplies];
+  const lowOut = allItems.filter(i=>i.status==='low'||i.status==='out').length;
+  const pending = orders.filter(o=>o.status==='ordered'||o.status==='pending').length;
+  const props = [...new Set(linens.map(l=>l.property))].filter(p=>p!=='General Stock').length;
+  document.getElementById('statTotal').textContent = allItems.length;
+  document.getElementById('statLow').textContent = lowOut;
+  document.getElementById('statOrders').textContent = pending;
+  document.getElementById('statProps').textContent = props;
+}
+
+// ── STATUS HELPERS ──
+function statusBadge(s){
+  const map={good:'status-good',low:'status-low',out:'status-out',replace:'status-replace',ordered:'status-ordered'};
+  const label={good:'Good',low:'Low',out:'Out of Stock',replace:'Replace',ordered:'Ordered'};
+  return `<span class="status-badge ${map[s]||''}">${label[s]||s}</span>`;
+}
+function stockBar(qty,min){
+  const pct = min>0?Math.min(100,Math.round((qty/min)*100)):100;
+  const cls = qty===0?'out':qty<min?'low':'good';
+  return `<div class="stock-bar-wrap"><div class="stock-bar-track"><div class="stock-bar-fill ${cls}" style="width:${pct}%"></div></div><span class="stock-num">${qty}</span></div>`;
+}
+
+// ── LINENS ──
+window.renderLinens = function(){
+  const q = (document.getElementById('linenSearch').value||'').toLowerCase();
+  let list = linens.filter(l=>{
+    if(linenFilter!=='all' && l.status!==linenFilter) return false;
+    if(q && !l.property.toLowerCase().includes(q) && !l.item.toLowerCase().includes(q)) return false;
+    return true;
+  });
+  document.getElementById('linenCount').textContent = list.length + ' items';
+  const tbody = document.getElementById('linenTableBody');
+  tbody.innerHTML = list.length ? '' : '<tr><td colspan="8" style="padding:24px;text-align:center;color:#9ca3af;">No items found.</td></tr>';
+  list.forEach(l=>{
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td class="bold">${l.property}</td>
+      <td>${l.item}</td>
+      <td>${l.size||'—'}</td>
+      <td class="center"><strong>${l.qty}</strong></td>
+      <td class="center">${l.minQty}</td>
+      <td>${statusBadge(l.status)}</td>
+      <td style="font-size:12px;color:#9ca3af;">${l.updated||'—'}</td>
+      <td><div style="display:flex;gap:6px;">
+        <button class="tbl-btn gold" onclick="quickRestock('${l.id}')">+Restock</button>
+        <button class="tbl-btn outline" onclick="editItem('${l.id}','linen')">Edit</button>
+      </div></td>`;
+    tbody.appendChild(tr);
+  });
+};
+window.filterLinens = function(f,btn){ linenFilter=f; document.querySelectorAll('#tab-linens .filter-pill').forEach(p=>p.classList.remove('active')); btn.classList.add('active'); renderLinens(); };
+
+// ── SUPPLIES ──
+function renderSupplies(){
+  let list = supplyFilter==='all' ? supplies : supplies.filter(s=>s.category===supplyFilter);
+  document.getElementById('supplyCount').textContent = list.length + ' items';
+  const tbody = document.getElementById('supplyTableBody');
+  tbody.innerHTML = list.length ? '' : '<tr><td colspan="7" style="padding:24px;text-align:center;color:#9ca3af;">No items found.</td></tr>';
+  list.forEach(s=>{
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td class="bold">${s.item}</td>
+      <td style="text-transform:capitalize;">${s.category}</td>
+      <td>${s.property||'General'}</td>
+      <td>${stockBar(s.qty,s.minQty)}</td>
+      <td>${statusBadge(s.status)}</td>
+      <td style="font-size:12px;color:#9ca3af;">${s.lastRestock||'—'}</td>
+      <td><div style="display:flex;gap:6px;">
+        <button class="tbl-btn gold" onclick="quickRestock('${s.id}','supply')">+Restock</button>
+        <button class="tbl-btn outline" onclick="editItem('${s.id}','supply')">Edit</button>
+      </div></td>`;
+    tbody.appendChild(tr);
+  });
+}
+window.filterSupplies = function(f,btn){ supplyFilter=f; document.querySelectorAll('#tab-supplies .filter-pill').forEach(p=>p.classList.remove('active')); btn.classList.add('active'); renderSupplies(); };
+
+// ── ORDERS ──
+function renderOrders(){
+  const grid = document.getElementById('orderGrid');
+  grid.innerHTML = '';
+  if(!orders.length){ grid.innerHTML='<div style="padding:40px;text-align:center;color:#9ca3af;font-size:14px;grid-column:1/-1;">No orders on file.</div>'; return; }
+  orders.forEach(o=>{
+    const card = document.createElement('div');
+    card.className = 'order-card';
+    const statusMap={pending:'status-low',ordered:'status-ordered',received:'status-good'};
+    card.innerHTML=`
+      <div class="order-top">
+        <div>
+          <div class="order-item">${o.item}</div>
+          <div class="order-detail">Qty: ${o.qty} · ${o.supplier||'—'}</div>
+          <div class="order-detail" style="margin-top:4px;">Ordered: ${o.orderDate} · Expected: ${o.expectedDate}</div>
+          ${o.notes?`<div class="order-detail" style="margin-top:4px;font-style:italic;">"${o.notes}"</div>`:''}
+        </div>
+        <span class="status-badge ${statusMap[o.status]||''}" style="white-space:nowrap;margin-top:2px;">${o.status}</span>
+      </div>
+      <div class="order-actions">
+        ${o.status!=='received'?`<button class="tbl-btn gold" onclick="markReceived('${o.id}')">Mark Received</button>`:''}
+        <button class="tbl-btn outline" onclick="deleteOrder('${o.id}')">Remove</button>
+      </div>`;
+    grid.appendChild(card);
+  });
+}
+
+// ── ACTIVITY LOG ──
+function renderLog(){
+  const container = document.getElementById('activityLog');
+  const typeMap={restock:'restock',issue:'issue',order:'order',delivery:'delivery'};
+  document.getElementById('logCount').textContent = actLog.length + ' entries';
+  container.innerHTML = actLog.length ? actLog.map(e=>`
+    <div class="log-card ${typeMap[e.type]||''}">
+      <div class="log-left">
+        <div class="log-title">${e.title}</div>
+        <div class="log-detail">${e.detail}</div>
+      </div>
+      <div class="log-right">
+        <div class="log-date">${e.date}</div>
+        <div class="log-type">${e.type}</div>
+      </div>
+    </div>`).join('') : '<div style="padding:24px;text-align:center;color:#9ca3af;">No activity logged yet.</div>';
+}
+
+// ── QUICK RESTOCK ──
+window.quickRestock = function(id, type='linen'){
+  const list = type==='linen' ? linens : supplies;
+  const item = list.find(i=>i.id===id);
+  if(!item) return;
+  const qty = parseInt(prompt(`Restock "${item.item}" — enter quantity to ADD:`));
+  if(isNaN(qty)||qty<=0) return;
+  item.qty += qty;
+  item.status = item.qty >= item.minQty ? 'good' : item.qty === 0 ? 'out' : 'low';
+  const today = new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+  if(type==='linen') item.updated = today; else item.lastRestock = today;
+  actLog.unshift({type:'restock',title:`Restocked — ${item.item}`,detail:`Added ${qty} units · ${item.property||'General'}`,date:today});
+  saveAll(); renderCurrent(); updateStats();
+  showToast(`Restocked ${qty} × ${item.item}`);
+};
+
+window.markReceived = function(id){
+  const o = orders.find(x=>x.id===id);
+  if(!o) return;
+  o.status='received';
+  const today = new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+  actLog.unshift({type:'delivery',title:`Delivery Received — ${o.item}`,detail:`Qty: ${o.qty} · ${o.supplier}`,date:today});
+  saveAll(); renderOrders(); renderLog(); updateStats();
+  showToast('Order marked received');
+};
+
+window.deleteOrder = function(id){
+  orders = orders.filter(o=>o.id!==id);
+  saveAll(); renderOrders(); updateStats();
+  showToast('Order removed');
+};
+
+// ── MODAL ──
+window.openAddModal = function(mode){
+  modalMode = mode;
+  document.getElementById('modalBadge').textContent = mode==='order'?'ORDER':mode==='supply'?'SUPPLY':'LINEN';
+  document.getElementById('modalTitle').textContent = mode==='order'?'Place New Order':mode==='supply'?'Log Supply Item':'Add Linen Item';
+  const body = document.getElementById('modalBody');
+  if(mode==='linen'){
+    body.innerHTML=`
+      <div class="field-grid-2">
+        <div class="field"><label>Property *</label><input id="mProp" type="text" placeholder="Property nickname or General Stock"/></div>
+        <div class="field"><label>Item *</label><input id="mItem" type="text" placeholder="e.g. Sheet Set, Bath Towels"/></div>
+        <div class="field"><label>Size / Type</label><input id="mSize" type="text" placeholder="e.g. Queen, King, Standard"/></div>
+        <div class="field"><label>Qty on Hand *</label><input id="mQty" type="number" min="0" placeholder="0"/></div>
+        <div class="field"><label>Minimum Required</label><input id="mMin" type="number" min="0" placeholder="4"/></div>
+        <div class="field"><label>Status</label>
+          <div class="pill-group">
+            <input type="radio" name="mStat" id="sg" value="good"/><label for="sg">Good</label>
+            <input type="radio" name="mStat" id="sl" value="low"/><label for="sl">Low</label>
+            <input type="radio" name="mStat" id="so" value="out"/><label for="so">Out</label>
+            <input type="radio" name="mStat" id="sr" value="replace"/><label for="sr">Replace</label>
+          </div>
+        </div>
+      </div>`;
+  } else if(mode==='supply'){
+    body.innerHTML=`
+      <div class="field-grid-2">
+        <div class="field"><label>Item *</label><input id="mItem" type="text" placeholder="e.g. All-Purpose Cleaner"/></div>
+        <div class="field"><label>Category</label>
+          <div class="pill-group">
+            <input type="radio" name="mCat" id="cc" value="cleaning"/><label for="cc">Cleaning</label>
+            <input type="radio" name="mCat" id="con" value="consumable"/><label for="con">Consumable</label>
+            <input type="radio" name="mCat" id="am" value="amenity"/><label for="am">Amenity</label>
+          </div>
+        </div>
+        <div class="field"><label>Property / General</label><input id="mProp" type="text" placeholder="Property name or General"/></div>
+        <div class="field"><label>Qty on Hand *</label><input id="mQty" type="number" min="0" placeholder="0"/></div>
+        <div class="field"><label>Minimum Required</label><input id="mMin" type="number" min="0" placeholder="2"/></div>
+      </div>`;
+  } else {
+    body.innerHTML=`
+      <div class="field-grid-2">
+        <div class="field"><label>Item *</label><input id="mItem" type="text" placeholder="e.g. Bath Towels (set of 6)"/></div>
+        <div class="field"><label>Quantity *</label><input id="mQty" type="number" min="1" placeholder="1"/></div>
+        <div class="field"><label>Supplier</label><input id="mSupplier" type="text" placeholder="e.g. Amazon, Costco"/></div>
+        <div class="field"><label>Expected Delivery</label><input id="mExpected" type="date"/></div>
+      </div>
+      <div class="field"><label>Notes</label><textarea id="mNotes" rows="2" placeholder="Which property? Urgent?"></textarea></div>`;
+  }
+  document.getElementById('modalSaveBtn').onclick = saveModalItem;
+  document.getElementById('itemModal').classList.remove('hidden');
+};
+
+window.editItem = function(id, type){
+  const item = type==='linen' ? linens.find(i=>i.id===id) : supplies.find(i=>i.id===id);
+  if(!item) return;
+  openAddModal(type);
+  setTimeout(()=>{
+    if(document.getElementById('mProp')) document.getElementById('mProp').value = item.property||'';
+    document.getElementById('mItem').value = item.item||'';
+    if(document.getElementById('mSize')) document.getElementById('mSize').value = item.size||'';
+    document.getElementById('mQty').value = item.qty||0;
+    if(document.getElementById('mMin')) document.getElementById('mMin').value = item.minQty||0;
+    const statEl = document.querySelector(`input[name="mStat"][value="${item.status}"]`);
+    if(statEl) statEl.checked = true;
+    document.getElementById('modalSaveBtn').onclick = function(){
+      item.qty = parseInt(document.getElementById('mQty').value)||0;
+      item.minQty = parseInt(document.getElementById('mMin')?.value)||0;
+      item.property = document.getElementById('mProp')?.value||item.property;
+      item.item = document.getElementById('mItem').value||item.item;
+      item.size = document.getElementById('mSize')?.value||'';
+      const s = document.querySelector('input[name="mStat"]:checked');
+      if(s) item.status = s.value;
+      else item.status = item.qty>=item.minQty?'good':item.qty===0?'out':'low';
+      item.updated = new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+      saveAll(); closeModal(); renderCurrent(); updateStats();
+      showToast('Item updated');
+    };
+  },50);
+};
+
+function saveModalItem(){
+  const today = new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+  if(modalMode==='linen'){
+    const qty=parseInt(document.getElementById('mQty').value)||0;
+    const min=parseInt(document.getElementById('mMin').value)||0;
+    const statEl=document.querySelector('input[name="mStat"]:checked');
+    const status=statEl?statEl.value:(qty>=min?'good':qty===0?'out':'low');
+    linens.push({id:'l'+Date.now(),property:document.getElementById('mProp').value||'General Stock',item:document.getElementById('mItem').value,size:document.getElementById('mSize').value,qty,minQty:min,status,updated:today});
+    actLog.unshift({type:'restock',title:'New Linen Added',detail:document.getElementById('mItem').value,date:today});
+  } else if(modalMode==='supply'){
+    const qty=parseInt(document.getElementById('mQty').value)||0;
+    const min=parseInt(document.getElementById('mMin').value)||0;
+    const catEl=document.querySelector('input[name="mCat"]:checked');
+    supplies.push({id:'s'+Date.now(),item:document.getElementById('mItem').value,category:catEl?catEl.value:'consumable',property:document.getElementById('mProp')?.value||'General',qty,minQty:min,status:qty>=min?'good':qty===0?'out':'low',lastRestock:today});
+    actLog.unshift({type:'restock',title:'Supply Added',detail:document.getElementById('mItem').value,date:today});
+  } else {
+    const orderDate = today;
+    const exp = document.getElementById('mExpected').value;
+    const expLabel = exp ? new Date(exp).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}) : 'TBD';
+    orders.unshift({id:'o'+Date.now(),item:document.getElementById('mItem').value,qty:parseInt(document.getElementById('mQty').value)||1,supplier:document.getElementById('mSupplier').value,orderDate,expectedDate:expLabel,status:'pending',notes:document.getElementById('mNotes').value});
+    actLog.unshift({type:'order',title:'Order Placed — '+document.getElementById('mItem').value,detail:`Expected: ${expLabel}`,date:today});
+  }
+  saveAll(); closeModal(); renderCurrent(); updateStats();
+  showToast('Item saved');
+}
+
+window.closeModal = function(){ document.getElementById('itemModal').classList.add('hidden'); };
+
+function renderCurrent(){
+  if(currentTab==='linens') renderLinens();
+  else if(currentTab==='supplies') renderSupplies();
+  else if(currentTab==='orders') renderOrders();
+  else renderLog();
+}
+
+window.switchTab = function(tab,btn){
+  currentTab = tab;
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.view-panel').forEach(p=>p.classList.remove('active'));
+  document.getElementById('tab-'+tab).classList.add('active');
+  renderCurrent();
+};
+
+function saveAll(){ localStorage.setItem('php_linens',JSON.stringify({linens,supplies,orders,actLog})); }
+function loadAll(){
+  const saved = JSON.parse(localStorage.getItem('php_linens')||'null');
+  if(saved && !isDemo){ if(saved.linens) linens=saved.linens; if(saved.supplies) supplies=saved.supplies; if(saved.orders) orders=saved.orders; if(saved.actLog) actLog=saved.actLog; }
+}
+
+function showToast(msg){
+  const t=document.createElement('div'); t.className='toast'; t.textContent=msg;
+  document.body.appendChild(t); setTimeout(()=>t.remove(),3000);
+}
+
+loadAll();
+renderLinens();
+renderOrders();
+renderLog();
+renderSupplies();
+updateStats();
+</script>
+</body>
+</html>

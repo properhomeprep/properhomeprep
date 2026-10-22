@@ -1,0 +1,1680 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head><meta name="referrer" content="strict-origin-when-cross-origin"><meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'nonce-required' 'strict-dynamic' https://cdn.jsdelivr.net/npm/ https://cdn.tailwindcss.com https://unpkg.com/lucide; connect-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com https://cdn.jsdelivr.net/npm/ https://copilot.microsoft.com; worker-src 'self' blob:; style-src 'unsafe-inline' 'self' https://fonts.googleapis.com/css2 https://cdn.jsdelivr.net/npm/; img-src 'self' data: blob: *.mm.bing.net th.bing.com cdn.tailwindcss.com copilot.microsoft.com *.tile.openstreetmap.org https://cdn.jsdelivr.net/npm/; font-src 'self' data: https://fonts.gstatic.com https://cdn.jsdelivr.net; media-src 'self' blob: data:; object-src 'none'; base-uri 'self'; form-action 'self'; frame-src 'none'; upgrade-insecure-requests"><style>
+._nav-link-tooltip {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  max-width: min(80%, 600px);
+  padding: 4px 8px;
+  background: rgba(32, 33, 36, 0.88);
+  color: #e8eaed;
+  font: 12px/16px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  border-top-right-radius: 4px;
+  z-index: 2147483647;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.15s ease-in-out;
+  box-sizing: border-box;
+}
+._nav-link-tooltip._visible {
+  opacity: 1;
+}
+@media (prefers-color-scheme: light) {
+  ._nav-link-tooltip {
+    background: rgba(241, 243, 244, 0.92);
+    color: #202124;
+    border-top: 1px solid rgba(0, 0, 0, 0.08);
+    border-right: 1px solid rgba(0, 0, 0, 0.08);
+  }
+}
+</style>
+<script nonce="required">
+(function() {
+  // Helper: check if a raw href is an external URL (http/https)
+  // Hash links (#section), relative paths (/page), mailto:, tel:, etc. are NOT external
+  function _isExternalHref(rawHref) {
+    if (!rawHref) return false;
+    var h = rawHref.trim().toLowerCase();
+    // onejs-sdl-disable-next-line no-insecure-url -- detects and upgrades user-provided HTTP links
+    return h.startsWith('http://') || h.startsWith('https://') || h.startsWith('//');
+  }
+
+  // --- Link hover URL preview tooltip ---
+  var _tooltip = document.createElement('div');
+  _tooltip.className = '_nav-link-tooltip';
+  function _ensureTooltipMounted() {
+    if (!_tooltip.parentNode) {
+      (document.body || document.documentElement).appendChild(_tooltip);
+    }
+  }
+
+  document.addEventListener('mouseover', function(event) {
+    var el = event.target;
+    while (el && el.tagName !== 'A') {
+      el = el.parentElement;
+    }
+    if (!el) return;
+    var rawHref = el.getAttribute('href');
+    if (!rawHref || rawHref.startsWith('javascript:')) return;
+    _ensureTooltipMounted();
+    // Show raw href for clean display (avoids blob: URL noise)
+    _tooltip.textContent = rawHref;
+    _tooltip.classList.add('_visible');
+  }, true);
+
+  document.addEventListener('mouseout', function(event) {
+    var el = event.target;
+    while (el && el.tagName !== 'A') {
+      el = el.parentElement;
+    }
+    if (!el) return;
+    _tooltip.classList.remove('_visible');
+  }, true);
+
+  // --- Intercept anchor tag clicks ---
+  document.addEventListener('click', function(event) {
+    var target = event.target;
+    while (target && target.tagName !== 'A') {
+      target = target.parentElement;
+    }
+    if (!target) return;
+
+    var rawHref = target.getAttribute('href');
+    if (!rawHref || rawHref.startsWith('javascript:')) return;
+
+    // Hash links: Ctrl/Cmd+click to scroll to target, plain click places cursor
+    if (rawHref.startsWith('#')) {
+      if (event.ctrlKey || event.metaKey) {
+        var targetId = rawHref.substring(1);
+        if (targetId) {
+          var targetEl = document.getElementById(targetId) || document.getElementsByName(targetId)[0];
+          if (targetEl) {
+            event.preventDefault();
+            targetEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+        }
+      }
+      return;
+    }
+
+    // Only intercept external links (http/https)
+    if (!_isExternalHref(rawHref)) return;
+
+    // Allow download links to proceed natively instead of intercepting them.
+    // The 'download' attribute signals the browser to save the file rather than navigate.
+    if (target.hasAttribute('download')) return;
+
+    event.preventDefault();
+    event.stopPropagation();
+
+    window.parent.postMessage({
+      type: 'navigate-link',
+      payload: {
+        url: target.href || rawHref,
+        target: target.target || undefined
+      },
+      timestamp: Date.now()
+    }, '*');
+  }, true);
+
+  // --- Intercept window.open calls ---
+  var _origOpen = window.open;
+  window.open = function(url, target, features) {
+    if (!url) return null;
+    var urlStr = String(url);
+
+    // Only intercept external URLs (http/https)
+    if (!_isExternalHref(urlStr)) {
+      return _origOpen.call(window, url, target, features);
+    }
+
+    var resolvedUrl;
+    try {
+      resolvedUrl = new URL(urlStr, window.location.href).href;
+    } catch (e) {
+      resolvedUrl = urlStr;
+    }
+
+    window.parent.postMessage({
+      type: 'navigate-link',
+      payload: {
+        url: resolvedUrl,
+        target: target || '_blank'
+      },
+      timestamp: Date.now()
+    }, '*');
+    return null;
+  };
+})();
+</script>
+      <script nonce="required">
+        (function() {
+          if (typeof window !== 'undefined' && window.trustedTypes && window.trustedTypes.createPolicy) {
+            try {
+              window.trustedTypes.createPolicy('default', {
+                createHTML: function(input) { return input; },
+                createScript: function(input) { return input; },
+                createScriptURL: function(input) { return input; }
+              });
+            } catch (e) {
+              // Policy may already exist — ignore
+            }
+          }
+        })();
+      </script>
+      <script nonce="required">
+        (function() {
+          const _0x1a2b = {
+            log: console.log,
+            info: console.info,
+            warn: console.warn,
+            error: console.error,
+            debug: console.debug
+          };
+
+          function _0x3c4d(e, t, n) {
+            try {
+              const o = {
+                type: 'iframe-console-log',
+                payload: {
+                  level: e,
+                  message: String(t),
+                  args: n.map(e => {
+                    try {
+                      return typeof e === 'object' ? JSON.stringify(e, null, 2) : String(e);
+                    } catch (e) {
+                      return '[Circular or Non-serializable]';
+                    }
+                  }),
+                  timestamp: Date.now(),
+                  stackTrace: e === 'error' ? new Error().stack : undefined
+                }
+              };
+
+              window.parent.postMessage(o, '*');
+            } catch (e) {
+              _0x1a2b[e].apply(console, [t, ...n]);
+            }
+          }
+
+          console.log = function(...args) {
+            _0x1a2b.log.apply(console, args);
+            _0x3c4d('log', args[0] || '', args.slice(1));
+          };
+
+          console.info = function(...args) {
+            _0x1a2b.info.apply(console, args);
+            _0x3c4d('info', args[0] || '', args.slice(1));
+          };
+
+          console.warn = function(...args) {
+            _0x1a2b.warn.apply(console, args);
+            _0x3c4d('warn', args[0] || '', args.slice(1));
+          };
+
+          console.error = function(...args) {
+            _0x1a2b.error.apply(console, args);
+            _0x3c4d('error', args[0] || '', args.slice(1));
+          };
+
+          console.debug = function(...args) {
+            _0x1a2b.debug.apply(console, args);
+            _0x3c4d('debug', args[0] || '', args.slice(1));
+          };
+
+          window.addEventListener('error', function(event) {
+            _0x3c4d('error', event.message, [
+              'Error in ' + event.filename + ':' + event.lineno + ':' + event.colno,
+              event.error ? event.error.stack : ''
+            ]);
+          });
+
+          window.addEventListener('unhandledrejection', function(event) {
+            _0x3c4d('error', 'Unhandled Promise Rejection', [
+              event.reason ? String(event.reason) : 'Unknown reason'
+            ]);
+          });
+
+          window.addEventListener('securitypolicyviolation', function(event) {
+            _0x3c4d('error', 'CSP Violation: ' + event.effectiveDirective, [
+              'blockedURI: ' + event.blockedURI,
+              'violatedDirective: ' + event.violatedDirective,
+              'originalPolicy: ' + event.originalPolicy,
+              'disposition: ' + event.disposition,
+              'documentURI: ' + event.documentURI
+            ]);
+          });
+
+          var _llmRequestHandlers = {};
+
+          window._useLLM = function(name, params) {
+            const requestId = Math.random().toString(36).slice(2);
+            const p = new Promise((resolve) => {
+              _llmRequestHandlers[requestId] = resolve;
+            });
+
+            const llmMsg = {
+              type: "use-llm",
+              requestId: requestId,
+              timestamp: Date.now(),
+              payload: {
+                name: name,
+                params: params,
+              },
+            };
+            window.parent.postMessage(llmMsg, '*');
+
+            return p;
+          };
+
+          window.addEventListener('message', function(event) {
+            if (event.data && event.data.type === 'update-theme') {
+              const theme = event.data.payload?.theme;
+              if (theme === 'dark' || theme === 'light') {
+                const html = document.documentElement || document.querySelector('html');
+                if (html) {
+                  html.setAttribute('data-theme', theme);
+                }
+              }
+            }
+
+            if (event.source === window.parent && event.data.type === 'llmReply') {
+              const requestId = event.data.requestId;
+              const handler = _llmRequestHandlers[requestId];
+              if (handler !== undefined) {
+                handler(event.data.payload);
+                delete _llmRequestHandlers[requestId];
+              }
+            }
+          });
+
+          
+        })();
+      </script>
+    
+      <script nonce="required">
+        (function() {
+          var _appDataCfg = { apiBase: "https://copilot.microsoft.com/c/api", appId: "w7rRZjkbmE7aQnzfyXzQz" };
+
+          var _reqCounter = 0;
+          var _pendingRequests = {};
+
+          function _appDataRequest(method, path, body) {
+            if (!_appDataCfg) {
+              return Promise.reject(new Error('AppSDK: not configured for this artifact type.'));
+            }
+            var requestId = 'adr-' + (++_reqCounter);
+            var fullPath = _appDataCfg.appId + '/' + path;
+
+            return new Promise(function(resolve, reject) {
+              var timeoutId = setTimeout(function() {
+                delete _pendingRequests[requestId];
+                reject(new Error('AppSDK: request timed out'));
+              }, 30000);
+
+              _pendingRequests[requestId] = { resolve: resolve, reject: reject, timeoutId: timeoutId };
+
+              var requestMsg = {
+                type: 'app-data:request',
+                timestamp: Date.now(),
+                payload: { method: method, path: fullPath, body: body, requestId: requestId }
+              };
+              window.parent.postMessage(requestMsg, '*');
+            });
+          }
+
+          window.addEventListener('message', function(event) {
+            if (event.data && event.data.type === 'app-data:response') {
+              var payload = event.data.payload;
+              var pending = _pendingRequests[payload.requestId];
+              if (pending) {
+                clearTimeout(pending.timeoutId);
+                delete _pendingRequests[payload.requestId];
+                if (payload.ok) {
+                  pending.resolve(payload.data !== undefined ? payload.data : null);
+                } else {
+                  pending.reject(new Error(payload.error || 'Request failed'));
+                }
+              }
+            }
+          });
+
+          window.AppSDK = {
+            upsert: function(entityId, entityType, data) {
+              return _appDataRequest('PUT', entityId + '/' + entityType, { data: data });
+            },
+            get: function(entityId, entityType) {
+              return _appDataRequest('GET', entityId + '/' + entityType);
+            },
+            list: function(entityId) {
+              return _appDataRequest('GET', entityId);
+            },
+            delete: function(entityId, entityType) {
+              return _appDataRequest('DELETE', entityId + '/' + entityType);
+            },
+            deleteAll: function() {
+              return _appDataRequest('DELETE', '');
+            }
+          };
+        })();
+      </script>
+      
+      <script nonce="required">
+        (function() {
+          var _aiReqCounter = 0;
+          var _aiPendingRequests = {};
+
+          // Per-method timeouts (ms). Image generation can take longer than chat/TTS.
+          var _aiTimeouts = { chat: 30000, generateImage: 60000, speak: 30000 };
+
+          function _appAiRequest(method, fields) {
+            var requestId = 'aai-' + (++_aiReqCounter);
+            var timeoutMs = _aiTimeouts[method] || 30000;
+
+            return new Promise(function(resolve, reject) {
+              var timeoutId = setTimeout(function() {
+                delete _aiPendingRequests[requestId];
+                reject(new Error('AppSDK.ai: request timed out'));
+              }, timeoutMs);
+
+              _aiPendingRequests[requestId] = { method: method, resolve: resolve, reject: reject, timeoutId: timeoutId };
+
+              var payload = { requestId: requestId, method: method };
+              for (var key in fields) {
+                if (Object.prototype.hasOwnProperty.call(fields, key)) {
+                  payload[key] = fields[key];
+                }
+              }
+
+              var requestMsg = {
+                type: 'app-ai:request',
+                timestamp: Date.now(),
+                payload: payload
+              };
+              window.parent.postMessage(requestMsg, '*');
+            });
+          }
+
+          window.addEventListener('message', function(event) {
+            if (event.data && event.data.type === 'app-ai:response') {
+              var payload = event.data.payload;
+              var pending = _aiPendingRequests[payload.requestId];
+              if (pending) {
+                clearTimeout(pending.timeoutId);
+                delete _aiPendingRequests[payload.requestId];
+                if (payload.ok) {
+                  if (pending.method === 'generateImage') {
+                    pending.resolve({ image: payload.image, format: payload.format });
+                  } else if (pending.method === 'speak') {
+                    pending.resolve({ audio: payload.audio, format: payload.format });
+                  } else {
+                    pending.resolve({ content: payload.content });
+                  }
+                } else {
+                  pending.reject(new Error(payload.error || 'AI request failed'));
+                }
+              }
+            }
+          });
+
+          // Attach to existing AppSDK or create it
+          window.AppSDK = window.AppSDK || {};
+          window.AppSDK.ai = {
+            chat: function(request) {
+              if (!request || !Array.isArray(request.messages) || request.messages.length === 0) {
+                return Promise.reject(new Error('AppSDK.ai: messages array is required'));
+              }
+              return _appAiRequest('chat', { messages: request.messages });
+            },
+            generateImage: function(request) {
+              if (!request || typeof request.prompt !== 'string' || request.prompt.length === 0) {
+                return Promise.reject(new Error('AppSDK.ai: prompt is required'));
+              }
+              var fields = { prompt: request.prompt };
+              if (request.aspectRatio) fields.aspectRatio = request.aspectRatio;
+              if (request.quality) fields.quality = request.quality;
+              return _appAiRequest('generateImage', fields);
+            },
+            speak: function(request) {
+              if (!request || typeof request.text !== 'string' || request.text.length === 0) {
+                return Promise.reject(new Error('AppSDK.ai: text is required'));
+              }
+              var fields = { text: request.text };
+              if (request.voice) fields.voice = request.voice;
+              if (request.audioFormat) fields.audioFormat = request.audioFormat;
+              return _appAiRequest('speak', fields);
+            }
+          };
+        })();
+      </script>
+      
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Proper Home Prep — Host Outreach Email Kit</title>
+  <script nonce="required" src="https://cdn.tailwindcss.com"></script>
+  <script nonce="required">
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            navy: '#1B2A4A',
+            'navy-light': '#253759',
+            'navy-dark': '#111D33',
+            gold: '#C9A84C',
+            'gold-light': '#D4B86A',
+            'gold-dark': '#B08F3A',
+            'gold-tint': '#FDF6E3',
+            'bg-main': '#F4F6F9',
+            success: '#22C55E',
+          },
+          fontFamily: {
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+          }
+        }
+      }
+    };
+  </script>
+  <script nonce="required" src="https://unpkg.com/lucide@latest" defer></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --navy: #1B2A4A;
+      --gold: #C9A84C;
+      --gold-tint: #FDF6E3;
+      --bg: #F4F6F9;
+      --success: #22C55E;
+    }
+
+    * { box-sizing: border-box; }
+    body { font-family: 'Inter', system-ui, sans-serif; background: var(--bg); margin: 0; }
+
+    .template-card {
+      transition: all 0.2s ease;
+      border-left: 4px solid var(--gold);
+      cursor: pointer;
+    }
+    .template-card:hover {
+      background: var(--gold-tint);
+    }
+    .template-card.active {
+      background: var(--navy);
+      color: #fff;
+      border-left-color: var(--gold);
+      box-shadow: 0 0 12px rgba(201, 168, 76, 0.3);
+    }
+    .template-card.active .tc-desc {
+      color: rgba(255,255,255,0.7);
+    }
+    .template-card.active .tc-channel {
+      background: rgba(201,168,76,0.2);
+      color: var(--gold);
+    }
+
+    .fade-in {
+      animation: fadeIn 0.3s ease;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .copy-btn-success {
+      animation: successPulse 0.3s ease;
+    }
+    @keyframes successPulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+
+    .counter-btn {
+      transition: all 0.15s ease;
+    }
+    .counter-btn:active {
+      transform: scale(0.9);
+    }
+
+    .personalize-var {
+      color: var(--gold);
+      font-weight: 600;
+      transition: all 0.15s ease;
+    }
+
+    .subject-line-box {
+      background: linear-gradient(135deg, var(--gold-tint), #fff);
+      border: 1.5px solid var(--gold);
+    }
+
+    .tip-card {
+      background: linear-gradient(135deg, var(--gold-tint), #FEFCF5);
+      border: 1px solid rgba(201,168,76,0.3);
+    }
+
+    /* Scrollbar styling for sidebar */
+    .sidebar-scroll::-webkit-scrollbar { width: 4px; }
+    .sidebar-scroll::-webkit-scrollbar-track { background: transparent; }
+    .sidebar-scroll::-webkit-scrollbar-thumb { background: rgba(201,168,76,0.3); border-radius: 4px; }
+
+    /* Mobile tab scrollbar */
+    .mobile-tabs::-webkit-scrollbar { height: 0; display: none; }
+
+    @media print {
+      .no-print { display: none !important; }
+    }
+  </style>
+</head>
+<body data-id="0" class="min-h-screen bg-bg-main">
+  <app-icon data-id="1" hidden data-icon="mail" data-palette="Dark"></app-icon>
+
+  <!-- HEADER -->
+  <header data-id="2" id="header-main-k3j9" class="sticky top-0 z-50 bg-navy text-white shadow-lg">
+    <div data-id="3" class="max-w-[1440px] mx-auto px-4 md:px-6 py-3 flex items-center justify-between">
+      <div data-id="4" class="flex items-center gap-2">
+        <span data-id="5" class="text-lg md:text-xl font-extrabold tracking-tight">Proper Home Prep</span>
+        <span data-id="6" class="w-2 h-2 rounded-full bg-gold inline-block"></span>
+      </div>
+      <div data-id="7" class="hidden md:block text-gold font-semibold text-sm tracking-wide">Host Outreach Kit</div>
+      <div data-id="8" class="flex items-center gap-2">
+        <span data-id="9" class="bg-gold/20 text-gold text-xs font-bold px-3 py-1 rounded-full">9 Templates Ready</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- MOBILE TAB BAR -->
+  <div data-id="10" id="mobile-tabbar-m8x2" class="md:hidden bg-white border-b border-gray-200 shadow-sm sticky top-[52px] z-40">
+    <div data-id="11" class="mobile-tabs flex overflow-x-auto gap-2 px-3 py-2" id="mobile-tabs-container-r4t1">
+      <!-- Populated by JS -->
+    </div>
+  </div>
+
+  <!-- MAIN LAYOUT -->
+  <div data-id="12" class="max-w-[1440px] mx-auto flex flex-col md:flex-row gap-0 md:gap-6 px-4 md:px-6 py-4 md:py-6">
+
+    <!-- LEFT SIDEBAR (desktop) -->
+    <aside data-id="13" id="sidebar-d7k3" class="hidden md:flex flex-col w-[320px] flex-shrink-0 gap-4 sidebar-scroll" style="max-height: calc(100vh - 100px); overflow-y: auto; position: sticky; top: 80px;">
+
+      <!-- Email Templates Group -->
+      <div data-id="14">
+        <div data-id="15" class="text-xs font-bold text-navy/50 uppercase tracking-widest mb-2 px-1">📧 Email Templates</div>
+        <div data-id="16" class="flex flex-col gap-2" id="sidebar-emails-g3m1"></div>
+      </div>
+
+      <!-- Text/DM Templates Group -->
+      <div data-id="17">
+        <div data-id="18" class="text-xs font-bold text-navy/50 uppercase tracking-widest mb-2 px-1">💬 Text / DM Templates</div>
+        <div data-id="19" class="flex flex-col gap-2" id="sidebar-texts-h5n2"></div>
+      </div>
+
+      <!-- STATS TRACKER -->
+      <div data-id="20" id="stats-tracker-p9q4" class="bg-white rounded-xl shadow-sm border border-gray-100 p-4 mt-2">
+        <h3 data-id="21" class="text-sm font-bold text-gold mb-3 flex items-center gap-1.5">
+          <i data-id="22" data-lucide="bar-chart-3" class="w-4 h-4"></i>
+          My Outreach Progress
+        </h3>
+        <div data-id="23" class="flex flex-col gap-3">
+          <div data-id="24" class="flex items-center justify-between">
+            <span data-id="25" class="text-sm text-navy/70">📧 Emails Sent</span>
+            <div data-id="26" class="flex items-center gap-2">
+              <button data-id="27" class="counter-btn w-7 h-7 rounded-full bg-bg-main text-navy hover:bg-gold/20 flex items-center justify-center text-lg font-bold" data-counter="emails" data-dir="minus">−</button>
+              <span data-id="28" id="counter-emails-v2w5" class="text-base font-bold text-navy w-8 text-center tabular-nums">0</span>
+              <button data-id="29" class="counter-btn w-7 h-7 rounded-full bg-bg-main text-navy hover:bg-gold/20 flex items-center justify-center text-lg font-bold" data-counter="emails" data-dir="plus">+</button>
+            </div>
+          </div>
+          <div data-id="30" class="flex items-center justify-between">
+            <span data-id="31" class="text-sm text-navy/70">💬 Texts Sent</span>
+            <div data-id="32" class="flex items-center gap-2">
+              <button data-id="33" class="counter-btn w-7 h-7 rounded-full bg-bg-main text-navy hover:bg-gold/20 flex items-center justify-center text-lg font-bold" data-counter="texts" data-dir="minus">−</button>
+              <span data-id="34" id="counter-texts-a8b3" class="text-base font-bold text-navy w-8 text-center tabular-nums">0</span>
+              <button data-id="35" class="counter-btn w-7 h-7 rounded-full bg-bg-main text-navy hover:bg-gold/20 flex items-center justify-center text-lg font-bold" data-counter="texts" data-dir="plus">+</button>
+            </div>
+          </div>
+          <div data-id="36" class="flex items-center justify-between">
+            <span data-id="37" class="text-sm text-navy/70">🤝 Calls Booked</span>
+            <div data-id="38" class="flex items-center gap-2">
+              <button data-id="39" class="counter-btn w-7 h-7 rounded-full bg-bg-main text-navy hover:bg-gold/20 flex items-center justify-center text-lg font-bold" data-counter="calls" data-dir="minus">−</button>
+              <span data-id="40" id="counter-calls-c6d4" class="text-base font-bold text-navy w-8 text-center tabular-nums">0</span>
+              <button data-id="41" class="counter-btn w-7 h-7 rounded-full bg-bg-main text-navy hover:bg-gold/20 flex items-center justify-center text-lg font-bold" data-counter="calls" data-dir="plus">+</button>
+            </div>
+          </div>
+        </div>
+        <div data-id="42" id="motivational-msg-e1f6" class="text-xs text-center text-navy/60 mt-3 pt-3 border-t border-gray-100">
+          Let's get that first call booked! 💛
+        </div>
+      </div>
+    </aside>
+
+    <!-- RIGHT MAIN PANEL -->
+    <main data-id="43" class="flex-1 min-w-0">
+
+      <!-- PERSONALIZATION PANEL -->
+      <div data-id="44" id="personalize-panel-j2k8" class="bg-white rounded-xl shadow-sm border-2 border-gold/30 p-4 md:p-5 mb-5">
+        <h3 data-id="45" class="text-sm font-bold text-navy flex items-center gap-1.5 mb-3">
+          <span data-id="46" class="text-gold">✦</span> Personalize Your Templates
+        </h3>
+        <div data-id="47" class="grid grid-cols-1 md:grid-cols-3 gap-3">
+          <div data-id="48">
+            <label data-id="49" class="text-xs font-semibold text-navy/60 uppercase tracking-wide mb-1 block">Host First Name</label>
+            <input data-id="50" id="input-host-name-x4y7" type="text" placeholder="Sarah" class="w-full px-3 py-2.5 rounded-lg border border-gray-200 text-sm focus:outline-none focus:border-gold focus:ring-2 focus:ring-gold/20 transition text-base" />
+          </div>
+          <div data-id="51">
+            <label data-id="52" class="text-xs font-semibold text-navy/60 uppercase tracking-wide mb-1 block">Property Name</label>
+            <input data-id="53" id="input-prop-name-z5a8" type="text" placeholder="The Nashville Nest" class="w-full px-3 py-2.5 rounded-lg border border-gray-200 text-sm focus:outline-none focus:border-gold focus:ring-2 focus:ring-gold/20 transition text-base" />
+          </div>
+          <div data-id="54">
+            <label data-id="55" class="text-xs font-semibold text-navy/60 uppercase tracking-wide mb-1 block">Your Name</label>
+            <input data-id="56" id="input-your-name-b6c9" type="text" placeholder="Brittany" value="Brittany" class="w-full px-3 py-2.5 rounded-lg border border-gray-200 text-sm focus:outline-none focus:border-gold focus:ring-2 focus:ring-gold/20 transition text-base" />
+          </div>
+        </div>
+        <p data-id="57" class="text-xs text-navy/40 mt-2.5">Fill these in once — they update every template automatically.</p>
+      </div>
+
+      <!-- TEMPLATE DISPLAY AREA -->
+      <div data-id="58" id="template-display-m3n0" class="fade-in">
+        <!-- Rendered by JS -->
+      </div>
+
+      <!-- MOBILE STATS (shown only on mobile, below template) -->
+      <div data-id="59" id="mobile-stats-q1r7" class="md:hidden bg-white rounded-xl shadow-sm border border-gray-100 p-4 mt-5">
+        <h3 data-id="60" class="text-sm font-bold text-gold mb-3 flex items-center gap-1.5">
+          <i data-id="61" data-lucide="bar-chart-3" class="w-4 h-4"></i>
+          My Outreach Progress
+        </h3>
+        <div data-id="62" class="flex flex-col gap-3">
+          <div data-id="63" class="flex items-center justify-between">
+            <span data-id="64" class="text-sm text-navy/70">📧 Emails Sent</span>
+            <div data-id="65" class="flex items-center gap-2">
+              <button data-id="66" class="counter-btn w-8 h-8 rounded-full bg-bg-main text-navy hover:bg-gold/20 flex items-center justify-center text-lg font-bold" data-counter="emails" data-dir="minus">−</button>
+              <span data-id="67" class="counter-display-emails text-base font-bold text-navy w-8 text-center tabular-nums">0</span>
+              <button data-id="68" class="counter-btn w-8 h-8 rounded-full bg-bg-main text-navy hover:bg-gold/20 flex items-center justify-center text-lg font-bold" data-counter="emails" data-dir="plus">+</button>
+            </div>
+          </div>
+          <div data-id="69" class="flex items-center justify-between">
+            <span data-id="70" class="text-sm text-navy/70">💬 Texts Sent</span>
+            <div data-id="71" class="flex items-center gap-2">
+              <button data-id="72" class="counter-btn w-8 h-8 rounded-full bg-bg-main text-navy hover:bg-gold/20 flex items-center justify-center text-lg font-bold" data-counter="texts" data-dir="minus">−</button>
+              <span data-id="73" class="counter-display-texts text-base font-bold text-navy w-8 text-center tabular-nums">0</span>
+              <button data-id="74" class="counter-btn w-8 h-8 rounded-full bg-bg-main text-navy hover:bg-gold/20 flex items-center justify-center text-lg font-bold" data-counter="texts" data-dir="plus">+</button>
+            </div>
+          </div>
+          <div data-id="75" class="flex items-center justify-between">
+            <span data-id="76" class="text-sm text-navy/70">🤝 Calls Booked</span>
+            <div data-id="77" class="flex items-center gap-2">
+              <button data-id="78" class="counter-btn w-8 h-8 rounded-full bg-bg-main text-navy hover:bg-gold/20 flex items-center justify-center text-lg font-bold" data-counter="calls" data-dir="minus">−</button>
+              <span data-id="79" class="counter-display-calls text-base font-bold text-navy w-8 text-center tabular-nums">0</span>
+              <button data-id="80" class="counter-btn w-8 h-8 rounded-full bg-bg-main text-navy hover:bg-gold/20 flex items-center justify-center text-lg font-bold" data-counter="calls" data-dir="plus">+</button>
+            </div>
+          </div>
+        </div>
+        <div data-id="81" class="motivational-msg-mobile text-xs text-center text-navy/60 mt-3 pt-3 border-t border-gray-100">
+          Let's get that first call booked! 💛
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- FOOTER -->
+  <footer data-id="82" id="footer-f0g2" class="bg-navy text-white/60 text-center text-xs py-4 mt-8">
+    <p data-id="83">Proper Home Prep | Host Outreach Kit | Nashville, TN | Where Every Detail Matters. ✦</p>
+    <p data-id="84" class="mt-1 text-white/30">Made by Copilot</p>
+  </footer>
+
+  <script nonce="required">
+    // ==============================
+    // TEMPLATE DATA
+    // ==============================
+    const templates = [
+      {
+        id: 1,
+        category: 'email',
+        label: 'Cold Email · Individual STR Host',
+        name: 'Cold Outreach — Individual Host',
+        bestFor: 'Airbnb/VRBO hosts you\'ve found online or through referrals',
+        channel: '📧 Email',
+        subject: 'Your Nashville Airbnb Deserves Better Turnovers',
+        body: `Hi {{host_name}},
+
+My name is {{your_name}}, and I'm the founder of Proper Home Prep — Nashville's boutique STR turnover service built specifically for hosts like you.
+
+I know how stressful turnover day can be. Tight windows, no visibility, and the constant worry of whether your property will actually be ready when your next guest walks through the door.
+
+That's exactly why we built something different.
+
+Every Proper Home Prep turnover comes with:
+
+✅ A custom SOP built around your exact property — so every tech follows the same standard every time
+📸 Real-time before-and-after photo documentation uploaded directly to your client dashboard
+⚡ Live task check-offs as we clean — so you can watch the job get done from anywhere
+🚨 Instant damage flagging with photos — so you know before your guest does
+
+Most of our hosts tell us the dashboard alone is worth it. Knowing is everything.
+
+I'd love to learn more about {{property_name}} and show you how we work. Would you be open to a quick 15-minute call this week?
+
+Looking forward to connecting,
+
+{{your_name}}
+Proper Home Prep | Nashville, TN
+📱 [Your Phone]
+🌐 properHomePrep.com
+
+"Where Every Detail Matters."`,
+        tip: "Find Nashville Airbnb hosts by searching 'Nashville' on Airbnb, clicking a listing, and finding the host's profile. Many hosts have public emails or you can message them through the platform."
+      },
+      {
+        id: 2,
+        category: 'email',
+        label: 'Cold Email · Property Manager / Multi-Property',
+        name: 'Cold Outreach — Property Manager',
+        bestFor: 'Property managers overseeing 3+ STR properties',
+        channel: '📧 Email',
+        subject: 'Consistent Turnovers Across Every Property — Let\'s Talk',
+        body: `Hi {{host_name}},
+
+I'm {{your_name}}, founder of Proper Home Prep — Nashville's boutique STR turnover company purpose-built for property managers who need consistency, accountability, and real-time visibility across multiple properties.
+
+Managing turnovers at scale is a different problem than managing one or two. You need a team that shows up the same way every time — regardless of which property, which tech, which day of the week.
+
+Here's how we make that happen for our portfolio clients:
+
+📋 Custom SOP for every property in your portfolio — stored in our system, followed exactly by every technician
+📊 One dashboard view across all properties — track every active turnover, review every photo, and receive guest-ready notifications all in one place
+🔄 Dedicated account coordinator — one point of contact for scheduling, issues, and account management across all your properties
+⚡ Priority scheduling for portfolio clients — your jobs are always first in the queue
+
+We currently offer Portfolio Partner packages for managers with 3+ properties — monthly retainer pricing, dedicated technicians, and SLA-backed turnaround times.
+
+I'd love to schedule a 20-minute intro call to learn about your portfolio and see if we're a fit. Are you available this week?
+
+Best,
+
+{{your_name}}
+Proper Home Prep | Nashville, TN
+📱 [Your Phone]
+🌐 properHomePrep.com
+
+"Where Every Detail Matters."`,
+        tip: "Property managers often list their contact info on their management company website or LinkedIn. This email works great as a LinkedIn InMail too."
+      },
+      {
+        id: 3,
+        category: 'email',
+        label: 'Cold Email · Bad Cleaner Opportunity',
+        name: '"Bad Cleaner" Opportunity Email',
+        bestFor: 'Hosts who\'ve publicly complained about their cleaner or had a bad review about cleanliness',
+        channel: '📧 Email',
+        subject: 'Saw Your Review — We Can Fix This',
+        body: `Hi {{host_name}},
+
+I came across {{property_name}} recently and noticed a review that mentioned cleanliness concerns. I know how frustrating that is — especially when you know your standards are higher than what your cleaner delivered.
+
+I'm {{your_name}}, founder of Proper Home Prep — and fixing exactly this situation is what we do.
+
+Unlike traditional cleaning services, we build a custom Standard Operating Procedure for your exact property — and every technician who walks through your door follows it, every single time. No improvising. No cutting corners. And you watch every task get checked off in real time through our client dashboard.
+
+One bad review can suppress your bookings for months. One great turnover partner can turn that around.
+
+I'd love to show you how we work and get {{property_name}} back to the standard your guests expect.
+
+Would you be open to a 15-minute call this week? I'll even offer your first turnover at a discounted rate so you can see the difference firsthand.
+
+Talk soon,
+
+{{your_name}}
+Proper Home Prep | Nashville, TN
+📱 [Your Phone]
+🌐 properHomePrep.com`,
+        tip: "Search Airbnb reviews for Nashville properties mentioning 'clean' with 3-4 stars — those hosts are your best target."
+      },
+      {
+        id: 4,
+        category: 'email',
+        label: 'Follow-Up · No Response (Week 1)',
+        name: 'Follow-Up (No Response — 1 Week)',
+        bestFor: 'Hosts who haven\'t replied to your first email',
+        channel: '📧 Email',
+        subject: 'Re: Your Nashville Airbnb Deserves Better Turnovers',
+        body: `Hi {{host_name}},
+
+Just circling back on my note from last week — I know your inbox is full and turnover day is busy.
+
+I'll keep this short: if you've ever stared at your phone waiting to hear whether your property is ready before a guest arrives, Proper Home Prep was built for you.
+
+Real-time dashboard. Photo documentation. Every task checked off live. Guest-ready notification when we're done.
+
+If this sounds like something worth a 15-minute conversation, just reply and we'll find a time. No pressure.
+
+{{your_name}}
+Proper Home Prep | Nashville, TN
+📱 [Your Phone]`,
+        tip: "Send this exactly 7 days after your first email. Research shows 70% of sales happen after the 2nd or 3rd touchpoint."
+      },
+      {
+        id: 5,
+        category: 'email',
+        label: 'Follow-Up · After Intro Call',
+        name: 'Follow-Up After Intro Call',
+        bestFor: 'Hosts you\'ve already spoken with — warm follow-up to convert',
+        channel: '📧 Email',
+        subject: 'Great Talking, {{host_name}} — Here\'s Everything You Need',
+        body: `Hi {{host_name}},
+
+It was so great talking with you today! I'm genuinely excited about working with {{property_name}} — it sounds like exactly the kind of property we love to care for.
+
+As promised, here's everything you need to take the next step:
+
+🌐 Our full pitch page (including dashboard demo): [Your Pitch Page URL]
+📋 Our onboarding takes about 48 hours — here's what it looks like:
+   1. We complete your Property SOP together (quick call or walkthrough)
+   2. Your dashboard account goes live
+   3. We sync your calendar and assign your dedicated tech
+   4. First turnover is scheduled — you get a guest-ready notification when we're done
+
+To get started, just reply to this email and I'll send over the onboarding paperwork right away.
+
+Looking forward to taking care of {{property_name}} — and giving you your turnover days back.
+
+Talk soon,
+
+{{your_name}}
+Proper Home Prep | Nashville, TN
+📱 [Your Phone]
+🌐 properHomePrep.com
+
+"Where Every Detail Matters."`,
+        tip: "Send this within 2 hours of your call while you're top of mind. Include the pitch page link prominently."
+      },
+      {
+        id: 6,
+        category: 'email',
+        label: 'Referral Email · Ask for Introduction',
+        name: 'Referral / Partner Request',
+        bestFor: 'Current clients, colleagues, or local real estate contacts who can refer hosts',
+        channel: '📧 Email',
+        subject: 'A Quick Favor — Would You Introduce Me?',
+        body: `Hi {{host_name}},
+
+I hope you're doing great! I'm reaching out because we're actively growing Proper Home Prep's host community here in Nashville, and you're someone whose circle I deeply respect.
+
+If you know any STR hosts or property managers who are frustrated with their current turnover situation — inconsistent results, no visibility, or cleaners who don't show up — I'd love an introduction.
+
+We offer every referred host:
+✦ A complimentary 15-minute onboarding consultation
+✦ 20% off their first turnover
+✦ And for you — a $50 referral credit for every host who signs on
+
+If anyone comes to mind, even a quick "Hey, you should talk to {{your_name}}" text or email introduction is all it takes.
+
+Thank you so much — I genuinely appreciate you.
+
+{{your_name}}
+Proper Home Prep | Nashville, TN
+📱 [Your Phone]
+🌐 properHomePrep.com`,
+        tip: "Your best referral sources: your current clients, local real estate agents, short-term rental Facebook groups, and Nashville Airbnb host meetups."
+      },
+      {
+        id: 7,
+        category: 'text',
+        label: 'Cold Text · Individual STR Host',
+        name: 'Cold Text — Individual Host',
+        bestFor: 'Direct SMS outreach to a host\'s phone number',
+        channel: '💬 Text',
+        subject: null,
+        body: `Hi {{host_name}}! This is {{your_name}} with Proper Home Prep — Nashville's boutique Airbnb turnover service. We do real-time photo documentation + live SOP tracking so you can watch your property get cleaned from anywhere. 
+
+Would love to chat about {{property_name}}. Worth a quick 10-min call this week? 🏡✨`,
+        tip: "Keep texts under 160 characters if possible. Always identify yourself by name and company in the first line."
+      },
+      {
+        id: 8,
+        category: 'text',
+        label: 'Social DM · Instagram or Facebook',
+        name: 'Instagram / Facebook DM',
+        bestFor: 'Sliding into DMs of local Airbnb hosts you find on social media',
+        channel: '📱 Social',
+        subject: null,
+        body: `Hey {{host_name}}! 👋 I love {{property_name}} — it's gorgeous! 
+
+I'm {{your_name}}, founder of Proper Home Prep in Nashville. We do STR turnovers with real-time dashboard tracking — your host dashboard shows every task checked off + before/after photos uploaded live as we clean. 
+
+Would love to show you how it works if you're ever looking for a new turnover team! 🏡✨`,
+        tip: "Like 2-3 of their recent posts before DMing — it warms up the introduction and increases response rate."
+      },
+      {
+        id: 9,
+        category: 'text',
+        label: 'Community Post · Nextdoor or Facebook Group',
+        name: 'Nextdoor / Community Post',
+        bestFor: 'Posting in Nashville STR host groups, neighborhood pages, or Airbnb host communities',
+        channel: '📱 Social',
+        subject: null,
+        body: `Hey Nashville hosts! 👋
+
+I'm {{your_name}}, founder of Proper Home Prep — a boutique STR turnover service right here in Nashville built specifically for Airbnb and VRBO hosts.
+
+What makes us different? The Proper Dashboard — as our team cleans your property, you can watch every SOP task get checked off in real time, view before-and-after photos as they upload, and receive a guest-ready notification the moment the job is done. No more wondering. No more waiting.
+
+We also build a custom Standard Operating Procedure for your exact property so every turnover looks exactly the same — regardless of which tech is on-site.
+
+✅ Real-time photo documentation
+✅ Live task tracking
+✅ Instant damage flagging
+✅ Custom SOP for your property
+✅ Dedicated account coordinator
+
+If you're tired of stressing through every checkout window, I'd love to chat. Drop a comment or DM me and I'll send over our full info + a complimentary first-turnover discount. 🏡✨
+
+Proper Home Prep | Nashville, TN | "Where Every Detail Matters."`,
+        tip: "Post Tuesday-Thursday between 7-9 PM for maximum engagement in Facebook/Nextdoor groups."
+      }
+    ];
+
+    // ==============================
+    // STATE
+    // ==============================
+    let activeTemplateId = 1;
+    let counters = { emails: 0, texts: 0, calls: 0 };
+
+    // ==============================
+    // DOM REFS
+    // ==============================
+    const hostInput = document.getElementById('input-host-name-x4y7');
+    const propInput = document.getElementById('input-prop-name-z5a8');
+    const yourInput = document.getElementById('input-your-name-b6c9');
+    const displayArea = document.getElementById('template-display-m3n0');
+    const sidebarEmails = document.getElementById('sidebar-emails-g3m1');
+    const sidebarTexts = document.getElementById('sidebar-texts-h5n2');
+    const mobileTabs = document.getElementById('mobile-tabs-container-r4t1');
+
+    // ==============================
+    // HELPERS
+    // ==============================
+    function getVars() {
+      return {
+        host_name: hostInput.value.trim() || 'there',
+        property_name: propInput.value.trim() || 'your property',
+        your_name: yourInput.value.trim() || 'Brittany'
+      };
+    }
+
+    function replaceVars(text) {
+      const vars = getVars();
+      return text
+        .replace(/\{\{host_name\}\}/g, vars.host_name)
+        .replace(/\{\{property_name\}\}/g, vars.property_name)
+        .replace(/\{\{your_name\}\}/g, vars.your_name);
+    }
+
+    function escapeHtml(text) {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    function formatBody(text) {
+      const replaced = replaceVars(text);
+      const lines = replaced.split('\n');
+      let html = '';
+      for (const line of lines) {
+        if (line.trim() === '') {
+          html += '<div class="h-3"></div>';
+        } else {
+          html += '<div class="leading-relaxed">' + escapeHtml(line) + '</div>';
+        }
+      }
+      return html;
+    }
+
+    // ==============================
+    // BUILD SIDEBAR
+    // ==============================
+    function buildSidebar() {
+      const emailTemplates = templates.filter(t => t.category === 'email');
+      const textTemplates = templates.filter(t => t.category === 'text');
+
+      sidebarEmails.innerHTML = '';
+      emailTemplates.forEach(t => {
+        const card = document.createElement('div');
+        card.className = 'template-card bg-white rounded-lg p-3 shadow-sm ' + (t.id === activeTemplateId ? 'active' : '');
+        card.dataset.templateId = t.id;
+        card.innerHTML = `
+          <div class="font-semibold text-sm">${t.name}</div>
+          <div class="tc-desc text-xs text-navy/50 mt-0.5">${t.label}</div>
+          <span class="tc-channel inline-block text-[10px] font-semibold bg-gold/10 text-gold px-2 py-0.5 rounded-full mt-1.5">${t.channel}</span>
+        `;
+        card.addEventListener('click', () => selectTemplate(t.id));
+        sidebarEmails.appendChild(card);
+      });
+
+      sidebarTexts.innerHTML = '';
+      textTemplates.forEach(t => {
+        const card = document.createElement('div');
+        card.className = 'template-card bg-white rounded-lg p-3 shadow-sm ' + (t.id === activeTemplateId ? 'active' : '');
+        card.dataset.templateId = t.id;
+        card.innerHTML = `
+          <div class="font-semibold text-sm">${t.name}</div>
+          <div class="tc-desc text-xs text-navy/50 mt-0.5">${t.label}</div>
+          <span class="tc-channel inline-block text-[10px] font-semibold bg-gold/10 text-gold px-2 py-0.5 rounded-full mt-1.5">${t.channel}</span>
+        `;
+        card.addEventListener('click', () => selectTemplate(t.id));
+        sidebarTexts.appendChild(card);
+      });
+    }
+
+    // ==============================
+    // BUILD MOBILE TABS
+    // ==============================
+    function buildMobileTabs() {
+      mobileTabs.innerHTML = '';
+      templates.forEach(t => {
+        const tab = document.createElement('button');
+        tab.className = 'flex-shrink-0 px-3 py-2 rounded-lg text-xs font-semibold whitespace-nowrap transition-all ' +
+          (t.id === activeTemplateId
+            ? 'bg-navy text-white shadow-sm'
+            : 'bg-white text-navy/70 border border-gray-200 hover:bg-gold-tint');
+        tab.dataset.templateId = t.id;
+        tab.textContent = t.name;
+        tab.addEventListener('click', () => selectTemplate(t.id));
+        mobileTabs.appendChild(tab);
+      });
+    }
+
+    // ==============================
+    // RENDER TEMPLATE
+    // ==============================
+    function renderTemplate() {
+      const t = templates.find(x => x.id === activeTemplateId);
+      if (!t) return;
+
+      const vars = getVars();
+      let subjectHtml = '';
+      if (t.subject) {
+        const replacedSubject = replaceVars(t.subject);
+        subjectHtml = `
+          <div class="subject-line-box rounded-xl p-4 mb-4">
+            <div class="flex items-center justify-between mb-1.5">
+              <span class="text-[10px] font-bold uppercase tracking-widest text-gold">Subject Line</span>
+              <button id="copy-subject-btn-s9t0" class="text-xs font-semibold text-gold hover:text-gold-dark flex items-center gap-1 min-h-[44px] px-3 transition">
+                <i data-lucide="copy" class="w-3.5 h-3.5"></i> Copy Subject
+              </button>
+            </div>
+            <div id="subject-text-u1v2" class="text-base md:text-lg font-bold text-navy">${escapeHtml(replacedSubject)}</div>
+          </div>
+        `;
+      }
+
+      const bodyHtml = formatBody(t.body);
+
+      displayArea.innerHTML = `
+        <div class="fade-in">
+          <!-- Template Header -->
+          <div class="flex flex-wrap items-start gap-2 mb-4">
+            <h2 class="text-lg md:text-xl font-bold text-navy flex-1">${t.name}</h2>
+            <span class="inline-block text-xs font-semibold bg-gold/15 text-gold-dark px-3 py-1.5 rounded-full">${t.channel}</span>
+          </div>
+          <div class="bg-gold-tint/50 rounded-lg px-3 py-2 mb-4 inline-block">
+            <span class="text-xs font-semibold text-gold-dark">Best for:</span>
+            <span class="text-xs text-navy/70 ml-1">${t.bestFor}</span>
+          </div>
+
+          <!-- Subject Line (if email) -->
+          ${subjectHtml}
+
+          <!-- Message Body -->
+          <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-5 md:p-7 text-sm text-navy/85 leading-relaxed">
+            ${bodyHtml}
+          </div>
+
+          <!-- Action Bar -->
+          <div class="flex flex-col sm:flex-row gap-3 mt-4">
+            <button id="copy-full-btn-w3x4" class="flex-1 bg-gold hover:bg-gold-dark text-white font-bold py-3.5 px-6 rounded-xl text-sm transition flex items-center justify-center gap-2 min-h-[48px] shadow-md hover:shadow-lg">
+              <i data-lucide="clipboard-copy" class="w-5 h-5"></i>
+              <span>Copy Full Template</span>
+            </button>
+            ${t.subject ? `
+            <button id="copy-subj-only-btn-y5z6" class="bg-white border-2 border-gold/30 text-gold-dark font-semibold py-3 px-5 rounded-xl text-sm hover:bg-gold-tint transition flex items-center justify-center gap-2 min-h-[48px]">
+              <i data-lucide="copy" class="w-4 h-4"></i> Copy Subject Only
+            </button>` : ''}
+            <button id="start-fresh-btn-a7b8" class="bg-white border-2 border-gray-200 text-navy/60 font-semibold py-3 px-5 rounded-xl text-sm hover:bg-bg-main transition flex items-center justify-center gap-2 min-h-[48px]">
+              <i data-lucide="rotate-ccw" class="w-4 h-4"></i> Start Fresh
+            </button>
+          </div>
+
+          <!-- Pro Tip -->
+          <div class="tip-card rounded-xl p-4 mt-4">
+            <div class="flex items-start gap-2">
+              <span class="text-gold font-bold text-sm mt-0.5">✦</span>
+              <div>
+                <span class="text-xs font-bold text-gold-dark">Pro Tip:</span>
+                <span class="text-xs text-navy/70 ml-1">${t.tip}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+
+      // Re-init icons
+      if (typeof lucide !== 'undefined' && typeof lucide.createIcons === 'function') {
+        lucide.createIcons();
+      }
+
+      // Bind copy buttons
+      bindCopyButtons(t);
+    }
+
+    // ==============================
+    // COPY FUNCTIONALITY
+    // ==============================
+    function bindCopyButtons(t) {
+      const copyFullBtn = document.getElementById('copy-full-btn-w3x4');
+      const copySubjOnlyBtn = document.getElementById('copy-subj-only-btn-y5z6');
+      const copySubjBtn = document.getElementById('copy-subject-btn-s9t0');
+      const startFreshBtn = document.getElementById('start-fresh-btn-a7b8');
+
+      if (copyFullBtn) {
+        copyFullBtn.addEventListener('click', () => {
+          let fullText = '';
+          if (t.subject) {
+            fullText += 'Subject: ' + replaceVars(t.subject) + '\n\n';
+          }
+          fullText += replaceVars(t.body);
+          copyToClipboard(fullText, copyFullBtn);
+        });
+      }
+
+      if (copySubjOnlyBtn) {
+        copySubjOnlyBtn.addEventListener('click', () => {
+          copyToClipboard(replaceVars(t.subject), copySubjOnlyBtn);
+        });
+      }
+
+      if (copySubjBtn) {
+        copySubjBtn.addEventListener('click', () => {
+          copyToClipboard(replaceVars(t.subject), copySubjBtn);
+        });
+      }
+
+      if (startFreshBtn) {
+        startFreshBtn.addEventListener('click', () => {
+          hostInput.value = '';
+          propInput.value = '';
+          yourInput.value = 'Brittany';
+          renderTemplate();
+        });
+      }
+    }
+
+    function copyToClipboard(text, button) {
+      navigator.clipboard.writeText(text).then(() => {
+        const origHTML = button.innerHTML;
+        button.innerHTML = '<span class="flex items-center gap-2"><svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg> Copied!</span>';
+        button.classList.remove('bg-gold', 'border-gold/30', 'text-gold-dark');
+        button.classList.add('bg-success', 'text-white', 'copy-btn-success');
+        setTimeout(() => {
+          button.innerHTML = origHTML;
+          button.classList.remove('bg-success', 'text-white', 'copy-btn-success');
+          button.classList.add('bg-gold');
+          if (typeof lucide !== 'undefined' && typeof lucide.createIcons === 'function') {
+            lucide.createIcons();
+          }
+        }, 2000);
+      }).catch(() => {
+        // Fallback
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        try { document.execCommand('copy'); } catch(e) {}
+        document.body.removeChild(ta);
+        const origHTML = button.innerHTML;
+        button.innerHTML = '<span class="flex items-center gap-2">✅ Copied!</span>';
+        setTimeout(() => { button.innerHTML = origHTML; }, 2000);
+      });
+    }
+
+    // ==============================
+    // SELECT TEMPLATE
+    // ==============================
+    function selectTemplate(id) {
+      activeTemplateId = id;
+      buildSidebar();
+      buildMobileTabs();
+      renderTemplate();
+
+      // Scroll mobile tab into view
+      const activeTab = mobileTabs.querySelector(`[data-template-id="${id}"]`);
+      if (activeTab) {
+        activeTab.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+      }
+    }
+
+    // ==============================
+    // COUNTERS
+    // ==============================
+    function updateCounterDisplays() {
+      const desktopEmails = document.getElementById('counter-emails-v2w5');
+      const desktopTexts = document.getElementById('counter-texts-a8b3');
+      const desktopCalls = document.getElementById('counter-calls-c6d4');
+      if (desktopEmails) desktopEmails.textContent = counters.emails;
+      if (desktopTexts) desktopTexts.textContent = counters.texts;
+      if (desktopCalls) desktopCalls.textContent = counters.calls;
+
+      document.querySelectorAll('.counter-display-emails').forEach(el => el.textContent = counters.emails);
+      document.querySelectorAll('.counter-display-texts').forEach(el => el.textContent = counters.texts);
+      document.querySelectorAll('.counter-display-calls').forEach(el => el.textContent = counters.calls);
+
+      // Motivational message
+      let msg = "Let's get that first call booked! 💛";
+      if (counters.calls >= 6) msg = "You're a machine! Nashville doesn't know what hit it! 🏆";
+      else if (counters.calls >= 3) msg = "Crushing it! Proper Home Prep is growing! 🚀";
+      else if (counters.calls >= 1) msg = "You're rolling! Keep going! 🔥";
+
+      const desktopMsg = document.getElementById('motivational-msg-e1f6');
+      if (desktopMsg) desktopMsg.textContent = msg;
+      document.querySelectorAll('.motivational-msg-mobile').forEach(el => el.textContent = msg);
+    }
+
+    document.querySelectorAll('.counter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const counter = btn.dataset.counter;
+        const dir = btn.dataset.dir;
+        if (dir === 'plus') {
+          counters[counter]++;
+        } else {
+          counters[counter] = Math.max(0, counters[counter] - 1);
+        }
+        updateCounterDisplays();
+      });
+    });
+
+    // ==============================
+    // PERSONALIZATION — REAL-TIME UPDATE
+    // ==============================
+    let renderTimeout;
+    function debouncedRender() {
+      clearTimeout(renderTimeout);
+      renderTimeout = setTimeout(renderTemplate, 80);
+    }
+    hostInput.addEventListener('input', debouncedRender);
+    propInput.addEventListener('input', debouncedRender);
+    yourInput.addEventListener('input', debouncedRender);
+
+    // ==============================
+    // INIT
+    // ==============================
+    if (typeof lucide !== 'undefined' && typeof lucide.createIcons === 'function') {
+      lucide.createIcons();
+    }
+
+    buildSidebar();
+    buildMobileTabs();
+    renderTemplate();
+    updateCounterDisplays();
+  </script>
+<script nonce="required">
+  var activeElement = null;
+  var selectionEnabled = false;
+  var selectableElements = [];
+  var SELECTABLE_SELECTOR = '[data-id]';
+  var SKIP_TAGS = {'HTML':1,'HEAD':1,'BODY':1,'SCRIPT':1,'STYLE':1,'LINK':1,'META':1,'PATH':1,'CIRCLE':1,'RECT':1,'POLYGON':1,'POLYLINE':1,'LINE':1,'ELLIPSE':1,'G':1,'DEFS':1,'CLIPPATH':1,'USE':1,'SYMBOL':1,'IFRAME':1,'CANVAS':1};
+  var INTERACTIVE_TAGS = {'INPUT':1,'TEXTAREA':1,'SELECT':1,'BUTTON':1,'A':1,'VIDEO':1,'AUDIO':1,'DETAILS':1,'SUMMARY':1};
+
+
+  function getSlotId(el) {
+    return el.getAttribute('data-id') || '';
+  }
+
+  function isImageElement(el) {
+    var tag = el.tagName.toUpperCase();
+    if (tag === 'IMG' || tag === 'SVG') return true;
+    var children = el.children;
+    for (var i = 0; i < children.length; i++) {
+      var childTag = children[i].tagName.toUpperCase();
+      if (childTag === 'IMG' || childTag === 'SVG') return true;
+    }
+    return false;
+  }
+
+  function isInteractiveElement(el) {
+    return INTERACTIVE_TAGS[el.tagName.toUpperCase()] === 1;
+  }
+
+  function hasInteractiveChild(el) {
+    var children = el.children;
+    for (var i = 0; i < children.length; i++) {
+      if (INTERACTIVE_TAGS[children[i].tagName.toUpperCase()] === 1) return true;
+    }
+    return false;
+  }
+
+  function isSelectableElement(el) {
+    var tag = el.tagName.toUpperCase();
+    if (SKIP_TAGS[tag]) return false;
+    // The backend curates which elements receive data-id, so any
+    // non-skipped element with that attribute is considered meaningful
+    // and should be selectable (text, images, interactive, or visual).
+    return true;
+  }
+
+  function deactivateElement() {
+    if (activeElement) {
+      activeElement.style.removeProperty('outline');
+      activeElement.style.removeProperty('outline-offset');
+      activeElement.style.removeProperty('border-radius');
+    }
+  }
+
+  function activateElement(el) {
+    activeElement = el;
+    el.style.setProperty('outline', '2.5px solid #987AEE', 'important');
+    el.style.setProperty('outline-offset', '2px', 'important');
+    el.style.setProperty('border-radius', '6px', 'important');
+  }
+
+  function getWrappingHtml(el) {
+    var current = el;
+    while (current && current !== document.body) {
+      var parent = current.parentElement;
+      if (parent && parent.hasAttribute('data-id') && parent !== el) {
+        return parent.outerHTML;
+      }
+      current = parent;
+    }
+    return el.outerHTML;
+  }
+
+  function getInteractiveValue(el) {
+    var tag = el.tagName.toUpperCase();
+    if (tag === 'INPUT' || tag === 'TEXTAREA') return el.value || el.placeholder || '';
+    if (tag === 'SELECT') return el.options && el.selectedIndex >= 0 ? el.options[el.selectedIndex].text : '';
+    if (tag === 'A') return (el.textContent || '') + (el.href ? ' (' + el.href + ')' : '');
+    if (tag === 'VIDEO' || tag === 'AUDIO') return el.src || '';
+    return el.textContent || '';
+  }
+
+  function getElementType(el) {
+    if (isImageElement(el)) return 'image';
+    if (isInteractiveElement(el) || hasInteractiveChild(el)) return 'interactive';
+    return 'text';
+  }
+
+  function getElementValue(el) {
+    var elType = getElementType(el);
+    if (elType === 'image') return '';
+    if (isInteractiveElement(el)) return getInteractiveValue(el);
+    if (hasInteractiveChild(el)) {
+      var children = el.children;
+      for (var i = 0; i < children.length; i++) {
+        if (INTERACTIVE_TAGS[children[i].tagName.toUpperCase()] === 1) {
+          return getInteractiveValue(children[i]);
+        }
+      }
+    }
+    return el.textContent || '';
+  }
+
+  function getElementDescription(el) {
+    var text = (el.textContent || '').trim();
+    if (text) return text.length > 100 ? text.substring(0, 100) : text;
+    var img = el.tagName.toUpperCase() === 'IMG' ? el : el.querySelector('img');
+    if (img) {
+      var alt = img.getAttribute('alt');
+      if (alt && alt.trim()) return alt.trim();
+    }
+    var ariaLabel = el.getAttribute('aria-label');
+    if (ariaLabel && ariaLabel.trim()) return ariaLabel.trim();
+    var title = el.getAttribute('title');
+    if (title && title.trim()) return title.trim();
+    if (el.placeholder && el.placeholder.trim()) return el.placeholder.trim();
+    return '';
+  }
+
+  function notifyElementSelected(el, action) {
+    var rect = el.getBoundingClientRect();
+    var elementType = getElementType(el);
+    var value = getElementValue(el);
+    var description = getElementDescription(el);
+    var selectionHtml = getWrappingHtml(el);
+    var msg = {
+      type: 'element_selected',
+      slotId: getSlotId(el),
+      elementType: elementType,
+      value: value,
+      description: description,
+      selectionHtml: selectionHtml,
+      bounds: { top: rect.top, left: rect.left, width: rect.width, height: rect.height }
+    };
+    if (action) msg.action = action;
+    window.parent.postMessage(msg, '*');
+  }
+
+
+  function setupElement(el) {
+    if (el.dataset.selectionInitialized) return;
+    el.dataset.selectionInitialized = 'true';
+    if (selectionEnabled) el.style.cursor = 'pointer';
+
+    el.addEventListener('click', function(e) {
+      if (!selectionEnabled) return;
+      e.stopPropagation();
+      if (activeElement !== el) {
+        deactivateElement();
+        activateElement(el);
+      }
+      notifyElementSelected(el);
+    });
+
+    el.addEventListener('mouseenter', function() {
+      if (!selectionEnabled) return;
+      if (el !== activeElement) {
+        el.style.setProperty('outline', '1.5px solid rgba(59, 130, 246, 0.5)', 'important');
+        el.style.setProperty('outline-offset', '2px', 'important');
+        el.style.setProperty('border-radius', '6px', 'important');
+      }
+    });
+
+    el.addEventListener('mouseleave', function() {
+      if (!selectionEnabled) return;
+      if (el !== activeElement) {
+        el.style.removeProperty('outline');
+        el.style.removeProperty('outline-offset');
+        el.style.removeProperty('border-radius');
+      }
+    });
+  }
+
+  function initializeElements() {
+    var allElements = document.querySelectorAll(SELECTABLE_SELECTOR);
+    for (var i = 0; i < allElements.length; i++) {
+      if (isSelectableElement(allElements[i])) {
+        setupElement(allElements[i]);
+      }
+    }
+    rebuildSelectableList();
+  }
+
+  // Rebuild the cached list of keyboard-navigable elements.
+  // Called by initializeElements (at init + on DOM mutations).
+  function rebuildSelectableList() {
+    var all = document.querySelectorAll('[data-selection-initialized]');
+    var result = [];
+    for (var i = 0; i < all.length; i++) {
+      var el = all[i];
+      var rect = el.getBoundingClientRect();
+      if (rect.width === 0 || rect.height === 0) continue;
+      var style = window.getComputedStyle(el);
+      if (style.display === 'none' || style.visibility === 'hidden' || style.opacity === '0') continue;
+      result.push(el);
+    }
+    selectableElements = result;
+  }
+
+
+  function setupBodyListeners() {
+    if (!document.body) return;
+
+    // Capture-phase handler: block all native interactions (links, buttons, forms)
+    // when selection is enabled. Our element click handlers still fire normally.
+    document.addEventListener('click', function(e) {
+      if (selectionEnabled) {
+        e.preventDefault();
+      }
+    }, true);
+
+    document.body.addEventListener('click', function(e) {
+      if (!selectionEnabled) return;
+      var closestInitialized = e.target.closest('[data-selection-initialized]');
+      if (closestInitialized) return;
+
+      deactivateElement();
+      activeElement = null;
+      window.parent.postMessage({ type: 'element_deselected' }, '*');
+    });
+  }
+
+
+  window.addEventListener('message', function(e) {
+    var data = e.data;
+    if (data && data.type === 'slideCommand' && data.payload) {
+      data = { type: data.payload.command, ...data.payload.data };
+    }
+
+    if (data.type === 'clear_selection') {
+      deactivateElement();
+      activeElement = null;
+      window.parent.postMessage({ type: 'element_deselected' }, '*');
+      return;
+    }
+
+    if (data.type === 'enable_selection') {
+      selectionEnabled = true;
+      var allEls = document.querySelectorAll('[data-selection-initialized]');
+      for (var i = 0; i < allEls.length; i++) {
+        allEls[i].style.cursor = 'pointer';
+      }
+      return;
+    }
+
+    if (data.type === 'disable_selection') {
+      selectionEnabled = false;
+      deactivateElement();
+      activeElement = null;
+      var allEls2 = document.querySelectorAll('[data-selection-initialized]');
+      for (var j = 0; j < allEls2.length; j++) {
+        allEls2[j].style.cursor = '';
+      }
+      window.parent.postMessage({ type: 'element_deselected' }, '*');
+      return;
+    }
+  });
+
+
+  var isMouseDown = false;
+  document.addEventListener('mousedown', function() { isMouseDown = true; });
+  document.addEventListener('mouseup', function() { isMouseDown = false; });
+
+  // Auto-activate the first selectable element when iframe gains keyboard focus
+  // (skip if the focus came from a mouse click).
+  window.addEventListener('focus', function() {
+    if (isMouseDown) return;
+    if (!selectionEnabled) return;
+    if (!activeElement) {
+      if (selectableElements.length > 0) {
+        activateElement(selectableElements[0]);
+        notifyElementSelected(selectableElements[0]);
+      }
+    }
+  });
+
+  // Keyboard navigation: Tab cycles elements, Enter triggers Ask Copilot,
+  // Escape deselects.
+  document.addEventListener('keydown', function(e) {
+    if (!selectionEnabled) return;
+
+    if (e.key === 'Escape') {
+      if (activeElement) {
+        e.preventDefault();
+        deactivateElement();
+        activeElement = null;
+        window.parent.postMessage({ type: 'element_deselected' }, '*');
+      }
+      return;
+    }
+
+    if (e.key === 'Enter') {
+      if (activeElement) {
+        e.preventDefault();
+        // Re-send element_selected with action so the parent triggers Ask Copilot
+        notifyElementSelected(activeElement, 'ask_copilot');
+      }
+      return;
+    }
+
+    if (e.key !== 'Tab') return;
+    e.preventDefault();
+
+    if (selectableElements.length === 0) return;
+
+    var currentIndex = activeElement ? selectableElements.indexOf(activeElement) : -1;
+    var nextIndex;
+    var atBoundary = false;
+
+    if (e.shiftKey) {
+      if (currentIndex <= 0) {
+        atBoundary = true;
+      } else {
+        nextIndex = currentIndex - 1;
+      }
+    } else {
+      if (currentIndex >= selectableElements.length - 1) {
+        atBoundary = true;
+      } else {
+        nextIndex = currentIndex + 1;
+      }
+    }
+
+    // At boundary: tell parent to move focus outside the iframe.
+    if (atBoundary) {
+      deactivateElement();
+      activeElement = null;
+      window.parent.postMessage({
+        type: 'tab_exit',
+        direction: e.shiftKey ? 'backward' : 'forward'
+      }, '*');
+      return;
+    }
+
+    deactivateElement();
+    activateElement(selectableElements[nextIndex]);
+    notifyElementSelected(selectableElements[nextIndex]);
+    selectableElements[nextIndex].scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+  });
+
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function() {
+      initializeElements();
+      setupBodyListeners();
+    });
+  } else {
+    initializeElements();
+    setupBodyListeners();
+  }
+
+  var mutationTimer = null;
+  var observer = new MutationObserver(function() {
+    if (mutationTimer) return;
+    mutationTimer = setTimeout(function() {
+      mutationTimer = null;
+      initializeElements();
+    }, 200);
+  });
+  observer.observe(document.documentElement, { childList: true, subtree: true });
+</script></body>
+</html>

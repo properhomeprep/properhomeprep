@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Proper Home Prep — Tech Roster</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;border-radius:0!important;font-family:'Inter',sans-serif;}
+:root{--navy:#1A2E4A;--gold:#C9A84C;--cream:#FDF6E3;--paper:#f5f4f0;}
+body{background:var(--paper);color:var(--navy);}
+input,textarea,select,button{border-radius:0!important;font-family:'Inter',sans-serif;}
+input:focus,textarea:focus,select:focus{outline:2px solid var(--gold);outline-offset:-1px;}
+
+/* HEADER */
+.site-header{background:var(--navy);padding:16px 32px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:100;}
+.brand{color:#fff;font-weight:800;font-size:20px;letter-spacing:-0.02em;}
+.brand span{color:var(--gold);}
+.header-right{display:flex;align-items:center;gap:12px;}
+.demo-badge{background:var(--navy);color:var(--gold);font-size:11px;font-weight:700;padding:4px 12px;letter-spacing:0.05em;border:1px solid var(--gold);}
+.gold-bar{height:3px;background:var(--gold);}
+
+/* PAGE HEADER */
+.page-header{background:var(--cream);border-bottom:2px solid var(--navy);padding:24px 40px;}
+.page-header-inner{max-width:1100px;margin:0 auto;display:flex;align-items:flex-end;justify-content:space-between;gap:20px;flex-wrap:wrap;}
+.page-header-left .eyebrow{font-size:10px;font-weight:800;color:var(--gold);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:6px;}
+.page-header-left h1{font-size:26px;font-weight:800;color:var(--navy);letter-spacing:-0.02em;}
+.page-header-left p{font-size:13px;color:#6b7280;margin-top:4px;}
+.add-tech-btn{background:var(--gold);color:var(--navy);font-weight:800;font-size:13px;padding:12px 28px;border:none;cursor:pointer;transition:opacity .15s;white-space:nowrap;}
+.add-tech-btn:hover{opacity:.88;}
+
+/* MAIN */
+.main{max-width:1100px;margin:0 auto;padding:28px 32px 80px;}
+@media(max-width:640px){.main{padding:20px 16px 60px;}.page-header{padding:20px 16px;}}
+
+/* STATS ROW */
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;background:#e5e7eb;border:1px solid #e5e7eb;margin-bottom:24px;}
+@media(max-width:640px){.stats-row{grid-template-columns:1fr 1fr;}}
+.stat-card{background:#fff;padding:18px 20px;border-left:4px solid var(--navy);}
+.stat-card.gold{border-left-color:var(--gold);}
+.stat-card.green{border-left-color:#16a34a;}
+.stat-card.red{border-left-color:#dc2626;}
+.stat-num{font-size:30px;font-weight:800;color:var(--gold);line-height:1;}
+.stat-label{font-size:11px;font-weight:700;color:var(--navy);text-transform:uppercase;letter-spacing:0.06em;margin-top:4px;}
+.stat-sub{font-size:11px;color:#9ca3af;margin-top:2px;}
+
+/* SECTION HEADER */
+.sec-header{background:var(--navy);padding:12px 20px;display:flex;align-items:center;gap:14px;margin-bottom:0;}
+.sec-header .badge{background:var(--gold);color:var(--navy);font-weight:800;font-size:11px;padding:3px 10px;}
+.sec-header .title{color:#fff;font-weight:700;font-size:14px;letter-spacing:0.02em;text-transform:uppercase;}
+.sec-header .title-right{margin-left:auto;color:rgba(255,255,255,.4);font-size:11px;}
+
+/* FILTER BAR */
+.filter-bar{background:#fff;border:1px solid #e5e7eb;border-top:none;padding:12px 20px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:0;}
+.filter-pill{border:2px solid var(--navy);background:#fff;color:var(--navy);font-size:11px;font-weight:700;padding:5px 14px;cursor:pointer;text-transform:uppercase;letter-spacing:0.05em;transition:all .12s;}
+.filter-pill:hover{background:var(--navy);color:#fff;}
+.filter-pill.active{background:var(--navy);color:var(--gold);}
+.search-input{border:1px solid #d1d5db;padding:8px 14px;font-size:13px;color:var(--navy);background:#fff;width:220px;}
+.search-input:focus{outline:2px solid var(--gold);outline-offset:-1px;}
+
+/* TECH GRID */
+.tech-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:2px;background:#e5e7eb;border:1px solid #e5e7eb;border-top:none;margin-bottom:24px;}
+@media(max-width:680px){.tech-grid{grid-template-columns:1fr;}}
+
+.tech-card{background:#fff;padding:22px;display:flex;flex-direction:column;gap:0;border-top:3px solid transparent;transition:border-color .15s;}
+.tech-card.active-card{border-top-color:var(--gold);}
+.tech-card.on-leave-card{border-top-color:#d97706;}
+.tech-card.inactive-card{border-top-color:#9ca3af;}
+
+.tech-card-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:14px;}
+.tech-avatar{width:48px;height:48px;background:var(--navy);color:var(--gold);font-weight:800;font-size:18px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.tech-status-badges{display:flex;flex-direction:column;align-items:flex-end;gap:5px;}
+.status-pill{font-size:10px;font-weight:800;padding:3px 9px;text-transform:uppercase;letter-spacing:0.05em;}
+.status-active{background:#f0fdf4;color:#16a34a;border:1px solid #bbf7d0;}
+.status-leave{background:#fef9ee;color:#d97706;border:1px solid #fde68a;}
+.status-inactive{background:#f3f4f6;color:#6b7280;border:1px solid #e5e7eb;}
+.role-pill{font-size:10px;font-weight:700;padding:2px 8px;background:var(--navy);color:var(--gold);text-transform:uppercase;letter-spacing:0.05em;}
+
+.tech-name{font-size:18px;font-weight:800;color:var(--navy);letter-spacing:-0.01em;margin-bottom:2px;}
+.tech-role{font-size:12px;color:#6b7280;font-weight:500;margin-bottom:12px;}
+
+.tech-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0;background:#f9fafb;border:1px solid #f3f4f6;margin-bottom:14px;}
+.tech-stat{padding:10px 12px;text-align:center;border-right:1px solid #f3f4f6;}
+.tech-stat:last-child{border-right:none;}
+.tech-stat .ts-num{font-size:18px;font-weight:800;color:var(--navy);}
+.tech-stat .ts-label{font-size:10px;color:#9ca3af;text-transform:uppercase;letter-spacing:0.05em;margin-top:2px;}
+.tech-stat .ts-num.gold{color:var(--gold);}
+
+.tech-contact{display:flex;flex-direction:column;gap:6px;margin-bottom:14px;}
+.contact-row{display:flex;align-items:center;gap:8px;font-size:13px;color:#374151;}
+.contact-row a{color:var(--navy);font-weight:600;text-decoration:none;}
+.contact-row a:hover{color:var(--gold);}
+.contact-icon{width:20px;text-align:center;font-size:14px;color:var(--gold);}
+
+.tech-skills{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:14px;}
+.skill-tag{font-size:10px;font-weight:700;padding:2px 8px;background:var(--cream);color:var(--navy);border:1px solid #d1d5db;text-transform:uppercase;letter-spacing:0.04em;}
+
+.tech-card-actions{display:flex;gap:8px;border-top:1px solid #f3f4f6;padding-top:14px;margin-top:auto;}
+.action-btn{flex:1;border:none;font-weight:700;font-size:12px;padding:9px;cursor:pointer;text-transform:uppercase;letter-spacing:0.05em;transition:all .12s;}
+.action-btn.primary{background:var(--navy);color:var(--gold);}
+.action-btn.primary:hover{opacity:.85;}
+.action-btn.outline{background:transparent;border:2px solid var(--navy);color:var(--navy);}
+.action-btn.outline:hover{background:var(--navy);color:var(--gold);}
+.action-btn.danger{background:transparent;border:2px solid #dc2626;color:#dc2626;}
+.action-btn.danger:hover{background:#dc2626;color:#fff;}
+
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(26,46,74,.55);z-index:200;display:flex;align-items:center;justify-content:center;padding:20px;}
+.modal-overlay.hidden{display:none;}
+.modal{background:#fff;width:100%;max-width:580px;max-height:90vh;overflow-y:auto;}
+.modal-header{background:var(--navy);padding:16px 22px;display:flex;align-items:center;justify-content:space-between;}
+.modal-header .modal-title{color:#fff;font-weight:700;font-size:16px;}
+.modal-header .modal-badge{background:var(--gold);color:var(--navy);font-weight:800;font-size:11px;padding:3px 10px;}
+.modal-close{background:none;border:none;color:rgba(255,255,255,.6);font-size:22px;cursor:pointer;line-height:1;padding:0;}
+.modal-close:hover{color:#fff;}
+.modal-body{padding:24px;}
+.modal-footer{padding:16px 24px;border-top:1px solid #e5e7eb;display:flex;gap:10px;justify-content:flex-end;}
+.modal-btn{font-weight:700;font-size:13px;padding:10px 24px;border:none;cursor:pointer;transition:all .12s;}
+.modal-btn.primary{background:var(--gold);color:var(--navy);}
+.modal-btn.primary:hover{opacity:.88;}
+.modal-btn.cancel{background:transparent;border:2px solid var(--navy);color:var(--navy);}
+.modal-btn.cancel:hover{background:var(--navy);color:var(--gold);}
+
+/* FORM FIELDS IN MODAL */
+.field{display:flex;flex-direction:column;gap:6px;margin-bottom:14px;}
+.field label{font-size:11px;font-weight:800;color:var(--navy);text-transform:uppercase;letter-spacing:0.07em;}
+.field label .req{color:#dc2626;}
+.field input,.field textarea,.field select{width:100%;padding:10px 14px;border:1px solid #d1d5db;font-size:14px;color:var(--navy);background:#fff;}
+.field-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+@media(max-width:480px){.field-grid-2{grid-template-columns:1fr;}}
+
+/* PILL GROUP IN MODAL */
+.pill-group{display:flex;flex-wrap:wrap;gap:7px;margin-top:2px;}
+.pill-group input[type=radio]{display:none;}
+.pill-group label{border:2px solid var(--navy);padding:7px 14px;font-size:12px;font-weight:700;cursor:pointer;color:var(--navy);transition:all .12s;}
+.pill-group input:checked+label{background:var(--navy);color:var(--gold);}
+
+/* PHP CHECKBOXES */
+.check-group{display:flex;flex-wrap:wrap;gap:4px;}
+.php-check{display:flex;align-items:center;gap:8px;cursor:pointer;padding:5px 0;}
+.php-check input{display:none;}
+.php-check .box{flex-shrink:0;width:20px;height:20px;border:2px solid var(--navy);background:#fff;display:flex;align-items:center;justify-content:center;transition:all .12s;}
+.php-check input:checked+.box{background:var(--gold);border-color:var(--gold);}
+.php-check .box svg{display:none;width:12px;height:12px;}
+.php-check input:checked+.box svg{display:block;}
+.php-check .lbl{font-size:13px;color:var(--navy);}
+
+/* TOAST */
+.toast{position:fixed;bottom:24px;right:24px;background:var(--navy);color:var(--gold);font-weight:700;font-size:13px;padding:12px 22px;z-index:999;animation:slideUp .25s ease;border-left:3px solid var(--gold);}
+@keyframes slideUp{from{transform:translateY(20px);opacity:0;}to{transform:translateY(0);opacity:1;}}
+
+/* CALLOUT */
+.callout{background:var(--cream);border-left:4px solid var(--gold);padding:12px 16px;font-size:13px;color:var(--navy);line-height:1.65;margin-bottom:16px;}
+
+/* FOOTER */
+footer{background:var(--navy);border-top:2px solid var(--gold);padding:14px 32px;text-align:center;color:#fff;font-size:12px;}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="site-header">
+  <div class="brand">Proper Home Prep <span>·</span> Nashville, TN</div>
+  <div class="header-right">
+    <span id="demoBadge" class="demo-badge" style="display:none;">DEMO MODE</span>
+    <span style="color:rgba(255,255,255,.6);font-size:12px;">Tech Roster — Admin Only</span>
+  </div>
+</div>
+<div class="gold-bar"></div>
+
+<!-- PAGE HEADER -->
+<div class="page-header">
+  <div class="page-header-inner">
+    <div class="page-header-left">
+      <div class="eyebrow">Internal Tool · Admin Only</div>
+      <h1>Tech Roster</h1>
+      <p>Manage your field team — availability, skills, contact info, and job history.</p>
+    </div>
+    <button class="add-tech-btn" onclick="openAddModal()">+ Add Team Member</button>
+  </div>
+</div>
+
+<div class="main">
+
+  <!-- STATS -->
+  <div class="stats-row">
+    <div class="stat-card gold"><div class="stat-num" id="statTotal">0</div><div class="stat-label">Total Team Members</div><div class="stat-sub">All roles</div></div>
+    <div class="stat-card green"><div class="stat-num" id="statActive">0</div><div class="stat-label">Active</div><div class="stat-sub">Available for jobs</div></div>
+    <div class="stat-card"><div class="stat-num" id="statLeave">0</div><div class="stat-label">On Leave</div><div class="stat-sub">Temporarily unavailable</div></div>
+    <div class="stat-card"><div class="stat-num" id="statJobs">0</div><div class="stat-label">Jobs This Month</div><div class="stat-sub">Team total</div></div>
+  </div>
+
+  <!-- FILTER BAR -->
+  <div class="sec-header">
+    <div class="badge">TEAM</div>
+    <div class="title">All Team Members</div>
+    <div class="title-right" id="techCount">0 members</div>
+  </div>
+  <div class="filter-bar">
+    <button class="filter-pill active" onclick="filterTechs('all',this)">All</button>
+    <button class="filter-pill" onclick="filterTechs('active',this)">Active</button>
+    <button class="filter-pill" onclick="filterTechs('on_leave',this)">On Leave</button>
+    <button class="filter-pill" onclick="filterTechs('inactive',this)">Inactive</button>
+    <input class="search-input" id="searchInput" type="text" placeholder="Search by name..." oninput="searchTechs()"/>
+  </div>
+
+  <!-- TECH GRID -->
+  <div class="tech-grid" id="techGrid"></div>
+
+</div><!-- end main -->
+
+<!-- ADD/EDIT MODAL -->
+<div class="modal-overlay hidden" id="techModal">
+  <div class="modal">
+    <div class="modal-header">
+      <div style="display:flex;align-items:center;gap:12px;">
+        <div class="modal-badge" id="modalBadge">NEW</div>
+        <div class="modal-title" id="modalTitle">Add Team Member</div>
+      </div>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="field-grid-2">
+        <div class="field"><label>Full Name <span class="req">*</span></label><input type="text" id="mName" placeholder="e.g. Jenna Roberts"/></div>
+        <div class="field"><label>Role <span class="req">*</span></label>
+          <div class="pill-group">
+            <input type="radio" name="mRole" id="r1" value="Lead Tech"/><label for="r1">Lead Tech</label>
+            <input type="radio" name="mRole" id="r2" value="Tech"/><label for="r2">Tech</label>
+            <input type="radio" name="mRole" id="r3" value="Part-Time"/><label for="r3">Part-Time</label>
+          </div>
+        </div>
+        <div class="field"><label>Phone <span class="req">*</span></label><input type="text" id="mPhone" placeholder="(615) 000-0000"/></div>
+        <div class="field"><label>Email</label><input type="text" id="mEmail" placeholder="tech@email.com"/></div>
+      </div>
+      <div class="field"><label>Status</label>
+        <div class="pill-group">
+          <input type="radio" name="mStatus" id="ms1" value="active"/><label for="ms1">Active</label>
+          <input type="radio" name="mStatus" id="ms2" value="on_leave"/><label for="ms2">On Leave</label>
+          <input type="radio" name="mStatus" id="ms3" value="inactive"/><label for="ms3">Inactive</label>
+        </div>
+      </div>
+      <div class="field-grid-2">
+        <div class="field"><label>Jobs This Month</label><input type="number" id="mJobs" min="0" placeholder="0"/></div>
+        <div class="field"><label>Star Rating (out of 5)</label><input type="number" id="mRating" min="0" max="5" step="0.1" placeholder="4.9"/></div>
+      </div>
+      <div class="field"><label>Skills / Certifications</label>
+        <div class="check-group" style="margin-top:4px;">
+          <label class="php-check"><input type="checkbox" value="STR Turnover"/><div class="box"><svg viewBox="0 0 12 10" fill="none" stroke="#1A2E4A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 5 4.5 8.5 11 1"/></svg></div><span class="lbl">STR Turnover</span></label>
+          <label class="php-check"><input type="checkbox" value="Deep Clean"/><div class="box"><svg viewBox="0 0 12 10" fill="none" stroke="#1A2E4A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 5 4.5 8.5 11 1"/></svg></div><span class="lbl">Deep Clean</span></label>
+          <label class="php-check"><input type="checkbox" value="Light Repairs"/><div class="box"><svg viewBox="0 0 12 10" fill="none" stroke="#1A2E4A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 5 4.5 8.5 11 1"/></svg></div><span class="lbl">Light Repairs</span></label>
+          <label class="php-check"><input type="checkbox" value="Exterior Refresh"/><div class="box"><svg viewBox="0 0 12 10" fill="none" stroke="#1A2E4A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 5 4.5 8.5 11 1"/></svg></div><span class="lbl">Exterior Refresh</span></label>
+          <label class="php-check"><input type="checkbox" value="Inspections"/><div class="box"><svg viewBox="0 0 12 10" fill="none" stroke="#1A2E4A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 5 4.5 8.5 11 1"/></svg></div><span class="lbl">Inspections</span></label>
+          <label class="php-check"><input type="checkbox" value="Move In/Out"/><div class="box"><svg viewBox="0 0 12 10" fill="none" stroke="#1A2E4A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 5 4.5 8.5 11 1"/></svg></div><span class="lbl">Move In/Out</span></label>
+        </div>
+      </div>
+      <div class="field"><label>Notes (Internal — not visible to tech)</label><textarea id="mNotes" rows="2" placeholder="Availability notes, vehicle info, anything Brittany needs to know..."></textarea></div>
+    </div>
+    <div class="modal-footer">
+      <button class="modal-btn cancel" onclick="closeModal()">Cancel</button>
+      <button class="modal-btn primary" onclick="saveTech()">Save Team Member →</button>
+    </div>
+  </div>
+</div>
+
+<footer>© 2026 Proper Home Prep · Nashville, TN · Every detail. Every time.</footer>
+
+<script type="module">
+import { initializeApp } from 'https://cdn.jsdelivr.net/npm/firebase@10.12.2/app/+esm';
+import { getFirestore, collection, getDocs, addDoc, updateDoc, doc, serverTimestamp, query, where } from 'https://cdn.jsdelivr.net/npm/firebase@10.12.2/firestore/+esm';
+
+// 🔥 PASTE YOUR FIREBASE CONFIG HERE
+const firebaseConfig = {
+  apiKey: "YOUR_API_KEY",
+  authDomain: "YOUR_PROJECT.firebaseapp.com",
+  projectId: "YOUR_PROJECT_ID",
+  storageBucket: "YOUR_PROJECT.appspot.com",
+  messagingSenderId: "YOUR_SENDER_ID",
+  appId: "YOUR_APP_ID"
+};
+
+const isDemo = firebaseConfig.apiKey === "YOUR_API_KEY";
+let db = null;
+if(isDemo){ document.getElementById('demoBadge').style.display='inline-block'; }
+else{ const app = initializeApp(firebaseConfig); db = getFirestore(app); }
+
+// DEMO DATA
+const demoTechs = [
+  {id:'1', name:'Jenna R.', role:'Lead Tech', phone:'(615) 000-0001', email:'jenna@properhomeprep.com', status:'active', jobsMonth:12, rating:4.9, skills:['STR Turnover','Deep Clean','Inspections','Move In/Out'], notes:'Has own vehicle. Available Mon–Sat. Best on STR properties.'},
+  {id:'2', name:'Marcus L.', role:'Tech', phone:'(615) 000-0002', email:'marcus@properhomeprep.com', status:'active', jobsMonth:8, rating:4.7, skills:['STR Turnover','Exterior Refresh','Light Repairs'], notes:'Available Tue–Sat. Great with exterior work.'},
+  {id:'3', name:'Taylor B.', role:'Tech', phone:'(615) 000-0003', email:'taylor@properhomeprep.com', status:'on_leave', jobsMonth:0, rating:4.8, skills:['STR Turnover','Deep Clean'], notes:'On leave through Sep 15. Returning full-time after.'},
+];
+
+let allTechs = [];
+let editingId = null;
+let currentFilter = 'all';
+
+function initials(name){ return name.split(' ').map(n=>n[0]).join('').toUpperCase().slice(0,2); }
+
+function statusClass(s){ return s==='active'?'active-card':s==='on_leave'?'on-leave-card':'inactive-card'; }
+function statusPillClass(s){ return s==='active'?'status-active':s==='on_leave'?'status-leave':'status-inactive'; }
+function statusLabel(s){ return s==='active'?'Active':s==='on_leave'?'On Leave':'Inactive'; }
+function stars(r){ return '★'.repeat(Math.floor(r||0))+'☆'.repeat(5-Math.floor(r||0)); }
+
+function renderTechs(list){
+  const grid = document.getElementById('techGrid');
+  grid.innerHTML = '';
+  if(!list.length){ grid.style.background='transparent'; grid.innerHTML='<div style="padding:40px;text-align:center;color:#9ca3af;font-size:14px;grid-column:1/-1;">No team members found.</div>'; return; }
+  grid.style.background='#e5e7eb';
+  list.forEach(t=>{
+    const card = document.createElement('div');
+    card.className = 'tech-card ' + statusClass(t.status);
+    const skillsHtml = (t.skills||[]).map(s=>`<span class="skill-tag">${s}</span>`).join('');
+    card.innerHTML = `
+      <div class="tech-card-top">
+        <div class="tech-avatar">${initials(t.name)}</div>
+        <div class="tech-status-badges">
+          <span class="status-pill ${statusPillClass(t.status)}">${statusLabel(t.status)}</span>
+          <span class="role-pill">${t.role||'Tech'}</span>
+        </div>
+      </div>
+      <div class="tech-name">${t.name}</div>
+      <div class="tech-role">${t.role||''}</div>
+      <div class="tech-stats">
+        <div class="tech-stat"><div class="ts-num gold">${t.jobsMonth||0}</div><div class="ts-label">Jobs / Month</div></div>
+        <div class="tech-stat"><div class="ts-num">${(t.rating||0).toFixed(1)}</div><div class="ts-label">Rating</div></div>
+        <div class="tech-stat"><div class="ts-num">${(t.skills||[]).length}</div><div class="ts-label">Skills</div></div>
+      </div>
+      <div class="tech-contact">
+        <div class="contact-row"><span class="contact-icon">📞</span><a href="tel:${t.phone}">${t.phone||'—'}</a></div>
+        <div class="contact-row"><span class="contact-icon">✉️</span><a href="mailto:${t.email}">${t.email||'—'}</a></div>
+      </div>
+      ${skillsHtml ? `<div class="tech-skills">${skillsHtml}</div>` : ''}
+      <div class="tech-card-actions">
+        <button class="action-btn primary" onclick="openEditModal('${t.id}')">Edit</button>
+        <button class="action-btn outline" onclick="toggleStatus('${t.id}')">${t.status==='active'?'Mark On Leave':'Mark Active'}</button>
+      </div>
+    `;
+    grid.appendChild(card);
+  });
+}
+
+function updateStats(list){
+  const active = list.filter(t=>t.status==='active').length;
+  const leave = list.filter(t=>t.status==='on_leave').length;
+  const jobs = list.reduce((a,t)=>a+(t.jobsMonth||0),0);
+  document.getElementById('statTotal').textContent = list.length;
+  document.getElementById('statActive').textContent = active;
+  document.getElementById('statLeave').textContent = leave;
+  document.getElementById('statJobs').textContent = jobs;
+  document.getElementById('techCount').textContent = list.length + ' member' + (list.length!==1?'s':'');
+}
+
+async function loadTechs(){
+  if(isDemo){
+    allTechs = demoTechs;
+  } else {
+    const snap = await getDocs(query(collection(db,'users'), where('role','in',['tech','admin'])));
+    allTechs = snap.docs.map(d=>({id:d.id,...d.data()}));
+  }
+  applyFilter();
+}
+
+function applyFilter(){
+  let list = [...allTechs];
+  if(currentFilter!=='all') list = list.filter(t=>t.status===currentFilter);
+  const q = document.getElementById('searchInput').value.toLowerCase();
+  if(q) list = list.filter(t=>t.name.toLowerCase().includes(q));
+  renderTechs(list);
+  updateStats(allTechs);
+}
+
+window.filterTechs = function(f, btn){
+  currentFilter = f;
+  document.querySelectorAll('.filter-pill').forEach(p=>p.classList.remove('active'));
+  btn.classList.add('active');
+  applyFilter();
+};
+window.searchTechs = applyFilter;
+
+window.openAddModal = function(){
+  editingId = null;
+  document.getElementById('modalTitle').textContent = 'Add Team Member';
+  document.getElementById('modalBadge').textContent = 'NEW';
+  clearModal();
+  document.querySelector('input[name="mStatus"][value="active"]').checked = true;
+  document.querySelector('input[name="mRole"][value="Tech"]').checked = true;
+  document.getElementById('techModal').classList.remove('hidden');
+};
+
+window.openEditModal = function(id){
+  const t = allTechs.find(x=>x.id===id);
+  if(!t) return;
+  editingId = id;
+  document.getElementById('modalTitle').textContent = 'Edit — ' + t.name;
+  document.getElementById('modalBadge').textContent = 'EDIT';
+  document.getElementById('mName').value = t.name||'';
+  document.getElementById('mPhone').value = t.phone||'';
+  document.getElementById('mEmail').value = t.email||'';
+  document.getElementById('mJobs').value = t.jobsMonth||0;
+  document.getElementById('mRating').value = t.rating||'';
+  document.getElementById('mNotes').value = t.notes||'';
+  const roleEl = document.querySelector(`input[name="mRole"][value="${t.role}"]`);
+  if(roleEl) roleEl.checked = true;
+  const statusEl = document.querySelector(`input[name="mStatus"][value="${t.status}"]`);
+  if(statusEl) statusEl.checked = true;
+  document.querySelectorAll('.modal-body input[type=checkbox]').forEach(cb=>{ cb.checked = (t.skills||[]).includes(cb.value); });
+  document.getElementById('techModal').classList.remove('hidden');
+};
+
+window.closeModal = function(){ document.getElementById('techModal').classList.add('hidden'); };
+
+function clearModal(){
+  ['mName','mPhone','mEmail','mJobs','mRating','mNotes'].forEach(id=>{ document.getElementById(id).value=''; });
+  document.querySelectorAll('.modal-body input[type=checkbox]').forEach(cb=>cb.checked=false);
+  document.querySelectorAll('.modal-body input[type=radio]').forEach(rb=>rb.checked=false);
+}
+
+window.saveTech = async function(){
+  const name = document.getElementById('mName').value.trim();
+  if(!name){ showToast('Name is required'); return; }
+  const roleEl = document.querySelector('input[name="mRole"]:checked');
+  const statusEl = document.querySelector('input[name="mStatus"]:checked');
+  const skills = Array.from(document.querySelectorAll('.modal-body input[type=checkbox]:checked')).map(c=>c.value);
+  const data = {
+    name, role: roleEl?roleEl.value:'Tech',
+    phone: document.getElementById('mPhone').value,
+    email: document.getElementById('mEmail').value,
+    status: statusEl?statusEl.value:'active',
+    jobsMonth: parseInt(document.getElementById('mJobs').value)||0,
+    rating: parseFloat(document.getElementById('mRating').value)||0,
+    skills, notes: document.getElementById('mNotes').value,
+  };
+  if(isDemo){
+    if(editingId){ const i=allTechs.findIndex(t=>t.id===editingId); if(i>-1) allTechs[i]={...allTechs[i],...data}; }
+    else{ allTechs.push({id:'demo-'+Date.now(),...data}); }
+    saveDemo();
+  } else {
+    if(editingId){ await updateDoc(doc(db,'users',editingId),{...data,updatedAt:serverTimestamp()}); }
+    else{ await addDoc(collection(db,'users'),{...data,role_type:'tech',createdAt:serverTimestamp()}); }
+    await loadTechs();
+  }
+  closeModal(); applyFilter(); showToast(editingId?'Team member updated':'Team member added');
+};
+
+window.toggleStatus = function(id){
+  const t = allTechs.find(x=>x.id===id);
+  if(!t) return;
+  const newStatus = t.status==='active'?'on_leave':'active';
+  t.status = newStatus;
+  if(!isDemo){ updateDoc(doc(db,'users',id),{status:newStatus}); }
+  else saveDemo();
+  applyFilter();
+  showToast('Status updated to ' + (newStatus==='active'?'Active':'On Leave'));
+};
+
+function saveDemo(){ const saved=JSON.parse(localStorage.getItem('php_techs')||'[]'); localStorage.setItem('php_techs',JSON.stringify(allTechs)); }
+
+function showToast(msg){
+  const t=document.createElement('div'); t.className='toast'; t.textContent=msg;
+  document.body.appendChild(t); setTimeout(()=>t.remove(),3000);
+}
+
+loadTechs();
+</script>
+</body>
+</html>

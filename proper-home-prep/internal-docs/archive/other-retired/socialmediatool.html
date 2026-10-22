@@ -1,0 +1,1691 @@
+<!DOCTYPE html>
+<!-- saved from url=(0061)blob:https://copilot.fun/80e7fc44-9a7c-4819-a73e-631dfc1f7195 -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><meta name="referrer" content="strict-origin-when-cross-origin"><meta http-equiv="Content-Security-Policy" content="default-src &#39;self&#39;; script-src &#39;self&#39; &#39;unsafe-inline&#39; https://cdn.jsdelivr.net/npm/ https://cdn.tailwindcss.com https://unpkg.com/; connect-src &#39;self&#39; https://fonts.googleapis.com https://fonts.gstatic.com https://cdn.jsdelivr.net/ https://copilot.microsoft.com; worker-src &#39;self&#39; blob:; style-src &#39;unsafe-inline&#39; &#39;self&#39; https://fonts.googleapis.com/css2 https://cdn.jsdelivr.net/npm/; img-src &#39;self&#39; data: blob: *.mm.bing.net th.bing.com cdn.tailwindcss.com copilot.microsoft.com *.tile.openstreetmap.org https://cdn.jsdelivr.net/; font-src &#39;self&#39; data: https://fonts.gstatic.com https://cdn.jsdelivr.net; media-src &#39;self&#39; blob: data:; object-src &#39;none&#39;; base-uri &#39;self&#39;; form-action &#39;self&#39;; frame-src &#39;none&#39;; upgrade-insecure-requests"><style>
+._nav-link-tooltip {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  max-width: min(80%, 600px);
+  padding: 4px 8px;
+  background: rgba(32, 33, 36, 0.88);
+  color: #e8eaed;
+  font: 12px/16px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  border-top-right-radius: 4px;
+  z-index: 2147483647;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.15s ease-in-out;
+  box-sizing: border-box;
+}
+._nav-link-tooltip._visible {
+  opacity: 1;
+}
+@media (prefers-color-scheme: light) {
+  ._nav-link-tooltip {
+    background: rgba(241, 243, 244, 0.92);
+    color: #202124;
+    border-top: 1px solid rgba(0, 0, 0, 0.08);
+    border-right: 1px solid rgba(0, 0, 0, 0.08);
+  }
+}
+</style>
+<script nonce="">
+(function() {
+  // Helper: check if a raw href is an external URL (http/https)
+  // Hash links (#section), relative paths (/page), mailto:, tel:, etc. are NOT external
+  function _isExternalHref(rawHref) {
+    if (!rawHref) return false;
+    var h = rawHref.trim().toLowerCase();
+    return h.startsWith('http://') || h.startsWith('https://') || h.startsWith('//');
+  }
+
+  // --- Link hover URL preview tooltip ---
+  var _tooltip = document.createElement('div');
+  _tooltip.className = '_nav-link-tooltip';
+  function _ensureTooltipMounted() {
+    if (!_tooltip.parentNode) {
+      (document.body || document.documentElement).appendChild(_tooltip);
+    }
+  }
+
+  document.addEventListener('mouseover', function(event) {
+    var el = event.target;
+    while (el && el.tagName !== 'A') {
+      el = el.parentElement;
+    }
+    if (!el) return;
+    var rawHref = el.getAttribute('href');
+    if (!rawHref || rawHref.startsWith('javascript:')) return;
+    _ensureTooltipMounted();
+    // Show raw href for clean display (avoids blob: URL noise)
+    _tooltip.textContent = rawHref;
+    _tooltip.classList.add('_visible');
+  }, true);
+
+  document.addEventListener('mouseout', function(event) {
+    var el = event.target;
+    while (el && el.tagName !== 'A') {
+      el = el.parentElement;
+    }
+    if (!el) return;
+    _tooltip.classList.remove('_visible');
+  }, true);
+
+  // --- Intercept anchor tag clicks ---
+  document.addEventListener('click', function(event) {
+    var target = event.target;
+    while (target && target.tagName !== 'A') {
+      target = target.parentElement;
+    }
+    if (!target) return;
+
+    var rawHref = target.getAttribute('href');
+    if (!rawHref || rawHref.startsWith('javascript:')) return;
+
+    // Hash links: Ctrl/Cmd+click to scroll to target, plain click places cursor
+    if (rawHref.startsWith('#')) {
+      if (event.ctrlKey || event.metaKey) {
+        var targetId = rawHref.substring(1);
+        if (targetId) {
+          var targetEl = document.getElementById(targetId) || document.getElementsByName(targetId)[0];
+          if (targetEl) {
+            event.preventDefault();
+            targetEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+        }
+      }
+      return;
+    }
+
+    // Only intercept external links (http/https)
+    if (!_isExternalHref(rawHref)) return;
+
+    // Allow download links to proceed natively instead of intercepting them.
+    // The 'download' attribute signals the browser to save the file rather than navigate.
+    if (target.hasAttribute('download')) return;
+
+    event.preventDefault();
+    event.stopPropagation();
+
+    window.parent.postMessage({
+      type: 'navigate-link',
+      payload: {
+        url: target.href || rawHref,
+        target: target.target || undefined
+      },
+      timestamp: Date.now()
+    }, '*');
+  }, true);
+
+  // --- Intercept window.open calls ---
+  var _origOpen = window.open;
+  window.open = function(url, target, features) {
+    if (!url) return null;
+    var urlStr = String(url);
+
+    // Only intercept external URLs (http/https)
+    if (!_isExternalHref(urlStr)) {
+      return _origOpen.call(window, url, target, features);
+    }
+
+    var resolvedUrl;
+    try {
+      resolvedUrl = new URL(urlStr, window.location.href).href;
+    } catch (e) {
+      resolvedUrl = urlStr;
+    }
+
+    window.parent.postMessage({
+      type: 'navigate-link',
+      payload: {
+        url: resolvedUrl,
+        target: target || '_blank'
+      },
+      timestamp: Date.now()
+    }, '*');
+    return null;
+  };
+})();
+</script>
+      <script nonce="">
+        (function() {
+          if (typeof window !== 'undefined' && window.trustedTypes && window.trustedTypes.createPolicy) {
+            try {
+              window.trustedTypes.createPolicy('default', {
+                createHTML: function(input) { return input; },
+                createScript: function(input) { return input; },
+                createScriptURL: function(input) { return input; }
+              });
+            } catch (e) {
+              // Policy may already exist — ignore
+            }
+          }
+        })();
+      </script>
+      <script nonce="">
+        (function() {
+          const _0x1a2b = {
+            log: console.log,
+            info: console.info,
+            warn: console.warn,
+            error: console.error,
+            debug: console.debug
+          };
+
+          function _0x3c4d(e, t, n) {
+            try {
+              const o = {
+                type: 'iframe-console-log',
+                payload: {
+                  level: e,
+                  message: String(t),
+                  args: n.map(e => {
+                    try {
+                      return typeof e === 'object' ? JSON.stringify(e, null, 2) : String(e);
+                    } catch (e) {
+                      return '[Circular or Non-serializable]';
+                    }
+                  }),
+                  timestamp: Date.now(),
+                  stackTrace: e === 'error' ? new Error().stack : undefined
+                }
+              };
+
+              window.parent.postMessage(o, '*');
+            } catch (e) {
+              _0x1a2b[e].apply(console, [t, ...n]);
+            }
+          }
+
+          console.log = function(...args) {
+            _0x1a2b.log.apply(console, args);
+            _0x3c4d('log', args[0] || '', args.slice(1));
+          };
+
+          console.info = function(...args) {
+            _0x1a2b.info.apply(console, args);
+            _0x3c4d('info', args[0] || '', args.slice(1));
+          };
+
+          console.warn = function(...args) {
+            _0x1a2b.warn.apply(console, args);
+            _0x3c4d('warn', args[0] || '', args.slice(1));
+          };
+
+          console.error = function(...args) {
+            _0x1a2b.error.apply(console, args);
+            _0x3c4d('error', args[0] || '', args.slice(1));
+          };
+
+          console.debug = function(...args) {
+            _0x1a2b.debug.apply(console, args);
+            _0x3c4d('debug', args[0] || '', args.slice(1));
+          };
+
+          window.addEventListener('error', function(event) {
+            _0x3c4d('error', event.message, [
+              'Error in ' + event.filename + ':' + event.lineno + ':' + event.colno,
+              event.error ? event.error.stack : ''
+            ]);
+          });
+
+          window.addEventListener('unhandledrejection', function(event) {
+            _0x3c4d('error', 'Unhandled Promise Rejection', [
+              event.reason ? String(event.reason) : 'Unknown reason'
+            ]);
+          });
+
+          window.addEventListener('securitypolicyviolation', function(event) {
+            _0x3c4d('error', 'CSP Violation: ' + event.effectiveDirective, [
+              'blockedURI: ' + event.blockedURI,
+              'violatedDirective: ' + event.violatedDirective,
+              'originalPolicy: ' + event.originalPolicy,
+              'disposition: ' + event.disposition,
+              'documentURI: ' + event.documentURI
+            ]);
+          });
+
+          var _llmRequestHandlers = {};
+
+          window._useLLM = function(name, params) {
+            const requestId = Math.random().toString(36).slice(2);
+            const p = new Promise((resolve) => {
+              _llmRequestHandlers[requestId] = resolve;
+            });
+
+            const llmMsg = {
+              type: "use-llm",
+              requestId: requestId,
+              timestamp: Date.now(),
+              payload: {
+                name: name,
+                params: params,
+              },
+            };
+            window.parent.postMessage(llmMsg, '*');
+
+            return p;
+          };
+
+          window.addEventListener('message', function(event) {
+            if (event.data && event.data.type === 'update-theme') {
+              const theme = event.data.payload?.theme;
+              if (theme === 'dark' || theme === 'light') {
+                const html = document.documentElement || document.querySelector('html');
+                if (html) {
+                  html.setAttribute('data-theme', theme);
+                }
+              }
+            }
+
+            if (event.source === window.parent && event.data.type === 'llmReply') {
+              const requestId = event.data.requestId;
+              const handler = _llmRequestHandlers[requestId];
+              if (handler !== undefined) {
+                handler(event.data.payload);
+                delete _llmRequestHandlers[requestId];
+              }
+            }
+          });
+
+          
+        })();
+      </script>
+    
+      <script nonce="">
+        (function() {
+          var _appDataCfg = { apiBase: "https://copilot.microsoft.com/c/api", appId: "ibE9pCKQPHV4UkiWKg5om" };
+
+          var _reqCounter = 0;
+          var _pendingRequests = {};
+
+          function _appDataRequest(method, path, body) {
+            if (!_appDataCfg) {
+              return Promise.reject(new Error('AppSDK: not configured for this artifact type.'));
+            }
+            var requestId = 'adr-' + (++_reqCounter);
+            var fullPath = _appDataCfg.appId + '/' + path;
+
+            return new Promise(function(resolve, reject) {
+              var timeoutId = setTimeout(function() {
+                delete _pendingRequests[requestId];
+                reject(new Error('AppSDK: request timed out'));
+              }, 30000);
+
+              _pendingRequests[requestId] = { resolve: resolve, reject: reject, timeoutId: timeoutId };
+
+              var requestMsg = {
+                type: 'app-data:request',
+                timestamp: Date.now(),
+                payload: { method: method, path: fullPath, body: body, requestId: requestId }
+              };
+              window.parent.postMessage(requestMsg, '*');
+            });
+          }
+
+          window.addEventListener('message', function(event) {
+            if (event.data && event.data.type === 'app-data:response') {
+              var payload = event.data.payload;
+              var pending = _pendingRequests[payload.requestId];
+              if (pending) {
+                clearTimeout(pending.timeoutId);
+                delete _pendingRequests[payload.requestId];
+                if (payload.ok) {
+                  pending.resolve(payload.data !== undefined ? payload.data : null);
+                } else {
+                  pending.reject(new Error(payload.error || 'Request failed'));
+                }
+              }
+            }
+          });
+
+          window.AppSDK = {
+            upsert: function(entityId, entityType, data) {
+              return _appDataRequest('PUT', entityId + '/' + entityType, { data: data });
+            },
+            get: function(entityId, entityType) {
+              return _appDataRequest('GET', entityId + '/' + entityType);
+            },
+            list: function(entityId) {
+              return _appDataRequest('GET', entityId);
+            },
+            delete: function(entityId, entityType) {
+              return _appDataRequest('DELETE', entityId + '/' + entityType);
+            },
+            deleteAll: function() {
+              return _appDataRequest('DELETE', '');
+            }
+          };
+        })();
+      </script>
+      
+      <script nonce="">
+        (function() {
+          var _aiReqCounter = 0;
+          var _aiPendingRequests = {};
+
+          // Per-method timeouts (ms). Image generation can take longer than chat/TTS.
+          var _aiTimeouts = { chat: 30000, generateImage: 60000, speak: 30000 };
+
+          function _appAiRequest(method, fields) {
+            var requestId = 'aai-' + (++_aiReqCounter);
+            var timeoutMs = _aiTimeouts[method] || 30000;
+
+            return new Promise(function(resolve, reject) {
+              var timeoutId = setTimeout(function() {
+                delete _aiPendingRequests[requestId];
+                reject(new Error('AppSDK.ai: request timed out'));
+              }, timeoutMs);
+
+              _aiPendingRequests[requestId] = { method: method, resolve: resolve, reject: reject, timeoutId: timeoutId };
+
+              var payload = { requestId: requestId, method: method };
+              for (var key in fields) {
+                if (Object.prototype.hasOwnProperty.call(fields, key)) {
+                  payload[key] = fields[key];
+                }
+              }
+
+              var requestMsg = {
+                type: 'app-ai:request',
+                timestamp: Date.now(),
+                payload: payload
+              };
+              window.parent.postMessage(requestMsg, '*');
+            });
+          }
+
+          window.addEventListener('message', function(event) {
+            if (event.data && event.data.type === 'app-ai:response') {
+              var payload = event.data.payload;
+              var pending = _aiPendingRequests[payload.requestId];
+              if (pending) {
+                clearTimeout(pending.timeoutId);
+                delete _aiPendingRequests[payload.requestId];
+                if (payload.ok) {
+                  if (pending.method === 'generateImage') {
+                    pending.resolve({ image: payload.image, format: payload.format });
+                  } else if (pending.method === 'speak') {
+                    pending.resolve({ audio: payload.audio, format: payload.format });
+                  } else {
+                    pending.resolve({ content: payload.content });
+                  }
+                } else {
+                  pending.reject(new Error(payload.error || 'AI request failed'));
+                }
+              }
+            }
+          });
+
+          // Attach to existing AppSDK or create it
+          window.AppSDK = window.AppSDK || {};
+          window.AppSDK.ai = {
+            chat: function(request) {
+              if (!request || !Array.isArray(request.messages) || request.messages.length === 0) {
+                return Promise.reject(new Error('AppSDK.ai: messages array is required'));
+              }
+              return _appAiRequest('chat', { messages: request.messages });
+            },
+            generateImage: function(request) {
+              if (!request || typeof request.prompt !== 'string' || request.prompt.length === 0) {
+                return Promise.reject(new Error('AppSDK.ai: prompt is required'));
+              }
+              var fields = { prompt: request.prompt };
+              if (request.aspectRatio) fields.aspectRatio = request.aspectRatio;
+              if (request.quality) fields.quality = request.quality;
+              return _appAiRequest('generateImage', fields);
+            },
+            speak: function(request) {
+              if (!request || typeof request.text !== 'string' || request.text.length === 0) {
+                return Promise.reject(new Error('AppSDK.ai: text is required'));
+              }
+              var fields = { text: request.text };
+              if (request.voice) fields.voice = request.voice;
+              if (request.audioFormat) fields.audioFormat = request.audioFormat;
+              return _appAiRequest('speak', fields);
+            }
+          };
+        })();
+      </script>
+      
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proper Home Prep — Social Media Campaign Toolkit</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com/">
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital@0;1&amp;family=Lato:ital,wght@0,300;0,400;0,600;0,700&amp;family=Playfair+Display:wght@700&amp;display=swap" rel="stylesheet">
+    <script nonce="" src="https://cdn.tailwindcss.com/"></script>
+    <script nonce="" src="https://unpkg.com/lucide@latest" defer=""></script>
+    <script nonce="">
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#e8ecf4',
+                            100: '#c5cde0',
+                            200: '#9aa8c8',
+                            300: '#6e82b0',
+                            400: '#435d98',
+                            500: '#1B2A4A',
+                            600: '#16223b',
+                            700: '#111a2d',
+                            800: '#0b111e',
+                            900: '#06090f',
+                        },
+                        gold: {
+                            50: '#fdf9ef',
+                            100: '#faf0d4',
+                            200: '#f2dfa6',
+                            300: '#e5c872',
+                            400: '#C9A84C',
+                            500: '#b5933a',
+                            600: '#9a7b2c',
+                            700: '#7a6122',
+                            800: '#5c4919',
+                            900: '#3d3011',
+                        },
+                        cream: {
+                            50: '#FDFCFA',
+                            100: '#FAF7F2',
+                            200: '#f0ebe3',
+                            300: '#e8e2d9',
+                            400: '#D4CFC8',
+                            500: '#B8B2A6',
+                        },
+                        ink: {
+                            50: '#f5f5f5',
+                            100: '#e0e0e0',
+                            200: '#b0b0b0',
+                            300: '#8a8a8a',
+                            400: '#6b6b6b',
+                            500: '#4a4a4a',
+                            600: '#3a3a3a',
+                            700: '#2d2d2d',
+                            800: '#1a1a1a',
+                            900: '#0d0d0d',
+                        },
+                        slate: {
+                            light: '#8a9bd4',
+                            DEFAULT: '#6B7DBF',
+                            dark: '#5566a3',
+                        },
+                    },
+                    fontFamily: {
+                        display: ['"Playfair Display"', 'serif'],
+                        sans: ['Lato', 'sans-serif'],
+                        accent: ['"Cormorant Garamond"', 'serif'],
+                    },
+                },
+            },
+        };
+    </script>
+    <style>
+        :root {
+            --brand-navy: #1B2A4A;
+            --brand-navy-mid: #2d3f6b;
+            --brand-gold: #C9A84C;
+            --brand-cream: #FAF7F2;
+            --brand-white: #FFFFFF;
+            --brand-slate: #6B7DBF;
+            --brand-teal: #4a8c7a;
+            --body-text: #2d2d2d;
+            --border-light: #d4cfc8;
+            --border-warm: #e8e2d9;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Lato', sans-serif;
+            background-color: var(--brand-cream);
+            color: var(--body-text);
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Playfair Display', serif;
+        }
+
+        /* Tab navigation */
+        .tab-nav {
+            background: var(--brand-white);
+            border-top: 3px solid var(--brand-navy);
+            border-bottom: 1px solid var(--border-warm);
+        }
+        .tab-btn {
+            font-family: 'Lato', sans-serif;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.14em;
+            font-size: 11px;
+            color: var(--brand-navy);
+            padding: 18px 28px;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: color 0.2s ease, border-color 0.2s ease;
+            white-space: nowrap;
+        }
+        .tab-btn.active {
+            color: var(--brand-gold);
+            border-bottom-color: var(--brand-gold);
+        }
+        .tab-btn:not(.active):hover {
+            color: var(--brand-gold);
+        }
+
+        /* Section bands */
+        .section-band {
+            background: var(--brand-navy);
+            padding: 20px 32px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .section-band .section-number {
+            font-family: 'Lato', sans-serif;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 10px;
+            letter-spacing: 0.2em;
+            color: var(--brand-gold);
+        }
+        .section-band .section-title {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            font-size: 22px;
+            color: var(--brand-white);
+        }
+
+        /* Gold divider */
+        .gold-rule {
+            border: none;
+            height: 1px;
+            background-color: var(--brand-gold);
+            opacity: 0.4;
+        }
+        .gold-rule-full {
+            border: none;
+            height: 1px;
+            background-color: var(--brand-gold);
+            opacity: 0.3;
+            margin: 32px 0;
+        }
+
+        /* Content cards */
+        .content-card {
+            border: 1px solid var(--border-light);
+            background: var(--brand-white);
+            padding: 28px 32px;
+            border-left: 3px solid var(--brand-navy);
+        }
+        .content-card-plain {
+            border: 1px solid var(--border-light);
+            background: var(--brand-white);
+            padding: 28px 32px;
+        }
+
+        /* Pillar cards */
+        .pillar-card {
+            border: 1px solid var(--border-light);
+            background: var(--brand-white);
+            padding: 28px 32px;
+            border-top: 2px solid var(--brand-gold);
+            position: relative;
+            overflow: hidden;
+        }
+        .pillar-number {
+            position: absolute;
+            top: 8px;
+            right: 16px;
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            font-size: 36px;
+            color: var(--brand-gold);
+            opacity: 0.2;
+            line-height: 1;
+        }
+
+        /* Copy button */
+        .copy-btn {
+            font-family: 'Lato', sans-serif;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.14em;
+            font-size: 10px;
+            border: 1px solid var(--brand-navy);
+            background: transparent;
+            color: var(--brand-navy);
+            padding: 8px 18px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .copy-btn:hover {
+            background: var(--brand-navy);
+            color: var(--brand-white);
+        }
+        .copy-btn.copied {
+            border-color: var(--brand-gold);
+            color: var(--brand-gold);
+            background: transparent;
+        }
+
+        /* Label text */
+        .label-text {
+            font-family: 'Lato', sans-serif;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            font-size: 10px;
+            color: var(--brand-gold);
+        }
+
+        /* Pillar tag stamp */
+        .pillar-stamp {
+            font-family: 'Lato', sans-serif;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.18em;
+            font-size: 10px;
+        }
+
+        /* Visual note */
+        .visual-note {
+            font-family: 'Cormorant Garamond', serif;
+            font-style: italic;
+            font-size: 15px;
+            color: var(--brand-slate);
+            border-left: 2px solid var(--brand-slate);
+            padding-left: 12px;
+        }
+
+        /* Glance block */
+        .glance-block {
+            background: var(--brand-cream);
+            border: 1px solid var(--border-light);
+            border-left: 3px solid var(--brand-gold);
+            padding: 28px 32px;
+        }
+
+        /* Schedule table */
+        .schedule-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .schedule-table thead th {
+            background: var(--brand-navy);
+            color: var(--brand-white);
+            font-family: 'Lato', sans-serif;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            font-size: 11px;
+            padding: 14px 16px;
+            text-align: left;
+        }
+        .schedule-table tbody td {
+            background: var(--brand-white);
+            border: 1px solid var(--border-light);
+            padding: 14px 16px;
+            vertical-align: top;
+        }
+        .schedule-table tbody tr:nth-child(even) td {
+            background: var(--brand-cream);
+        }
+
+        /* Platform tags in schedule */
+        .platform-tag {
+            display: inline-block;
+            font-family: 'Lato', sans-serif;
+            font-weight: 600;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            padding: 3px 8px;
+            color: var(--brand-white);
+            margin-bottom: 4px;
+        }
+        .platform-tag-fb { background: var(--brand-navy); }
+        .platform-tag-ig { background: var(--brand-slate); }
+        .platform-tag-nd { background: var(--brand-teal); }
+
+        /* Tooltip */
+        .tooltip-wrap { position: relative; cursor: default; }
+        .tooltip-wrap .tooltip-text {
+            visibility: hidden;
+            opacity: 0;
+            position: absolute;
+            bottom: calc(100% + 8px);
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--brand-navy);
+            color: #fff;
+            padding: 8px 12px;
+            font-size: 11px;
+            font-family: 'Lato', sans-serif;
+            font-weight: 400;
+            line-height: 1.4;
+            white-space: normal;
+            width: 220px;
+            z-index: 50;
+            transition: opacity 0.2s ease;
+        }
+        .tooltip-wrap:hover .tooltip-text {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        /* Tips numbered circle */
+        .tip-number {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: var(--brand-gold);
+            color: var(--brand-navy);
+            font-family: 'Lato', sans-serif;
+            font-weight: 700;
+            font-size: 11px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        @media (max-width: 767px) {
+            .section-band { padding: 16px 20px; }
+            .section-band .section-title { font-size: 18px; }
+            .content-card, .content-card-plain, .pillar-card, .glance-block { padding: 20px; }
+            .tab-btn { padding: 14px 16px; font-size: 10px; letter-spacing: 0.1em; }
+            .schedule-wrap { overflow-x: auto; }
+        }
+    </style>
+<style>*, ::before, ::after{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }/* ! tailwindcss v3.4.17 | MIT License | https://tailwindcss.com */*,::after,::before{box-sizing:border-box;border-width:0;border-style:solid;border-color:#e5e7eb}::after,::before{--tw-content:''}:host,html{line-height:1.5;-webkit-text-size-adjust:100%;-moz-tab-size:4;tab-size:4;font-family:Lato, sans-serif;font-feature-settings:normal;font-variation-settings:normal;-webkit-tap-highlight-color:transparent}body{margin:0;line-height:inherit}hr{height:0;color:inherit;border-top-width:1px}abbr:where([title]){-webkit-text-decoration:underline dotted;text-decoration:underline dotted}h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight:inherit}a{color:inherit;text-decoration:inherit}b,strong{font-weight:bolder}code,kbd,pre,samp{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;font-feature-settings:normal;font-variation-settings:normal;font-size:1em}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}table{text-indent:0;border-color:inherit;border-collapse:collapse}button,input,optgroup,select,textarea{font-family:inherit;font-feature-settings:inherit;font-variation-settings:inherit;font-size:100%;font-weight:inherit;line-height:inherit;letter-spacing:inherit;color:inherit;margin:0;padding:0}button,select{text-transform:none}button,input:where([type=button]),input:where([type=reset]),input:where([type=submit]){-webkit-appearance:button;background-color:transparent;background-image:none}:-moz-focusring{outline:auto}:-moz-ui-invalid{box-shadow:none}progress{vertical-align:baseline}::-webkit-inner-spin-button,::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}summary{display:list-item}blockquote,dd,dl,figure,h1,h2,h3,h4,h5,h6,hr,p,pre{margin:0}fieldset{margin:0;padding:0}legend{padding:0}menu,ol,ul{list-style:none;margin:0;padding:0}dialog{padding:0}textarea{resize:vertical}input::placeholder,textarea::placeholder{opacity:1;color:#9ca3af}[role=button],button{cursor:pointer}:disabled{cursor:default}audio,canvas,embed,iframe,img,object,svg,video{display:block;vertical-align:middle}img,video{max-width:100%;height:auto}[hidden]:where(:not([hidden=until-found])){display:none}.fixed{position:fixed}.absolute{position:absolute}.sticky{position:sticky}.inset-0{inset:0px}.right-4{right:1rem}.top-0{top:0px}.top-1\/2{top:50%}.z-40{z-index:40}.z-50{z-index:50}.mx-auto{margin-left:auto;margin-right:auto}.mb-1{margin-bottom:0.25rem}.mb-10{margin-bottom:2.5rem}.mb-2{margin-bottom:0.5rem}.mb-3{margin-bottom:0.75rem}.mb-4{margin-bottom:1rem}.mb-5{margin-bottom:1.25rem}.mb-6{margin-bottom:1.5rem}.mb-8{margin-bottom:2rem}.mt-1{margin-top:0.25rem}.mt-2{margin-top:0.5rem}.mt-3{margin-top:0.75rem}.mt-4{margin-top:1rem}.mt-auto{margin-top:auto}.flex{display:flex}.grid{display:grid}.hidden{display:none}.h-1\.5{height:0.375rem}.h-3\.5{height:0.875rem}.h-4{height:1rem}.h-5{height:1.25rem}.h-6{height:1.5rem}.min-h-screen{min-height:100vh}.w-3\.5{width:0.875rem}.w-32{width:8rem}.w-4{width:1rem}.w-5{width:1.25rem}.w-6{width:1.5rem}.w-full{width:100%}.max-w-\[960px\]{max-width:960px}.flex-1{flex:1 1 0%}.-translate-y-1\/2{--tw-translate-y:-50%;transform:translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.grid-cols-1{grid-template-columns:repeat(1, minmax(0, 1fr))}.flex-col{flex-direction:column}.flex-wrap{flex-wrap:wrap}.items-start{align-items:flex-start}.items-center{align-items:center}.justify-center{justify-content:center}.justify-between{justify-content:space-between}.gap-1{gap:0.25rem}.gap-2{gap:0.5rem}.gap-3{gap:0.75rem}.gap-4{gap:1rem}.gap-5{gap:1.25rem}.gap-6{gap:1.5rem}.space-y-1 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(0.25rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(0.25rem * var(--tw-space-y-reverse))}.space-y-3 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(0.75rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(0.75rem * var(--tw-space-y-reverse))}.space-y-4 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(1rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(1rem * var(--tw-space-y-reverse))}.space-y-5 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(1.25rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(1.25rem * var(--tw-space-y-reverse))}.overflow-x-auto{overflow-x:auto}.p-2{padding:0.5rem}.p-3{padding:0.75rem}.p-6{padding:1.5rem}.px-4{padding-left:1rem;padding-right:1rem}.px-5{padding-left:1.25rem;padding-right:1.25rem}.py-10{padding-top:2.5rem;padding-bottom:2.5rem}.py-12{padding-top:3rem;padding-bottom:3rem}.py-3{padding-top:0.75rem;padding-bottom:0.75rem}.py-8{padding-top:2rem;padding-bottom:2rem}.pb-4{padding-bottom:1rem}.pt-8{padding-top:2rem}.text-left{text-align:left}.text-center{text-align:center}.font-accent{font-family:"Cormorant Garamond", serif}.font-display{font-family:"Playfair Display", serif}.font-sans{font-family:Lato, sans-serif}.text-2xl{font-size:1.5rem;line-height:2rem}.text-\[11px\]{font-size:11px}.text-\[13px\]{font-size:13px}.text-\[32px\]{font-size:32px}.text-lg{font-size:1.125rem;line-height:1.75rem}.text-sm{font-size:0.875rem;line-height:1.25rem}.text-xl{font-size:1.25rem;line-height:1.75rem}.text-xs{font-size:0.75rem;line-height:1rem}.font-bold{font-weight:700}.font-semibold{font-weight:600}.uppercase{text-transform:uppercase}.italic{font-style:italic}.leading-\[1\.7\]{line-height:1.7}.leading-relaxed{line-height:1.625}.leading-snug{line-height:1.375}.leading-tight{line-height:1.25}.tracking-\[0\.04em\]{letter-spacing:0.04em}.tracking-\[0\.06em\]{letter-spacing:0.06em}.tracking-\[0\.14em\]{letter-spacing:0.14em}.tracking-\[0\.18em\]{letter-spacing:0.18em}.text-white{--tw-text-opacity:1;color:rgb(255 255 255 / var(--tw-text-opacity, 1))}.transition-colors{transition-property:color, background-color, border-color, fill, stroke, -webkit-text-decoration-color;transition-property:color, background-color, border-color, text-decoration-color, fill, stroke;transition-property:color, background-color, border-color, text-decoration-color, fill, stroke, -webkit-text-decoration-color;transition-timing-function:cubic-bezier(0.4, 0, 0.2, 1);transition-duration:150ms}.hover\:text-\[\#C9A84C\]:hover{--tw-text-opacity:1;color:rgb(201 168 76 / var(--tw-text-opacity, 1))}@media (min-width: 640px){.sm\:grid-cols-2{grid-template-columns:repeat(2, minmax(0, 1fr))}.sm\:flex-row{flex-direction:row}.sm\:items-center{align-items:center}.sm\:justify-between{justify-content:space-between}}@media (min-width: 768px){.md\:hidden{display:none}.md\:grid-cols-3{grid-template-columns:repeat(3, minmax(0, 1fr))}.md\:py-14{padding-top:3.5rem;padding-bottom:3.5rem}.md\:text-\[38px\]{font-size:38px}.md\:text-xl{font-size:1.25rem;line-height:1.75rem}}@media (min-width: 1024px){.lg\:grid-cols-2{grid-template-columns:repeat(2, minmax(0, 1fr))}.lg\:grid-cols-3{grid-template-columns:repeat(3, minmax(0, 1fr))}}</style></head>
+<body data-id="0" class="min-h-screen flex flex-col">
+
+    <app-icon data-id="1" hidden="" data-icon="sparkles" data-palette="Dark"></app-icon>
+
+    <!-- HEADER -->
+    <header data-id="2" id="masthead-a1b2" style="background-color: #1B2A4A;" class="text-center py-12 md:py-14">
+        <div data-id="3" class="max-w-[960px] mx-auto px-5">
+            <h1 data-id="4" id="logo-text-a1b2" class="font-display text-[32px] md:text-[38px] font-bold tracking-[0.06em] leading-tight text-white uppercase">Proper Home Prep</h1>
+            <div data-id="5" class="mx-auto mt-4 mb-3" style="width: 80px; height: 2px; background-color: #C9A84C;"></div>
+            <p data-id="6" id="tagline-c3d4" class="font-accent italic text-lg md:text-xl" style="color: #C9A84C;">The Proper Standard</p>
+            <p data-id="7" id="campaign-badge-e5f6" class="mt-2 font-sans font-semibold text-[11px] uppercase tracking-[0.18em]" style="color: rgba(201,168,76,0.75);">Summer 2026 Campaign Toolkit</p>
+        </div>
+    </header>
+
+    <!-- TABS -->
+    <nav data-id="8" class="tab-nav sticky top-0 z-40">
+        <div data-id="9" class="max-w-[960px] mx-auto px-5">
+            <div data-id="10" class="flex overflow-x-auto" id="tabs-container-g7h8">
+                <button data-id="11" class="tab-btn active" data-tab="overview">Overview</button>
+                <button data-id="12" class="tab-btn" data-tab="facebook">Facebook Ads</button>
+                <button data-id="13" class="tab-btn" data-tab="instagram">Instagram Ads</button>
+                <button data-id="14" class="tab-btn" data-tab="nextdoor">Nextdoor Posts</button>
+                <button data-id="15" class="tab-btn" data-tab="schedule">Posting Schedule</button>
+            </div>
+        </div>
+        <!-- Mobile menu button -->
+        <button data-id="16" id="mobile-menu-btn" class="md:hidden absolute right-4 top-1/2 -translate-y-1/2 p-2" style="color: #1B2A4A;">
+            <i data-id="17" data-lucide="menu" class="w-5 h-5"></i>
+        </button>
+    </nav>
+
+    <!-- MOBILE MENU -->
+    <nav data-id="18" id="mobile-menu" class="hidden fixed inset-0 z-50 flex flex-col p-6" style="background-color: #1B2A4A;">
+        <div data-id="19" class="flex justify-between items-center mb-8">
+            <h2 data-id="20" class="text-white text-lg font-display font-bold">Menu</h2>
+            <button data-id="21" id="mobile-menu-close" class="p-2 text-white">
+                <i data-id="22" data-lucide="x" class="w-6 h-6"></i>
+            </button>
+        </div>
+        <div data-id="23" class="flex flex-col gap-1">
+            <button data-id="24" class="mobile-tab-btn text-left text-white text-sm font-sans font-semibold uppercase tracking-[0.14em] px-4 py-3 hover:text-[#C9A84C] transition-colors" data-tab="overview">Overview</button>
+            <button data-id="25" class="mobile-tab-btn text-left text-white text-sm font-sans font-semibold uppercase tracking-[0.14em] px-4 py-3 hover:text-[#C9A84C] transition-colors" data-tab="facebook">Facebook Ads</button>
+            <button data-id="26" class="mobile-tab-btn text-left text-white text-sm font-sans font-semibold uppercase tracking-[0.14em] px-4 py-3 hover:text-[#C9A84C] transition-colors" data-tab="instagram">Instagram Ads</button>
+            <button data-id="27" class="mobile-tab-btn text-left text-white text-sm font-sans font-semibold uppercase tracking-[0.14em] px-4 py-3 hover:text-[#C9A84C] transition-colors" data-tab="nextdoor">Nextdoor Posts</button>
+            <button data-id="28" class="mobile-tab-btn text-left text-white text-sm font-sans font-semibold uppercase tracking-[0.14em] px-4 py-3 hover:text-[#C9A84C] transition-colors" data-tab="schedule">Posting Schedule</button>
+        </div>
+        <div data-id="29" class="mt-auto pt-8">
+            <p data-id="30" class="font-accent italic text-sm" style="color: #C9A84C;">The Proper Standard</p>
+        </div>
+    </nav>
+
+    <!-- MAIN CONTENT -->
+    <main data-id="31" class="flex-1 w-full">
+
+        <!-- ==================== TAB 1: OVERVIEW ==================== -->
+        <section data-id="32" id="tab-overview" class="tab-content">
+            <!-- Section Band -->
+            <div data-id="33" class="section-band">
+                <span data-id="34" class="section-number">Section 01</span>
+                <h2 data-id="35" id="overview-title-i9j0" class="section-title">Campaign Overview</h2>
+            </div>
+            <hr data-id="36" class="gold-rule">
+
+            <div data-id="37" class="max-w-[960px] mx-auto px-5 py-10">
+                <!-- Campaign Progress -->
+                <div data-id="38" id="progress-tracker-k1l2" class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-10 gap-4">
+                    <div data-id="39">
+                        <p data-id="40" class="label-text mb-1">Campaign Progress</p>
+                        <p data-id="41" class="text-sm font-sans font-semibold" style="color: #1B2A4A;">Week 1 of 4</p>
+                    </div>
+                    <div data-id="42" class="flex items-center gap-3">
+                        <div data-id="43" class="w-32 h-1.5" style="background-color: #e8e2d9;">
+                            <div data-id="44" class="h-1.5" style="width: 25%; background-color: #C9A84C; transition: width 0.6s ease;"></div>
+                        </div>
+                        <span data-id="45" class="text-xs font-sans font-semibold" style="color: #C9A84C;">25%</span>
+                    </div>
+                </div>
+
+                <hr data-id="46" class="gold-rule-full">
+
+                <!-- Campaign Pillars -->
+                <p data-id="47" id="pillars-heading-m3n4" class="label-text mb-5">Campaign Pillars</p>
+                <div data-id="48" class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-10">
+                    <div data-id="49" class="pillar-card">
+                        <span data-id="50" class="pillar-number">01</span>
+                        <div data-id="51" class="flex items-center gap-2 mb-3">
+                            <i data-id="52" data-lucide="gem" class="w-4 h-4" style="color: #1B2A4A;"></i>
+                            <span data-id="53" class="pillar-stamp" style="color: #1B2A4A;">— Boutique Standard</span>
+                        </div>
+                        <h4 data-id="54" class="text-lg font-display font-bold mb-2" style="color: #1B2A4A;">The Boutique Standard</h4>
+                        <p data-id="55" class="text-[13px] font-sans leading-relaxed" style="color: #2d2d2d;">We're not a cleaning company. We're a prep service built around your property, your guests, and your standard.</p>
+                    </div>
+                    <div data-id="56" class="pillar-card">
+                        <span data-id="57" class="pillar-number">02</span>
+                        <div data-id="58" class="flex items-center gap-2 mb-3">
+                            <i data-id="59" data-lucide="settings" class="w-4 h-4" style="color: #1B2A4A;"></i>
+                            <span data-id="60" class="pillar-stamp" style="color: #1B2A4A;">— Reliability</span>
+                        </div>
+                        <h4 data-id="61" class="text-lg font-display font-bold mb-2" style="color: #1B2A4A;">Systems-Backed Reliability</h4>
+                        <p data-id="62" class="text-[13px] font-sans leading-relaxed" style="color: #2d2d2d;">Our internal operations run on refined workflows and checklists — so nothing gets missed, ever.</p>
+                    </div>
+                    <div data-id="63" class="pillar-card">
+                        <span data-id="64" class="pillar-number">03</span>
+                        <div data-id="65" class="flex items-center gap-2 mb-3">
+                            <i data-id="66" data-lucide="rocket" class="w-4 h-4" style="color: #C9A84C;"></i>
+                            <span data-id="67" class="pillar-stamp" style="color: #C9A84C;">— Tech Tease</span>
+                        </div>
+                        <h4 data-id="68" class="text-lg font-display font-bold mb-2" style="color: #1B2A4A;">Something Better Is Coming</h4>
+                        <p data-id="69" class="text-[13px] font-sans leading-relaxed" style="color: #2d2d2d;">We're working on something that'll make managing your prep even easier. Stay tuned.</p>
+                    </div>
+                </div>
+
+                <hr data-id="70" class="gold-rule-full">
+
+                <!-- Campaign at a Glance -->
+                <p data-id="71" id="glance-heading-o5p6" class="label-text mb-5">Campaign at a Glance</p>
+                <div data-id="72" class="glance-block">
+                    <div data-id="73" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <div data-id="74">
+                            <p data-id="75" class="label-text mb-1">Duration</p>
+                            <p data-id="76" class="text-sm font-sans" style="color: #1B2A4A;">4 Weeks (July 28 – August 22, 2026)</p>
+                        </div>
+                        <div data-id="77">
+                            <p data-id="78" class="label-text mb-1">Platforms</p>
+                            <p data-id="79" class="text-sm font-sans" style="color: #1B2A4A;">Facebook, Instagram, Nextdoor</p>
+                        </div>
+                        <div data-id="80">
+                            <p data-id="81" class="label-text mb-1">Post Frequency</p>
+                            <p data-id="82" class="text-sm font-sans" style="color: #1B2A4A;">3x/week per platform</p>
+                        </div>
+                        <div data-id="83">
+                            <p data-id="84" class="label-text mb-1">Total Scheduled Posts</p>
+                            <p data-id="85" class="text-2xl font-display font-bold" style="color: #1B2A4A;">36</p>
+                        </div>
+                        <div data-id="86">
+                            <p data-id="87" class="label-text mb-1">Primary CTA</p>
+                            <p data-id="88" class="text-sm font-sans" style="color: #1B2A4A;">"Book a Walkthrough" / DM for details</p>
+                        </div>
+                        <div data-id="89">
+                            <p data-id="90" class="label-text mb-1">Tone Directive</p>
+                            <p data-id="91" class="text-sm font-sans font-semibold" style="color: #C9A84C;">Boutique confidence. No discounts. No desperation. No portal promises.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== TAB 2: FACEBOOK ADS ==================== -->
+        <section data-id="92" id="tab-facebook" class="tab-content hidden">
+            <div data-id="93" class="section-band">
+                <span data-id="94" class="section-number">Section 02</span>
+                <h2 data-id="95" id="fb-title-q7r8" class="section-title">Facebook Ads</h2>
+            </div>
+            <hr data-id="96" class="gold-rule">
+
+            <div data-id="97" class="max-w-[960px] mx-auto px-5 py-10">
+                <p data-id="98" class="text-sm font-sans mb-8" style="color: #6B7DBF;">4 campaign ads ready to deploy. Copy the full text with one click.</p>
+
+                <div data-id="99" class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                    <!-- FB Ad 1 -->
+                    <div data-id="100" class="content-card flex flex-col">
+                        <p data-id="101" class="label-text mb-3">Ad 01 of 04 · Boutique Standard</p>
+                        <h3 data-id="102" class="text-xl font-display font-bold mb-3 leading-snug" style="color: #1B2A4A;">Your Property Deserves Better Than a Checklist Company</h3>
+                        <p data-id="103" class="text-sm font-sans leading-[1.7] mb-2" style="color: #2d2d2d;">At Proper Home Prep, we don't just clean — we prepare. Every turnover is treated like a move-in day. Fresh eyes, high standards, and a team that actually cares what your guests walk into.</p>
+                        <p data-id="104" class="text-sm font-sans leading-[1.7] mb-4" style="color: #2d2d2d;">If you're hosting in Nashville and tired of worrying about what you'll find between guests — let's talk.</p>
+                        <div data-id="105" class="flex items-center gap-2 mb-5">
+                            <span data-id="106" class="label-text" style="color: #6B7DBF;">CTA:</span>
+                            <span data-id="107" class="text-xs font-sans font-semibold" style="color: #1B2A4A;">Send Us a Message</span>
+                        </div>
+                        <div data-id="108" class="mt-auto">
+                            <button data-id="109" class="copy-btn w-full justify-center" data-copy="fb-ad-1">
+                                <i data-id="110" data-lucide="copy" class="w-3.5 h-3.5"></i>
+                                <span data-id="111">Copy Ad</span>
+                            </button>
+                        </div>
+                        <textarea data-id="112" class="hidden" id="fb-ad-1">Your Property Deserves Better Than a Checklist Company
+
+At Proper Home Prep, we don't just clean — we prepare. Every turnover is treated like a move-in day. Fresh eyes, high standards, and a team that actually cares what your guests walk into.
+
+If you're hosting in Nashville and tired of worrying about what you'll find between guests — let's talk.
+
+👉 Send Us a Message</textarea>
+                    </div>
+
+                    <!-- FB Ad 2 -->
+                    <div data-id="113" class="content-card flex flex-col">
+                        <p data-id="114" class="label-text mb-3">Ad 02 of 04 · Boutique Standard</p>
+                        <h3 data-id="115" class="text-xl font-display font-bold mb-3 leading-snug" style="color: #1B2A4A;">5-Star Turnovers, Built for Nashville Hosts</h3>
+                        <p data-id="116" class="text-sm font-sans leading-[1.7] mb-2" style="color: #2d2d2d;">Your listing rating lives and dies by the details — and we live in the details. Proper Home Prep brings boutique-level turnover service to short-term rentals, long-term vacancies, and everything in between.</p>
+                        <p data-id="117" class="text-sm font-sans leading-[1.7] mb-4" style="color: #2d2d2d;">No shortcuts. No subpar finishes. Just a property your guests remember for the right reasons.</p>
+                        <div data-id="118" class="flex items-center gap-2 mb-5">
+                            <span data-id="119" class="label-text" style="color: #6B7DBF;">CTA:</span>
+                            <span data-id="120" class="text-xs font-sans font-semibold" style="color: #1B2A4A;">Book a Walkthrough</span>
+                        </div>
+                        <div data-id="121" class="mt-auto">
+                            <button data-id="122" class="copy-btn w-full justify-center" data-copy="fb-ad-2">
+                                <i data-id="123" data-lucide="copy" class="w-3.5 h-3.5"></i>
+                                <span data-id="124">Copy Ad</span>
+                            </button>
+                        </div>
+                        <textarea data-id="125" class="hidden" id="fb-ad-2">5-Star Turnovers, Built for Nashville Hosts
+
+Your listing rating lives and dies by the details — and we live in the details. Proper Home Prep brings boutique-level turnover service to short-term rentals, long-term vacancies, and everything in between.
+
+No shortcuts. No subpar finishes. Just a property your guests remember for the right reasons.
+
+👉 Book a Walkthrough</textarea>
+                    </div>
+
+                    <!-- FB Ad 3 -->
+                    <div data-id="126" class="content-card flex flex-col">
+                        <p data-id="127" class="label-text mb-3">Ad 03 of 04 · Reliability</p>
+                        <h3 data-id="128" class="text-xl font-display font-bold mb-3 leading-snug" style="color: #1B2A4A;">We Run on Systems So Your Property Runs Smoothly</h3>
+                        <p data-id="129" class="text-sm font-sans leading-[1.7] mb-2" style="color: #2d2d2d;">Behind every Proper turnover is a refined internal process — quality checklists, trained field teams, and a standard that doesn't flex on the bad days.</p>
+                        <p data-id="130" class="text-sm font-sans leading-[1.7] mb-4" style="color: #2d2d2d;">We didn't build this business on hustle. We built it on structure. That's what your property gets, every single time.</p>
+                        <div data-id="131" class="flex items-center gap-2 mb-5">
+                            <span data-id="132" class="label-text" style="color: #6B7DBF;">CTA:</span>
+                            <span data-id="133" class="text-xs font-sans font-semibold" style="color: #1B2A4A;">Learn What We Do</span>
+                        </div>
+                        <div data-id="134" class="mt-auto">
+                            <button data-id="135" class="copy-btn w-full justify-center" data-copy="fb-ad-3">
+                                <i data-id="136" data-lucide="copy" class="w-3.5 h-3.5"></i>
+                                <span data-id="137">Copy Ad</span>
+                            </button>
+                        </div>
+                        <textarea data-id="138" class="hidden" id="fb-ad-3">We Run on Systems So Your Property Runs Smoothly
+
+Behind every Proper turnover is a refined internal process — quality checklists, trained field teams, and a standard that doesn't flex on the bad days.
+
+We didn't build this business on hustle. We built it on structure. That's what your property gets, every single time.
+
+👉 Learn What We Do</textarea>
+                    </div>
+
+                    <!-- FB Ad 4 -->
+                    <div data-id="139" class="content-card flex flex-col">
+                        <p data-id="140" class="label-text mb-3">Ad 04 of 04 · Tech Tease</p>
+                        <h3 data-id="141" class="text-xl font-display font-bold mb-3 leading-snug" style="color: #1B2A4A;">Something Hosts Have Been Asking For Is Almost Here</h3>
+                        <p data-id="142" class="text-sm font-sans leading-[1.7] mb-2" style="color: #2d2d2d;">We've been quietly building something on the backend that's going to change the way you stay connected to your prep service. We're not ready to spill everything — but if you're already a Proper client, you'll be the first to know.</p>
+                        <p data-id="143" class="text-sm font-sans leading-[1.7] mb-4" style="color: #2d2d2d;">Stay tuned. This one's good.</p>
+                        <div data-id="144" class="flex items-center gap-2 mb-5">
+                            <span data-id="145" class="label-text" style="color: #6B7DBF;">CTA:</span>
+                            <span data-id="146" class="text-xs font-sans font-semibold" style="color: #1B2A4A;">Follow for Updates</span>
+                        </div>
+                        <div data-id="147" class="mt-auto">
+                            <button data-id="148" class="copy-btn w-full justify-center" data-copy="fb-ad-4">
+                                <i data-id="149" data-lucide="copy" class="w-3.5 h-3.5"></i>
+                                <span data-id="150">Copy Ad</span>
+                            </button>
+                        </div>
+                        <textarea data-id="151" class="hidden" id="fb-ad-4">Something Hosts Have Been Asking For Is Almost Here
+
+We've been quietly building something on the backend that's going to change the way you stay connected to your prep service. We're not ready to spill everything — but if you're already a Proper client, you'll be the first to know.
+
+Stay tuned. This one's good.
+
+👉 Follow for Updates</textarea>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== TAB 3: INSTAGRAM ADS ==================== -->
+        <section data-id="152" id="tab-instagram" class="tab-content hidden">
+            <div data-id="153" class="section-band">
+                <span data-id="154" class="section-number">Section 03</span>
+                <h2 data-id="155" id="ig-title-s9t0" class="section-title">Instagram Ads</h2>
+            </div>
+            <hr data-id="156" class="gold-rule">
+
+            <div data-id="157" class="max-w-[960px] mx-auto px-5 py-10">
+                <p data-id="158" class="text-sm font-sans mb-8" style="color: #6B7DBF;">4 Instagram posts with captions and hashtags. Copy each separately.</p>
+
+                <div data-id="159" class="space-y-4">
+                    <!-- IG Post 1 -->
+                    <div data-id="160" class="content-card">
+                        <p data-id="161" class="label-text mb-1">Post 01 of 04 · Boutique Standard</p>
+                        <p data-id="162" class="pillar-stamp mb-4" style="color: #6B7DBF;">Brand Intro</p>
+
+                        <p data-id="163" class="visual-note mb-5">
+                            Suggested visual: Clean, minimal shot of a made bed in a bright Nashville Airbnb — white duvet, perfect pillows, natural light.
+                        </p>
+
+                        <div data-id="164" class="mb-4 pb-4" style="border-bottom: 1px solid #e8e2d9;">
+                            <p data-id="165" class="text-sm font-sans leading-[1.7] mb-3" style="color: #2d2d2d;">Hosting in Nashville means competing with hundreds of listings. The ones that stand out? They're not just clean — they're <em data-id="166">prepared</em>.</p>
+                            <p data-id="167" class="text-sm font-sans leading-[1.7] mb-3" style="color: #2d2d2d;">That's the difference Proper Home Prep makes. Every turnover is treated like your guests are seeing the property for the first time — because to them, they are.</p>
+                            <p data-id="168" class="text-sm font-sans leading-[1.7]" style="color: #2d2d2d;">We prep the details so you can focus on the bookings. 🏡</p>
+                        </div>
+
+                        <div data-id="169" class="mb-5 p-3" style="background: #FAF7F2;">
+                            <p data-id="170" class="text-xs font-sans leading-relaxed" style="color: #6B7DBF;">#ProperHomePrep #NashvilleAirbnb #STRHosting #ShortTermRental #NashvilleHost #BoutiqueService #TheProperStandard #AirbnbNashville #PropertyPrep #HostLife</p>
+                        </div>
+
+                        <div data-id="171" class="flex gap-3">
+                            <button data-id="172" class="copy-btn flex-1 justify-center" data-copy="ig-caption-1">
+                                <i data-id="173" data-lucide="copy" class="w-3.5 h-3.5"></i>
+                                <span data-id="174">Copy Caption</span>
+                            </button>
+                            <button data-id="175" class="copy-btn flex-1 justify-center" data-copy="ig-hashtags-1">
+                                <i data-id="176" data-lucide="hash" class="w-3.5 h-3.5"></i>
+                                <span data-id="177">Copy Hashtags</span>
+                            </button>
+                        </div>
+                        <textarea data-id="178" class="hidden" id="ig-caption-1">Hosting in Nashville means competing with hundreds of listings. The ones that stand out? They're not just clean — they're *prepared*.
+
+That's the difference Proper Home Prep makes. Every turnover is treated like your guests are seeing the property for the first time — because to them, they are.
+
+We prep the details so you can focus on the bookings. 🏡</textarea>
+                        <textarea data-id="179" class="hidden" id="ig-hashtags-1">#ProperHomePrep #NashvilleAirbnb #STRHosting #ShortTermRental #NashvilleHost #BoutiqueService #TheProperStandard #AirbnbNashville #PropertyPrep #HostLife</textarea>
+                    </div>
+
+                    <hr data-id="180" class="gold-rule-full" style="margin: 16px 0;">
+
+                    <!-- IG Post 2 -->
+                    <div data-id="181" class="content-card">
+                        <p data-id="182" class="label-text mb-1">Post 02 of 04 · Reliability</p>
+                        <p data-id="183" class="pillar-stamp mb-4" style="color: #6B7DBF;">Behind the Scenes</p>
+
+                        <p data-id="184" class="visual-note mb-5">
+                            Suggested visual: Detail shot — folded hand towels stacked perfectly, or a team member placing a welcome card. Warm lighting.
+                        </p>
+
+                        <div data-id="185" class="mb-4 pb-4" style="border-bottom: 1px solid #e8e2d9;">
+                            <p data-id="186" class="text-sm font-sans leading-[1.7] mb-3" style="color: #2d2d2d;">Most people see a clean space. We see every single step it took to get there.</p>
+                            <p data-id="187" class="text-sm font-sans leading-[1.7] mb-3" style="color: #2d2d2d;">Proper Home Prep runs on systems — detailed checklists, trained teams, and a prep standard we don't compromise on. The result is a property that looks, feels, and <em data-id="188">functions</em> like a five-star stay.</p>
+                            <p data-id="189" class="text-sm font-sans leading-[1.7]" style="color: #2d2d2d;">That's not by accident. That's The Proper Standard.</p>
+                        </div>
+
+                        <div data-id="190" class="mb-5 p-3" style="background: #FAF7F2;">
+                            <p data-id="191" class="text-xs font-sans leading-relaxed" style="color: #6B7DBF;">#ProperStandard #NashvilleSTR #CleaningStandards #BehindTheScenes #HostingLife #ShortTermRentalLife #PropertyManagement #NashvilleRental #TurnoverService #ProperHomePrep</p>
+                        </div>
+
+                        <div data-id="192" class="flex gap-3">
+                            <button data-id="193" class="copy-btn flex-1 justify-center" data-copy="ig-caption-2">
+                                <i data-id="194" data-lucide="copy" class="w-3.5 h-3.5"></i>
+                                <span data-id="195">Copy Caption</span>
+                            </button>
+                            <button data-id="196" class="copy-btn flex-1 justify-center" data-copy="ig-hashtags-2">
+                                <i data-id="197" data-lucide="hash" class="w-3.5 h-3.5"></i>
+                                <span data-id="198">Copy Hashtags</span>
+                            </button>
+                        </div>
+                        <textarea data-id="199" class="hidden" id="ig-caption-2">Most people see a clean space. We see every single step it took to get there.
+
+Proper Home Prep runs on systems — detailed checklists, trained teams, and a prep standard we don't compromise on. The result is a property that looks, feels, and *functions* like a five-star stay.
+
+That's not by accident. That's The Proper Standard.</textarea>
+                        <textarea data-id="200" class="hidden" id="ig-hashtags-2">#ProperStandard #NashvilleSTR #CleaningStandards #BehindTheScenes #HostingLife #ShortTermRentalLife #PropertyManagement #NashvilleRental #TurnoverService #ProperHomePrep</textarea>
+                    </div>
+
+                    <hr data-id="201" class="gold-rule-full" style="margin: 16px 0;">
+
+                    <!-- IG Post 3 -->
+                    <div data-id="202" class="content-card">
+                        <p data-id="203" class="label-text mb-1">Post 03 of 04 · Boutique Standard</p>
+                        <p data-id="204" class="pillar-stamp mb-4" style="color: #6B7DBF;">Social Proof</p>
+
+                        <p data-id="205" class="visual-note mb-5">
+                            Suggested visual: Before/after style split or a single "after" shot of a beautifully staged common space.
+                        </p>
+
+                        <div data-id="206" class="mb-4 pb-4" style="border-bottom: 1px solid #e8e2d9;">
+                            <p data-id="207" class="text-sm font-sans leading-[1.7] mb-3" style="color: #2d2d2d;">Hosts don't just hire us to clean. They hire us because they stopped stressing about what they'd find between checkouts.</p>
+                            <p data-id="208" class="text-sm font-sans leading-[1.7] mb-3" style="color: #2d2d2d;">When your prep service runs on a real standard — not just good intentions — you get consistency. And consistency is what gets you 5-star reviews.</p>
+                            <p data-id="209" class="text-sm font-sans leading-[1.7]" style="color: #2d2d2d;">Curious what Proper can do for your property? Slide into our DMs. 👇</p>
+                        </div>
+
+                        <div data-id="210" class="mb-5 p-3" style="background: #FAF7F2;">
+                            <p data-id="211" class="text-xs font-sans leading-relaxed" style="color: #6B7DBF;">#5StarHosting #NashvilleHost #AirbnbTips #STRHost #PropertyTurnover #CleanToImpress #NashvilleVacationRental #ProperHomePrep #HostingStandards #GuestExperience</p>
+                        </div>
+
+                        <div data-id="212" class="flex gap-3">
+                            <button data-id="213" class="copy-btn flex-1 justify-center" data-copy="ig-caption-3">
+                                <i data-id="214" data-lucide="copy" class="w-3.5 h-3.5"></i>
+                                <span data-id="215">Copy Caption</span>
+                            </button>
+                            <button data-id="216" class="copy-btn flex-1 justify-center" data-copy="ig-hashtags-3">
+                                <i data-id="217" data-lucide="hash" class="w-3.5 h-3.5"></i>
+                                <span data-id="218">Copy Hashtags</span>
+                            </button>
+                        </div>
+                        <textarea data-id="219" class="hidden" id="ig-caption-3">Hosts don't just hire us to clean. They hire us because they stopped stressing about what they'd find between checkouts.
+
+When your prep service runs on a real standard — not just good intentions — you get consistency. And consistency is what gets you 5-star reviews.
+
+Curious what Proper can do for your property? Slide into our DMs. 👇</textarea>
+                        <textarea data-id="220" class="hidden" id="ig-hashtags-3">#5StarHosting #NashvilleHost #AirbnbTips #STRHost #PropertyTurnover #CleanToImpress #NashvilleVacationRental #ProperHomePrep #HostingStandards #GuestExperience</textarea>
+                    </div>
+
+                    <hr data-id="221" class="gold-rule-full" style="margin: 16px 0;">
+
+                    <!-- IG Post 4 -->
+                    <div data-id="222" class="content-card">
+                        <p data-id="223" class="label-text mb-1">Post 04 of 04 · Tech Tease</p>
+                        <p data-id="224" class="pillar-stamp mb-4" style="color: #6B7DBF;">Tech Tease</p>
+
+                        <p data-id="225" class="visual-note mb-5">
+                            Suggested visual: Minimal, slightly mysterious — dark background, a soft glow or single device screen blurred. Keep it intriguing, not revealing.
+                        </p>
+
+                        <div data-id="226" class="mb-4 pb-4" style="border-bottom: 1px solid #e8e2d9;">
+                            <p data-id="227" class="text-sm font-sans leading-[1.7] mb-3" style="color: #2d2d2d;">We've been heads-down building something.</p>
+                            <p data-id="228" class="text-sm font-sans leading-[1.7] mb-3" style="color: #2d2d2d;">Something that makes staying connected to your prep service a whole lot easier. Something we think Nashville hosts have been waiting for.</p>
+                            <p data-id="229" class="text-sm font-sans leading-[1.7]" style="color: #2d2d2d;">We're not ready to share everything just yet — but follow along. You'll be the first to know when we are. 👀</p>
+                        </div>
+
+                        <div data-id="230" class="mb-5 p-3" style="background: #FAF7F2;">
+                            <p data-id="231" class="text-xs font-sans leading-relaxed" style="color: #6B7DBF;">#ComingSoon #ProperHomePrep #NashvilleHost #TheProperStandard #STRHosting #HostTools #ComingForYou #NashvilleAirbnb #SmallBusinessNashville #WatchThisSpace</p>
+                        </div>
+
+                        <div data-id="232" class="flex gap-3">
+                            <button data-id="233" class="copy-btn flex-1 justify-center" data-copy="ig-caption-4">
+                                <i data-id="234" data-lucide="copy" class="w-3.5 h-3.5"></i>
+                                <span data-id="235">Copy Caption</span>
+                            </button>
+                            <button data-id="236" class="copy-btn flex-1 justify-center" data-copy="ig-hashtags-4">
+                                <i data-id="237" data-lucide="hash" class="w-3.5 h-3.5"></i>
+                                <span data-id="238">Copy Hashtags</span>
+                            </button>
+                        </div>
+                        <textarea data-id="239" class="hidden" id="ig-caption-4">We've been heads-down building something.
+
+Something that makes staying connected to your prep service a whole lot easier. Something we think Nashville hosts have been waiting for.
+
+We're not ready to share everything just yet — but follow along. You'll be the first to know when we are. 👀</textarea>
+                        <textarea data-id="240" class="hidden" id="ig-hashtags-4">#ComingSoon #ProperHomePrep #NashvilleHost #TheProperStandard #STRHosting #HostTools #ComingForYou #NashvilleAirbnb #SmallBusinessNashville #WatchThisSpace</textarea>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== TAB 4: NEXTDOOR POSTS ==================== -->
+        <section data-id="241" id="tab-nextdoor" class="tab-content hidden">
+            <div data-id="242" class="section-band">
+                <span data-id="243" class="section-number">Section 04</span>
+                <h2 data-id="244" id="nd-title-u1v2" class="section-title">Nextdoor Posts</h2>
+            </div>
+            <hr data-id="245" class="gold-rule">
+
+            <div data-id="246" class="max-w-[960px] mx-auto px-5 py-10">
+                <p data-id="247" class="text-sm font-sans mb-8" style="color: #6B7DBF;">3 community-focused posts for neighborhood targeting.</p>
+
+                <div data-id="248" class="space-y-4">
+                    <!-- ND Post 1 -->
+                    <div data-id="249" class="content-card">
+                        <p data-id="250" class="label-text mb-1">Post 01 of 03 · Awareness</p>
+                        <p data-id="251" class="label-text mb-4" style="color: #6B7DBF;">Target: East Nashville, The Nations, Germantown, 12 South</p>
+
+                        <div data-id="252" class="text-sm font-sans leading-[1.7] space-y-3 mb-5" style="color: #2d2d2d;">
+                            <p data-id="253">Hey neighbors — if you're hosting on Airbnb or VRBO in the Nashville area, I wanted to introduce Proper Home Prep.</p>
+                            <p data-id="254">We're a local property prep and turnover service built specifically for short-term rental hosts. No big-box cleaning crews, no rushing through properties — just a small, detail-focused team that takes your standard seriously.</p>
+                            <p data-id="255">If you've ever come home to a sloppy turnover or stressed about guest-ready timelines, we'd love to chat. DM me or visit our page to learn more.</p>
+                            <p data-id="256" class="font-semibold" style="color: #1B2A4A;">— Brittany, Owner | Proper Home Prep</p>
+                        </div>
+                        <button data-id="257" class="copy-btn w-full justify-center" data-copy="nd-post-1">
+                            <i data-id="258" data-lucide="copy" class="w-3.5 h-3.5"></i>
+                            <span data-id="259">Copy Post</span>
+                        </button>
+                        <textarea data-id="260" class="hidden" id="nd-post-1">Hey neighbors — if you're hosting on Airbnb or VRBO in the Nashville area, I wanted to introduce Proper Home Prep.
+
+We're a local property prep and turnover service built specifically for short-term rental hosts. No big-box cleaning crews, no rushing through properties — just a small, detail-focused team that takes your standard seriously.
+
+If you've ever come home to a sloppy turnover or stressed about guest-ready timelines, we'd love to chat. DM me or visit our page to learn more.
+
+— Brittany, Owner | Proper Home Prep</textarea>
+                    </div>
+
+                    <hr data-id="261" class="gold-rule-full" style="margin: 16px 0;">
+
+                    <!-- ND Post 2 -->
+                    <div data-id="262" class="content-card">
+                        <p data-id="263" class="label-text mb-1">Post 02 of 03 · Local Trust</p>
+                        <p data-id="264" class="label-text mb-4" style="color: #6B7DBF;">Target: Brentwood, Franklin, Belle Meade, Green Hills</p>
+
+                        <div data-id="265" class="text-sm font-sans leading-[1.7] space-y-3 mb-5" style="color: #2d2d2d;">
+                            <p data-id="266">Looking for a property prep service that actually holds itself to a standard?</p>
+                            <p data-id="267">Proper Home Prep is a Nashville-based boutique turnover service — we handle STR turnovers, make-readies, deep cleans, and everything in between.</p>
+                            <p data-id="268">What makes us different: we don't wing it. Every job runs on a detailed internal process, and we hold our team to the same bar every single time — regardless of how many jobs are on the schedule that day.</p>
+                            <p data-id="269">If you own rental property in the Nashville area and want a prep team you can actually trust, let's connect.</p>
+                            <p data-id="270" class="font-semibold" style="color: #1B2A4A;">— Brittany | Proper Home Prep | DM for details</p>
+                        </div>
+                        <button data-id="271" class="copy-btn w-full justify-center" data-copy="nd-post-2">
+                            <i data-id="272" data-lucide="copy" class="w-3.5 h-3.5"></i>
+                            <span data-id="273">Copy Post</span>
+                        </button>
+                        <textarea data-id="274" class="hidden" id="nd-post-2">Looking for a property prep service that actually holds itself to a standard?
+
+Proper Home Prep is a Nashville-based boutique turnover service — we handle STR turnovers, make-readies, deep cleans, and everything in between.
+
+What makes us different: we don't wing it. Every job runs on a detailed internal process, and we hold our team to the same bar every single time — regardless of how many jobs are on the schedule that day.
+
+If you own rental property in the Nashville area and want a prep team you can actually trust, let's connect.
+
+— Brittany | Proper Home Prep | DM for details</textarea>
+                    </div>
+
+                    <hr data-id="275" class="gold-rule-full" style="margin: 16px 0;">
+
+                    <!-- ND Post 3 -->
+                    <div data-id="276" class="content-card">
+                        <p data-id="277" class="label-text mb-1">Post 03 of 03 · Community Proof</p>
+                        <p data-id="278" class="label-text mb-4" style="color: #6B7DBF;">Target: Any Nashville area neighborhood with STR activity</p>
+
+                        <div data-id="279" class="text-sm font-sans leading-[1.7] space-y-3 mb-5" style="color: #2d2d2d;">
+                            <p data-id="280">Shoutout to the Nashville hosts who are building something real with their properties. 🏡</p>
+                            <p data-id="281">Hosting isn't passive — it takes real attention, good systems, and a prep team who treats your space like it matters.</p>
+                            <p data-id="282">Proper Home Prep is here for exactly that. We're a local boutique prep service working with Nashville STR hosts who want consistency, quality, and a team they can actually count on.</p>
+                            <p data-id="283">If that sounds like you — or you know someone it does — feel free to share or reach out. We're growing and love connecting with great hosts.</p>
+                            <p data-id="284" class="font-semibold" style="color: #1B2A4A;">— Brittany | Proper Home Prep</p>
+                        </div>
+                        <button data-id="285" class="copy-btn w-full justify-center" data-copy="nd-post-3">
+                            <i data-id="286" data-lucide="copy" class="w-3.5 h-3.5"></i>
+                            <span data-id="287">Copy Post</span>
+                        </button>
+                        <textarea data-id="288" class="hidden" id="nd-post-3">Shoutout to the Nashville hosts who are building something real with their properties. 🏡
+
+Hosting isn't passive — it takes real attention, good systems, and a prep team who treats your space like it matters.
+
+Proper Home Prep is here for exactly that. We're a local boutique prep service working with Nashville STR hosts who want consistency, quality, and a team they can actually count on.
+
+If that sounds like you — or you know someone it does — feel free to share or reach out. We're growing and love connecting with great hosts.
+
+— Brittany | Proper Home Prep</textarea>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== TAB 5: POSTING SCHEDULE ==================== -->
+        <section data-id="289" id="tab-schedule" class="tab-content hidden">
+            <div data-id="290" class="section-band">
+                <span data-id="291" class="section-number">Section 05</span>
+                <h2 data-id="292" id="sched-title-w3x4" class="section-title">Posting Schedule</h2>
+            </div>
+            <hr data-id="293" class="gold-rule">
+
+            <div data-id="294" class="max-w-[960px] mx-auto px-5 py-10">
+                <p data-id="295" class="text-sm font-sans mb-6" style="color: #6B7DBF;">4-week content calendar — color-coded by platform.</p>
+
+                <!-- Legend -->
+                <div data-id="296" class="flex flex-wrap gap-5 mb-6">
+                    <div data-id="297" class="flex items-center gap-2">
+                        <span data-id="298" class="platform-tag platform-tag-fb" style="margin-bottom:0; font-size: 9px;">FB</span>
+                        <span data-id="299" class="text-xs font-sans font-semibold" style="color: #2d2d2d;">Facebook</span>
+                    </div>
+                    <div data-id="300" class="flex items-center gap-2">
+                        <span data-id="301" class="platform-tag platform-tag-ig" style="margin-bottom:0; font-size: 9px;">IG</span>
+                        <span data-id="302" class="text-xs font-sans font-semibold" style="color: #2d2d2d;">Instagram</span>
+                    </div>
+                    <div data-id="303" class="flex items-center gap-2">
+                        <span data-id="304" class="platform-tag platform-tag-nd" style="margin-bottom:0; font-size: 9px;">ND</span>
+                        <span data-id="305" class="text-xs font-sans font-semibold" style="color: #2d2d2d;">Nextdoor</span>
+                    </div>
+                </div>
+
+                <div data-id="306" class="schedule-wrap" style="overflow-x: auto;">
+                    <table data-id="307" class="schedule-table" style="min-width: 640px;">
+                        <thead data-id="308">
+                            <tr data-id="309">
+                                <th data-id="310" style="width: 180px;">Week / Theme</th>
+                                <th data-id="311">Monday</th>
+                                <th data-id="312">Wednesday</th>
+                                <th data-id="313">Friday</th>
+                            </tr>
+                        </thead>
+                        <tbody data-id="314">
+                            <!-- Week 1 -->
+                            <tr data-id="315">
+                                <td data-id="316">
+                                    <p data-id="317" class="text-sm font-display font-bold" style="color: #1B2A4A;">Week 1</p>
+                                    <p data-id="318" class="text-xs font-sans" style="color: #6B7DBF;">Brand Awareness</p>
+                                    <p data-id="319" class="text-xs font-sans" style="color: #8a8a8a;">Jul 28 – Aug 1</p>
+                                </td>
+                                <td data-id="320">
+                                    <div data-id="321" class="space-y-1">
+                                        <div data-id="322" class="tooltip-wrap">
+                                            <span data-id="323" class="platform-tag platform-tag-fb">Facebook Ad 1</span>
+                                            <div data-id="324" class="tooltip-text">Your Property Deserves Better Than a Checklist Company — Brand intro ad targeting Nashville hosts.</div>
+                                        </div>
+                                        <div data-id="325" class="tooltip-wrap">
+                                            <span data-id="326" class="platform-tag platform-tag-ig">Instagram Post 1</span>
+                                            <div data-id="327" class="tooltip-text">Brand intro post — clean bed photo, "prepared vs. clean" messaging.</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td data-id="328">
+                                    <div data-id="329" class="tooltip-wrap">
+                                        <span data-id="330" class="platform-tag platform-tag-nd">Nextdoor Post 1</span>
+                                        <div data-id="331" class="tooltip-text">Awareness post — East Nashville, Nations, Germantown, 12 South. Personal intro from Brittany.</div>
+                                    </div>
+                                </td>
+                                <td data-id="332">
+                                    <div data-id="333" class="space-y-1">
+                                        <div data-id="334" class="tooltip-wrap">
+                                            <span data-id="335" class="platform-tag platform-tag-fb">Facebook Ad 2</span>
+                                            <div data-id="336" class="tooltip-text">5-Star Turnovers, Built for Nashville Hosts — listing-focused messaging.</div>
+                                        </div>
+                                        <div data-id="337" class="tooltip-wrap">
+                                            <span data-id="338" class="platform-tag platform-tag-ig">IG Post 1 (Story)</span>
+                                            <div data-id="339" class="tooltip-text">Reshare/story version of Instagram Post 1 for additional reach.</div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <!-- Week 2 -->
+                            <tr data-id="340">
+                                <td data-id="341">
+                                    <p data-id="342" class="text-sm font-display font-bold" style="color: #1B2A4A;">Week 2</p>
+                                    <p data-id="343" class="text-xs font-sans" style="color: #6B7DBF;">Reliability &amp; Systems</p>
+                                    <p data-id="344" class="text-xs font-sans" style="color: #8a8a8a;">Aug 4 – 8</p>
+                                </td>
+                                <td data-id="345">
+                                    <div data-id="346" class="space-y-1">
+                                        <div data-id="347" class="tooltip-wrap">
+                                            <span data-id="348" class="platform-tag platform-tag-fb">Facebook Ad 3</span>
+                                            <div data-id="349" class="tooltip-text">We Run on Systems So Your Property Runs Smoothly — systems &amp; reliability messaging.</div>
+                                        </div>
+                                        <div data-id="350" class="tooltip-wrap">
+                                            <span data-id="351" class="platform-tag platform-tag-ig">Instagram Post 2</span>
+                                            <div data-id="352" class="tooltip-text">Behind-the-scenes post — checklists, trained teams, The Proper Standard.</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td data-id="353">
+                                    <div data-id="354" class="tooltip-wrap">
+                                        <span data-id="355" class="platform-tag platform-tag-nd">Nextdoor Post 2</span>
+                                        <div data-id="356" class="tooltip-text">Local trust post — Brentwood, Franklin, Belle Meade, Green Hills. Detailed process pitch.</div>
+                                    </div>
+                                </td>
+                                <td data-id="357">
+                                    <div data-id="358" class="space-y-1">
+                                        <div data-id="359" class="tooltip-wrap">
+                                            <span data-id="360" class="platform-tag platform-tag-ig">IG Post 2 (Story)</span>
+                                            <div data-id="361" class="tooltip-text">Story reminder version of Instagram Post 2 — systems &amp; consistency.</div>
+                                        </div>
+                                        <div data-id="362" class="tooltip-wrap">
+                                            <span data-id="363" class="platform-tag platform-tag-fb">FB Ad 3 (Boosted)</span>
+                                            <div data-id="364" class="tooltip-text">Boosted version of Facebook Ad 3 for wider reach. Recommended: $15–25/day.</div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <!-- Week 3 -->
+                            <tr data-id="365">
+                                <td data-id="366">
+                                    <p data-id="367" class="text-sm font-display font-bold" style="color: #1B2A4A;">Week 3</p>
+                                    <p data-id="368" class="text-xs font-sans" style="color: #6B7DBF;">Social Proof</p>
+                                    <p data-id="369" class="text-xs font-sans" style="color: #8a8a8a;">Aug 11 – 15</p>
+                                </td>
+                                <td data-id="370">
+                                    <div data-id="371" class="space-y-1">
+                                        <div data-id="372" class="tooltip-wrap">
+                                            <span data-id="373" class="platform-tag platform-tag-ig">Instagram Post 3</span>
+                                            <div data-id="374" class="tooltip-text">Social proof post — hosts hire us for consistency, not just cleaning. DM CTA.</div>
+                                        </div>
+                                        <div data-id="375" class="tooltip-wrap">
+                                            <span data-id="376" class="platform-tag platform-tag-fb">FB Ad 2 (Reshare)</span>
+                                            <div data-id="377" class="tooltip-text">Reshare of Facebook Ad 2 — 5-Star Turnovers messaging, continued reach.</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td data-id="378">
+                                    <div data-id="379" class="tooltip-wrap">
+                                        <span data-id="380" class="platform-tag platform-tag-nd">Nextdoor Post 3</span>
+                                        <div data-id="381" class="tooltip-text">Community proof — all Nashville neighborhoods. Shoutout to hosts, share-friendly CTA.</div>
+                                    </div>
+                                </td>
+                                <td data-id="382">
+                                    <div data-id="383" class="space-y-1">
+                                        <div data-id="384" class="tooltip-wrap">
+                                            <span data-id="385" class="platform-tag platform-tag-ig">IG Post 3 (Story)</span>
+                                            <div data-id="386" class="tooltip-text">Story version of Instagram Post 3 — social proof with swipe-up/DM prompt.</div>
+                                        </div>
+                                        <div data-id="387" class="tooltip-wrap">
+                                            <span data-id="388" class="platform-tag platform-tag-fb">FB Organic Post</span>
+                                            <div data-id="389" class="tooltip-text">Organic testimonial/social proof post — share a client win or review highlight.</div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <!-- Week 4 -->
+                            <tr data-id="390">
+                                <td data-id="391">
+                                    <p data-id="392" class="text-sm font-display font-bold" style="color: #1B2A4A;">Week 4</p>
+                                    <p data-id="393" class="text-xs font-sans" style="color: #6B7DBF;">Tech Tease + CTA Push</p>
+                                    <p data-id="394" class="text-xs font-sans" style="color: #8a8a8a;">Aug 18 – 22</p>
+                                </td>
+                                <td data-id="395">
+                                    <div data-id="396" class="space-y-1">
+                                        <div data-id="397" class="tooltip-wrap">
+                                            <span data-id="398" class="platform-tag platform-tag-fb">Facebook Ad 4</span>
+                                            <div data-id="399" class="tooltip-text">Something Hosts Have Been Asking For Is Almost Here — tech tease, follow CTA.</div>
+                                        </div>
+                                        <div data-id="400" class="tooltip-wrap">
+                                            <span data-id="401" class="platform-tag platform-tag-ig">Instagram Post 4</span>
+                                            <div data-id="402" class="tooltip-text">Tech tease post — mysterious visual, "something is coming" messaging.</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td data-id="403">
+                                    <div data-id="404" class="space-y-1">
+                                        <div data-id="405" class="tooltip-wrap">
+                                            <span data-id="406" class="platform-tag platform-tag-fb">FB Ad 4 (Boosted)</span>
+                                            <div data-id="407" class="tooltip-text">Boosted version of Facebook Ad 4 — tech tease with wider targeting. Recommended: $20–30/day.</div>
+                                        </div>
+                                        <div data-id="408" class="tooltip-wrap">
+                                            <span data-id="409" class="platform-tag platform-tag-nd">ND Post 1 (Re-run)</span>
+                                            <div data-id="410" class="tooltip-text">Re-run of Nextdoor Post 1 in different neighborhoods for fresh awareness.</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td data-id="411">
+                                    <div data-id="412" class="space-y-1">
+                                        <div data-id="413" class="tooltip-wrap">
+                                            <span data-id="414" class="platform-tag platform-tag-ig">IG Post 4 (Countdown)</span>
+                                            <div data-id="415" class="tooltip-text">Story countdown to tech reveal — build anticipation with countdown sticker.</div>
+                                        </div>
+                                        <div data-id="416" class="tooltip-wrap">
+                                            <span data-id="417" class="platform-tag platform-tag-fb">FB Closing CTA</span>
+                                            <div data-id="418" class="tooltip-text">Campaign closing organic post — strong "Book a Walkthrough" CTA, wrap the campaign with confidence.</div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <hr data-id="419" class="gold-rule-full">
+
+                <!-- Posting Tips -->
+                <div data-id="420">
+                    <h3 data-id="421" id="tips-heading-y5z6" class="text-lg font-display font-bold mb-6 flex items-center gap-2" style="color: #1B2A4A;">
+                        <i data-id="422" data-lucide="lightbulb" class="w-5 h-5" style="color: #C9A84C;"></i>
+                        Posting Tips
+                    </h3>
+                    <div data-id="423" class="content-card-plain space-y-5">
+                        <div data-id="424" class="flex items-start gap-3">
+                            <span data-id="425" class="tip-number">1</span>
+                            <p data-id="426" class="text-sm font-sans leading-[1.7]" style="color: #2d2d2d;"><strong data-id="427" style="color: #1B2A4A;">Optimal posting times:</strong> For Nashville audiences, aim for Tuesday–Thursday between 10 AM–1 PM CDT for feed posts, and 7–9 PM CDT for Stories. Monday and Friday posts work well at 11 AM.</p>
+                        </div>
+                        <div data-id="428" class="flex items-start gap-3">
+                            <span data-id="429" class="tip-number">2</span>
+                            <p data-id="430" class="text-sm font-sans leading-[1.7]" style="color: #2d2d2d;"><strong data-id="431" style="color: #1B2A4A;">Boosting budget:</strong> Start with $15–25/day for boosted Facebook ads. Target Nashville metro, ages 28–55, interests: Airbnb hosting, property management, real estate investing. Increase spend on top performers after Week 2.</p>
+                        </div>
+                        <div data-id="432" class="flex items-start gap-3">
+                            <span data-id="433" class="tip-number">3</span>
+                            <p data-id="434" class="text-sm font-sans leading-[1.7]" style="color: #2d2d2d;"><strong data-id="435" style="color: #1B2A4A;">Story vs. Feed:</strong> Feed posts build authority and discoverability. Stories create urgency and personal connection. Use Stories for reshares, behind-the-scenes, and countdowns — always pair with a feed post earlier in the week.</p>
+                        </div>
+                        <div data-id="436" class="flex items-start gap-3">
+                            <span data-id="437" class="tip-number">4</span>
+                            <p data-id="438" class="text-sm font-sans leading-[1.7]" style="color: #2d2d2d;"><strong data-id="439" style="color: #1B2A4A;">Engagement protocol:</strong> Respond to every comment and DM within 2 hours during business hours. On Nextdoor, reply personally as Brittany — keep the tone warm, local, and non-salesy. Community trust compounds fast here.</p>
+                        </div>
+                        <div data-id="440" class="flex items-start gap-3">
+                            <span data-id="441" class="tip-number">5</span>
+                            <p data-id="442" class="text-sm font-sans leading-[1.7]" style="color: #2d2d2d;"><strong data-id="443" style="color: #1B2A4A;">Visual consistency:</strong> Stick to the brand palette — navy blue, warm golds, cream tones, natural light photography. Avoid stock photos with visible watermarks. Flat-lay shots, clean spaces, and authentic team moments outperform polished studio content for service businesses.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer data-id="444" class="py-8 mt-auto" style="background-color: #1B2A4A;">
+        <div data-id="445" class="max-w-[960px] mx-auto px-5">
+            <div data-id="446" class="mx-auto mb-4" style="width: 60px; height: 1px; background-color: #C9A84C; opacity: 0.5;"></div>
+            <div data-id="447" class="text-center">
+                <p data-id="448" class="text-sm font-display font-bold text-white tracking-[0.04em]">Proper Home Prep</p>
+                <p data-id="449" class="text-xs font-accent italic mt-1" style="color: #C9A84C;">Where Every Detail Matters</p>
+                <p data-id="450" class="text-xs mt-3" style="color: rgba(138,155,212,0.6);">
+            </div>
+        </div>
+    </footer>
+
+    <script nonce="">
+        // Icons — progressive enhancement
+        if (typeof lucide !== "undefined" && typeof lucide.createIcons === "function") {
+            lucide.createIcons();
+        }
+
+        // --- Tab switching ---
+        const tabBtns = document.querySelectorAll('.tab-btn');
+        const mobileTabBtns = document.querySelectorAll('.mobile-tab-btn');
+        const tabContents = document.querySelectorAll('.tab-content');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenuClose = document.getElementById('mobile-menu-close');
+
+        function switchTab(tabName) {
+            tabContents.forEach(tc => tc.classList.add('hidden'));
+            const target = document.getElementById('tab-' + tabName);
+            if (target) target.classList.remove('hidden');
+
+            tabBtns.forEach(btn => {
+                if (btn.dataset.tab === tabName) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+        }
+
+        tabBtns.forEach(btn => {
+            btn.addEventListener('click', function () {
+                switchTab(this.dataset.tab);
+            });
+        });
+
+        mobileTabBtns.forEach(btn => {
+            btn.addEventListener('click', function () {
+                switchTab(this.dataset.tab);
+                mobileMenu.classList.add('hidden');
+            });
+        });
+
+        // --- Mobile menu ---
+        mobileMenuBtn.addEventListener('click', function () {
+            mobileMenu.classList.remove('hidden');
+            if (typeof lucide !== "undefined" && typeof lucide.createIcons === "function") {
+                lucide.createIcons();
+            }
+        });
+
+        mobileMenuClose.addEventListener('click', function () {
+            mobileMenu.classList.add('hidden');
+        });
+
+        // --- Copy to clipboard ---
+        document.querySelectorAll('[data-copy]').forEach(btn => {
+            btn.addEventListener('click', function () {
+                const targetId = this.dataset.copy;
+                const textarea = document.getElementById(targetId);
+                if (!textarea) return;
+
+                const text = textarea.value;
+                const spanEl = this.querySelector('span');
+                const originalText = spanEl ? spanEl.textContent : '';
+                const button = this;
+
+                navigator.clipboard.writeText(text).then(() => {
+                    if (spanEl) {
+                        spanEl.textContent = 'Copied!';
+                        button.classList.add('copied');
+                    }
+                    setTimeout(() => {
+                        if (spanEl) {
+                            spanEl.textContent = originalText;
+                            button.classList.remove('copied');
+                        }
+                    }, 2000);
+                }).catch(() => {
+                    const tempInput = document.createElement('textarea');
+                    tempInput.value = text;
+                    tempInput.style.position = 'fixed';
+                    tempInput.style.left = '-9999px';
+                    document.body.appendChild(tempInput);
+                    tempInput.select();
+                    try {
+                        document.execCommand('copy');
+                        if (spanEl) {
+                            spanEl.textContent = 'Copied!';
+                            button.classList.add('copied');
+                        }
+                        setTimeout(() => {
+                            if (spanEl) {
+                                spanEl.textContent = originalText;
+                                button.classList.remove('copied');
+                            }
+                        }, 2000);
+                    } catch (e) {
+                        // Silent fail
+                    }
+                    document.body.removeChild(tempInput);
+                });
+            });
+        });
+    </script>
+
+</body></html>

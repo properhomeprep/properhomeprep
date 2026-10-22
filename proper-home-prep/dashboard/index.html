@@ -1,0 +1,1998 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Proper Home Prep — Operations Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;1,500;1,600&family=Lato:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#1B2A4A; --gold:#D8B96A; --cream:#FAF7F2; --slate:#6B7D8F;
+    --white:#FFFFFF; --ink:#2D2D2D; --urgent:#9B3A2E; --urgent-bg:#F4E3E0;
+    --gold-bg:#F7EFDA; --slate-bg:#EBEEF1; --border:rgba(27,42,74,.14);
+    --shadow:0 1px 2px rgba(27,42,74,.06), 0 6px 20px rgba(27,42,74,.05);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--cream); color:var(--ink); font-family:'Lato',sans-serif;
+    font-size:15px; line-height:1.5; -webkit-font-smoothing:antialiased;
+  }
+  h1,h2{font-family:'Playfair Display',serif; color:var(--navy); margin:0; font-weight:700;}
+  h1{font-size:clamp(22px,4vw,32px);}
+  h2{font-size:clamp(18px,3vw,22px);}
+  h3.label{
+    font-family:'Lato',sans-serif; font-size:12px; font-weight:600;
+    letter-spacing:.1em; text-transform:uppercase; color:var(--slate); margin:0 0 10px;
+  }
+  .accent{font-family: 'Playfair Display', serif; font-style:italic; color:var(--navy);}
+  p{margin:0 0 8px;}
+  button{font-family:inherit; cursor:pointer;}
+  a{color:inherit;}
+  ::selection{background:var(--gold); color:var(--navy);}
+
+  /* ---------- App shell ---------- */
+  #topbar{
+    background:var(--navy); color:var(--white); padding:14px 20px;
+    display:flex; align-items:center; justify-content:space-between; gap:16px;
+    flex-wrap:wrap; position:sticky; top:0; z-index:20;
+    box-shadow:0 2px 10px rgba(0,0,0,.15);
+  }
+  .wordmark{display:flex; flex-direction:column; line-height:1.1;}
+  .wordmark .name{font-family:'Playfair Display',serif; font-weight:700; font-size:19px; letter-spacing:.02em;}
+  .wordmark .tag{font-family: 'Playfair Display', serif; font-style:italic; font-size:12.5px; color:var(--gold); margin-top:2px;}
+  .role-switch{display:flex; background:rgba(255,255,255,.08); border-radius:999px; padding:3px; gap:2px;}
+  .role-switch button{
+    border:none; background:transparent; color:rgba(255,255,255,.75); padding:8px 16px;
+    border-radius:999px; font-size:13px; font-weight:600; letter-spacing:.04em; text-transform:uppercase;
+    transition:.15s;
+  }
+  .role-switch button.active{background:var(--gold); color:var(--navy);}
+  .subbar{
+    background:var(--white); border-bottom:1px solid var(--border); padding:10px 20px;
+    display:flex; align-items:center; gap:10px; flex-wrap:wrap; position:sticky; top:60px; z-index:19;
+  }
+  .subbar .who{font-size:13px; color:var(--slate);}
+  .subbar .who b{color:var(--navy);}
+  .tabs{display:flex; gap:4px; flex-wrap:wrap;}
+  .tabs button{
+    border:1px solid transparent; background:transparent; color:var(--navy); padding:7px 14px;
+    border-radius:8px; font-size:13.5px; font-weight:600;
+  }
+  .tabs button.active{background:var(--navy); color:var(--white);}
+  .tabs button:not(.active):hover{background:var(--slate-bg);}
+  #app-content{max-width:960px; margin:0 auto; padding:20px 20px 80px;}
+  .link-btn{background:transparent; border:none; color:var(--navy); font-weight:600; padding:0; text-decoration:underline; font-size:13.5px;}
+  .backlink{display:inline-flex; align-items:center; gap:6px; color:var(--slate); font-size:13px; font-weight:600; background:none; border:none; margin-bottom:14px; padding:0;}
+  .backlink:hover{color:var(--navy);}
+
+  /* ---------- Cards & bits ---------- */
+  .card{
+    background:var(--white); border:1px solid var(--border); border-radius:12px;
+    padding:18px 20px; margin-bottom:14px; box-shadow:var(--shadow);
+  }
+  .card.flush{padding:0; overflow:hidden;}
+  .row{display:flex; gap:12px; align-items:center; flex-wrap:wrap;}
+  .row.between{justify-content:space-between;}
+  .grid-stats{display:grid; grid-template-columns:repeat(auto-fit,minmax(130px,1fr)); gap:12px; margin-bottom:18px;}
+  .stat{background:var(--white); border:1px solid var(--border); border-radius:12px; padding:14px 16px; box-shadow:var(--shadow);}
+  .stat .num{font-family:'Playfair Display',serif; font-size:28px; color:var(--navy); font-weight:700;}
+  .stat .lbl{font-size:12px; color:var(--slate); font-weight:600; text-transform:uppercase; letter-spacing:.06em;}
+
+  .badge{display:inline-flex; align-items:center; gap:6px; font-size:11.5px; font-weight:700; letter-spacing:.04em; text-transform:uppercase; padding:4px 10px; border-radius:999px;}
+  .badge.not_started{background:var(--slate-bg); color:var(--slate);}
+  .badge.in_progress{background:var(--gold-bg); color:#8a6d1f;}
+  .badge.complete{background:var(--navy); color:var(--white);}
+  .badge.q_new{background:var(--gold-bg); color:#8a6d1f;}
+  .badge.q_contacted{background:var(--slate-bg); color:var(--slate);}
+  .badge.q_qualified{background:var(--white); color:var(--navy); border:1.5px solid var(--navy);}
+  .badge.q_converted{background:var(--navy); color:var(--white);}
+  .badge.q_not_a_fit{background:var(--cream); color:var(--slate); border:1px dashed var(--slate);}
+  .dot{width:7px; height:7px; border-radius:50%; display:inline-block;}
+  .dot.pulse{background:#D8B96A; animation:pulse 1.6s infinite;}
+  @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(216,185,106,.5);}70%{box-shadow:0 0 0 7px rgba(216,185,106,0);}100%{box-shadow:0 0 0 0 rgba(216,185,106,0);}}
+
+  .sev{display:inline-flex; align-items:center; gap:6px; font-size:11px; font-weight:700; letter-spacing:.03em; text-transform:uppercase; padding:3px 9px; border-radius:6px;}
+  .sev.routine{background:var(--slate-bg); color:var(--slate);}
+  .sev.attention{background:var(--gold-bg); color:#8a6d1f;}
+  .sev.urgent{background:var(--urgent-bg); color:var(--urgent);}
+
+  .btn{
+    border-radius:9px; padding:10px 18px; font-weight:700; font-size:13.5px; border:1px solid transparent;
+    letter-spacing:.02em; min-height:40px; display:inline-flex; align-items:center; gap:8px; justify-content:center;
+  }
+  .btn-primary{background:var(--navy); color:var(--white);}
+  .btn-primary:hover{background:#233860;}
+  .btn-gold{background:var(--gold); color:var(--navy);}
+  .btn-gold:hover{background:#d9b95c;}
+  .btn-outline{background:transparent; color:var(--navy); border-color:var(--navy);}
+  .btn-outline:hover{background:var(--slate-bg);}
+  .btn-danger{background:var(--white); color:var(--urgent); border-color:var(--urgent);}
+  .btn-sm{padding:7px 12px; font-size:12.5px; min-height:32px;}
+  .btn:disabled{opacity:.45; cursor:not-allowed;}
+
+  .task-row{display:flex; align-items:flex-start; gap:12px; padding:11px 0; border-bottom:1px solid var(--border);}
+  .task-row:last-child{border-bottom:none;}
+  .task-check{
+    width:22px; height:22px; border-radius:6px; border:2px solid var(--slate); flex:none; margin-top:1px;
+    display:flex; align-items:center; justify-content:center; background:var(--white);
+  }
+  .task-check.done{background:var(--navy); border-color:var(--navy); color:var(--white); font-size:13px;}
+  .task-text.done{text-decoration:line-through; color:var(--slate);}
+  .task-meta{font-size:11.5px; color:var(--slate); margin-top:2px;}
+  .section-hdr{
+    font-family:'Lato',sans-serif; font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:.08em;
+    color:var(--navy); background:var(--gold-bg); padding:7px 12px; border-radius:7px; margin:18px 0 4px;
+  }
+  .section-hdr:first-child{margin-top:0;}
+
+  .thumb-row{display:flex; gap:8px; flex-wrap:wrap; margin-top:8px;}
+  .thumb{width:64px; height:64px; border-radius:8px; object-fit:cover; border:1px solid var(--border);}
+  .photo-slot{
+    width:64px; height:64px; border-radius:8px; border:1.5px dashed var(--border); color:var(--slate);
+    display:flex; align-items:center; justify-content:center; font-size:10px; text-align:center; cursor:pointer; background:var(--cream);
+  }
+  input[type=file]{display:none;}
+
+  input[type=text], input[type=number], input[type=date], select, textarea{
+    width:100%; padding:10px 12px; border:1px solid var(--border); border-radius:8px; font-family:inherit;
+    font-size:14px; background:var(--white); color:var(--ink);
+  }
+  label.field{display:block; font-size:12px; font-weight:600; color:var(--slate); text-transform:uppercase; letter-spacing:.05em; margin-bottom:5px; margin-top:12px;}
+  .form-grid{display:grid; grid-template-columns:1fr 1fr; gap:0 14px;}
+  @media(max-width:520px){.form-grid{grid-template-columns:1fr;}}
+
+  .empty{text-align:center; padding:40px 20px; color:var(--slate);}
+  .empty .accent{font-size:20px; display:block; margin-bottom:6px;}
+
+  .prop-tile{display:flex; justify-content:space-between; align-items:center; padding:14px 0; border-bottom:1px solid var(--border); cursor:pointer;}
+  .prop-tile:last-child{border-bottom:none;}
+  .prop-tile:hover{background:var(--cream);}
+
+  .flag-card{border-left:4px solid var(--slate); padding:10px 14px; margin-bottom:8px; background:var(--cream); border-radius:0 8px 8px 0;}
+  .flag-card.attention{border-left-color:var(--gold);}
+  .flag-card.urgent{border-left-color:var(--urgent);}
+
+  .select-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(180px,1fr)); gap:12px;}
+  .select-card{background:var(--white); border:1px solid var(--border); border-radius:12px; padding:16px; text-align:left; box-shadow:var(--shadow);}
+  .select-card:hover{border-color:var(--gold);}
+
+  footer.note{max-width:960px; margin:0 auto; padding:0 20px 40px; font-size:11.5px; color:var(--slate); text-align:center;}
+</style>
+</head>
+<body>
+<div id="topbar">
+  <div class="wordmark">
+    <span class="name">PROPER HOME PREP</span>
+    <span class="tag">Where Every Detail Matters</span>
+  </div>
+  <div class="role-switch" id="role-switch"></div>
+</div>
+<div class="subbar" id="subbar"></div>
+<div id="app-content"></div>
+<footer class="note">Prototype build · data stored locally in this browser · designed to migrate cleanly to Firestore</footer>
+
+<script>
+/* =========================================================================
+   PROPER HOME PREP — OPERATIONS DASHBOARD (prototype)
+   Three role views over one data model: Admin, Tech, Client.
+   DB layer is localStorage-backed today; every call is isolated behind
+   the DB object below so swapping to Firestore later means rewriting
+   this block only — no view code changes.
+   ========================================================================= */
+
+/* ---------------------------- DB LAYER ---------------------------- */
+const DB_KEY = 'phpDashboardDB_v1';
+
+const DB = {
+  _read(){ return JSON.parse(localStorage.getItem(DB_KEY)); },
+  _write(data){ localStorage.setItem(DB_KEY, JSON.stringify(data)); },
+
+  getProperties(){ return this._read().properties; },
+  getProperty(id){ return this._read().properties.find(p => p.id === id); },
+  saveProperty(prop){
+    const d = this._read();
+    const i = d.properties.findIndex(p => p.id === prop.id);
+    if (i > -1) d.properties[i] = prop; else d.properties.push(prop);
+    this._write(d);
+  },
+
+  getTechs(){ return this._read().techs; },
+  getTech(id){ return this._read().techs.find(t => t.id === id); },
+  addTech(name){
+    const d = this._read();
+    const tech = { id: 'te' + Date.now(), name };
+    d.techs.push(tech);
+    this._write(d);
+    return tech;
+  },
+
+  getJobs(filter){
+    let jobs = this._read().jobs;
+    if (filter) {
+      if (filter.techId) jobs = jobs.filter(j => j.techId === filter.techId);
+      if (filter.propertyId) jobs = jobs.filter(j => j.propertyId === filter.propertyId);
+      if (filter.status) jobs = jobs.filter(j => j.status === filter.status);
+    }
+    return jobs.sort((a,b) => (b.scheduledDate||'').localeCompare(a.scheduledDate||''));
+  },
+  getJob(id){ return this._read().jobs.find(j => j.id === id); },
+  _saveJob(job){
+    const d = this._read();
+    const i = d.jobs.findIndex(j => j.id === job.id);
+    d.jobs[i] = job;
+    this._write(d);
+  },
+
+  // Snapshot the property's live SOP template into a new job at creation time,
+  // so later edits to the property's SOP never retroactively alter past jobs.
+  createJob({propertyId, techId, type, scheduledDate}){
+    const d = this._read();
+    const prop = d.properties.find(p => p.id === propertyId);
+    const tasks = JSON.parse(JSON.stringify(prop.sopTemplate)).map((t,idx) => ({
+      ...t, id: 't' + Date.now() + idx, done:false, doneAt:null, photoBefore:null, photoAfter:null
+    }));
+    const job = {
+      id: 'j' + Date.now(),
+      propertyId, techId, type, scheduledDate,
+      status: 'not_started',
+      clockIn:null, clockOut:null,
+      laundryStarted:false,
+      beforePhotos:{}, afterPhotos:{},
+      tasks,
+      issueFlags: [],
+      completionReport: null,
+      createdAt: new Date().toISOString()
+    };
+    d.jobs.push(job);
+    this._write(d);
+    return job;
+  },
+
+  clockIn(jobId){
+    const job = this.getJob(jobId);
+    job.clockIn = new Date().toISOString();
+    job.status = 'in_progress';
+    this._saveJob(job);
+  },
+  toggleLaundry(jobId){
+    const job = this.getJob(jobId);
+    job.laundryStarted = !job.laundryStarted;
+    this._saveJob(job);
+  },
+  setAreaPhoto(jobId, area, phase, dataUrl){
+    const job = this.getJob(jobId);
+    (phase==='before' ? job.beforePhotos : job.afterPhotos)[area] = dataUrl;
+    this._saveJob(job);
+  },
+  toggleTask(jobId, taskId){
+    const job = this.getJob(jobId);
+    const t = job.tasks.find(x => x.id === taskId);
+    t.done = !t.done;
+    t.doneAt = t.done ? new Date().toISOString() : null;
+    if (job.status === 'not_started' && t.done) job.status = 'in_progress';
+    this._saveJob(job);
+  },
+  addPhoto(jobId, taskId, kind, dataUrl){
+    const job = this.getJob(jobId);
+    const t = job.tasks.find(x => x.id === taskId);
+    if (kind === 'before') t.photoBefore = dataUrl; else t.photoAfter = dataUrl;
+    this._saveJob(job);
+  },
+  addIssueFlag(jobId, {severity, description, photoDataUrl}){
+    const job = this.getJob(jobId);
+    job.issueFlags.push({
+      id:'f'+Date.now(), severity, description, photo:photoDataUrl||null,
+      createdAt:new Date().toISOString()
+    });
+    this._saveJob(job);
+  },
+  submitSignOff(jobId, {notes}){
+    const job = this.getJob(jobId);
+    job.clockOut = new Date().toISOString();
+    job.status = 'complete';
+    job.completionReport = {
+      signOffAt: new Date().toISOString(),
+      notes: notes||'',
+      photoCount: job.tasks.filter(t=>t.photoBefore||t.photoAfter).length + Object.keys(job.beforePhotos).length + Object.keys(job.afterPhotos).length,
+      flagCount: job.issueFlags.length
+    };
+    this._saveJob(job);
+  },
+
+  /* ---- Inquiries (lead pipeline). Older saved data has no `inquiries` key, so every read defaults to []. ---- */
+  getInquiries(){ return (this._read().inquiries || []).slice().sort((a,b) => (b.createdAt||'').localeCompare(a.createdAt||'')); },
+  getInquiry(id){ return (this._read().inquiries || []).find(q => q.id === id); },
+  addInquiry(q){
+    const d = this._read();
+    d.inquiries = d.inquiries || [];
+    const now = new Date().toISOString();
+    const inq = {
+      id: 'q' + Date.now().toString(36) + Math.random().toString(36).slice(2,6),
+      referenceId: 'INQ-' + Math.random().toString(36).slice(2,7).toUpperCase(),
+      status: 'new', followUp: '', propertyId: null, createdAt: now,
+      log: [{at: now, kind:'status', text: 'Inquiry received' + (q.source ? ' via ' + q.source : '')}],
+      ...q
+    };
+    d.inquiries.push(inq);
+    this._write(d);
+    return inq;
+  },
+  _saveInquiry(inq){
+    const d = this._read();
+    const i = (d.inquiries || []).findIndex(x => x.id === inq.id);
+    if (i < 0) return;
+    d.inquiries[i] = inq;
+    this._write(d);
+  },
+  setInquiryStatus(id, status){
+    const q = this.getInquiry(id);
+    if (!q || q.status === status) return;
+    q.status = status;
+    q.log.push({at:new Date().toISOString(), kind:'status', text:'Status → ' + INQ_LABELS[status]});
+    this._saveInquiry(q);
+  },
+  addInquiryNote(id, text){
+    const q = this.getInquiry(id);
+    if (!q) return;
+    q.log.push({at:new Date().toISOString(), kind:'note', text});
+    this._saveInquiry(q);
+  },
+  setInquiryFollowUp(id, date){
+    const q = this.getInquiry(id);
+    if (!q || (q.followUp || '') === date) return;
+    q.followUp = date;
+    q.log.push({at:new Date().toISOString(), kind:'status', text: date ? 'Follow-up set for ' + fmtDate(date) : 'Follow-up cleared'});
+    this._saveInquiry(q);
+  },
+  linkInquiryToProperty(id, propertyId, nickname){
+    const q = this.getInquiry(id);
+    if (!q) return;
+    q.status = 'converted';
+    q.propertyId = propertyId;
+    q.log.push({at:new Date().toISOString(), kind:'status', text:'Converted — property created: ' + nickname});
+    this._saveInquiry(q);
+  },
+
+  resetDemo(){ localStorage.removeItem(DB_KEY); seed(); }
+};
+
+/* ---------------------------- SEED DATA ---------------------------- */
+function buildSopTemplate(bedroomCount, hasOutdoor){
+  const bath = ['Clean and disinfect toilet','Clean tub / shower and glass','Clean mirror and vanity',
+    'Restock toiletries and fresh towels','Mop floor']
+    .map(label => ({section:'Bathrooms', label}));
+  const kitchen = ['Wipe all countertops and backsplash','Clean stovetop — all burners and grates',
+    'Wipe microwave interior and exterior','Clean refrigerator exterior; wipe interior shelves',
+    'Empty and reline trash cans; replace bags','Run and empty dishwasher; put away all clean dishes',
+    'Clean sink and faucet; polish if stainless','Mop / sanitize floor',
+    'Check and restock supplies per host restocking list','Final smell check — no odors']
+    .map(label => ({section:'Kitchen', label}));
+  const living = ['Dust all surfaces — shelves, TV stand, décor, fixtures','Wipe down and sanitize all remote controls',
+    'Straighten and fluff all cushions and throw pillows','Vacuum all furniture — sofa, chairs, ottomans',
+    'Vacuum and / or mop floors','Clean glass surfaces per host instructions',
+    'Check for items left behind by previous guests','Check and replace lightbulbs if needed',
+    'Final staging check — matches host welcome photo']
+    .map(label => ({section:'Living Room', label}));
+  const bedrooms = [];
+  for (let i=1; i<=bedroomCount; i++){
+    ['Strip all used linens and pillowcases','Check mattress protector — clean or replace if soiled',
+     'Make bed with fresh linens','Fluff and arrange pillows per host preference',
+     'Dust all surfaces — nightstands, dresser, lamps','Check under bed and closet for guest items',
+     'Vacuum or mop floors','Final staging check — matches host welcome photo']
+      .forEach(label => bedrooms.push({section:'Bedroom '+i, label}));
+  }
+  const outdoor = hasOutdoor ? ['Sweep porch / patio / deck','Wipe down outdoor furniture',
+    'Check grill (if provided) and reset','Reset outdoor staging per host photos']
+    .map(label => ({section:'Outdoor', label})) : [];
+  return [...bath, ...kitchen, ...living, ...bedrooms, ...outdoor];
+}
+
+// Whole-room before/after photo checkpoints — matches the field guide's
+// arrival and final-walkthrough photo requirements, independent of task list.
+function propertyAreas(prop){
+  const areas = ['Exterior'];
+  for (let i=1; i<=prop.bathrooms; i++) areas.push('Bathroom '+i);
+  areas.push('Kitchen','Living Room');
+  for (let i=1; i<=prop.bedrooms; i++) areas.push('Bedroom '+i);
+  if (prop.hasOutdoor) areas.push('Outdoor');
+  return areas;
+}
+function placeholderPhoto(label){
+  const c = document.createElement('canvas'); c.width=160; c.height=110;
+  const ctx = c.getContext('2d');
+  ctx.fillStyle = '#1B2A4A'; ctx.fillRect(0,0,160,110);
+  ctx.fillStyle = '#D8B96A'; ctx.font='12px Lato, sans-serif'; ctx.textAlign='center';
+  ctx.fillText(label, 80, 59);
+  return c.toDataURL('image/png');
+}
+
+function seed(){
+  if (localStorage.getItem(DB_KEY)) return;
+
+  const properties = [
+    {
+      id:'p1', nickname:'The Gulch Loft', address:'1214 12th Ave S, Nashville, TN',
+      type:'Condo', bedrooms:2, bathrooms:2, maxGuests:4, hostName:'Maria Chen',
+      platforms:['Airbnb','VRBO'], hasOutdoor:false, sopTemplate: buildSopTemplate(2, false),
+      hostPhone:'(615) 555-0142', hostEmail:'maria.chen@example.com', contactMethod:'Text',
+      keyMethod:'Smart Lock', entryCode:'2847#', garageCode:'', gateCode:'',
+      parkingInstructions:'Street parking on 12th Ave, no permit needed', accessNotes:'Ring doorbell camera at front door — normal, no action needed.',
+      linenStorage:'Hall closet, second shelf', linenService:'php',
+      bathTowels:2, handTowels:1, washcloths:2, poolTowels:0, towelFold:'Standard Fold',
+      productsBy:'Proper Home Prep', kitchenPriority:'Standard',
+      washerLocation:'Laundry closet, hallway', dryerLocation:'Same as washer',
+      restockLocation:'Hall closet, top shelf', restockBy:'php',
+      welcomeNote:'Yes', welcomeNoteLocation:'Kitchen island',
+      hvac:'Auto', hvacTemp:'72', petsAllowed:'No',
+      checkoutTime:'11:00', checkinTime:'16:00', standardWindow:5, minWindow:2,
+      emergencyContact:'Ops Desk — (615) 669-4246'
+    },
+    {
+      id:'p2', nickname:'Riverbend Cabin', address:'88 Timber Ridge Rd, Nashville, TN',
+      type:'Cabin / Chalet', bedrooms:3, bathrooms:2, maxGuests:8, hostName:'Dave Holloway',
+      platforms:['Airbnb'], hasOutdoor:true, sopTemplate: buildSopTemplate(3, true),
+      hostPhone:'(615) 555-0198', hostEmail:'dave.holloway@example.com', contactMethod:'Phone',
+      keyMethod:'Lockbox', entryCode:'5591', garageCode:'', gateCode:'1234',
+      parkingInstructions:'Gravel pull-off left of the cabin, room for 2 vehicles', accessNotes:'Gate code resets weekly — confirm current code with coordinator before each job.',
+      linenStorage:'Loft closet', linenService:'php',
+      bathTowels:2, handTowels:2, washcloths:2, poolTowels:4, towelFold:'Hotel Roll',
+      productsBy:'Proper Home Prep', kitchenPriority:'Deep Clean Every Turn',
+      washerLocation:'Mudroom', dryerLocation:'Mudroom',
+      restockLocation:'Mudroom shelving', restockBy:'php',
+      welcomeNote:'Yes', welcomeNoteLocation:'Dining table',
+      hvac:'Heat', hvacTemp:'68', petsAllowed:'Yes', petCleaning:'Extra vacuuming, enzyme cleaner on upholstery',
+      checkoutTime:'10:00', checkinTime:'15:00', standardWindow:5, minWindow:3,
+      emergencyContact:'Ops Desk — (615) 669-4246'
+    }
+  ];
+  const techs = [ {id:'t1', name:'Jordan M.'}, {id:'t2', name:'Casey R.'} ];
+
+  const d = { properties, techs, jobs: [] };
+  localStorage.setItem(DB_KEY, JSON.stringify(d));
+
+  // Job 1 — in progress, on Gulch Loft, with one attention flag
+  const j1 = DB.createJob({propertyId:'p1', techId:'t1', type:'Turnover', scheduledDate: todayStr()});
+  DB.clockIn(j1.id);
+  DB.toggleLaundry(j1.id);
+  propertyAreas(properties[0]).forEach(area => DB.setAreaPhoto(j1.id, area, 'before', placeholderPhoto(area+' — before')));
+  const liveJ1 = DB.getJob(j1.id);
+  liveJ1.tasks.slice(0,6).forEach(t => DB.toggleTask(j1.id, t.id));
+  DB.addIssueFlag(j1.id, {severity:'attention', description:'Coffee maker in kitchen is not powering on — may need replacement before next check-in.'});
+
+  // Job 2 — not started, Riverbend Cabin
+  DB.createJob({propertyId:'p2', techId:'t2', type:'General Services', scheduledDate: todayStr()});
+
+  // Job 3 — complete, Gulch Loft, history record
+  const j3 = DB.createJob({propertyId:'p1', techId:'t1', type:'Turnover', scheduledDate: daysAgoStr(3)});
+  DB.clockIn(j3.id);
+  DB.toggleLaundry(j3.id);
+  propertyAreas(properties[0]).forEach(area => {
+    DB.setAreaPhoto(j3.id, area, 'before', placeholderPhoto(area+' — before'));
+    DB.setAreaPhoto(j3.id, area, 'after', placeholderPhoto(area+' — after'));
+  });
+  const liveJ3 = DB.getJob(j3.id);
+  liveJ3.tasks.forEach(t => DB.toggleTask(j3.id, t.id));
+  DB.addIssueFlag(j3.id, {severity:'routine', description:'Lightbulb out in living room floor lamp — noted for host awareness.'});
+  DB.submitSignOff(j3.id, {notes:'Full turn completed, no host follow-up required beyond the noted bulb.'});
+
+  // Sample inquiries across the pipeline (demo data)
+  const hrsAgo = n => new Date(Date.now() - n*3600*1000).toISOString();
+  const entry = (h, kind, text) => ({at: hrsAgo(h), kind, text});
+  [
+    {name:'Priya Nair', phone:'(615) 555-0173', email:'priya.nair@example.com', source:'Website form', status:'new', createdAt:hrsAgo(3),
+     services:['STR / Airbnb Make-Ready & Turnover'], propertyType:'Short-term rental / Airbnb', address:'1620 Division St, Nashville, TN 37203',
+     bedrooms:2, bathrooms:2, frequency:'Every turnover (STR)', timeline:'As soon as possible',
+     message:'Two Airbnb units in the Gulch. Our current cleaner keeps cancelling the day of. Need someone reliable ASAP.',
+     log:[entry(3,'status','Inquiry received via Website form')]},
+    {name:'Tom Alvarez', phone:'(615) 555-0148', email:'', source:'Phone call', status:'new', createdAt:hrsAgo(52),
+     services:['Move-In / Move-Out Prep'], propertyType:'Owner-occupied home', address:'908 Old Hickory Blvd, Brentwood, TN 37027',
+     bedrooms:4, bathrooms:3, frequency:'One-time', timeline:'Within a week',
+     message:'Moving out on the 30th. Landlord wants a full move-out clean before the inspection.',
+     log:[entry(52,'status','Inquiry received via Phone call')]},
+    {name:'Rachel Kim', phone:'(615) 555-0126', email:'rachel.kim@example.com', source:'Instagram / Facebook DM', status:'contacted', createdAt:hrsAgo(30),
+     services:['General Home Prep Cleaning'], propertyType:'Owner-occupied home', address:'215 Hillsboro Pike, Franklin, TN 37064',
+     bedrooms:3, bathrooms:2, frequency:'Bi-weekly', timeline:'Within a month', followUp:daysAgoStr(-1),
+     message:'Looking for bi-weekly cleaning. Two dogs, so pet hair is the main thing.',
+     log:[entry(30,'status','Inquiry received via Instagram / Facebook DM'), entry(24,'status','Status → Contacted'), entry(24,'note','Left a voicemail and sent the quote follow-up email.')]},
+    {name:'Derek Osei', phone:'(615) 555-0111', email:'derek.osei@example.com', source:'Referral', status:'qualified', createdAt:hrsAgo(96),
+     services:['STR / Airbnb Make-Ready & Turnover','Exterior Refresh & Curb Appeal'], propertyType:'Short-term rental / Airbnb', address:'3114 Dickerson Pike, Nashville, TN 37207',
+     bedrooms:1, bathrooms:1, frequency:'Every turnover (STR)', timeline:'Within a week', followUp:todayStr(),
+     message:'Referred by another host. Three units in East Nashville, need weekend turnover coverage.',
+     log:[entry(96,'status','Inquiry received via Referral'), entry(80,'status','Status → Contacted'), entry(80,'note','Intro call went well — 3 STR units, heavy weekend turnovers.'), entry(50,'status','Status → Qualified')]},
+    {name:'Greg Hanley', phone:'(865) 555-0190', email:'greg.hanley@example.com', source:'Website form', status:'not_a_fit', createdAt:hrsAgo(200),
+     services:['Light Repairs & Touch-Ups'], propertyType:'Owner-occupied home', address:'77 Cedar Ln, Knoxville, TN 37919',
+     bedrooms:3, bathrooms:2, frequency:'One-time', timeline:'Just gathering quotes',
+     message:'Need a few repairs done before listing the house.',
+     log:[entry(200,'status','Inquiry received via Website form'), entry(190,'status','Status → Not a Fit'), entry(190,'note','Knoxville — outside our service area.')]}
+  ].forEach(q => DB.addInquiry(q));
+}
+
+function todayStr(){ return new Date().toISOString().slice(0,10); }
+function daysAgoStr(n){ const d = new Date(); d.setDate(d.getDate()-n); return d.toISOString().slice(0,10); }
+function fmtDateTime(iso){ if(!iso) return '—'; const d = new Date(iso); return d.toLocaleDateString('en-US',{month:'short',day:'numeric'}) + ' · ' + d.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'}); }
+function fmtDate(iso){ if(!iso) return '—'; const d = new Date(iso+'T00:00:00'); return d.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}); }
+
+/* ---------------------------- STATE ---------------------------- */
+let state = {
+  role: 'admin',
+  admin: { view:'overview', propertyId:null, jobId:null, inquiryId:null, inquiryFilter:'all', inquirySearch:'', convertingInquiryId:null },
+  tech: { techId:null, view:'myjobs', jobId:null },
+  client: { propertyId:null, view:'current', jobId:null }
+};
+
+function setRole(role){ state.role = role; render(); }
+
+/* ---------------------------- RENDER: SHELL ---------------------------- */
+function render(){
+  renderRoleSwitch();
+  renderSubbar();
+  const app = document.getElementById('app-content');
+  if (state.role === 'admin') app.innerHTML = renderAdmin();
+  else if (state.role === 'tech') app.innerHTML = renderTech();
+  else app.innerHTML = renderClient();
+}
+
+function renderRoleSwitch(){
+  const roles = [['admin','Admin'],['tech','Tech'],['client','Client']];
+  document.getElementById('role-switch').innerHTML = roles.map(([key,label]) =>
+    `<button class="${state.role===key?'active':''}" onclick="setRole('${key}')">${label}</button>`
+  ).join('');
+}
+
+function renderSubbar(){
+  const sb = document.getElementById('subbar');
+  if (state.role === 'admin'){
+    const newInq = DB.getInquiries().filter(q => q.status === 'new').length;
+    const tabs = [['overview','Overview'],['inquiries','Inquiries' + (newInq ? ' (' + newInq + ')' : '')],['properties','Properties'],['jobs','Job Board'],['techs','Techs'],['resources','Resources']];
+    sb.innerHTML = `<div class="tabs">${tabs.map(([k,l]) =>
+      `<button class="${state.admin.view===k?'active':''}" onclick="setAdminView('${k}')">${l}</button>`).join('')}</div>`;
+  } else if (state.role === 'tech'){
+    const tech = state.tech.techId ? DB.getTech(state.tech.techId) : null;
+    sb.innerHTML = tech
+      ? `<span class="who">Logged in as <b>${tech.name}</b></span><button class="link-btn" style="margin-left:auto" onclick="switchTech()">Switch tech</button>`
+      : `<span class="who">Select a technician to continue</span>`;
+  } else {
+    const prop = state.client.propertyId ? DB.getProperty(state.client.propertyId) : null;
+    sb.innerHTML = prop
+      ? `<span class="who">Viewing <b>${prop.nickname}</b></span><button class="link-btn" style="margin-left:auto" onclick="switchProperty()">Switch property</button>`
+      : `<span class="who">Select a property to continue</span>`;
+  }
+}
+
+/* ===================================================================
+   ADMIN
+   =================================================================== */
+function setAdminView(view, id){
+  state.admin.view = view;
+  if (view === 'property-detail') state.admin.propertyId = id;
+  if (view === 'job-detail') state.admin.jobId = id;
+  if (view === 'inquiry-detail') state.admin.inquiryId = id;
+  if (view === 'new-property') { state.admin.convertingInquiryId = null; initPropertyDraft(); }
+  render();
+}
+
+function renderAdmin(){
+  switch(state.admin.view){
+    case 'properties': return renderAdminProperties();
+    case 'property-detail': return renderAdminPropertyDetail();
+    case 'new-property': return renderNewPropertyForm();
+    case 'jobs': return renderAdminJobs();
+    case 'job-detail': return renderJobDetail('admin');
+    case 'new-job': return renderNewJobForm();
+    case 'techs': return renderAdminTechs();
+    case 'new-tech': return renderNewTechForm();
+    case 'resources': return renderAdminResources();
+    case 'inquiries': return renderAdminInquiries();
+    case 'inquiry-detail': return renderAdminInquiryDetail();
+    case 'new-inquiry': return renderNewInquiryForm();
+    default: return renderAdminOverview();
+  }
+}
+
+function renderAdminOverview(){
+  const jobs = DB.getJobs();
+  const props = DB.getProperties();
+  const openFlags = jobs.reduce((n,j) => n + j.issueFlags.filter(f=>f.severity!=='routine').length, 0);
+  const inProg = jobs.filter(j=>j.status==='in_progress').length;
+  const doneToday = jobs.filter(j=>j.status==='complete' && j.scheduledDate===todayStr()).length;
+  const inqs = DB.getInquiries();
+  const newInq = inqs.filter(q => q.status === 'new').length;
+  const dueInq = inqs.filter(q => INQ_OPEN.includes(q.status) && q.followUp && q.followUp <= todayStr()).length;
+  return `
+    <h1>Overview</h1>
+    <p class="accent" style="margin:6px 0 20px;">A live look at every lead, property, and job, today.</p>
+    <div class="grid-stats">
+      <div class="stat" style="cursor:pointer;" onclick="setAdminView('inquiries')"><div class="num">${newInq}</div><div class="lbl">New Inquiries</div></div>
+      <div class="stat" style="cursor:pointer;" onclick="setAdminView('inquiries')"><div class="num" style="${dueInq?'color:var(--urgent)':''}">${dueInq}</div><div class="lbl">Follow-ups Due</div></div>
+      <div class="stat"><div class="num">${props.length}</div><div class="lbl">Properties</div></div>
+      <div class="stat"><div class="num">${jobs.length}</div><div class="lbl">Total Jobs</div></div>
+      <div class="stat"><div class="num">${inProg}</div><div class="lbl">In Progress</div></div>
+      <div class="stat"><div class="num">${doneToday}</div><div class="lbl">Completed Today</div></div>
+      <div class="stat"><div class="num" style="${openFlags?'color:var(--urgent)':''}">${openFlags}</div><div class="lbl">Open Flags</div></div>
+    </div>
+    <h2 style="margin-bottom:10px;">Recent Job Activity</h2>
+    ${jobs.slice(0,5).map(j => jobRowHtml(j, 'admin')).join('') || emptyHtml('No jobs yet')}
+  `;
+}
+
+function renderAdminProperties(){
+  const props = DB.getProperties();
+  return `
+    <div class="row between"><h1>Properties</h1><button class="btn btn-gold btn-sm" onclick="setAdminView('new-property')">+ New Property</button></div>
+    <p class="accent" style="margin:6px 0 16px;">Every property's profile, room layout, and SOP checklist.</p>
+    <div class="card flush">
+      ${props.map(p => `
+        <div class="prop-tile" style="padding:14px 20px;" onclick="setAdminView('property-detail','${p.id}')">
+          <div>
+            <div style="font-weight:700; color:var(--navy);">${p.nickname}</div>
+            <div style="font-size:13px; color:var(--slate);">${p.address} · ${p.bedrooms} bed / ${p.bathrooms} bath</div>
+          </div>
+          <span style="color:var(--gold); font-size:20px;">›</span>
+        </div>
+      `).join('') || emptyHtml('No properties yet')}
+    </div>
+  `;
+}
+
+/* ---- Property draft helpers (used by the New Property form) ---- */
+let newPropertyDraft = null;
+
+const ROOM_TYPES = ['Bedroom','Bathroom','Kitchen','Living Room','Dining','Outdoor','Laundry','Other'];
+const BED_SIZES = ['','King','Queen','Full','Twin','Twin XL','Sofa Bed'];
+const RESTOCK_ITEMS = ['Toilet paper rolls (per bathroom)','Paper towels','Trash bags — kitchen',
+  'Trash bags — bedroom / bathroom','Dish soap','Dishwasher pods','Hand soap (per sink)','Body wash',
+  'Shampoo','Conditioner','Coffee pods / ground coffee','Welcome snack / treat (if provided)'];
+
+function initPropertyDraft(){
+  newPropertyDraft = {
+    nickname:'', street:'', city:'Nashville', state:'TN', zip:'', type:'', bedrooms:2, bathrooms:1,
+    halfBaths:0, sqFt:'', maxGuests:4, typicalGuests:'', platforms:[], nightlyRate:'', peakMonths:'', turnoverWindow:'',
+    hostName:'', contactMethod:'', hostPhone:'', hostEmail:'', backupContact:'', propManager:'',
+    keyMethod:'', entryCode:'', garageCode:'', gateCode:'', parkingInstructions:'', accessNotes:'', hasOutdoor:false,
+    rooms:[{type:'Bedroom',label:'',bedSize:'',sleeps:'',notes:''}],
+    linens:[{bed:'',size:'',sheetStyle:'White',pillows:'',duvet:'Yes',decPillows:'',extraBlanket:'No'}],
+    linenStorage:'', linenService:'',
+    bathTowels:2, handTowels:1, washcloths:2, poolTowels:0, towelFold:'', towelPlacement:'', towelStorage:'',
+    productsBy:'', productLocation:'', restrictedProducts:'', floorHardwood:'', floorTile:'', floorCarpet:'', floorStone:'',
+    kitchenPriority:'', kitchenNotes:'',
+    washerLocation:'', dryerLocation:'', washerTemp:'', washerCycle:'', detergent:'', dryerSettings:'', noDryerFabrics:'', soiledLinenStorage:'',
+    restockItems: RESTOCK_ITEMS.map(item => ({item, qty:'', location:''})),
+    restockLocation:'', restockBy:'', lowStockThreshold:'',
+    welcomeNote:'', welcomeNoteLocation:'', welcomeBasket:'', welcomeBasketInstructions:'', seasonalAdjustments:'',
+    damageNotify:'', maintenanceHandler:'', vendorContact:'', missingItems:'',
+    inventory:[{item:'',location:'',qty:'',notes:''}],
+    checkoutTime:'', checkinTime:'', standardWindow:4, minWindow:2, shortWindow:'',
+    calSync:[], icalLink:'', notifLead:'', sameDay:'',
+    escalation:'', emergencyContact:'',
+    hvac:'', hvacTemp:'', waterHeaterNotes:'', applianceNotes:'', smartHomeNotes:'',
+    petsAllowed:'', petCleaning:'', petTreatment:'', petItems:'',
+    parkingRules:'', noiseRestrictions:'', hoaContact:'', neighborNotes:'',
+    additionalNotes:'', photoPreferences:''
+  };
+}
+
+function val(x){ return (x===undefined||x===null||x==='') ? '—' : x; }
+function esc(x){ return (x===undefined||x===null? '' : String(x)).replace(/"/g,'&quot;'); }
+function F(label, inputHtml){ return `<label class="field">${label}</label>${inputHtml}`; }
+function tf(key, placeholder, type){
+  return `<input type="${type||'text'}" value="${esc(newPropertyDraft[key])}" placeholder="${placeholder||''}" oninput="newPropertyDraft.${key}=this.value">`;
+}
+function ta(key, placeholder){
+  return `<textarea rows="2" placeholder="${placeholder||''}" oninput="newPropertyDraft.${key}=this.value">${esc(newPropertyDraft[key])}</textarea>`;
+}
+function chips(key, options, multi){
+  return `<div class="row" style="gap:6px; flex-wrap:wrap;">` + options.map(([v,l]) => {
+    const active = multi ? newPropertyDraft[key].includes(v) : newPropertyDraft[key]===v;
+    return `<button type="button" class="btn ${active?'btn-gold':'btn-outline'} btn-sm" style="padding:6px 12px; font-size:12px;" onclick="${multi?'multiChip':'setChip'}('${key}','${v}')">${l}</button>`;
+  }).join('') + `</div>`;
+}
+function setChip(key, value){ newPropertyDraft[key] = value; render(); }
+function multiChip(key, value){
+  const arr = newPropertyDraft[key];
+  const i = arr.indexOf(value);
+  if (i>-1) arr.splice(i,1); else arr.push(value);
+  render();
+}
+
+function roomsSectionHtml(){
+  return newPropertyDraft.rooms.map((r,i) => `
+    <div class="card" style="padding:12px; margin-bottom:8px; background:var(--cream); box-shadow:none;">
+      <div class="form-grid">
+        <div><label class="field">Room Type</label><select oninput="newPropertyDraft.rooms[${i}].type=this.value">${ROOM_TYPES.map(o=>`<option ${r.type===o?'selected':''}>${o}</option>`).join('')}</select></div>
+        <div><label class="field">Name / Label</label><input type="text" value="${esc(r.label)}" placeholder="Master Suite" oninput="newPropertyDraft.rooms[${i}].label=this.value"></div>
+      </div>
+      <div class="form-grid">
+        <div><label class="field">Bed Size</label><select oninput="newPropertyDraft.rooms[${i}].bedSize=this.value">${BED_SIZES.map(o=>`<option ${r.bedSize===o?'selected':''}>${o||'N/A'}</option>`).join('')}</select></div>
+        <div><label class="field">Sleeping Cap.</label><input type="number" min="0" value="${esc(r.sleeps)}" oninput="newPropertyDraft.rooms[${i}].sleeps=this.value"></div>
+      </div>
+      <label class="field">Notes</label><input type="text" value="${esc(r.notes)}" oninput="newPropertyDraft.rooms[${i}].notes=this.value">
+      ${newPropertyDraft.rooms.length>1 ? `<button type="button" class="link-btn" style="margin-top:8px; color:var(--urgent);" onclick="removeRow('rooms',${i})">Remove room</button>` : ''}
+    </div>
+  `).join('') + `<button type="button" class="btn btn-outline btn-sm" onclick="addRow('rooms',{type:'Bedroom',label:'',bedSize:'',sleeps:'',notes:''})">+ Add Room</button>`;
+}
+function linensSectionHtml(){
+  return newPropertyDraft.linens.map((l,i) => `
+    <div class="card" style="padding:12px; margin-bottom:8px; background:var(--cream); box-shadow:none;">
+      <div class="form-grid">
+        <div><label class="field">Bed Location</label><input type="text" value="${esc(l.bed)}" placeholder="Master Bed" oninput="newPropertyDraft.linens[${i}].bed=this.value"></div>
+        <div><label class="field">Bed Size</label><select oninput="newPropertyDraft.linens[${i}].size=this.value">${BED_SIZES.slice(1).map(o=>`<option ${l.size===o?'selected':''}>${o}</option>`).join('')}</select></div>
+      </div>
+      <div class="form-grid">
+        <div><label class="field">Pillows</label><input type="number" min="0" value="${esc(l.pillows)}" oninput="newPropertyDraft.linens[${i}].pillows=this.value"></div>
+        <div><label class="field">Decorative Pillows</label><input type="number" min="0" value="${esc(l.decPillows)}" oninput="newPropertyDraft.linens[${i}].decPillows=this.value"></div>
+      </div>
+      <div class="form-grid">
+        <div><label class="field">Duvet</label><select oninput="newPropertyDraft.linens[${i}].duvet=this.value"><option ${l.duvet==='Yes'?'selected':''}>Yes</option><option ${l.duvet==='No'?'selected':''}>No</option></select></div>
+        <div><label class="field">Extra Blanket</label><select oninput="newPropertyDraft.linens[${i}].extraBlanket=this.value"><option ${l.extraBlanket==='Yes'?'selected':''}>Yes</option><option ${l.extraBlanket==='No'?'selected':''}>No</option></select></div>
+      </div>
+      ${newPropertyDraft.linens.length>1 ? `<button type="button" class="link-btn" style="margin-top:4px; color:var(--urgent);" onclick="removeRow('linens',${i})">Remove bed</button>` : ''}
+    </div>
+  `).join('') + `<button type="button" class="btn btn-outline btn-sm" onclick="addRow('linens',{bed:'',size:'',sheetStyle:'White',pillows:'',duvet:'Yes',decPillows:'',extraBlanket:'No'})">+ Add Bed</button>`;
+}
+function inventorySectionHtml(){
+  return newPropertyDraft.inventory.map((it,i) => `
+    <div class="card" style="padding:12px; margin-bottom:8px; background:var(--cream); box-shadow:none;">
+      <div class="form-grid">
+        <div><label class="field">Item</label><input type="text" value="${esc(it.item)}" oninput="newPropertyDraft.inventory[${i}].item=this.value"></div>
+        <div><label class="field">Location</label><input type="text" value="${esc(it.location)}" oninput="newPropertyDraft.inventory[${i}].location=this.value"></div>
+      </div>
+      <div class="form-grid">
+        <div><label class="field">Quantity</label><input type="number" min="0" value="${esc(it.qty)}" oninput="newPropertyDraft.inventory[${i}].qty=this.value"></div>
+        <div><label class="field">Notes</label><input type="text" value="${esc(it.notes)}" oninput="newPropertyDraft.inventory[${i}].notes=this.value"></div>
+      </div>
+      ${newPropertyDraft.inventory.length>1 ? `<button type="button" class="link-btn" style="margin-top:4px; color:var(--urgent);" onclick="removeRow('inventory',${i})">Remove item</button>` : ''}
+    </div>
+  `).join('') + `<button type="button" class="btn btn-outline btn-sm" onclick="addRow('inventory',{item:'',location:'',qty:'',notes:''})">+ Add Item</button>`;
+}
+function restockSectionHtml(){
+  return newPropertyDraft.restockItems.map((r,i) => `
+    <div class="row" style="gap:10px; margin-bottom:8px; align-items:flex-end;">
+      <div style="flex:2; font-size:13px; color:var(--ink);">${r.item}</div>
+      <div style="flex:1;"><label class="field" style="margin-top:0;">Qty</label><input type="number" min="0" value="${esc(r.qty)}" oninput="newPropertyDraft.restockItems[${i}].qty=this.value"></div>
+      <div style="flex:2;"><label class="field" style="margin-top:0;">Location</label><input type="text" value="${esc(r.location)}" oninput="newPropertyDraft.restockItems[${i}].location=this.value"></div>
+    </div>
+  `).join('');
+}
+function addRow(key, blank){ newPropertyDraft[key].push(blank); render(); }
+function removeRow(key, i){ newPropertyDraft[key].splice(i,1); render(); }
+
+function renderAdminPropertyDetail(){
+  const p = DB.getProperty(state.admin.propertyId);
+  const sections = [...new Set(p.sopTemplate.map(t=>t.section))];
+  const kv = (label,v) => `<div style="padding:5px 0; font-size:13.5px; border-bottom:1px solid var(--border);"><span style="color:var(--slate);">${label}:</span> ${val(v)}</div>`;
+  return `
+    <button class="backlink" onclick="setAdminView('properties')">← Back to properties</button>
+    <h1>${p.nickname}</h1>
+    <p class="accent" style="margin:6px 0 16px;">${p.address}</p>
+
+    <div class="card">
+      <h3 class="label">A · Property Profile &amp; Access</h3>
+      <div class="row" style="gap:24px; font-size:14px; flex-wrap:wrap; margin-bottom:10px;">
+        <div><b>${val(p.type)}</b></div>
+        <div>${p.bedrooms} bed · ${p.bathrooms} bath${p.halfBaths?' · '+p.halfBaths+' half bath':''} · sleeps ${p.maxGuests}</div>
+        <div>${val(p.sqFt)} sq ft</div>
+        <div>${(p.platforms||[]).join(', ')||'—'}</div>
+      </div>
+      ${kv('Host', p.hostName)}${kv('Preferred Contact', p.contactMethod)}${kv('Host Phone', p.hostPhone)}${kv('Host Email', p.hostEmail)}
+      ${kv('Backup Contact', p.backupContact)}${kv('Property Manager', p.propManager)}
+      ${kv('Nightly Rate', p.nightlyRate?'$'+p.nightlyRate:'')}${kv('Peak Months', p.peakMonths)}${kv('Turnover Window', p.turnoverWindow?p.turnoverWindow+' hrs':'')}
+      <div class="card" style="background:var(--cream); box-shadow:none; margin-top:10px; border-left:4px solid var(--navy);">
+        <div style="font-size:12px; font-weight:700; color:var(--navy); text-transform:uppercase; letter-spacing:.05em; margin-bottom:6px;">Secure Access — Tech Visible Only</div>
+        ${kv('Key Method', p.keyMethod)}${kv('Entry Code', p.entryCode)}${kv('Garage Code', p.garageCode)}${kv('Gate Code', p.gateCode)}
+        ${kv('Parking Instructions', p.parkingInstructions)}${kv('Access Notes', p.accessNotes)}
+      </div>
+    </div>
+
+    <div class="card">
+      <h3 class="label">B · Layout &amp; Inventory</h3>
+      ${(p.rooms||[]).map(r=>`<div style="font-size:13.5px; padding:4px 0; border-bottom:1px solid var(--border);">${r.label||r.type} <span style="color:var(--slate);">— ${r.type}${r.bedSize?', '+r.bedSize:''}${r.sleeps?', sleeps '+r.sleeps:''}</span></div>`).join('') || emptyRowNote()}
+      ${kv('Linen Storage', p.linenStorage)}${kv('Linen Service', p.linenService)}
+      ${kv('Bath / Hand / Wash / Pool Towels', [p.bathTowels,p.handTowels,p.washcloths,p.poolTowels].map(x=>val(x)).join(' / '))}
+      ${kv('Towel Fold', p.towelFold)}${kv('Towel Placement', p.towelPlacement)}${kv('Towel Storage', p.towelStorage)}
+    </div>
+
+    <div class="card">
+      <h3 class="label">C · Cleaning Standards</h3>
+      ${kv('Products Supplied By', p.productsBy)}${kv('Product Location', p.productLocation)}${kv('Restricted Products', p.restrictedProducts)}
+      ${kv('Floor Care — Hardwood/LVP', p.floorHardwood)}${kv('Floor Care — Tile', p.floorTile)}${kv('Floor Care — Carpet', p.floorCarpet)}${kv('Floor Care — Stone/Marble', p.floorStone)}
+      ${kv('Kitchen Priority', p.kitchenPriority)}${kv('Kitchen Notes', p.kitchenNotes)}
+      ${kv('Washer / Dryer Location', (p.washerLocation||'—')+' / '+(p.dryerLocation||'—'))}${kv('Washer Temp / Cycle', (p.washerTemp||'—')+' / '+(p.washerCycle||'—'))}
+      ${kv('Detergent', p.detergent)}${kv('Dryer Settings', p.dryerSettings)}${kv('Fabrics — No Dryer', p.noDryerFabrics)}${kv('Soiled Linen Storage', p.soiledLinenStorage)}
+    </div>
+
+    <div class="card">
+      <h3 class="label">D · Restocking &amp; Amenities</h3>
+      ${(p.restockItems||[]).filter(r=>r.qty||r.location).map(r=>`<div style="font-size:13px; padding:3px 0; border-bottom:1px solid var(--border);">${r.item} — qty ${val(r.qty)}, ${val(r.location)}</div>`).join('') || emptyRowNote()}
+      ${kv('Restock Location', p.restockLocation)}${kv('Restock Supplied By', p.restockBy)}${kv('Low Supply Alert', p.lowStockThreshold)}
+      ${kv('Welcome Note', p.welcomeNote)}${kv('Welcome Note Location', p.welcomeNoteLocation)}
+      ${kv('Welcome Basket', p.welcomeBasket)}${kv('Welcome Basket Instructions', p.welcomeBasketInstructions)}${kv('Seasonal Adjustments', p.seasonalAdjustments)}
+    </div>
+
+    <div class="card">
+      <h3 class="label">E · Inspection &amp; Damage Reporting</h3>
+      ${kv('Notify Host of Damage', p.damageNotify)}${kv('Maintenance Handler', p.maintenanceHandler)}${kv('Vendor Contact', p.vendorContact)}${kv('Missing Items Policy', p.missingItems)}
+      ${(p.inventory||[]).filter(it=>it.item).map(it=>`<div style="font-size:13px; padding:3px 0; border-bottom:1px solid var(--border);">${it.item} — ${val(it.qty)} @ ${val(it.location)} ${it.notes?'('+it.notes+')':''}</div>`).join('') || emptyRowNote()}
+    </div>
+
+    <div class="card">
+      <h3 class="label">F · Timing &amp; Scheduling</h3>
+      ${kv('Checkout / Check-in Time', (p.checkoutTime||'—')+' / '+(p.checkinTime||'—'))}${kv('Standard / Minimum Window', (p.standardWindow||'—')+'hrs / '+(p.minWindow||'—')+'hrs')}
+      ${kv('If Under Minimum Window', p.shortWindow)}${kv('Calendar Sync', (p.calSync||[]).join(', '))}${kv('iCal Link', p.icalLink)}
+      ${kv('Notification Lead Time', p.notifLead)}${kv('Same-Day Bookings', p.sameDay)}${kv('Escalation', p.escalation)}${kv('Emergency Contact', p.emergencyContact)}
+    </div>
+
+    <div class="card">
+      <h3 class="label">G · Special Instructions &amp; Quirks</h3>
+      ${kv('HVAC Setting', p.hvac)}${kv('Target Temp', p.hvacTemp?p.hvacTemp+'°F':'')}${kv('Water Heater', p.waterHeaterNotes)}
+      ${kv('Appliance Notes', p.applianceNotes)}${kv('Smart Home Notes', p.smartHomeNotes)}
+      ${kv('Pets Allowed', p.petsAllowed)}${kv('Pet Cleaning', p.petCleaning)}${kv('Pet Treatment', p.petTreatment)}${kv('Pet Items to Reset', p.petItems)}
+      ${kv('Parking Rules', p.parkingRules)}${kv('Noise Restrictions', p.noiseRestrictions)}${kv('HOA Contact', p.hoaContact)}${kv('Neighbor Notes', p.neighborNotes)}
+      ${kv('Additional Notes', p.additionalNotes)}${kv('Host Photo Preferences', p.photoPreferences)}
+    </div>
+
+    <div class="card">
+      <h3 class="label">SOP Checklist Template</h3>
+      <p style="font-size:12.5px; color:var(--slate); margin-bottom:10px;">Snapshotted into every new job at creation — edits here won't alter past job records.</p>
+      ${sections.map(sec => `
+        <div class="section-hdr">${sec}</div>
+        ${p.sopTemplate.filter(t=>t.section===sec).map(t => `<div style="padding:6px 0; font-size:14px; border-bottom:1px solid var(--border);">${t.label}</div>`).join('')}
+      `).join('')}
+    </div>
+  `;
+}
+function emptyRowNote(){ return `<div style="font-size:13px; color:var(--slate); padding:4px 0;">Not documented yet</div>`; }
+
+function renderNewPropertyForm(){
+  const d = newPropertyDraft;
+  return `
+    <button class="backlink" onclick="setAdminView('properties')">← Back to properties</button>
+    <h1>New Property</h1>
+    <p class="accent" style="margin:6px 0 16px;">Full SOP intake — this becomes the property's dashboard profile.</p>
+    ${convertBannerHtml()}
+
+    <div class="card">
+      <h3 class="label">A1 · Property Information</h3>
+      ${F('Property Nickname *', tf('nickname','e.g. The Gulch Loft'))}
+      ${F('Street Address *', tf('street','123 Main St'))}
+      <div class="form-grid">${F('City', tf('city'))}${F('State', tf('state'))}</div>
+      ${F('ZIP', tf('zip'))}
+      <label class="field">Property Type</label>${chips('type',[['Condo','Condo'],['Townhome','Townhome'],['Single Family','Single Family'],['Cabin / Chalet','Cabin / Chalet'],['Apartment','Apartment'],['Other','Other']])}
+      <div class="form-grid" style="margin-top:12px;">${F('Bedrooms', tf('bedrooms','','number'))}${F('Bathrooms', tf('bathrooms','','number'))}</div>
+      <div class="form-grid">${F('Half Baths', tf('halfBaths','','number'))}${F('Sq Ft (approx)', tf('sqFt','','number'))}</div>
+      <div class="form-grid">${F('Max Guest Capacity', tf('maxGuests','','number'))}${F('Typical Booking Size', tf('typicalGuests','','number'))}</div>
+      <label class="field">STR Platform(s)</label>${chips('platforms',[['Airbnb','Airbnb'],['VRBO','VRBO'],['Booking.com','Booking.com'],['Direct','Direct'],['Other','Other']],true)}
+      <div class="form-grid" style="margin-top:12px;">${F('Average Nightly Rate ($)', tf('nightlyRate','250','number'))}${F('Peak Season Months', tf('peakMonths','June, July, August'))}</div>
+      ${F('Average Turnover Window (hrs)', tf('turnoverWindow','4','number'))}
+      <label class="field">Outdoor Space</label>
+      <div class="row" style="gap:6px;"><button type="button" class="btn ${d.hasOutdoor?'btn-gold':'btn-outline'} btn-sm" onclick="newPropertyDraft.hasOutdoor=true;render()">Yes</button><button type="button" class="btn ${!d.hasOutdoor?'btn-gold':'btn-outline'} btn-sm" onclick="newPropertyDraft.hasOutdoor=false;render()">No</button></div>
+    </div>
+
+    <div class="card">
+      <h3 class="label">A2 · Host / Owner Information</h3>
+      ${F('Host Name *', tf('hostName'))}
+      <label class="field">Preferred Contact Method</label>${chips('contactMethod',[['Phone','Phone'],['Text','Text'],['Email','Email'],['Dashboard','Dashboard']])}
+      <div class="form-grid" style="margin-top:12px;">${F('Phone *', tf('hostPhone','(615) 000-0000','tel'))}${F('Email *', tf('hostEmail','jane@example.com','email'))}</div>
+      <div class="form-grid">${F('Backup Contact Name &amp; Phone', tf('backupContact'))}${F('Property Manager (if different)', tf('propManager'))}</div>
+    </div>
+
+    <div class="card">
+      <h3 class="label">A3 · Access Information</h3>
+      <p style="font-size:12px; color:var(--slate); margin-bottom:10px;">Stored securely — visible only to assigned technicians, never to the client dashboard.</p>
+      <label class="field">Key Access Method</label>${chips('keyMethod',[['Lockbox','Lockbox'],['Smart Lock','Smart Lock'],['Keypad','Keypad'],['Physical Key','Physical Key'],['Other','Other']])}
+      <div class="form-grid" style="margin-top:12px;">${F('Entry Code / Instructions', tf('entryCode'))}${F('Garage Code (if applicable)', tf('garageCode'))}</div>
+      <div class="form-grid">${F('Gate Code (if applicable)', tf('gateCode'))}${F('Parking Instructions for Tech Team', tf('parkingInstructions'))}</div>
+      ${F('Special Access Notes (alarm, HOA, cameras)', ta('accessNotes'))}
+    </div>
+
+    <div class="card">
+      <h3 class="label">B1 · Room-by-Room Layout</h3>
+      ${roomsSectionHtml()}
+    </div>
+    <div class="card">
+      <h3 class="label">B2 · Linen Inventory</h3>
+      ${linensSectionHtml()}
+      <div class="form-grid" style="margin-top:12px;">${F('Linen Storage Location', tf('linenStorage'))}
+        <div><label class="field">Linen Service</label><select oninput="newPropertyDraft.linenService=this.value"><option value="">Select…</option><option ${d.linenService==='php'?'selected':''} value="php">Provided by Proper Home Prep</option><option ${d.linenService==='host'?'selected':''} value="host">Host provides linens</option><option ${d.linenService==='third_party'?'selected':''} value="third_party">Third-party linen service</option></select></div>
+      </div>
+    </div>
+    <div class="card">
+      <h3 class="label">B3 · Towel Inventory &amp; Presentation</h3>
+      <div class="form-grid">${F('Bath Towels / Guest', tf('bathTowels','','number'))}${F('Hand Towels / Bath', tf('handTowels','','number'))}</div>
+      <div class="form-grid">${F('Washcloths / Guest', tf('washcloths','','number'))}${F('Pool Towels', tf('poolTowels','','number'))}</div>
+      <label class="field">Towel Folding Preference</label>${chips('towelFold',[['Standard Fold','Standard Fold'],['Hotel Roll','Hotel Roll'],['Decorative Fan Fold','Fan Fold'],['No Preference','No Preference']])}
+      <div class="form-grid" style="margin-top:12px;">${F('Towel Placement', tf('towelPlacement'))}${F('Towel Storage Location', tf('towelStorage'))}</div>
+    </div>
+
+    <div class="card">
+      <h3 class="label">C1 · Cleaning Products</h3>
+      <label class="field">Products Supplied By</label>${chips('productsBy',[['Proper Home Prep','PHP standard kit'],['Host','Host supplies'],['Mixed','Mix of both']])}
+      <div class="form-grid" style="margin-top:12px;">${F('If Host-Supplied, Product Location', tf('productLocation'))}${F('Products That Must NOT Be Used', tf('restrictedProducts'))}</div>
+      <div class="form-grid">${F('Floor Care — Hardwood / LVP', tf('floorHardwood'))}${F('Floor Care — Tile', tf('floorTile'))}</div>
+      <div class="form-grid">${F('Floor Care — Carpet', tf('floorCarpet'))}${F('Floor Care — Stone / Marble', tf('floorStone'))}</div>
+    </div>
+    <div class="card">
+      <h3 class="label">C2 · Kitchen SOP</h3>
+      <label class="field">Priority Level</label>${chips('kitchenPriority',[['Standard','Standard'],['Deep Clean Every Turn','Deep Every Turn'],['Deep Clean Periodically','Deep Periodically']])}
+      ${F('Host-Specific Kitchen Notes', ta('kitchenNotes'))}
+    </div>
+    <div class="card">
+      <h3 class="label">C3 · Laundry &amp; Linens SOP</h3>
+      <div class="form-grid">${F('Washer Location', tf('washerLocation'))}${F('Dryer Location', tf('dryerLocation'))}</div>
+      <div class="form-grid">${F('Washer Temperature', tf('washerTemp'))}${F('Washer Cycle', tf('washerCycle'))}</div>
+      <div class="form-grid">${F('Detergent Preference', tf('detergent'))}${F('Dryer Settings', tf('dryerSettings'))}</div>
+      <div class="form-grid">${F('Fabrics That Cannot Go in Dryer', tf('noDryerFabrics'))}${F('Soiled Linen Storage Location', tf('soiledLinenStorage'))}</div>
+    </div>
+
+    <div class="card">
+      <h3 class="label">D1 · Guest Supply Restocking List</h3>
+      ${restockSectionHtml()}
+      <div class="form-grid" style="margin-top:8px;">${F('Restocking Supplies Stored At', tf('restockLocation'))}
+        <div><label class="field">Restocking Supplied By</label><select oninput="newPropertyDraft.restockBy=this.value"><option value="">Select…</option><option ${d.restockBy==='host'?'selected':''} value="host">Host (left on property)</option><option ${d.restockBy==='php'?'selected':''} value="php">Proper Home Prep restocking service</option><option ${d.restockBy==='third_party'?'selected':''} value="third_party">Third-party delivery</option></select></div>
+      </div>
+      ${F('Low Supply Alert — Notify Host When', ta('lowStockThreshold'))}
+    </div>
+    <div class="card">
+      <h3 class="label">D2 · Welcome Presentation Preferences</h3>
+      <div class="form-grid">
+        <div><label class="field">Welcome Note / Card</label>${chips('welcomeNote',[['Yes','Yes'],['No','No']])}</div>
+        <div>${F('Welcome Note Location', tf('welcomeNoteLocation'))}</div>
+      </div>
+      <div class="form-grid">
+        <div><label class="field">Welcome Basket / Amenity Setup</label>${chips('welcomeBasket',[['Yes','Yes'],['No','No']])}</div>
+        <div>${F('Welcome Basket Instructions', tf('welcomeBasketInstructions'))}</div>
+      </div>
+      ${F('Seasonal or Special Occasion Adjustments', ta('seasonalAdjustments'))}
+    </div>
+
+    <div class="card">
+      <h3 class="label">E2 · Host Damage Report Preferences</h3>
+      <label class="field">Notify Host of Any Damage</label>${chips('damageNotify',[['Immediately via dashboard + text','Immediate'],['Dashboard only','Dashboard Only'],['End of job summary','End of Job']])}
+      <label class="field">For Damage Requiring a Maintenance Call</label>${chips('maintenanceHandler',[['Host handles all maintenance','Host'],['Proper Home Prep light repair service','PHP Repair Service'],["Host's designated vendor",'Designated Vendor']])}
+      ${F('Vendor Contact for Maintenance', tf('vendorContact'))}
+      <label class="field">For Missing Items</label>${chips('missingItems',[['Note in report only','Note Only'],['Host will file claim','Host Claim'],['Proper Home Prep to replace and bill','PHP Replace & Bill']])}
+    </div>
+    <div class="card">
+      <h3 class="label">E3 · Inventory Log</h3>
+      ${inventorySectionHtml()}
+    </div>
+
+    <div class="card">
+      <h3 class="label">F1 · Turnover Window</h3>
+      <div class="form-grid">${F('Checkout Time', tf('checkoutTime','','time'))}${F('Check-in Time', tf('checkinTime','','time'))}</div>
+      <div class="form-grid">${F('Standard Window (hrs)', tf('standardWindow','','number'))}${F('Minimum Window (hrs)', tf('minWindow','','number'))}</div>
+      <label class="field">If Window Is Under Minimum</label>${chips('shortWindow',[['Contact host immediately','Contact Host'],['Flag in dashboard','Flag Dashboard'],['Proceed and note in job report','Proceed & Note']])}
+    </div>
+    <div class="card">
+      <h3 class="label">F2 · Scheduling Preferences</h3>
+      <label class="field">Platform Calendar Sync</label>${chips('calSync',[['Airbnb','Airbnb'],['VRBO','VRBO'],['Google Calendar','Google Cal'],['iCal Link','iCal Link'],['Manual Notification','Manual']],true)}
+      <div style="margin-top:12px;">${F('iCal or Sync Link (if applicable)', tf('icalLink','https://…','url'))}</div>
+      <label class="field">Preferred Notification Lead Time</label>${chips('notifLead',[['24 Hours','24 Hours'],['48 Hours','48 Hours'],['Week Ahead','Week Ahead']])}
+      <label class="field">Same-Day Booking Turnovers</label>${chips('sameDay',[['Contact host first','Contact First'],['Proceed if team available','Proceed'],['Not accepted','Not Accepted']])}
+    </div>
+    <div class="card">
+      <h3 class="label">F3 · Priority &amp; Escalation</h3>
+      <label class="field">If Turnover Is at Risk of Not Completing Before Check-in</label>${chips('escalation',[['Call host immediately','Call Host'],['Text + dashboard flag','Text + Flag'],['Dashboard flag only','Flag Only']])}
+      ${F('Emergency Contact for Day-of Issues', tf('emergencyContact'))}
+    </div>
+
+    <div class="card">
+      <h3 class="label">G1 · Appliances &amp; Systems</h3>
+      <label class="field">HVAC Thermostat Setting Between Guests</label>${chips('hvac',[['Cool','Cool'],['Heat','Heat'],['Off','Off'],['Auto','Auto']])}
+      <div class="form-grid" style="margin-top:12px;">${F('Target Temperature (°F)', tf('hvacTemp','72','number'))}${F('Water Heater Notes', tf('waterHeaterNotes'))}</div>
+      ${F('Appliances Requiring Special Instructions', ta('applianceNotes'))}
+      ${F('Smart Home Devices — Tech Interaction Instructions', ta('smartHomeNotes'))}
+    </div>
+    <div class="card">
+      <h3 class="label">G2 · Pet Policy</h3>
+      <label class="field">Pets Allowed by Host</label>${chips('petsAllowed',[['Yes','Yes'],['No','No']])}
+      <div class="form-grid" style="margin-top:12px;">${F('Pet-Specific Cleaning Needs', tf('petCleaning'))}<div><label class="field">Pet Hair / Odor Treatment</label>${chips('petTreatment',[['Standard','Standard'],['Premium Pet Treatment (+ fee)','Premium (+fee)']])}</div></div>
+      ${F('Pet Items to Reset', tf('petItems'))}
+    </div>
+    <div class="card">
+      <h3 class="label">G3 · Neighbor &amp; HOA Considerations</h3>
+      <div class="form-grid">${F('Parking Rules', tf('parkingRules'))}${F('Noise Restrictions During Turnover', tf('noiseRestrictions'))}</div>
+      <div class="form-grid">${F('HOA Contact (if tech needs access)', tf('hoaContact'))}${F('Neighbor Considerations', tf('neighborNotes'))}</div>
+    </div>
+    <div class="card">
+      <h3 class="label">G4 · Anything Else</h3>
+      ${F('Additional Notes, Quirks, or Property-Specific Details', ta('additionalNotes'))}
+    </div>
+
+    <div class="card">
+      <h3 class="label">H · Photo Documentation</h3>
+      <p style="font-size:12.5px; color:var(--slate); margin-bottom:8px;">Before/mid/after room photos and damage flags are handled automatically by the job workflow — no setup needed here.</p>
+      ${F('Host Photo Preferences / Additional Photo Requests', ta('photoPreferences'))}
+    </div>
+
+    <div style="margin:18px 0 40px;">
+      <button class="btn btn-primary" onclick="submitNewProperty()">Create Property</button>
+    </div>
+  `;
+}
+
+function submitNewProperty(){
+  const d = newPropertyDraft;
+  const nickname = d.nickname.trim();
+  const street = d.street.trim();
+  if (!nickname || !street) return;
+  const bedrooms = parseInt(d.bedrooms) || 0;
+  const bathrooms = parseInt(d.bathrooms) || 1;
+  const address = [street, d.city, [d.state, d.zip].filter(Boolean).join(' ')].filter(Boolean).join(', ');
+  const prop = {
+    id: 'p' + Date.now(),
+    ...d,
+    nickname, address, bedrooms, bathrooms,
+    platforms: d.platforms.length ? d.platforms : ['Airbnb'],
+    sopTemplate: buildSopTemplate(bedrooms, d.hasOutdoor)
+  };
+  DB.saveProperty(prop);
+  if (state.admin.convertingInquiryId) {
+    DB.linkInquiryToProperty(state.admin.convertingInquiryId, prop.id, nickname);
+    state.admin.convertingInquiryId = null;
+  }
+  newPropertyDraft = null;
+  setAdminView('property-detail', prop.id);
+}
+
+function renderAdminJobs(){
+  const jobs = DB.getJobs();
+  return `
+    <div class="row between">
+      <h1>Job Board</h1>
+      <button class="btn btn-gold btn-sm" onclick="setAdminView('new-job')">+ New Job</button>
+    </div>
+    <p class="accent" style="margin:6px 0 16px;">Every job, every property, every tech — full visibility.</p>
+    ${jobs.map(j => jobRowHtml(j,'admin')).join('') || emptyHtml('No jobs yet')}
+  `;
+}
+
+function renderAdminTechs(){
+  const techs = DB.getTechs();
+  return `
+    <div class="row between"><h1>Technicians</h1><button class="btn btn-gold btn-sm" onclick="setAdminView('new-tech')">+ New Tech</button></div>
+    <div class="card flush">
+      ${techs.map(t => {
+        const jobs = DB.getJobs({techId:t.id});
+        const active = jobs.filter(j=>j.status==='in_progress').length;
+        return `<div class="prop-tile" style="padding:14px 20px; cursor:default;">
+          <div><div style="font-weight:700; color:var(--navy);">${t.name}</div>
+          <div style="font-size:13px; color:var(--slate);">${jobs.length} total jobs · ${active} in progress now</div></div>
+        </div>`;
+      }).join('') || emptyHtml('No technicians yet')}
+    </div>
+  `;
+}
+
+function renderNewTechForm(){
+  return `
+    <button class="backlink" onclick="setAdminView('techs')">← Back to technicians</button>
+    <h1>New Technician</h1>
+    <div class="card">
+      <label class="field">Full Name</label>
+      <input type="text" id="nt-name" placeholder="e.g. Priya Patel">
+      <div style="margin-top:18px;">
+        <button class="btn btn-primary" onclick="submitNewTech()">Add Technician</button>
+      </div>
+    </div>
+  `;
+}
+
+function submitNewTech(){
+  const name = document.getElementById('nt-name').value.trim();
+  if (!name) return;
+  DB.addTech(name);
+  setAdminView('techs');
+}
+
+/* ===================================================================
+   RESOURCES — onboarding documents, brand reference, copyable templates
+   =================================================================== */
+// `url`  = a live page (opens in a new tab).
+// `path` = an internal file that is NOT published; it lives in the repository's internal-docs folder.
+const SITE_URL = 'https://properhomeprep.com';
+const DOC_LINKS = [
+  {group:'Live Pages', items:[
+    {title:'Services &amp; Pricing (website)', url: SITE_URL + '/', desc:'Public marketing page — services, FAQ, quote request'},
+    {title:'Request a Quote Form', url: SITE_URL + '/request-a-quote.html', desc:'Lead-gen form on the website (submissions arrive in Netlify Forms)'},
+    {title:'Host Intake Form', url:'onboard/host-intake-form.html', desc:'Detailed host onboarding intake'},
+    {title:'Property SOP Form', url:'onboard/sop-form.html', desc:'Full property SOP capture — 9 sections'},
+    {title:'Host Welcome Packet (web)', url:'onboard/welcome-packet.html', desc:'What to expect, onboarding checklist'},
+    {title:'Client Service Agreement (form)', url:'onboard/service-agreement.html', desc:'Fillable / signable service contract'}
+  ]},
+  {group:'Printable PDFs — hard-copy fallback', items:[
+    {title:'Host Welcome Packet', path:'internal-docs/printable-pdfs/Host-Welcome-Packet.pdf', desc:'Branded packet to hand or email to a new host'},
+    {title:'Client Service Agreement', path:'internal-docs/printable-pdfs/Client-Service-Agreement.pdf', desc:'Print-ready contract'},
+    {title:'Host Intake Form', path:'internal-docs/printable-pdfs/Host-Intake-Form.pdf', desc:'Blank paper version'},
+    {title:'Property SOP Form', path:'internal-docs/printable-pdfs/Property-SOP-Form.pdf', desc:'Blank paper version — all 9 sections'},
+    {title:'General Service Request Form', path:'internal-docs/printable-pdfs/General-Service-Request-Form.pdf', desc:'Blank paper quote request'},
+    {title:'Services &amp; Pricing', path:'internal-docs/printable-pdfs/Pricing-and-Booking-Page.pdf', desc:'Printable services overview'}
+  ]},
+  {group:'Internal — Field Operations, Onboarding &amp; Brand', items:[
+    {title:'Tech Quick-Reference Card (printable PDF)', path:'internal-docs/printable-pdfs/Tech-Quick-Reference-Card.pdf', desc:'Dashboard-first field guide, safety, escalation'},
+    {title:'Tech Quick-Reference Card (web)', path:'internal-docs/field-ops/tech-quick-reference-card.html', desc:'Phone / laminate version'},
+    {title:'Property SOP Onboarding Template', path:'internal-docs/onboarding/property-sop-onboarding-template.docx', desc:'Original SOP reference document'},
+    {title:'Employee Onboarding Plan', path:'internal-docs/onboarding/employee-onboarding-plan.pdf', desc:'Hiring and 3-week technician certification playbook'},
+    {title:'Brand &amp; Formatting Guide', path:'internal-docs/brand/brand-formatting-guide.docx', desc:'Color system, type scale, layout specs'}
+  ]},
+  {group:'Marketing &amp; Outreach', items:[
+    {title:'30-Day Instagram Content Calendar', path:'internal-docs/marketing/30-day-instagram-content-calendar.xlsx', desc:'Captions, hashtags, post times, visual direction + hashtag bank'},
+    {title:'Social Ad Copy Kit', path:'internal-docs/marketing/social-ad-copy-kit.html', desc:'10 paid-ad templates for Facebook, Instagram &amp; Nextdoor'},
+    {title:'Host Outreach Kit', path:'internal-docs/marketing/host-outreach-kit.html', desc:'9 cold-outreach email + text/DM templates'}
+  ]}
+];
+const BRAND_COLORS = [
+  {name:'Deep Navy', hex:'#1B2A4A'}, {name:'Antique Gold', hex:'#D8B96A'}, {name:'Warm Cream', hex:'#FAF7F2'},
+  {name:'Soft Slate', hex:'#6B7D8F'}, {name:'Crisp White', hex:'#FFFFFF'}
+];
+const EMAIL_TEMPLATES = [
+  {title:'New Lead — Quote Follow-Up', subject:'Your Proper Home Prep Quote — [Property Nickname]', body:
+`Hi [Name],
+
+Thanks for reaching out about [Property Address]. Based on what you shared, here's what we'd recommend:
+
+[Service Type] — flat rate of $[Amount] per visit.
+
+We'll take great care of the property and have it guest-ready well before your next check-in. Reply here and we'll get you on the calendar, or call us at 615-669-4246 with any questions.
+
+Looking forward to working with you.
+
+The Proper Home Prep Team
+Where Every Detail Matters`},
+  {title:'Host Onboarding Welcome', subject:'Welcome to Proper Home Prep, [Name]!', body:
+`Hi [Name],
+
+Welcome to the family — we're honored to take care of [Property Nickname].
+
+Next step: complete your Property SOP so we can build your custom dashboard checklist. It takes about 15 minutes and covers everything from room layout to restocking preferences: [SOP Form Link]
+
+Once it's submitted, your coordinator will review it and confirm within 1-2 business days. From there, you'll get your dashboard login and we'll get your first turnover on the calendar.
+
+Questions any time — just reply here.
+
+The Proper Home Prep Team
+Where Every Detail Matters`},
+  {title:'SOP Approved — Property Ready', subject:'Your Property Profile Is Set — [Property Nickname] Is Ready', body:
+`Hi [Name],
+
+Good news — your property profile for [Property Nickname] is reviewed and approved. Every technician who services your property will now follow this exact checklist, every time.
+
+Your first turnover is scheduled for [Date]. You can watch it happen live in your dashboard: [Dashboard Link]
+
+If anything about the SOP needs to change before then, just reply and we'll update it.
+
+The Proper Home Prep Team
+Where Every Detail Matters`},
+  {title:'Turnover Complete', subject:'[Property Nickname] Is Guest-Ready ✓', body:
+`Hi [Name],
+
+Every task checked off. Every room photographed. [Property Nickname] is guest-ready ahead of your next check-in.
+
+Full photo record and completion report are in your dashboard: [Dashboard Link]
+
+Thanks for trusting us with your property.
+
+The Proper Home Prep Team
+Where Every Detail Matters`},
+  {title:'Issue Flag Notification', subject:'Action Needed: [Severity] at [Property Nickname]', body:
+`Hi [Name],
+
+During today's turnover, our technician flagged the following at [Property Nickname]:
+
+[Issue Description]
+
+Photos and full detail are in your dashboard: [Dashboard Link]
+
+[Recommended Next Step — e.g. "No action needed from you, noted for awareness." / "Let us know how you'd like to proceed before your next guest arrives."]
+
+The Proper Home Prep Team
+Where Every Detail Matters`},
+  {title:'Seasonal Check-In', subject:"Getting Ready for [Season] — Let's Check In", body:
+`Hi [Name],
+
+[Season] is one of our busiest stretches in Nashville, and we want to make sure [Property Nickname] is set up for it.
+
+A few things worth a quick look together: any seasonal staging changes, restocking adjustments, or scheduling priorities for your busiest dates.
+
+Reply here or grab 10 minutes with your coordinator: [Scheduling Link]
+
+The Proper Home Prep Team
+Where Every Detail Matters`}
+];
+
+function renderAdminResources(){
+  return `
+    <h1>Resources</h1>
+    <p class="accent" style="margin:6px 0 16px;">Everything for onboarding a new host or client, in one place.</p>
+
+    <div class="card">
+      <h3 class="label">Onboarding &amp; Reference Documents</h3>
+      ${DOC_LINKS.map(g => `
+        <div class="section-hdr">${g.group}</div>
+        ${g.items.map(d => d.url ? `
+          <a href="${d.url}" target="_blank" rel="noopener" style="text-decoration:none; color:inherit;">
+            <div class="prop-tile" style="padding:10px 0;">
+              <div><div style="font-weight:700; color:var(--navy);">${d.title}</div><div style="font-size:12.5px; color:var(--slate);">${d.desc}</div></div>
+              <span style="color:var(--gold); font-size:13px;">Open ↗</span>
+            </div>
+          </a>
+        ` : `
+          <div class="prop-tile" style="padding:10px 0; cursor:default;">
+            <div><div style="font-weight:700; color:var(--navy);">${d.title}</div><div style="font-size:12.5px; color:var(--slate);">${d.desc}</div></div>
+            <span style="color:var(--slate); font-size:11.5px; text-align:right; max-width:44%; word-break:break-all;">Internal file<br>${d.path}</span>
+          </div>
+        `).join('')}
+      `).join('')}
+      <p style="font-size:11.5px; color:var(--slate); margin-top:8px;">Linked items open live pages. Items marked Internal are files kept in the repository's internal-docs folder — they are not published online.</p>
+    </div>
+
+    <div class="card">
+      <h3 class="label">Brand Quick Reference</h3>
+      <div class="row" style="gap:10px; flex-wrap:wrap; margin-bottom:12px;">
+        ${BRAND_COLORS.map(c => `<div style="text-align:center;"><div style="width:44px; height:44px; border-radius:8px; background:${c.hex}; border:1px solid var(--border);"></div><div style="font-size:10px; color:var(--slate); margin-top:3px;">${c.name}<br>${c.hex}</div></div>`).join('')}
+      </div>
+      <div style="font-size:13px;">Headlines: Playfair Display · Body/labels: Lato · Accent: Playfair Display italic</div>
+      <p class="accent" style="margin-top:8px; font-size:16px;">"Where Every Detail Matters."</p>
+    </div>
+
+    <h2 style="margin:26px 0 6px;">Client Email Templates</h2>
+    <p style="font-size:13px; color:var(--slate); margin-bottom:10px;">For hosts who have already inquired or signed on. For cold prospecting, use the Host Outreach Kit above.</p>
+    ${EMAIL_TEMPLATES.map((t,i) => templateCardHtml('email'+i, t.title, t.subject, t.body)).join('')}
+  `;
+}
+function templateCardHtml(id, title, subtitle, body){
+  const taId = 'ta-'+id;
+  return `
+    <div class="card">
+      <div class="row between"><h3 class="label" style="margin:0;">${title}</h3><span style="font-size:11.5px; color:var(--slate);">${subtitle}</span></div>
+      <textarea id="${taId}" readonly rows="7" style="margin-top:8px; font-size:13px; background:var(--cream); font-family:'Lato',sans-serif;">${body}</textarea>
+      <div style="margin-top:8px;"><button class="btn btn-outline btn-sm" onclick="copyTemplate('${taId}', this)">Copy</button></div>
+    </div>
+  `;
+}
+function copyTemplate(id, btn){
+  const ta = document.getElementById(id);
+  ta.select();
+  ta.setSelectionRange(0, 999999);
+  try { document.execCommand('copy'); } catch(e){}
+  const orig = btn.textContent;
+  btn.textContent = 'Copied!';
+  setTimeout(() => { btn.textContent = orig; }, 1400);
+}
+
+/* ===================================================================
+   INQUIRIES — lead pipeline: New → Contacted → Qualified → Converted (or Not a Fit)
+   =================================================================== */
+const INQ_STAGES = [['new','New'],['contacted','Contacted'],['qualified','Qualified'],['converted','Converted'],['not_a_fit','Not a Fit']];
+const INQ_LABELS = Object.fromEntries(INQ_STAGES);
+const INQ_OPEN = ['new','contacted','qualified'];
+const INQ_SERVICES = ['STR / Airbnb Make-Ready & Turnover','General Home Prep Cleaning','Move-In / Move-Out Prep','Vacant Property Inspections','Light Repairs & Touch-Ups','Exterior Refresh & Curb Appeal'];
+const INQ_SOURCES = ['Website form','Phone call','Text message','Instagram / Facebook DM','Referral','Nextdoor','Email outreach','Other'];
+const INQ_PROPTYPES = ['Short-term rental / Airbnb','Long-term rental','Owner-occupied home','Vacant / investment property','Other'];
+const INQ_FREQ = ['Every turnover (STR)','Weekly','Bi-weekly','Monthly','One-time','Not sure yet'];
+const INQ_TIMELINE = ['As soon as possible','Within a week','Within a month','Just gathering quotes'];
+
+// Inquiry text comes from outside (web leads, DMs), so it is always HTML-escaped before display.
+function escHtml(x){
+  return (x === undefined || x === null ? '' : String(x))
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+}
+function ageLabel(iso){
+  const mins = Math.max(0, Math.round((Date.now() - new Date(iso).getTime()) / 60000));
+  if (mins < 60) return mins + 'm ago';
+  const hrs = Math.round(mins / 60);
+  if (hrs < 48) return hrs + 'h ago';
+  return Math.round(hrs / 24) + 'd ago';
+}
+function inquiryMatches(q, term){
+  if (!term) return true;
+  return [q.name, q.phone, q.email, q.address, q.message, q.referenceId, (q.services || []).join(' ')]
+    .join(' ').toLowerCase().includes(term.toLowerCase());
+}
+function inquiryCardHtml(q){
+  const isOpen = INQ_OPEN.includes(q.status);
+  const waiting = q.status === 'new' && (Date.now() - new Date(q.createdAt).getTime()) > 24*3600*1000;
+  const fuDue = isOpen && q.followUp && q.followUp <= todayStr();
+  const fuLine = fuDue
+    ? `<div style="font-size:12.5px; color:var(--urgent); font-weight:700; margin-top:4px;">Follow-up due ${fmtDate(q.followUp)}</div>`
+    : (isOpen && q.followUp ? `<div style="font-size:12.5px; color:var(--slate); margin-top:4px;">Follow-up ${fmtDate(q.followUp)}</div>` : '');
+  return `
+    <div class="card" style="cursor:pointer;" onclick="setAdminView('inquiry-detail','${q.id}')">
+      <div class="row between">
+        <div>
+          <div style="font-weight:700; color:var(--navy);">${escHtml(q.name)} <span style="font-weight:400; color:var(--slate); font-size:13px;">· ${escHtml((q.services || []).join(', ') || 'No service selected')}</span></div>
+          <div style="font-size:13px; color:var(--slate); margin-top:2px;">${escHtml(q.address || 'No address yet')} · ${escHtml(q.source || '—')} · <span style="${waiting ? 'color:var(--urgent); font-weight:700;' : ''}">${ageLabel(q.createdAt)}</span></div>
+          ${fuLine}
+        </div>
+        <span class="badge q_${q.status}">${INQ_LABELS[q.status]}</span>
+      </div>
+    </div>`;
+}
+function inquiryListHtml(){
+  const f = state.admin.inquiryFilter, term = state.admin.inquirySearch;
+  const list = DB.getInquiries().filter(q => (f === 'all' || q.status === f) && inquiryMatches(q, term));
+  return list.map(inquiryCardHtml).join('') || emptyHtml(term || f !== 'all' ? 'No inquiries match' : 'No inquiries yet');
+}
+function setInquiryFilter(f){ state.admin.inquiryFilter = f; render(); }
+function setInquirySearch(v){
+  state.admin.inquirySearch = v;
+  const el = document.getElementById('inq-results');   // update only the results so the search box keeps focus
+  if (el) el.innerHTML = inquiryListHtml();
+}
+
+function renderAdminInquiries(){
+  const all = DB.getInquiries();
+  const f = state.admin.inquiryFilter;
+  const counts = {all: all.length};
+  INQ_STAGES.forEach(([k]) => counts[k] = all.filter(q => q.status === k).length);
+  return `
+    <div class="row between">
+      <h1>Inquiries</h1>
+      <div class="row" style="gap:8px;">
+        <button class="btn btn-outline btn-sm" onclick="exportInquiriesCsv()">Export CSV</button>
+        <button class="btn btn-gold btn-sm" onclick="setAdminView('new-inquiry')">+ New Inquiry</button>
+      </div>
+    </div>
+    <p class="accent" style="margin:6px 0 4px;">Every lead, from first contact to onboarded property.</p>
+    <p style="font-size:12px; color:var(--slate); margin-bottom:14px;">Leads from the website quote form aren't pulled in automatically yet — log them here with + New Inquiry.</p>
+    <div class="row" style="gap:6px; margin-bottom:12px;">
+      ${[['all','All']].concat(INQ_STAGES).map(([k,l]) =>
+        `<button class="btn ${f===k?'btn-gold':'btn-outline'} btn-sm" onclick="setInquiryFilter('${k}')">${l} (${counts[k]})</button>`).join('')}
+    </div>
+    <input type="text" placeholder="Search name, phone, email, address, message…" value="${escHtml(state.admin.inquirySearch)}" oninput="setInquirySearch(this.value)" style="margin-bottom:14px;">
+    <div id="inq-results">${inquiryListHtml()}</div>
+  `;
+}
+
+function renderAdminInquiryDetail(){
+  const q = DB.getInquiry(state.admin.inquiryId);
+  const back = `<button class="backlink" onclick="setAdminView('inquiries')">← Back to inquiries</button>`;
+  if (!q) return back + emptyHtml('Inquiry not found');
+  const isOpen = INQ_OPEN.includes(q.status);
+  const kv = (label, html) => `<div style="padding:6px 0; font-size:13.5px; border-bottom:1px solid var(--border);"><span style="color:var(--slate);">${label}:</span> ${html}</div>`;
+  const tel = (q.phone || '').replace(/[^0-9+]/g, '');
+  const prop = q.propertyId ? DB.getProperty(q.propertyId) : null;
+  const baths = q.bathrooms === '' || q.bathrooms == null ? '' : q.bathrooms;
+  const beds = q.bedrooms === '' || q.bedrooms == null ? '' : q.bedrooms;
+  return `
+    ${back}
+    <div class="row between">
+      <div>
+        <h1>${escHtml(q.name)}</h1>
+        <p class="accent" style="margin:4px 0 0;">${escHtml(q.referenceId)} · received ${fmtDateTime(q.createdAt)} (${ageLabel(q.createdAt)})</p>
+      </div>
+      <span class="badge q_${q.status}">${INQ_LABELS[q.status]}</span>
+    </div>
+
+    <div class="card" style="margin-top:14px;">
+      <h3 class="label">Contact</h3>
+      ${kv('Phone', q.phone ? `<a href="tel:${escHtml(tel)}" style="color:var(--navy); font-weight:700;">${escHtml(q.phone)}</a>` : '—')}
+      ${kv('Email', q.email ? `<a href="mailto:${escHtml(q.email)}" style="color:var(--navy); font-weight:700;">${escHtml(q.email)}</a>` : '—')}
+      ${kv('Source', escHtml(q.source || '—'))}
+    </div>
+
+    <div class="card">
+      <h3 class="label">Request</h3>
+      <div class="row" style="gap:6px; margin-bottom:8px;">${(q.services || []).map(s => `<span class="sev attention">${escHtml(s)}</span>`).join('') || '<span style="color:var(--slate); font-size:13px;">No service selected</span>'}</div>
+      ${kv('Property type', escHtml(q.propertyType || '—'))}
+      ${kv('Address', escHtml(q.address || '—'))}
+      ${kv('Beds / baths', beds === '' && baths === '' ? '—' : `${escHtml(beds === '' ? '—' : beds)} bd / ${escHtml(baths === '' ? '—' : baths)} ba`)}
+      ${kv('Frequency', escHtml(q.frequency || '—'))}
+      ${kv('Timeline', escHtml(q.timeline || '—'))}
+      ${q.message ? `<p style="margin-top:10px; font-size:14px; white-space:pre-wrap;">${escHtml(q.message)}</p>` : ''}
+    </div>
+
+    <div class="card">
+      <h3 class="label">Stage</h3>
+      ${q.status === 'converted'
+        ? `<p style="font-size:13.5px;">Converted to a property${prop ? ` — <a href="#" onclick="setAdminView('property-detail','${prop.id}'); return false;" style="color:var(--navy); font-weight:700;">${escHtml(prop.nickname)}</a>` : ''}.</p>`
+        : `<div class="row" style="gap:6px;">${INQ_STAGES.filter(([k]) => k !== 'converted').map(([k,l]) =>
+            `<button class="btn ${q.status===k?'btn-gold':'btn-outline'} btn-sm" onclick="setInquiryStatusUI('${q.id}','${k}')">${l}</button>`).join('')}</div>`}
+      ${isOpen ? `
+        <label class="field">Next follow-up</label>
+        <input type="date" value="${escHtml(q.followUp || '')}" onchange="setInquiryFollowUpUI('${q.id}', this.value)" style="max-width:220px;">
+        <div style="margin-top:16px;">
+          <button class="btn btn-primary" onclick="convertInquiry('${q.id}')">Convert to Property →</button>
+          <p style="font-size:12px; color:var(--slate); margin-top:6px;">Pre-fills the New Property form with this host's details. The inquiry is marked Converted when you create the property.</p>
+        </div>` : ''}
+    </div>
+
+    <div class="card">
+      <h3 class="label">Notes &amp; Activity</h3>
+      <textarea id="inq-note" rows="2" placeholder="Add a note — what was said, what's next…"></textarea>
+      <div style="margin-top:8px;"><button class="btn btn-outline btn-sm" onclick="addInquiryNoteUI('${q.id}')">Add Note</button></div>
+      <div style="margin-top:14px;">
+        ${q.log.slice().reverse().map(e => `
+          <div class="flag-card ${e.kind === 'note' ? 'attention' : ''}">
+            <div style="font-size:11.5px; color:var(--slate);">${fmtDateTime(e.at)}${e.kind === 'note' ? ' · note' : ''}</div>
+            <div style="font-size:14px; white-space:pre-wrap;">${escHtml(e.text)}</div>
+          </div>`).join('')}
+      </div>
+    </div>
+  `;
+}
+
+function renderNewInquiryForm(){
+  const opts = arr => arr.map(o => `<option>${escHtml(o)}</option>`).join('');
+  return `
+    <button class="backlink" onclick="setAdminView('inquiries')">← Back to inquiries</button>
+    <h1>New Inquiry</h1>
+    <p class="accent" style="margin:6px 0 16px;">Log a lead from a call, text, DM, referral — or a web-form submission.</p>
+    <div class="card">
+      <div class="form-grid">
+        <div><label class="field">Name *</label><input type="text" id="ni-name"></div>
+        <div><label class="field">Source</label><select id="ni-source">${opts(INQ_SOURCES)}</select></div>
+      </div>
+      <div class="form-grid">
+        <div><label class="field">Phone</label><input type="tel" id="ni-phone" placeholder="(615) 000-0000"></div>
+        <div><label class="field">Email</label><input type="email" id="ni-email"></div>
+      </div>
+      <p id="ni-error" style="display:none; color:var(--urgent); font-size:13px; font-weight:700; margin-top:8px;"></p>
+    </div>
+    <div class="card">
+      <label class="field" style="margin-top:0;">Services requested</label>
+      ${INQ_SERVICES.map(sv => `<label style="display:flex; gap:8px; align-items:center; font-size:14px; margin-top:6px; text-transform:none; letter-spacing:0; color:var(--ink); font-weight:400;"><input type="checkbox" class="ni-svc" value="${escHtml(sv)}" style="width:auto;"> ${escHtml(sv)}</label>`).join('')}
+      <label class="field">Property address</label><input type="text" id="ni-address" placeholder="Street, City, State ZIP">
+      <div class="form-grid">
+        <div><label class="field">Property type</label><select id="ni-ptype"><option value="">Select…</option>${opts(INQ_PROPTYPES)}</select></div>
+        <div><label class="field">Frequency</label><select id="ni-freq"><option value="">Select…</option>${opts(INQ_FREQ)}</select></div>
+      </div>
+      <div class="form-grid">
+        <div><label class="field">Bedrooms</label><input type="number" id="ni-beds" min="0" step="1"></div>
+        <div><label class="field">Bathrooms</label><input type="number" id="ni-baths" min="0" step="0.5"></div>
+      </div>
+      <div class="form-grid">
+        <div><label class="field">When needed</label><select id="ni-timeline"><option value="">Select…</option>${opts(INQ_TIMELINE)}</select></div>
+        <div><label class="field">Follow up on</label><input type="date" id="ni-followup"></div>
+      </div>
+      <label class="field">Message / notes</label><textarea id="ni-message" rows="3" placeholder="What they asked for, in their own words…"></textarea>
+      <div style="margin-top:18px;"><button class="btn btn-primary" onclick="submitNewInquiry()">Save Inquiry</button></div>
+    </div>
+  `;
+}
+
+function submitNewInquiry(){
+  const v = id => document.getElementById(id).value.trim();
+  const err = document.getElementById('ni-error');
+  const name = v('ni-name'), phone = v('ni-phone'), email = v('ni-email');
+  if (!name || (!phone && !email)) {
+    err.textContent = 'Add a name and at least a phone number or email so you can follow up.';
+    err.style.display = 'block';
+    return;
+  }
+  const num = id => { const x = v(id); return x === '' ? '' : Number(x); };
+  const inq = DB.addInquiry({
+    name, phone, email, source: v('ni-source'),
+    services: [...document.querySelectorAll('.ni-svc:checked')].map(c => c.value),
+    address: v('ni-address'), propertyType: v('ni-ptype'), frequency: v('ni-freq'), timeline: v('ni-timeline'),
+    bedrooms: num('ni-beds'), bathrooms: num('ni-baths'), followUp: v('ni-followup'), message: v('ni-message')
+  });
+  setAdminView('inquiry-detail', inq.id);
+}
+
+function setInquiryStatusUI(id, status){ DB.setInquiryStatus(id, status); render(); }
+function setInquiryFollowUpUI(id, date){ DB.setInquiryFollowUp(id, date); render(); }
+function addInquiryNoteUI(id){
+  const text = document.getElementById('inq-note').value.trim();
+  if (!text) return;
+  DB.addInquiryNote(id, text);
+  render();
+}
+
+// Hands the lead's details to the existing New Property form. The inquiry is only marked Converted
+// when that property is actually saved (see submitNewProperty), so abandoning the form changes nothing.
+function convertInquiry(id){
+  const q = DB.getInquiry(id);
+  if (!q) return;
+  initPropertyDraft();
+  const d = newPropertyDraft;
+  const parts = (q.address || '').split(',').map(x => x.trim()).filter(Boolean);
+  if (parts.length >= 3) {
+    d.street = parts[0]; d.city = parts[1];
+    const m = parts.slice(2).join(' ').match(/^([A-Za-z]{2})\b\s*(\d{5})?/);
+    if (m) { d.state = m[1].toUpperCase(); d.zip = m[2] || ''; }
+  } else if (parts.length === 2) { d.street = parts[0]; d.city = parts[1]; }
+  else if (parts.length === 1) { d.street = parts[0]; }
+  d.hostName = q.name || '';
+  d.hostPhone = q.phone || '';
+  d.hostEmail = q.email || '';
+  if (q.bedrooms !== '' && q.bedrooms != null) d.bedrooms = q.bedrooms;
+  if (q.bathrooms !== '' && q.bathrooms != null) {
+    d.bathrooms = Math.floor(q.bathrooms);
+    if (q.bathrooms % 1 !== 0) d.halfBaths = 1;
+  }
+  if (q.message) d.additionalNotes = 'From inquiry ' + q.referenceId + ': ' + q.message;
+  state.admin.convertingInquiryId = id;
+  state.admin.view = 'new-property';
+  render();
+}
+function convertBannerHtml(){
+  const q = state.admin.convertingInquiryId ? DB.getInquiry(state.admin.convertingInquiryId) : null;
+  if (!q) return '';
+  return `
+    <div class="card" style="border-left:4px solid var(--gold);">
+      <h3 class="label">Converting inquiry</h3>
+      <div style="font-size:13.5px;">Details for <b>${escHtml(q.name)}</b> (${escHtml(q.referenceId)}) are pre-filled below. Add a property nickname and review the rest — the inquiry is marked Converted when you create the property.</div>
+    </div>`;
+}
+
+// CSV cells are quoted, and text that could be read as a spreadsheet formula is neutralized.
+function csvCell(v){
+  let t = v === undefined || v === null ? '' : String(v);
+  if (/^[=+\-@\t\r]/.test(t) && !/^[+-]?[\d\s().-]+$/.test(t)) t = "'" + t;
+  return '"' + t.replace(/"/g, '""') + '"';
+}
+function exportInquiriesCsv(){
+  const cols = ['Reference','Received','Status','Name','Phone','Email','Services','Property Type','Address','Bedrooms','Bathrooms','Frequency','Timeline','Source','Follow-up','Message'];
+  const rows = DB.getInquiries().map(r => [r.referenceId, r.createdAt, INQ_LABELS[r.status], r.name, r.phone, r.email, (r.services || []).join('; '),
+    r.propertyType, r.address, r.bedrooms, r.bathrooms, r.frequency, r.timeline, r.source, r.followUp, r.message]);
+  const csv = [cols].concat(rows).map(row => row.map(csvCell).join(',')).join('\r\n');
+  const blob = new Blob(['\ufeff' + csv], {type:'text/csv;charset=utf-8'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'inquiries-' + todayStr() + '.csv';
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+}
+
+function renderNewJobForm(){
+  const props = DB.getProperties();
+  const techs = DB.getTechs();
+  return `
+    <button class="backlink" onclick="setAdminView('jobs')">← Back to job board</button>
+    <h1>New Job</h1>
+    <div class="card">
+      <label class="field">Property</label>
+      <select id="nj-property">${props.map(p=>`<option value="${p.id}">${p.nickname}</option>`).join('')}</select>
+      <div class="form-grid">
+        <div>
+          <label class="field">Service Type</label>
+          <select id="nj-type"><option>Turnover</option><option>General Services</option></select>
+        </div>
+        <div>
+          <label class="field">Assign To</label>
+          <select id="nj-tech">${techs.map(t=>`<option value="${t.id}">${t.name}</option>`).join('')}</select>
+        </div>
+      </div>
+      <label class="field">Scheduled Date</label>
+      <input type="date" id="nj-date" value="${todayStr()}">
+      <div style="margin-top:18px;">
+        <button class="btn btn-primary" onclick="submitNewJob()">Create Job</button>
+      </div>
+    </div>
+  `;
+}
+
+function submitNewJob(){
+  const propertyId = document.getElementById('nj-property').value;
+  const type = document.getElementById('nj-type').value;
+  const techId = document.getElementById('nj-tech').value;
+  const scheduledDate = document.getElementById('nj-date').value;
+  const job = DB.createJob({propertyId, techId, type, scheduledDate});
+  setAdminView('job-detail', job.id);
+}
+
+/* ===================================================================
+   TECH
+   =================================================================== */
+function switchTech(){ state.tech.techId = null; state.tech.view='myjobs'; render(); }
+function selectTech(id){ state.tech.techId = id; render(); }
+
+function renderTech(){
+  if (!state.tech.techId) return renderTechSelect();
+  if (state.tech.view === 'job-detail') return renderJobDetail('tech');
+  return renderTechMyJobs();
+}
+
+function renderTechSelect(){
+  const techs = DB.getTechs();
+  return `
+    <h1>Who's clocking in?</h1>
+    <p class="accent" style="margin:6px 0 16px;">Select your name to see today's assignments.</p>
+    <div class="select-grid">
+      ${techs.map(t => `<button class="select-card" onclick="selectTech('${t.id}')" style="cursor:pointer;">
+        <div style="font-weight:700; color:var(--navy); font-size:16px;">${t.name}</div>
+        <div style="font-size:12.5px; color:var(--slate); margin-top:4px;">${DB.getJobs({techId:t.id, status:'not_started'}).length} jobs waiting</div>
+      </button>`).join('')}
+    </div>
+  `;
+}
+
+function renderTechMyJobs(){
+  const jobs = DB.getJobs({techId: state.tech.techId});
+  const open = jobs.filter(j=>j.status!=='complete');
+  const done = jobs.filter(j=>j.status==='complete');
+  return `
+    <h1>My Jobs</h1>
+    <p class="accent" style="margin:6px 0 16px;">Today's assignments, in order.</p>
+    ${open.map(j => jobRowHtml(j,'tech')).join('') || emptyHtml('No open jobs — you\'re all caught up')}
+    ${done.length ? `<h3 class="label" style="margin-top:26px;">Completed</h3>${done.map(j=>jobRowHtml(j,'tech')).join('')}` : ''}
+  `;
+}
+
+/* ===================================================================
+   CLIENT
+   =================================================================== */
+function switchProperty(){ state.client.propertyId = null; state.client.view='current'; render(); }
+function selectProperty(id){ state.client.propertyId = id; render(); }
+function setClientView(view, jobId){ state.client.view = view; if(jobId) state.client.jobId = jobId; render(); }
+
+function renderClient(){
+  if (!state.client.propertyId) return renderClientSelect();
+  if (state.client.view === 'job-detail') return renderJobDetail('client');
+  if (state.client.view === 'history') return renderClientHistory();
+  return renderClientCurrent();
+}
+
+function renderClientSelect(){
+  const props = DB.getProperties();
+  return `
+    <h1>Whose dashboard?</h1>
+    <p class="accent" style="margin:6px 0 16px;">Select a property to view its live turnover status.</p>
+    <div class="select-grid">
+      ${props.map(p => `<button class="select-card" onclick="selectProperty('${p.id}')" style="cursor:pointer;">
+        <div style="font-weight:700; color:var(--navy); font-size:16px;">${p.nickname}</div>
+        <div style="font-size:12.5px; color:var(--slate); margin-top:4px;">${p.address}</div>
+      </button>`).join('')}
+    </div>
+  `;
+}
+
+function renderClientCurrent(){
+  const jobs = DB.getJobs({propertyId: state.client.propertyId});
+  const current = jobs.find(j => j.status !== 'complete') || jobs[0];
+  return `
+    <div class="row between"><h1>Your Dashboard</h1>
+      <button class="link-btn" onclick="setClientView('history')">Job History →</button>
+    </div>
+    <p class="accent" style="margin:6px 0 16px;">Every task checked off. Every room photographed. Every issue flagged.</p>
+    ${current ? clientJobCardHtml(current) : emptyHtml('No turnovers scheduled yet')}
+  `;
+}
+
+function renderClientHistory(){
+  const jobs = DB.getJobs({propertyId: state.client.propertyId, status:'complete'});
+  return `
+    <button class="backlink" onclick="setClientView('current')">← Back to live status</button>
+    <h1>Job History</h1>
+    <p class="accent" style="margin:6px 0 16px;">Your complete property record, always accessible.</p>
+    ${jobs.map(j=>jobRowHtml(j,'client')).join('') || emptyHtml('No completed jobs yet')}
+  `;
+}
+
+function clientJobCardHtml(job){
+  const prop = DB.getProperty(job.propertyId);
+  const doneCount = job.tasks.filter(t=>t.done).length;
+  return `
+  <div class="card">
+    <div class="row between">
+      <div>
+        <h3 class="label">${job.type} · ${fmtDate(job.scheduledDate)}</h3>
+        <div style="font-size:13px; color:var(--slate);">${prop.nickname}</div>
+      </div>
+      ${statusBadgeHtml(job.status)}
+    </div>
+    <div style="margin:14px 0; font-size:13.5px; color:var(--slate);">${doneCount} of ${job.tasks.length} tasks complete</div>
+    <button class="btn btn-outline btn-sm" onclick="setClientView('job-detail','${job.id}')">View Live Detail</button>
+  </div>`;
+}
+
+/* ===================================================================
+   SHARED: job list row + job detail (role-aware)
+   =================================================================== */
+function statusBadgeHtml(status){
+  const labels = {not_started:'Not Started', in_progress:'In Progress', complete:'Complete'};
+  const dot = status==='in_progress' ? '<span class="dot pulse"></span>' : '';
+  return `<span class="badge ${status}">${dot}${labels[status]}</span>`;
+}
+
+function jobRowHtml(job, ctx){
+  const prop = DB.getProperty(job.propertyId);
+  const tech = DB.getTech(job.techId);
+  const doneCount = job.tasks.filter(t=>t.done).length;
+  const flagBadge = job.issueFlags.length
+    ? `<span class="sev ${job.issueFlags.some(f=>f.severity==='urgent')?'urgent':(job.issueFlags.some(f=>f.severity==='attention')?'attention':'routine')}">${job.issueFlags.length} flag${job.issueFlags.length>1?'s':''}</span>`
+    : '';
+  const openFn = `set${ctx==='admin'?'AdminView':(ctx==='tech'?'TechView_unused':'ClientView')}`;
+  const onclick = ctx==='admin' ? `setAdminView('job-detail','${job.id}')`
+    : ctx==='tech' ? `openTechJob('${job.id}')`
+    : `setClientView('job-detail','${job.id}')`;
+  return `
+    <div class="card" style="cursor:pointer;" onclick="${onclick}">
+      <div class="row between">
+        <div>
+          <div style="font-weight:700; color:var(--navy);">${prop.nickname} <span style="font-weight:400; color:var(--slate); font-size:13px;">· ${job.type}</span></div>
+          <div style="font-size:13px; color:var(--slate); margin-top:2px;">${fmtDate(job.scheduledDate)}${ctx!=='tech' ? ' · '+tech.name : ''} · ${doneCount}/${job.tasks.length} tasks</div>
+        </div>
+        <div class="row" style="gap:8px;">${flagBadge}${statusBadgeHtml(job.status)}</div>
+      </div>
+    </div>
+  `;
+}
+
+function openTechJob(jobId){ state.tech.view='job-detail'; state.tech.jobId=jobId; render(); }
+
+function emptyHtml(msg){
+  return `<div class="empty"><span class="accent">${msg}</span></div>`;
+}
+
+function currentJobIdForRole(role){
+  if (role==='admin') return state.admin.jobId;
+  if (role==='tech') return state.tech.jobId;
+  return state.client.jobId;
+}
+function backForRole(role){
+  if (role==='admin') setAdminView('jobs');
+  else if (role==='tech'){ state.tech.view='myjobs'; render(); }
+  else setClientView('current');
+}
+
+function renderJobDetail(role){
+  const jobId = currentJobIdForRole(role);
+  const job = DB.getJob(jobId);
+  const prop = DB.getProperty(job.propertyId);
+  const tech = DB.getTech(job.techId);
+  const sections = [...new Set(job.tasks.map(t=>t.section))];
+  const isTech = role==='tech';
+  const isClient = role==='client';
+  const areas = propertyAreas(prop);
+  const beforeDone = areas.every(a => job.beforePhotos[a]);
+  const afterDone = areas.every(a => job.afterPhotos[a]);
+  const doneCount = job.tasks.filter(t=>t.done).length;
+  const allTasksDone = job.tasks.length > 0 && doneCount === job.tasks.length;
+  const canWork = isTech && !!job.clockIn && beforeDone;
+  const canSignOff = allTasksDone && afterDone;
+
+  return `
+    <button class="backlink" onclick="backForRole('${role}')">← Back</button>
+    <div class="row between">
+      <div>
+        <h1>${prop.nickname}</h1>
+        <p class="accent" style="margin:4px 0 0;">${job.type} · ${fmtDate(job.scheduledDate)} · ${tech.name}</p>
+      </div>
+      ${statusBadgeHtml(job.status)}
+    </div>
+
+    <div class="card">
+      <div class="row" style="gap:24px; font-size:13.5px; color:var(--slate); flex-wrap:wrap;">
+        <div>Clock In: <b style="color:var(--ink);">${fmtDateTime(job.clockIn)}</b></div>
+        <div>Clock Out: <b style="color:var(--ink);">${fmtDateTime(job.clockOut)}</b></div>
+        <div>${doneCount} / ${job.tasks.length} tasks complete</div>
+      </div>
+      ${isTech && job.status==='not_started' ? `<div style="margin-top:14px;"><button class="btn btn-primary" onclick="doClockIn('${job.id}')">Clock In &amp; Start Job</button></div>` : ''}
+      ${isTech && job.clockIn && !beforeDone ? `<p style="margin-top:10px; font-size:13px; color:var(--urgent);">Take before photos of every room below — before touching anything — no exceptions. The checklist unlocks once they're all in.</p>` : ''}
+    </div>
+
+    ${isTech ? `
+      <div class="card" style="border-left:4px solid var(--navy);">
+        <h3 class="label">Access Info — Tech Only</h3>
+        <div style="font-size:13.5px; line-height:1.8;">
+          ${prop.keyMethod ? `<div><span style="color:var(--slate);">Key Method:</span> <b>${prop.keyMethod}</b></div>` : ''}
+          ${prop.entryCode ? `<div><span style="color:var(--slate);">Entry Code:</span> <b>${prop.entryCode}</b></div>` : ''}
+          ${prop.garageCode ? `<div><span style="color:var(--slate);">Garage Code:</span> <b>${prop.garageCode}</b></div>` : ''}
+          ${prop.gateCode ? `<div><span style="color:var(--slate);">Gate Code:</span> <b>${prop.gateCode}</b></div>` : ''}
+          ${prop.parkingInstructions ? `<div><span style="color:var(--slate);">Parking:</span> ${prop.parkingInstructions}</div>` : ''}
+          ${prop.accessNotes ? `<div style="margin-top:4px;">${prop.accessNotes}</div>` : ''}
+          ${!prop.keyMethod && !prop.entryCode ? `<div style="color:var(--slate);">No access details on file — check with your coordinator.</div>` : ''}
+        </div>
+      </div>
+    ` : ''}
+
+    ${job.completionReport ? `
+      <div class="card" style="border-left:4px solid var(--gold);">
+        <h3 class="label">Completion Report</h3>
+        <p class="accent" style="font-size:16px;">Every detail matters — this property is guest-ready.</p>
+        <div style="font-size:13.5px; color:var(--slate);">Signed off ${fmtDateTime(job.completionReport.signOffAt)} · ${job.completionReport.photoCount} photos logged · ${job.completionReport.flagCount} issue flag(s)</div>
+        ${job.completionReport.notes ? `<p style="margin-top:8px; font-size:14px;">${job.completionReport.notes}</p>` : ''}
+      </div>
+    ` : ''}
+
+    ${job.issueFlags.length ? `
+      <div class="card">
+        <h3 class="label">Issue Flags</h3>
+        ${job.issueFlags.map(f => `
+          <div class="flag-card ${f.severity}">
+            <div class="row between"><span class="sev ${f.severity}">${sevLabel(f.severity)}</span><span style="font-size:11.5px; color:var(--slate);">${fmtDateTime(f.createdAt)}</span></div>
+            <p style="margin-top:6px; font-size:14px;">${f.description}</p>
+            ${f.photo ? `<img class="thumb" src="${f.photo}" style="margin-top:4px;">` : ''}
+          </div>
+        `).join('')}
+      </div>
+    ` : ''}
+
+    ${isTech ? `
+      <div class="card">
+        <h3 class="label">Flag an Issue</h3>
+        <select id="flag-sev-${job.id}" onchange="updateFlagHint('${job.id}')">
+          <option value="routine">Routine Note</option>
+          <option value="attention">Needs Host Attention</option>
+          <option value="urgent">Urgent — Stop and Call</option>
+        </select>
+        <p id="flag-hint-${job.id}" style="display:none; font-size:12.5px; color:var(--urgent); font-weight:700; margin:6px 0 0;">Stop. Don't just flag this — call your supervisor immediately.</p>
+        <div class="row" style="gap:6px; margin-top:10px;">
+          ${DAMAGE_TAGS.map(tag => `<button type="button" class="btn btn-outline btn-sm" style="padding:5px 10px; font-size:11.5px;" onclick="appendFlagChip('${job.id}','${tag}')">${tag}</button>`).join('')}
+        </div>
+        <textarea id="flag-desc-${job.id}" rows="2" placeholder="Describe what you found and exactly where…" style="margin-top:10px;"></textarea>
+        <div class="row" style="margin-top:10px; gap:12px;">
+          <label class="photo-slot" for="flag-photo-${job.id}">+ photo</label>
+          <input type="file" accept="image/*" capture="environment" id="flag-photo-${job.id}" onchange="handleFlagPhoto(event,'${job.id}')">
+          <div id="flag-photo-preview-${job.id}"></div>
+          <button class="btn btn-outline btn-sm" onclick="submitFlag('${job.id}')">Submit Flag</button>
+        </div>
+      </div>
+    ` : ''}
+
+    ${(job.clockIn) ? `
+      <div class="card">
+        <h3 class="label">Before Photos — Arrival</h3>
+        <p style="font-size:12.5px; color:var(--slate); margin-bottom:6px;">Taken immediately on arrival, before anything is touched.</p>
+        ${areaPhotoGridHtml(job, 'before', areas, isTech)}
+      </div>
+    ` : ''}
+
+    ${isTech && job.clockIn ? `
+      <div class="card">
+        <div class="row between" style="cursor:pointer;" onclick="doToggleLaundry('${job.id}')">
+          <h3 class="label" style="margin:0;">Laundry Started</h3>
+          <div class="task-check ${job.laundryStarted?'done':''}">${job.laundryStarted?'✓':''}</div>
+        </div>
+      </div>
+    ` : ''}
+
+    <div class="card">
+      <h3 class="label">Checklist${isClient ? ' — Live Feed' : ''}</h3>
+      ${isTech && job.clockIn && !canWork ? `<p style="font-size:13px; color:var(--slate); margin-bottom:8px;">🔒 Finish the before photos above to start checking off tasks.</p>` : ''}
+      ${sections.map(sec => `
+        <div class="section-hdr">${sec}</div>
+        ${job.tasks.filter(t=>t.section===sec).map(t => taskRowHtml(t, job, canWork)).join('')}
+      `).join('')}
+    </div>
+
+    ${(allTasksDone) ? `
+      <div class="card">
+        <h3 class="label">After Photos — Final Walkthrough</h3>
+        <p style="font-size:12.5px; color:var(--slate); margin-bottom:6px;">Taken after the final walkthrough — proof of completion.</p>
+        ${areaPhotoGridHtml(job, 'after', areas, isTech)}
+      </div>
+    ` : (isTech ? `<div class="card"><h3 class="label">After Photos — Final Walkthrough</h3><p style="font-size:13px; color:var(--slate);">🔒 Complete every checklist task first.</p></div>` : '')}
+
+    ${isTech && job.status!=='complete' ? `
+      <div class="card">
+        <h3 class="label">Final Sign-Off</h3>
+        ${!canSignOff ? `<p style="font-size:13px; color:var(--slate);">Complete all tasks and upload every after photo to submit sign-off.</p>` : ''}
+        <textarea id="signoff-notes-${job.id}" rows="2" placeholder="Any notes for the host? (optional)"></textarea>
+        <div style="margin-top:10px;"><button class="btn btn-gold" ${canSignOff?'':'disabled'} onclick="doSignOff('${job.id}')">Submit Sign-Off &amp; Clock Out</button></div>
+      </div>
+    ` : ''}
+  `;
+}
+
+const DAMAGE_TAGS = ['Broken furniture','Damaged linens/towels','Broken dishes/glassware','Damaged appliance',
+  'Wall damage','Floor damage','Broken fixture','Missing inventory','Evidence of pets','Evidence of smoking',
+  'Excessive mess','Plumbing / leak','Pest evidence','Exterior damage'];
+
+function sevLabel(sev){
+  return sev==='urgent' ? 'Urgent — Stop and Call' : sev==='attention' ? 'Needs Host Attention' : 'Routine Note';
+}
+
+function areaPhotoGridHtml(job, phase, areas, editable){
+  const map = phase==='before' ? job.beforePhotos : job.afterPhotos;
+  return `<div class="thumb-row">` + areas.map(a => {
+    const url = map[a];
+    const cell = url
+      ? `<img class="thumb" src="${url}">`
+      : (editable ? areaPhotoSlotHtml(job.id, a, phase) : `<div class="photo-slot" style="opacity:.5; border-style:solid;">—</div>`);
+    return `<div style="text-align:center;">${cell}<div style="font-size:10px; color:var(--slate); margin-top:3px; max-width:66px;">${a}</div></div>`;
+  }).join('') + `</div>`;
+}
+function areaPhotoSlotHtml(jobId, area, phase){
+  const inputId = `areaphoto-${jobId}-${area.replace(/[^a-zA-Z0-9]/g,'_')}-${phase}`;
+  return `<label class="photo-slot" for="${inputId}">+ photo</label>
+    <input type="file" accept="image/*" capture="environment" id="${inputId}" onchange="handleAreaPhotoUpload(event,'${jobId}','${area}','${phase}')">`;
+}
+
+function taskRowHtml(t, job, canWork){
+  return `
+    <div class="task-row">
+      <div class="task-check ${t.done?'done':''}" ${canWork?`onclick="doToggleTask('${job.id}','${t.id}')"`:''} style="${canWork?'cursor:pointer;':''}">${t.done?'✓':''}</div>
+      <div style="flex:1;">
+        <div class="task-text ${t.done?'done':''}">${t.label}</div>
+        ${t.doneAt ? `<div class="task-meta">Checked off ${fmtDateTime(t.doneAt)}</div>` : ''}
+        <div class="thumb-row">
+          ${t.photoBefore ? `<img class="thumb" src="${t.photoBefore}">` : (canWork ? photoSlotHtml(job.id,t.id,'before') : '')}
+          ${t.photoAfter ? `<img class="thumb" src="${t.photoAfter}">` : (canWork ? photoSlotHtml(job.id,t.id,'after') : '')}
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function photoSlotHtml(jobId, taskId, kind){
+  const inputId = `photo-${jobId}-${taskId}-${kind}`;
+  return `
+    <label class="photo-slot" for="${inputId}">+ ${kind}</label>
+    <input type="file" accept="image/*" capture="environment" id="${inputId}" onchange="handlePhotoUpload(event,'${jobId}','${taskId}','${kind}')">
+  `;
+}
+
+/* ---------------------------- ACTIONS ---------------------------- */
+let pendingFlagPhoto = {};
+
+function doClockIn(jobId){ DB.clockIn(jobId); render(); }
+function doToggleTask(jobId, taskId){ DB.toggleTask(jobId, taskId); render(); }
+function doToggleLaundry(jobId){ DB.toggleLaundry(jobId); render(); }
+
+function appendFlagChip(jobId, label){
+  const ta = document.getElementById(`flag-desc-${jobId}`);
+  if (!ta) return;
+  ta.value = ta.value.trim() ? ta.value.trim() + '; ' + label : label;
+  ta.focus();
+}
+function updateFlagHint(jobId){
+  const sev = document.getElementById(`flag-sev-${jobId}`).value;
+  const hint = document.getElementById(`flag-hint-${jobId}`);
+  if (hint) hint.style.display = sev==='urgent' ? 'block' : 'none';
+}
+function handleFlagPhoto(evt, jobId){
+  const file = evt.target.files[0];
+  if (!file) return;
+  resizeImageFile(file, 700, dataUrl => {
+    pendingFlagPhoto[jobId] = dataUrl;
+    const preview = document.getElementById(`flag-photo-preview-${jobId}`);
+    if (preview) preview.innerHTML = `<img class="thumb" src="${dataUrl}">`;
+  });
+}
+
+function submitFlag(jobId){
+  const sev = document.getElementById(`flag-sev-${jobId}`).value;
+  const desc = document.getElementById(`flag-desc-${jobId}`).value.trim();
+  if (!desc) return;
+  DB.addIssueFlag(jobId, {severity: sev, description: desc, photoDataUrl: pendingFlagPhoto[jobId]||null});
+  delete pendingFlagPhoto[jobId];
+  render();
+}
+
+function doSignOff(jobId){
+  const notes = document.getElementById(`signoff-notes-${jobId}`).value.trim();
+  DB.submitSignOff(jobId, {notes});
+  render();
+}
+
+function resizeImageFile(file, maxDim, cb){
+  const reader = new FileReader();
+  reader.onload = e => {
+    const img = new Image();
+    img.onload = () => {
+      let w = img.width, h = img.height;
+      if (w > h && w > maxDim){ h = Math.round(h*(maxDim/w)); w = maxDim; }
+      else if (h > maxDim){ w = Math.round(w*(maxDim/h)); h = maxDim; }
+      const canvas = document.createElement('canvas');
+      canvas.width = w; canvas.height = h;
+      canvas.getContext('2d').drawImage(img,0,0,w,h);
+      cb(canvas.toDataURL('image/jpeg', 0.72));
+    };
+    img.src = e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+function handlePhotoUpload(evt, jobId, taskId, kind){
+  const file = evt.target.files[0];
+  if (!file) return;
+  resizeImageFile(file, 900, dataUrl => { DB.addPhoto(jobId, taskId, kind, dataUrl); render(); });
+}
+
+function handleAreaPhotoUpload(evt, jobId, area, phase){
+  const file = evt.target.files[0];
+  if (!file) return;
+  resizeImageFile(file, 900, dataUrl => { DB.setAreaPhoto(jobId, area, phase, dataUrl); render(); });
+}
+
+/* ---------------------------- BOOT ---------------------------- */
+seed();
+render();
+</script>
+</body>
+</html>

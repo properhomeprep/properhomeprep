@@ -1,0 +1,1041 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Proper Home Prep — Coordinator Dashboard</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        navy: '#1A2E4A',
+        'navy-light': '#243b5c',
+        'navy-dark': '#12203a',
+        gold: '#C9A84C',
+        'gold-light': '#d4b96a',
+        'gold-dark': '#b8953a',
+        cream: '#FDF6E3',
+        paper: '#f5f4f0',
+        destructive: '#DC2626',
+      },
+      fontFamily: {
+        inter: ['Inter', 'sans-serif'],
+      },
+    },
+  },
+};
+</script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<script src="https://unpkg.com/lucide@latest" defer></script>
+<style>
+:root {
+  --navy: #1A2E4A;
+  --navy-light: #243b5c;
+  --gold: #C9A84C;
+  --cream: #FDF6E3;
+  --paper: #f5f4f0;
+}
+* { border-radius: 0 !important; font-family: 'Inter', sans-serif; }
+body { background: var(--paper); margin: 0; }
+input:focus, select:focus, textarea:focus { outline: none; box-shadow: 0 0 0 2px var(--gold); border-color: var(--gold); }
+.scrollbar-thin::-webkit-scrollbar { width: 6px; }
+.scrollbar-thin::-webkit-scrollbar-track { background: transparent; }
+.scrollbar-thin::-webkit-scrollbar-thumb { background: #b0b0b0; }
+.view-section { display: none; }
+.view-section.active { display: block; }
+.nav-item { cursor: pointer; padding: 10px 16px; display: flex; align-items: center; gap: 10px; color: #ffffffcc; font-size: 14px; font-weight: 500; border-left: 4px solid transparent; transition: all 0.15s; }
+.nav-item:hover { background: var(--navy-light); color: #fff; }
+.nav-item.active { border-left-color: var(--gold); background: var(--navy-light); color: #fff; }
+.stat-card { background: #fff; border-left: 4px solid var(--navy); padding: 20px; position: relative; }
+.stat-card .stat-num { font-size: 32px; font-weight: 800; color: var(--gold); }
+.stat-card .stat-label { font-size: 13px; font-weight: 600; color: var(--navy); text-transform: uppercase; letter-spacing: 0.5px; }
+.stat-card .stat-sub { font-size: 11px; color: #888; margin-top: 2px; }
+.section-header { background: var(--navy); color: #fff; padding: 10px 16px; font-size: 13px; font-weight: 700; letter-spacing: 1px; display: flex; align-items: center; justify-content: space-between; }
+.section-header .view-all { color: var(--gold); font-size: 12px; font-weight: 600; cursor: pointer; text-decoration: none; }
+.badge-gold { background: var(--gold); color: var(--navy); font-size: 11px; font-weight: 700; padding: 2px 8px; display: inline-block; }
+.badge-red { background: #DC2626; color: #fff; font-size: 10px; font-weight: 700; padding: 1px 6px; display: inline-block; }
+.badge-green { background: #16a34a; color: #fff; font-size: 11px; font-weight: 600; padding: 2px 8px; }
+.badge-gray { background: #9ca3af; color: #fff; font-size: 11px; font-weight: 600; padding: 2px 8px; }
+.badge-purple { background: #7c3aed; color: #fff; font-size: 11px; font-weight: 600; padding: 2px 8px; }
+.badge-navy { background: var(--navy); color: var(--gold); font-size: 11px; font-weight: 700; padding: 3px 10px; }
+.pill { font-size: 11px; font-weight: 600; padding: 2px 10px; display: inline-block; }
+.pill-new { background: #fecaca; color: #991b1b; }
+.pill-contacted { background: #fef3c7; color: #92400e; }
+.pill-qualified { background: #bbf7d0; color: #166534; }
+.pill-not_a_fit { background: #e5e7eb; color: #374151; }
+.pill-scheduled { background: #dbeafe; color: #1e40af; }
+.pill-in_progress { background: #fef3c7; color: #92400e; }
+.pill-completed { background: #bbf7d0; color: #166534; }
+.pill-cancelled { background: #e5e7eb; color: #374151; }
+.pill-rush { background: #fecaca; color: #991b1b; }
+.pill-vip { background: #ede9fe; color: #5b21b6; }
+.pill-normal { background: #e5e7eb; color: #374151; }
+.btn-gold { background: var(--gold); color: var(--navy); font-size: 13px; font-weight: 700; padding: 7px 16px; border: none; cursor: pointer; transition: background 0.15s; }
+.btn-gold:hover { background: var(--gold-dark); }
+.btn-navy-outline { background: transparent; color: var(--navy); font-size: 13px; font-weight: 600; padding: 6px 14px; border: 2px solid var(--navy); cursor: pointer; }
+.btn-navy-outline:hover { background: var(--navy); color: #fff; }
+.btn-green-outline { background: transparent; color: #16a34a; font-size: 13px; font-weight: 600; padding: 6px 14px; border: 2px solid #16a34a; cursor: pointer; }
+.btn-green-outline:hover { background: #16a34a; color: #fff; }
+.btn-red-outline { background: transparent; color: #DC2626; font-size: 13px; font-weight: 600; padding: 6px 14px; border: 2px solid #DC2626; cursor: pointer; }
+.btn-red-outline:hover { background: #DC2626; color: #fff; }
+.btn-sm { font-size: 12px; padding: 4px 12px; }
+.card { background: #fff; border: 1px solid #e5e7eb; }
+.modal-overlay { display: none; position: fixed; inset: 0; background: rgba(26,46,74,0.5); z-index: 100; justify-content: center; align-items: center; }
+.modal-overlay.open { display: flex; }
+.modal-panel { background: #fff; width: 100%; max-width: 600px; max-height: 90vh; overflow-y: auto; }
+.toast-container { position: fixed; bottom: 24px; right: 24px; z-index: 200; display: flex; flex-direction: column; gap: 8px; }
+.toast { background: var(--navy); color: var(--gold); padding: 12px 20px; font-size: 13px; font-weight: 600; animation: slideUp 0.3s ease; }
+@keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+.filter-pill { padding: 6px 16px; font-size: 13px; font-weight: 600; cursor: pointer; border: 1px solid #d1d5db; background: #fff; color: #374151; transition: all 0.15s; }
+.filter-pill.active { background: var(--navy); color: #fff; border-color: var(--navy); }
+.filter-pill:hover:not(.active) { background: #f3f4f6; }
+input, select, textarea { border: 1px solid #d1d5db; padding: 8px 12px; font-size: 14px; font-family: 'Inter', sans-serif; }
+.sidebar { width: 220px; background: var(--navy); position: fixed; top: 0; left: 0; bottom: 0; z-index: 50; overflow-y: auto; padding-top: 60px; }
+.main-content { margin-left: 220px; padding: 28px; padding-top: 70px; min-height: 100vh; }
+.top-header { position: fixed; top: 0; left: 0; right: 0; z-index: 60; }
+@media (max-width: 767px) {
+  .sidebar { display: none; }
+  .mobile-tabs { display: flex !important; }
+  .main-content { margin-left: 0; padding: 16px; padding-top: 70px; padding-bottom: 80px; }
+}
+@media (min-width: 768px) {
+  .mobile-tabs { display: none !important; }
+}
+.severity-low { background: #bbf7d0; color: #166534; }
+.severity-medium { background: #fef3c7; color: #92400e; }
+.severity-high { background: #fecaca; color: #991b1b; }
+.severity-critical { background: #ede9fe; color: #5b21b6; }
+.tabular-nums { font-variant-numeric: tabular-nums; }
+</style>
+</head>
+<body data-id="0" class="font-inter">
+<app-icon data-id="1" hidden data-icon="layout-dashboard" data-palette="Dark"></app-icon>
+
+<!-- TOP HEADER -->
+<header data-id="2" class="top-header">
+  <div data-id="3" class="bg-navy flex items-center justify-between px-4 md:px-6" style="height:52px;">
+    <div data-id="4" class="flex items-center gap-3 min-w-0">
+      <span data-id="5" class="text-white font-bold text-base md:text-lg whitespace-nowrap">Proper Home Prep</span>
+      <span data-id="6" class="text-gold text-lg hidden sm:inline">·</span>
+      <span data-id="7" class="text-white text-sm font-medium hidden sm:inline whitespace-nowrap">Coordinator Dashboard</span>
+    </div>
+    <div data-id="8" id="header-clock-a1b2" class="text-gold text-sm font-semibold tabular-nums hidden md:block"></div>
+    <div data-id="9" class="flex items-center gap-3">
+      <div data-id="10" id="demo-badge-c3d4" class="badge-navy text-xs">DEMO MODE</div>
+    </div>
+  </div>
+  <div data-id="11" style="height:3px;background:var(--gold);"></div>
+</header>
+
+<!-- SIDEBAR -->
+<aside data-id="12" class="sidebar scrollbar-thin" id="sidebar-e5f6">
+  <nav data-id="13" class="flex flex-col gap-1 pt-3">
+    <div data-id="14" class="nav-item active" data-view="overview"><i data-id="15" data-lucide="home" class="w-4 h-4"></i><span data-id="16">Overview</span></div>
+    <div data-id="17" class="nav-item" data-view="inquiries"><i data-id="18" data-lucide="mail" class="w-4 h-4"></i><span data-id="19">Inquiries</span><span data-id="20" id="nav-badge-inq-g7h8" class="badge-red ml-auto" style="display:none;"></span></div>
+    <div data-id="21" class="nav-item" data-view="properties"><i data-id="22" data-lucide="building-2" class="w-4 h-4"></i><span data-id="23">Properties</span></div>
+    <div data-id="24" class="nav-item" data-view="jobs"><i data-id="25" data-lucide="calendar" class="w-4 h-4"></i><span data-id="26">Jobs</span></div>
+    <div data-id="27" class="nav-item" data-view="sops"><i data-id="28" data-lucide="clipboard-list" class="w-4 h-4"></i><span data-id="29">SOPs</span></div>
+    <div data-id="30" class="nav-item" data-view="reports"><i data-id="31" data-lucide="alert-triangle" class="w-4 h-4"></i><span data-id="32">Reports</span><span data-id="33" id="nav-badge-rpt-i9j0" class="badge-red ml-auto" style="display:none;"></span></div>
+    <div data-id="34" class="nav-item" data-view="techs"><i data-id="35" data-lucide="hard-hat" class="w-4 h-4"></i><span data-id="36">Techs</span></div>
+    <div data-id="37" class="nav-item" data-view="settings"><i data-id="38" data-lucide="settings" class="w-4 h-4"></i><span data-id="39">Settings</span></div>
+  </nav>
+</aside>
+
+<!-- MOBILE BOTTOM TABS -->
+<nav data-id="40" class="mobile-tabs fixed bottom-0 left-0 right-0 bg-navy z-50 justify-around py-1" style="display:none;" id="mobile-tabs-k1l2">
+  <div data-id="41" class="mob-tab flex flex-col items-center gap-0.5 py-1 px-2 cursor-pointer active" data-view="overview"><i data-id="42" data-lucide="home" class="w-5 h-5 text-gold"></i><span data-id="43" class="text-white text-[10px]">Home</span></div>
+  <div data-id="44" class="mob-tab flex flex-col items-center gap-0.5 py-1 px-2 cursor-pointer" data-view="inquiries"><i data-id="45" data-lucide="mail" class="w-5 h-5 text-white"></i><span data-id="46" class="text-white text-[10px]">Inquiries</span></div>
+  <div data-id="47" class="mob-tab flex flex-col items-center gap-0.5 py-1 px-2 cursor-pointer" data-view="properties"><i data-id="48" data-lucide="building-2" class="w-5 h-5 text-white"></i><span data-id="49" class="text-white text-[10px]">Properties</span></div>
+  <div data-id="50" class="mob-tab flex flex-col items-center gap-0.5 py-1 px-2 cursor-pointer" data-view="jobs"><i data-id="51" data-lucide="calendar" class="w-5 h-5 text-white"></i><span data-id="52" class="text-white text-[10px]">Jobs</span></div>
+  <div data-id="53" class="mob-tab flex flex-col items-center gap-0.5 py-1 px-2 cursor-pointer" data-view="reports"><i data-id="54" data-lucide="alert-triangle" class="w-5 h-5 text-white"></i><span data-id="55" class="text-white text-[10px]">Reports</span></div>
+  <div data-id="56" class="mob-tab flex flex-col items-center gap-0.5 py-1 px-2 cursor-pointer" data-view="settings"><i data-id="57" data-lucide="settings" class="w-5 h-5 text-white"></i><span data-id="58" class="text-white text-[10px]">Settings</span></div>
+</nav>
+
+<!-- MAIN CONTENT AREA -->
+<main data-id="59" class="main-content">
+
+  <!-- VIEW 1: OVERVIEW -->
+  <section data-id="60" id="view-overview" class="view-section active">
+    <div data-id="61" class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+      <div data-id="62" class="stat-card"><div data-id="63" class="stat-num tabular-nums" id="stat-inq-m3n4">0</div><div data-id="64" class="stat-label">New Inquiries</div><div data-id="65" class="stat-sub">Awaiting your response</div></div>
+      <div data-id="66" class="stat-card"><div data-id="67" class="stat-num tabular-nums" id="stat-prop-o5p6">0</div><div data-id="68" class="stat-label">Active Properties</div><div data-id="69" class="stat-sub">Currently enrolled</div></div>
+      <div data-id="70" class="stat-card"><div data-id="71" class="stat-num tabular-nums" id="stat-jobs-q7r8">0</div><div data-id="72" class="stat-label">Jobs This Week</div><div data-id="73" class="stat-sub">Scheduled turnovers</div></div>
+      <div data-id="74" class="stat-card" id="stat-rpt-card-s9t0"><div data-id="75" class="stat-num tabular-nums" id="stat-rpt-u1v2">0</div><div data-id="76" class="stat-label">Open Reports</div><div data-id="77" class="stat-sub">Needs attention</div></div>
+    </div>
+
+    <div data-id="78" class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+      <div data-id="79">
+        <div data-id="80" class="section-header"><span data-id="81">RECENT INQUIRIES</span><span data-id="82" class="view-all" id="link-all-inq-w3x4">View All →</span></div>
+        <div data-id="83" id="overview-inquiries-y5z6" class="space-y-0"></div>
+      </div>
+      <div data-id="84">
+        <div data-id="85" class="section-header"><span data-id="86">TODAY'S JOBS</span><span data-id="87" class="view-all" id="link-all-jobs-a7b8">View Schedule →</span></div>
+        <div data-id="88" id="overview-jobs-c9d0" class="space-y-0"></div>
+      </div>
+    </div>
+
+    <div data-id="89">
+      <div data-id="90" class="section-header" style="background:#991b1b;"><span data-id="91">DAMAGE REPORTS — NEEDS ACTION</span></div>
+      <div data-id="92" id="overview-reports-e1f2" class="space-y-0"></div>
+    </div>
+  </section>
+
+  <!-- VIEW 2: INQUIRIES -->
+  <section data-id="93" id="view-inquiries" class="view-section">
+    <div data-id="94" class="section-header mb-0"><span data-id="95">INQUIRY MANAGEMENT</span></div>
+    <div data-id="96" class="bg-white border-b border-gray-200 p-3 flex flex-wrap items-center gap-2 mb-4">
+      <div data-id="97" class="flex flex-wrap gap-1" id="inq-filters-g3h4">
+        <button data-id="98" class="filter-pill active" data-filter="all">All</button>
+        <button data-id="99" class="filter-pill" data-filter="new">New</button>
+        <button data-id="100" class="filter-pill" data-filter="contacted">Contacted</button>
+        <button data-id="101" class="filter-pill" data-filter="qualified">Qualified</button>
+        <button data-id="102" class="filter-pill" data-filter="not_a_fit">Not a Fit</button>
+      </div>
+      <input data-id="103" type="text" id="inq-search-i5j6" placeholder="Search name, address, service…" class="ml-auto w-full sm:w-64 text-sm" />
+    </div>
+    <div data-id="104" id="inquiries-list-k7l8" class="space-y-3"></div>
+  </section>
+
+  <!-- VIEW 3: PROPERTIES -->
+  <section data-id="105" id="view-properties" class="view-section">
+    <div data-id="106" class="section-header mb-4"><span data-id="107">ENROLLED PROPERTIES</span><button data-id="108" class="btn-gold btn-sm" id="btn-add-prop-m9n0">+ Add Property</button></div>
+    <div data-id="109" id="properties-grid-o1p2" class="grid grid-cols-1 lg:grid-cols-2 gap-4"></div>
+  </section>
+
+  <!-- VIEW 4: JOBS -->
+  <section data-id="110" id="view-jobs" class="view-section">
+    <div data-id="111" class="section-header mb-0"><span data-id="112">JOB SCHEDULE</span><button data-id="113" class="btn-gold btn-sm" id="btn-add-job-q3r4">+ Add Job</button></div>
+    <div data-id="114" class="bg-white border-b border-gray-200 p-3 flex flex-wrap items-center gap-2 mb-4">
+      <div data-id="115" class="flex flex-wrap gap-1" id="job-status-filters-s5t6">
+        <button data-id="116" class="filter-pill active" data-filter="all">All</button>
+        <button data-id="117" class="filter-pill" data-filter="scheduled">Scheduled</button>
+        <button data-id="118" class="filter-pill" data-filter="in_progress">In Progress</button>
+        <button data-id="119" class="filter-pill" data-filter="completed">Completed</button>
+      </div>
+      <div data-id="120" class="flex flex-wrap gap-1 ml-0 sm:ml-auto" id="job-date-filters-u7v8">
+        <button data-id="121" class="filter-pill active" data-range="week">This Week</button>
+        <button data-id="122" class="filter-pill" data-range="next_week">Next Week</button>
+        <button data-id="123" class="filter-pill" data-range="month">This Month</button>
+      </div>
+    </div>
+    <div data-id="124" class="flex gap-2 mb-4">
+      <button data-id="125" class="filter-pill active" id="job-view-list-w9x0" data-jobview="list">List View</button>
+      <button data-id="126" class="filter-pill" id="job-view-week-y1z2" data-jobview="week">Week View</button>
+    </div>
+    <div data-id="127" id="jobs-list-view-a3b4"></div>
+    <div data-id="128" id="jobs-week-view-c5d6" style="display:none;"></div>
+  </section>
+
+  <!-- VIEW 5: SOPs -->
+  <section data-id="129" id="view-sops" class="view-section">
+    <div data-id="130" class="section-header mb-4"><span data-id="131">SOP MANAGEMENT</span></div>
+    <div data-id="132" id="sops-list-e7f8" class="space-y-3"></div>
+  </section>
+
+  <!-- VIEW 6: REPORTS -->
+  <section data-id="133" id="view-reports" class="view-section">
+    <div data-id="134" class="section-header mb-0"><span data-id="135">DAMAGE REPORTS</span></div>
+    <div data-id="136" class="bg-white border-b border-gray-200 p-3 flex flex-wrap items-center gap-2 mb-4">
+      <div data-id="137" class="flex flex-wrap gap-1" id="rpt-filters-g9h0">
+        <button data-id="138" class="filter-pill active" data-filter="all">All</button>
+        <button data-id="139" class="filter-pill" data-filter="new">New</button>
+        <button data-id="140" class="filter-pill" data-filter="reviewed">Reviewed</button>
+        <button data-id="141" class="filter-pill" data-filter="resolved">Resolved</button>
+      </div>
+    </div>
+    <div data-id="142" id="reports-list-i1j2" class="space-y-3"></div>
+  </section>
+
+  <!-- VIEW 7: TECHS -->
+  <section data-id="143" id="view-techs" class="view-section">
+    <div data-id="144" class="section-header mb-4"><span data-id="145">TECH ROSTER</span></div>
+    <div data-id="146" id="techs-grid-k3l4" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+  </section>
+
+  <!-- VIEW 8: SETTINGS -->
+  <section data-id="147" id="view-settings" class="view-section">
+    <div data-id="148" class="section-header mb-4"><span data-id="149">SETTINGS</span></div>
+    <div data-id="150" class="card p-6 mb-6">
+      <h3 data-id="151" class="text-navy font-bold text-base mb-4">Business Information</h3>
+      <div data-id="152" class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+        <div data-id="153"><label data-id="154" class="text-xs font-semibold text-gray-500 block mb-1">Business Name</label><input data-id="155" id="set-name-m5n6" type="text" class="w-full" value="Proper Home Prep" /></div>
+        <div data-id="156"><label data-id="157" class="text-xs font-semibold text-gray-500 block mb-1">Phone</label><input data-id="158" id="set-phone-o7p8" type="text" class="w-full" value="(615) 555-0100" /></div>
+        <div data-id="159"><label data-id="160" class="text-xs font-semibold text-gray-500 block mb-1">Email</label><input data-id="161" id="set-email-q9r0" type="text" class="w-full" value="brittany@properhomeprep.com" /></div>
+      </div>
+      <button data-id="162" class="btn-gold" id="btn-save-settings-s1t2">Save Changes</button>
+    </div>
+    <div data-id="163" class="card p-6 mb-6">
+      <h3 data-id="164" class="text-navy font-bold text-base mb-3">Firebase Configuration</h3>
+      <p data-id="165" class="text-sm text-gray-600 mb-2">Status: <span data-id="166" class="font-bold text-gold">Demo Mode</span> — using sample data</p>
+      <p data-id="167" class="text-sm text-gray-500">To connect to Firebase, replace the <code data-id="168" class="bg-gray-100 px-1 text-xs">firebaseConfig</code> object in the source code with your project credentials. All collections (<code data-id="169" class="bg-gray-100 px-1 text-xs">inquiries</code>, <code data-id="170" class="bg-gray-100 px-1 text-xs">properties</code>, <code data-id="171" class="bg-gray-100 px-1 text-xs">jobs</code>, <code data-id="172" class="bg-gray-100 px-1 text-xs">reports</code>, <code data-id="173" class="bg-gray-100 px-1 text-xs">users</code>) will sync in real-time via <code data-id="174" class="bg-gray-100 px-1 text-xs">onSnapshot</code>.</p>
+    </div>
+    <div data-id="175" class="card p-6">
+      <h3 data-id="176" class="text-navy font-bold text-base mb-3">Data Export</h3>
+      <button data-id="177" class="btn-gold" id="btn-export-csv-u3v4"><i data-id="178" data-lucide="download" class="w-4 h-4 inline-block mr-1" style="vertical-align:middle;"></i> Export Inquiries as CSV</button>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer data-id="179" class="mt-12 border-t-2 border-gold">
+    <div data-id="180" class="bg-navy text-white text-center text-xs py-3 font-medium">
+      © 2026 Proper Home Prep · Nashville, TN · Coordinator Dashboard v1.0 · Made by Copilot
+    </div>
+  </footer>
+</main>
+
+<!-- MODAL: GENERIC -->
+<div data-id="181" class="modal-overlay" id="modal-overlay-w5x6">
+  <div data-id="182" class="modal-panel">
+    <div data-id="183" class="section-header"><span data-id="184" id="modal-title-y7z8">Modal</span><button data-id="185" id="modal-close-a9b0" class="text-white hover:text-gold cursor-pointer bg-transparent border-none"><i data-id="186" data-lucide="x" class="w-5 h-5"></i></button></div>
+    <div data-id="187" id="modal-body-c1d2" class="p-6"></div>
+    <div data-id="188" id="modal-footer-e3f4" class="p-4 border-t border-gray-200 flex justify-end gap-2"></div>
+  </div>
+</div>
+
+<!-- TOAST CONTAINER -->
+<div data-id="189" class="toast-container" id="toast-container-g5h6"></div>
+
+<script type="module">
+// ── Firebase Config ──────────────────────────────────
+const firebaseConfig = {
+  apiKey: "YOUR_API_KEY",
+  authDomain: "YOUR_PROJECT.firebaseapp.com",
+  projectId: "YOUR_PROJECT_ID",
+  storageBucket: "YOUR_PROJECT.appspot.com",
+  messagingSenderId: "YOUR_SENDER_ID",
+  appId: "YOUR_APP_ID"
+};
+
+const IS_DEMO = firebaseConfig.apiKey === "YOUR_API_KEY";
+let db = null;
+
+if (!IS_DEMO) {
+  try {
+    const { initializeApp } = await import('https://cdn.jsdelivr.net/npm/firebase@10.12.2/app/+esm');
+    const fsMod = await import('https://cdn.jsdelivr.net/npm/firebase@10.12.2/firestore/+esm');
+    const app = initializeApp(firebaseConfig);
+    db = fsMod.getFirestore(app);
+    document.getElementById('demo-badge-c3d4').innerHTML = '<span class="inline-block w-2 h-2 bg-green-400 mr-1" style="border-radius:50%!important;"></span> Live';
+    document.getElementById('demo-badge-c3d4').className = 'text-green-300 text-xs font-semibold flex items-center';
+  } catch(e) { console.error('Firebase init failed, using demo mode', e); }
+}
+
+// ── DEMO DATA ────────────────────────────────────────
+const NOW = new Date(2026, 7, 25, 10, 13, 0);
+function ago(hours) { return new Date(NOW.getTime() - hours * 3600000); }
+function daysAgo(d) { return new Date(NOW.getTime() - d * 86400000); }
+
+let inquiries = [
+  {id:'inq1',name:"Sarah Mitchell",phone:"(615) 442-1892",email:"sarah.m@gmail.com",services:["STR / Airbnb Make-Ready & Turnover"],propertyType:"STR / Airbnb",address:"412 Demonbreun St, Nashville",bedrooms:2,bathrooms:2,frequency:"Every Turnover (STR)",message:"Have 2 Airbnb properties near downtown, need weekly turnover service ASAP",status:"new",timestamp:ago(2),referenceId:"PHP-1724594823"},
+  {id:'inq2',name:"Marcus Webb",phone:"(615) 883-0021",email:"m.webb@outlook.com",services:["General Home Prep Cleaning"],propertyType:"Residential Home",address:"891 Granny White Pike, Brentwood",bedrooms:4,bathrooms:3,frequency:"Bi-Weekly",message:"Looking for reliable bi-weekly cleaning, had bad experience with last company",status:"new",timestamp:ago(5),referenceId:"PHP-1724583221"},
+  {id:'inq3',name:"Jordan Patel",phone:"(615) 227-4490",email:"jpatel@icloud.com",services:["Vacant Property Inspections","Light Repairs & Touch-Ups"],propertyType:"Vacant / Investment",address:"2241 Lebanon Pike, Donelson",bedrooms:3,bathrooms:2,frequency:"Monthly",message:"Investment property sitting vacant, need monthly check-ins and minor repairs as needed",status:"contacted",timestamp:daysAgo(1),referenceId:"PHP-1724510044"},
+  {id:'inq4',name:"Angela Torres",phone:"(615) 601-7733",email:"angelatorres@me.com",services:["Move-In / Move-Out Prep"],propertyType:"Residential Home",address:"554 Winding Creek Blvd, Antioch",bedrooms:3,bathrooms:2.5,frequency:"One-time only",message:"Moving out Sept 1, need full move-out clean for landlord inspection",status:"new",timestamp:daysAgo(2),referenceId:"PHP-1724423811"},
+  {id:'inq5',name:"Derek Hollis",phone:"(615) 358-2201",email:"d.hollis@gmail.com",services:["STR / Airbnb Make-Ready & Turnover","Exterior Refresh & Curb Appeal"],propertyType:"STR / Airbnb",address:"108 5th Ave N, Nashville",bedrooms:1,bathrooms:1,frequency:"Every Turnover (STR)",message:"Studio in Germantown, heavy turnover, need quick reliable team",status:"new",timestamp:daysAgo(3),referenceId:"PHP-1724337400"}
+];
+
+let properties = [
+  {id:'prop1',nickname:"The Gulch Suite",hostName:"Sarah Mitchell",address:"412 Demonbreun St, Nashville",type:"STR/Airbnb",bedrooms:2,bathrooms:2,services:["STR Turnover"],status:"active",techAssigned:"Jenna R.",sopStatus:"approved",nextJob:"Aug 27, 2026"},
+  {id:'prop2',nickname:"Germantown Studio",hostName:"Derek Hollis",address:"108 5th Ave N, Nashville",type:"STR/Airbnb",bedrooms:1,bathrooms:1,services:["STR Turnover","Exterior Refresh"],status:"active",techAssigned:"Marcus L.",sopStatus:"approved",nextJob:"Aug 26, 2026"},
+  {id:'prop3',nickname:"Brentwood Family Home",hostName:"Marcus Webb",address:"891 Granny White Pike, Brentwood",type:"Residential",bedrooms:4,bathrooms:3,services:["General Home Prep"],status:"active",techAssigned:"Jenna R.",sopStatus:"approved",nextJob:"Sep 3, 2026"},
+  {id:'prop4',nickname:"Donelson Investment",hostName:"Jordan Patel",address:"2241 Lebanon Pike, Donelson",type:"Vacant/Investment",bedrooms:3,bathrooms:2,services:["Vacant Inspection","Light Repairs"],status:"pending_sop",techAssigned:"Unassigned",sopStatus:"pending_review",nextJob:"TBD"}
+];
+
+let jobs = [
+  {id:'job1',property:"The Gulch Suite",host:"Sarah Mitchell",tech:"Jenna R.",type:"STR Turnover",date:"Aug 26, 2026",time:"11:00 AM",checkIn:"3:00 PM",status:"scheduled",priority:"normal"},
+  {id:'job2',property:"Germantown Studio",host:"Derek Hollis",tech:"Marcus L.",type:"STR Turnover",date:"Aug 26, 2026",time:"10:00 AM",checkIn:"2:00 PM",status:"in_progress",priority:"rush"},
+  {id:'job3',property:"The Gulch Suite",host:"Sarah Mitchell",tech:"Jenna R.",type:"STR Turnover",date:"Aug 27, 2026",time:"11:00 AM",checkIn:"3:00 PM",status:"scheduled",priority:"normal"},
+  {id:'job4',property:"Brentwood Family Home",host:"Marcus Webb",tech:"Jenna R.",type:"General Clean",date:"Sep 3, 2026",time:"9:00 AM",checkIn:null,status:"scheduled",priority:"normal"},
+  {id:'job5',property:"Germantown Studio",host:"Derek Hollis",tech:"Marcus L.",type:"STR Turnover + Exterior",date:"Aug 30, 2026",time:"10:00 AM",checkIn:"2:00 PM",status:"scheduled",priority:"vip"}
+];
+
+let reports = [
+  {id:'rpt1',property:"The Gulch Suite",tech:"Jenna R.",type:"Broken / Cracked",severity:"Medium",location:"Master Bathroom — towel bar",description:"Chrome towel bar pulled from wall, drywall anchor damaged",date:"Aug 24, 2026",status:"new",refId:"PHP-RPT-1724337121"},
+  {id:'rpt2',property:"Germantown Studio",tech:"Marcus L.",type:"Stained",severity:"Low",location:"Living Room — throw pillow",description:"Small coffee stain on white decorative pillow, approx 3 inches",date:"Aug 25, 2026",status:"reviewed",refId:"PHP-RPT-1724423901"}
+];
+
+let techs = [
+  {id:'tech1',name:"Jenna R.",phone:"(615) 000-0001",email:"jenna@team.com",role:"Lead Tech",status:"active",jobsThisMonth:12,rating:4.9},
+  {id:'tech2',name:"Marcus L.",phone:"(615) 000-0002",email:"marcus@team.com",role:"Tech",status:"active",jobsThisMonth:8,rating:4.7},
+  {id:'tech3',name:"Taylor B.",phone:"(615) 000-0003",email:"taylor@team.com",role:"Tech",status:"on_leave",jobsThisMonth:0,rating:4.8}
+];
+
+// ── Persist demo changes to localStorage ─────────────
+function saveDemoState() {
+  if (!IS_DEMO) return;
+  localStorage.setItem('php_inquiries', JSON.stringify(inquiries.map(i => ({...i, timestamp: i.timestamp.toISOString()}))));
+  localStorage.setItem('php_reports', JSON.stringify(reports));
+  localStorage.setItem('php_jobs', JSON.stringify(jobs));
+}
+function loadDemoState() {
+  if (!IS_DEMO) return;
+  try {
+    const si = localStorage.getItem('php_inquiries');
+    if (si) { inquiries = JSON.parse(si).map(i => ({...i, timestamp: new Date(i.timestamp)})); }
+    const sr = localStorage.getItem('php_reports');
+    if (sr) reports = JSON.parse(sr);
+    const sj = localStorage.getItem('php_jobs');
+    if (sj) jobs = JSON.parse(sj);
+  } catch(e) {}
+}
+loadDemoState();
+
+// ── Utilities ────────────────────────────────────────
+function timeAgo(date) {
+  const diff = NOW - date;
+  const mins = Math.floor(diff / 60000);
+  if (mins < 60) return `${mins}m ago`;
+  const hrs = Math.floor(mins / 60);
+  if (hrs < 24) return `${hrs}h ago`;
+  const days = Math.floor(hrs / 24);
+  return `${days}d ago`;
+}
+
+function showToast(msg) {
+  const c = document.getElementById('toast-container-g5h6');
+  const t = document.createElement('div');
+  t.className = 'toast';
+  t.textContent = msg;
+  c.appendChild(t);
+  setTimeout(() => { t.remove(); }, 3000);
+}
+
+function openModal(title, bodyHtml, footerHtml) {
+  document.getElementById('modal-title-y7z8').textContent = title;
+  document.getElementById('modal-body-c1d2').innerHTML = bodyHtml;
+  document.getElementById('modal-footer-e3f4').innerHTML = footerHtml || '';
+  document.getElementById('modal-overlay-w5x6').classList.add('open');
+}
+
+function closeModal() {
+  document.getElementById('modal-overlay-w5x6').classList.remove('open');
+}
+
+function statusPill(status) {
+  const labels = {new:'New',contacted:'Contacted',qualified:'Qualified',not_a_fit:'Not a Fit',scheduled:'Scheduled',in_progress:'In Progress',completed:'Completed',cancelled:'Cancelled',reviewed:'Reviewed',resolved:'Resolved',approved:'Approved',pending_review:'Pending Review',needs_revision:'Needs Revision'};
+  return `<span class="pill pill-${status}">${labels[status]||status}</span>`;
+}
+
+function priorityBadge(p) {
+  return `<span class="pill pill-${p}">${p.toUpperCase()}</span>`;
+}
+
+function severityBadge(s) {
+  return `<span class="pill severity-${s.toLowerCase()}">${s}</span>`;
+}
+
+function leftBorderColor(status) {
+  const m = {new:'#DC2626',contacted:'#C9A84C',qualified:'#16a34a',not_a_fit:'#9ca3af',scheduled:'#3b82f6',in_progress:'#C9A84C',completed:'#16a34a',cancelled:'#9ca3af'};
+  return m[status]||'#d1d5db';
+}
+
+// ── Clock ────────────────────────────────────────────
+function updateClock() {
+  const now = new Date();
+  const opts = { weekday:'long', year:'numeric', month:'long', day:'numeric', hour:'numeric', minute:'2-digit', timeZone:'America/Chicago' };
+  document.getElementById('header-clock-a1b2').textContent = now.toLocaleString('en-US', opts);
+}
+updateClock();
+setInterval(updateClock, 60000);
+
+// ── Navigation ───────────────────────────────────────
+const navItems = document.querySelectorAll('.nav-item');
+const mobTabs = document.querySelectorAll('.mob-tab');
+const views = document.querySelectorAll('.view-section');
+
+function switchView(viewName) {
+  views.forEach(v => v.classList.remove('active'));
+  const target = document.getElementById('view-' + viewName);
+  if (target) target.classList.add('active');
+  navItems.forEach(n => n.classList.toggle('active', n.dataset.view === viewName));
+  mobTabs.forEach(t => {
+    const isActive = t.dataset.view === viewName;
+    t.classList.toggle('active', isActive);
+    const icon = t.querySelector('i');
+    if (icon) icon.className = `w-5 h-5 ${isActive ? 'text-gold' : 'text-white'}`;
+  });
+  renderView(viewName);
+}
+
+navItems.forEach(item => item.addEventListener('click', () => switchView(item.dataset.view)));
+mobTabs.forEach(tab => tab.addEventListener('click', () => switchView(tab.dataset.view)));
+
+// ── Overview Links ───────────────────────────────────
+document.getElementById('link-all-inq-w3x4').addEventListener('click', () => switchView('inquiries'));
+document.getElementById('link-all-jobs-a7b8').addEventListener('click', () => switchView('jobs'));
+
+// ── Modal Close ──────────────────────────────────────
+document.getElementById('modal-close-a9b0').addEventListener('click', closeModal);
+document.getElementById('modal-overlay-w5x6').addEventListener('click', (e) => { if (e.target === e.currentTarget) closeModal(); });
+
+// ── Render Functions ─────────────────────────────────
+function renderView(name) {
+  switch(name) {
+    case 'overview': renderOverview(); break;
+    case 'inquiries': renderInquiries(); break;
+    case 'properties': renderProperties(); break;
+    case 'jobs': renderJobs(); break;
+    case 'sops': renderSOPs(); break;
+    case 'reports': renderReports(); break;
+    case 'techs': renderTechs(); break;
+  }
+  updateBadges();
+}
+
+function updateBadges() {
+  const newInq = inquiries.filter(i => i.status === 'new').length;
+  const newRpt = reports.filter(r => r.status === 'new').length;
+  const bInq = document.getElementById('nav-badge-inq-g7h8');
+  const bRpt = document.getElementById('nav-badge-rpt-i9j0');
+  bInq.textContent = newInq; bInq.style.display = newInq > 0 ? 'inline' : 'none';
+  bRpt.textContent = newRpt; bRpt.style.display = newRpt > 0 ? 'inline' : 'none';
+}
+
+// ── OVERVIEW ─────────────────────────────────────────
+function renderOverview() {
+  const newInq = inquiries.filter(i => i.status === 'new').length;
+  const activeProp = properties.filter(p => p.status === 'active').length;
+  const newRpt = reports.filter(r => r.status === 'new').length;
+  const todayStr = 'Aug 25, 2026';
+  const weekJobs = jobs.filter(j => {
+    const jd = new Date(j.date);
+    const start = new Date(2026, 7, 24);
+    const end = new Date(2026, 7, 31);
+    return jd >= start && jd <= end;
+  });
+
+  document.getElementById('stat-inq-m3n4').textContent = newInq;
+  document.getElementById('stat-prop-o5p6').textContent = activeProp;
+  document.getElementById('stat-jobs-q7r8').textContent = weekJobs.length;
+  document.getElementById('stat-rpt-u1v2').textContent = newRpt;
+  const rptCard = document.getElementById('stat-rpt-card-s9t0');
+  rptCard.style.borderLeftColor = newRpt > 0 ? '#DC2626' : '#1A2E4A';
+
+  // Recent Inquiries
+  const recentNew = inquiries.filter(i => i.status === 'new').slice(0, 3);
+  const inqHtml = recentNew.length === 0 ? '<div class="card p-4 text-sm text-gray-400">No new inquiries</div>' : recentNew.map(inq => `
+    <div class="card p-4 border-l-4" style="border-left-color:${leftBorderColor(inq.status)}">
+      <div class="flex justify-between items-start mb-1">
+        <span class="font-bold text-navy text-sm">${inq.name}</span>
+        <span class="text-gray-400 text-xs">${timeAgo(inq.timestamp)}</span>
+      </div>
+      <div class="text-gold text-xs font-semibold mb-1">${inq.services.join(', ')}</div>
+      <div class="text-gray-500 text-xs mb-2">${inq.address}</div>
+      <div class="flex gap-2 flex-wrap">
+        <button class="btn-navy-outline btn-sm ov-mark-contacted" data-id="${inq.id}">Mark Contacted</button>
+        <button class="btn-gold btn-sm ov-view-detail" data-id="${inq.id}">View Details</button>
+      </div>
+    </div>
+  `).join('');
+  document.getElementById('overview-inquiries-y5z6').innerHTML = inqHtml;
+
+  document.querySelectorAll('.ov-mark-contacted').forEach(btn => btn.addEventListener('click', () => {
+    const inq = inquiries.find(i => i.id === btn.dataset.id);
+    if (inq) { inq.status = 'contacted'; saveDemoState(); renderOverview(); showToast('Status updated'); }
+  }));
+  document.querySelectorAll('.ov-view-detail').forEach(btn => btn.addEventListener('click', () => {
+    const inq = inquiries.find(i => i.id === btn.dataset.id);
+    if (inq) showInquiryDetail(inq);
+  }));
+
+  // Today's Jobs
+  const todayJobs = jobs.filter(j => j.date === 'Aug 26, 2026' || j.date === 'Aug 25, 2026');
+  const jobsHtml = todayJobs.length === 0 ? '<div class="card p-4 text-sm text-gray-400">No jobs today</div>' : todayJobs.map(j => `
+    <div class="card p-4 border-l-4" style="border-left-color:${leftBorderColor(j.status)}">
+      <div class="flex justify-between items-start">
+        <span class="font-bold text-navy text-sm">${j.property}</span>
+        ${statusPill(j.status)}
+      </div>
+      <div class="text-gray-500 text-xs mt-1"><i data-lucide="user" class="w-3 h-3 inline"></i> ${j.tech} · ${j.time}${j.checkIn ? ' · Check-in: '+j.checkIn:''}</div>
+    </div>
+  `).join('');
+  document.getElementById('overview-jobs-c9d0').innerHTML = jobsHtml;
+
+  // Damage Reports
+  const newReports = reports.filter(r => r.status === 'new');
+  const rptHtml = newReports.length === 0 ? '<div class="card p-4 text-sm text-gray-400">No reports needing action</div>' : newReports.map(r => `
+    <div class="card p-4 border-l-4" style="border-left-color:#DC2626;">
+      <div class="flex justify-between items-start mb-1">
+        <span class="font-bold text-navy text-sm">${r.property}</span>
+        <span class="text-gray-400 text-xs">${r.date}</span>
+      </div>
+      <div class="text-xs text-gray-500 mb-1"><i data-lucide="user" class="w-3 h-3 inline"></i> ${r.tech} · ${r.type} · ${severityBadge(r.severity)}</div>
+      <div class="text-xs text-gray-600 mb-2 line-clamp-2">${r.description}</div>
+      <button class="btn-gold btn-sm ov-mark-reviewed" data-id="${r.id}">Mark Reviewed</button>
+    </div>
+  `).join('');
+  document.getElementById('overview-reports-e1f2').innerHTML = rptHtml;
+
+  document.querySelectorAll('.ov-mark-reviewed').forEach(btn => btn.addEventListener('click', () => {
+    const rpt = reports.find(r => r.id === btn.dataset.id);
+    if (rpt) { rpt.status = 'reviewed'; saveDemoState(); renderOverview(); showToast('Report marked as reviewed'); }
+  }));
+
+  refreshIcons();
+}
+
+function showInquiryDetail(inq) {
+  openModal('Inquiry Details', `
+    <div class="space-y-3">
+      <div class="flex items-center gap-2"><span class="badge-gold">${inq.referenceId}</span> ${statusPill(inq.status)}</div>
+      <div><span class="text-xs text-gray-400 font-semibold">NAME</span><div class="text-navy font-bold">${inq.name}</div></div>
+      <div class="grid grid-cols-2 gap-4">
+        <div><span class="text-xs text-gray-400 font-semibold">PHONE</span><div class="text-sm"><a href="tel:${inq.phone}" class="text-navy underline">${inq.phone}</a></div></div>
+        <div><span class="text-xs text-gray-400 font-semibold">EMAIL</span><div class="text-sm"><a href="mailto:${inq.email}" class="text-navy underline">${inq.email}</a></div></div>
+      </div>
+      <div><span class="text-xs text-gray-400 font-semibold">SERVICES</span><div class="flex flex-wrap gap-1 mt-1">${inq.services.map(s => `<span class="badge-gold text-xs">${s}</span>`).join('')}</div></div>
+      <div class="grid grid-cols-3 gap-4">
+        <div><span class="text-xs text-gray-400 font-semibold">TYPE</span><div class="text-sm">${inq.propertyType}</div></div>
+        <div><span class="text-xs text-gray-400 font-semibold">BEDS / BATHS</span><div class="text-sm">${inq.bedrooms} bd / ${inq.bathrooms} ba</div></div>
+        <div><span class="text-xs text-gray-400 font-semibold">FREQUENCY</span><div class="text-sm">${inq.frequency}</div></div>
+      </div>
+      <div><span class="text-xs text-gray-400 font-semibold">ADDRESS</span><div class="text-sm">${inq.address}</div></div>
+      <div><span class="text-xs text-gray-400 font-semibold">MESSAGE</span><div class="text-sm italic text-gray-600">${inq.message}</div></div>
+    </div>
+  `, '<button class="btn-navy-outline modal-cancel-btn">Close</button>');
+  document.querySelector('.modal-cancel-btn').addEventListener('click', closeModal);
+}
+
+// ── INQUIRIES ────────────────────────────────────────
+let inqFilter = 'all';
+let inqSearch = '';
+
+function renderInquiries() {
+  let filtered = inquiries;
+  if (inqFilter !== 'all') filtered = filtered.filter(i => i.status === inqFilter);
+  if (inqSearch) {
+    const q = inqSearch.toLowerCase();
+    filtered = filtered.filter(i => i.name.toLowerCase().includes(q) || i.address.toLowerCase().includes(q) || i.services.join(' ').toLowerCase().includes(q));
+  }
+
+  const html = filtered.length === 0 ? '<div class="card p-6 text-center text-gray-400">No inquiries found</div>' : filtered.map(inq => `
+    <div class="card p-4 border-l-4" style="border-left-color:${leftBorderColor(inq.status)}">
+      <div class="flex flex-wrap justify-between items-start mb-1 gap-2">
+        <div class="flex items-center gap-2 flex-wrap">
+          <span class="font-bold text-navy">${inq.name}</span>
+          <span class="badge-gold text-xs">${inq.referenceId}</span>
+        </div>
+        <span class="text-gray-400 text-xs">${timeAgo(inq.timestamp)}</span>
+      </div>
+      <div class="flex flex-wrap gap-1 mb-1">${inq.services.map(s => `<span class="badge-gold text-xs">${s}</span>`).join('')}</div>
+      <div class="text-gray-500 text-xs mb-1">${inq.address} · ${inq.propertyType} · ${inq.bedrooms} bd / ${inq.bathrooms} ba</div>
+      <div class="text-gray-500 text-xs italic mb-2 line-clamp-2">${inq.message}</div>
+      <div class="flex flex-wrap items-center gap-2">
+        <a href="tel:${inq.phone}" class="text-xs text-navy underline">${inq.phone}</a>
+        <a href="mailto:${inq.email}" class="text-xs text-navy underline">${inq.email}</a>
+        <select class="text-xs inq-status-select ml-auto" data-id="${inq.id}" style="padding:4px 8px;">
+          <option value="new" ${inq.status==='new'?'selected':''}>New</option>
+          <option value="contacted" ${inq.status==='contacted'?'selected':''}>Contacted</option>
+          <option value="qualified" ${inq.status==='qualified'?'selected':''}>Qualified</option>
+          <option value="not_a_fit" ${inq.status==='not_a_fit'?'selected':''}>Not a Fit</option>
+        </select>
+        <button class="btn-navy-outline btn-sm inq-note-btn" data-id="${inq.id}">Add Note</button>
+      </div>
+    </div>
+  `).join('');
+  document.getElementById('inquiries-list-k7l8').innerHTML = html;
+
+  document.querySelectorAll('.inq-status-select').forEach(sel => sel.addEventListener('change', (e) => {
+    const inq = inquiries.find(i => i.id === sel.dataset.id);
+    if (inq) { inq.status = e.target.value; saveDemoState(); renderInquiries(); showToast('Status updated'); }
+  }));
+  document.querySelectorAll('.inq-note-btn').forEach(btn => btn.addEventListener('click', () => {
+    openModal('Add Note', '<textarea id="note-text-tmp" class="w-full h-24" placeholder="Type your note…"></textarea>', '<button class="btn-navy-outline modal-cancel-btn">Cancel</button><button class="btn-gold modal-save-note">Save Note</button>');
+    document.querySelector('.modal-cancel-btn').addEventListener('click', closeModal);
+    document.querySelector('.modal-save-note').addEventListener('click', () => { closeModal(); showToast('Note saved'); });
+  }));
+}
+
+const inqFiltersEl = document.getElementById('inq-filters-g3h4');
+inqFiltersEl.addEventListener('click', (e) => {
+  if (e.target.classList.contains('filter-pill')) {
+    inqFiltersEl.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
+    e.target.classList.add('active');
+    inqFilter = e.target.dataset.filter;
+    renderInquiries();
+  }
+});
+document.getElementById('inq-search-i5j6').addEventListener('input', (e) => { inqSearch = e.target.value; renderInquiries(); });
+
+// ── PROPERTIES ───────────────────────────────────────
+function renderProperties() {
+  const html = properties.map(p => {
+    const sopBadge = p.sopStatus === 'approved' ? '<span class="badge-gold">SOP Approved</span>' : p.sopStatus === 'pending_review' ? '<span class="badge-red">Pending Review</span>' : '<span class="badge-gray">No SOP</span>';
+    return `
+    <div class="card border-t-[3px] border-navy p-4">
+      <div class="flex justify-between items-start mb-2 flex-wrap gap-2">
+        <span class="font-bold text-navy text-lg">${p.nickname}</span>
+        ${sopBadge}
+      </div>
+      <div class="text-xs text-gray-500 mb-1"><span class="font-semibold text-gray-400">HOST:</span> ${p.hostName}</div>
+      <div class="text-xs text-gray-500 mb-2">${p.address}</div>
+      <div class="flex flex-wrap gap-1 mb-2">
+        <span class="pill pill-contacted">${p.type}</span>
+        <span class="text-xs text-gray-500">${p.bedrooms} bd / ${p.bathrooms} ba</span>
+        ${p.services.map(s => `<span class="badge-gold text-xs">${s}</span>`).join('')}
+      </div>
+      <div class="flex justify-between items-center text-xs text-gray-500 mb-3">
+        <span><i data-lucide="user" class="w-3 h-3 inline"></i> ${p.techAssigned}</span>
+        <span>Next Job: ${p.nextJob}</span>
+      </div>
+      <div class="flex gap-2">
+        <button class="btn-navy-outline btn-sm prop-sop-btn" data-id="${p.id}">View SOP</button>
+        <button class="btn-gold btn-sm prop-edit-btn" data-id="${p.id}">Edit</button>
+      </div>
+    </div>`;
+  }).join('');
+  document.getElementById('properties-grid-o1p2').innerHTML = html;
+
+  document.querySelectorAll('.prop-sop-btn').forEach(btn => btn.addEventListener('click', () => {
+    const p = properties.find(x => x.id === btn.dataset.id);
+    openModal(`SOP — ${p.nickname}`, `<p class="text-sm text-gray-600">SOP for <strong>${p.nickname}</strong> (${p.hostName})</p><p class="text-xs text-gray-400 mt-2">Status: ${statusPill(p.sopStatus)}</p><div class="mt-4 bg-paper p-4 text-sm text-gray-600">Standard operating procedure details will be loaded from Firestore when connected. In demo mode, SOP content is not available.</div>`, '<button class="btn-navy-outline modal-cancel-btn">Close</button>');
+    document.querySelector('.modal-cancel-btn').addEventListener('click', closeModal);
+  }));
+  document.querySelectorAll('.prop-edit-btn').forEach(btn => btn.addEventListener('click', () => {
+    showToast('Edit mode — coming soon');
+  }));
+  refreshIcons();
+}
+
+document.getElementById('btn-add-prop-m9n0').addEventListener('click', () => {
+  openModal('Add Property', '<p class="text-sm text-gray-600">Have your host complete the <strong>Host Intake Form</strong> to add a property.</p><p class="text-xs text-gray-400 mt-2">Once submitted, the property will appear here for enrollment and SOP creation.</p>', '<button class="btn-navy-outline modal-cancel-btn">Close</button>');
+  document.querySelector('.modal-cancel-btn').addEventListener('click', closeModal);
+});
+
+// ── JOBS ─────────────────────────────────────────────
+let jobStatusFilter = 'all';
+let jobDateRange = 'week';
+let jobViewMode = 'list';
+
+function renderJobs() {
+  let filtered = [...jobs];
+  if (jobStatusFilter !== 'all') filtered = filtered.filter(j => j.status === jobStatusFilter);
+
+  if (jobViewMode === 'list') {
+    document.getElementById('jobs-list-view-a3b4').style.display = '';
+    document.getElementById('jobs-week-view-c5d6').style.display = 'none';
+    const html = filtered.length === 0 ? '<div class="card p-6 text-center text-gray-400">No jobs found</div>' : `
+    <div class="overflow-x-auto">
+      <table class="w-full text-sm">
+        <thead><tr class="bg-navy text-white text-xs text-left">
+          <th class="p-3">STATUS</th><th class="p-3">DATE & TIME</th><th class="p-3">PROPERTY</th><th class="p-3 hidden md:table-cell">HOST</th><th class="p-3">TECH</th><th class="p-3 hidden md:table-cell">TYPE</th><th class="p-3 hidden lg:table-cell">CHECK-IN</th><th class="p-3">PRIORITY</th><th class="p-3">ACTIONS</th>
+        </tr></thead>
+        <tbody>
+          ${filtered.map(j => `<tr class="border-b border-gray-100 hover:bg-cream transition-colors">
+            <td class="p-3">${statusPill(j.status)}</td>
+            <td class="p-3 whitespace-nowrap text-xs tabular-nums">${j.date}<br/>${j.time}</td>
+            <td class="p-3 font-semibold text-navy">${j.property}</td>
+            <td class="p-3 text-xs text-gray-500 hidden md:table-cell">${j.host}</td>
+            <td class="p-3 text-xs">${j.tech}</td>
+            <td class="p-3 text-xs hidden md:table-cell">${j.type}</td>
+            <td class="p-3 text-xs hidden lg:table-cell">${j.checkIn||'—'}</td>
+            <td class="p-3">${priorityBadge(j.priority)}</td>
+            <td class="p-3"><div class="flex gap-1">
+              <button class="btn-navy-outline btn-sm job-view-btn" data-id="${j.id}" title="View"><i data-lucide="eye" class="w-3 h-3"></i></button>
+              <button class="btn-gold btn-sm job-complete-btn" data-id="${j.id}" title="Mark Complete"><i data-lucide="check" class="w-3 h-3"></i></button>
+            </div></td>
+          </tr>`).join('')}
+        </tbody>
+      </table>
+    </div>`;
+    document.getElementById('jobs-list-view-a3b4').innerHTML = html;
+
+    document.querySelectorAll('.job-complete-btn').forEach(btn => btn.addEventListener('click', () => {
+      const j = jobs.find(x => x.id === btn.dataset.id);
+      if (j) { j.status = 'completed'; saveDemoState(); renderJobs(); showToast('Job marked complete'); }
+    }));
+    document.querySelectorAll('.job-view-btn').forEach(btn => btn.addEventListener('click', () => {
+      const j = jobs.find(x => x.id === btn.dataset.id);
+      if (j) openModal('Job Details', `
+        <div class="space-y-2 text-sm">
+          <div><span class="text-xs text-gray-400 font-semibold">PROPERTY</span><div class="font-bold text-navy">${j.property}</div></div>
+          <div class="grid grid-cols-2 gap-4">
+            <div><span class="text-xs text-gray-400 font-semibold">HOST</span><div>${j.host}</div></div>
+            <div><span class="text-xs text-gray-400 font-semibold">TECH</span><div>${j.tech}</div></div>
+          </div>
+          <div class="grid grid-cols-3 gap-4">
+            <div><span class="text-xs text-gray-400 font-semibold">DATE</span><div>${j.date}</div></div>
+            <div><span class="text-xs text-gray-400 font-semibold">TIME</span><div>${j.time}</div></div>
+            <div><span class="text-xs text-gray-400 font-semibold">CHECK-IN</span><div>${j.checkIn||'N/A'}</div></div>
+          </div>
+          <div class="flex gap-2">${statusPill(j.status)} ${priorityBadge(j.priority)}</div>
+        </div>
+      `, '<button class="btn-navy-outline modal-cancel-btn">Close</button>');
+      document.querySelector('.modal-cancel-btn').addEventListener('click', closeModal);
+    }));
+  } else {
+    document.getElementById('jobs-list-view-a3b4').style.display = 'none';
+    document.getElementById('jobs-week-view-c5d6').style.display = '';
+    const days = ['Mon 8/24','Tue 8/25','Wed 8/26','Thu 8/27','Fri 8/28','Sat 8/29','Sun 8/30'];
+    const dayDates = ['Aug 24, 2026','Aug 25, 2026','Aug 26, 2026','Aug 27, 2026','Aug 28, 2026','Aug 29, 2026','Aug 30, 2026'];
+    let weekHtml = '<div class="grid grid-cols-7 gap-1">';
+    days.forEach((day, idx) => {
+      const dayJobs = filtered.filter(j => j.date === dayDates[idx]);
+      weekHtml += `<div class="bg-white border border-gray-200 min-h-[120px]">
+        <div class="bg-navy text-white text-xs font-bold p-2 text-center">${day}</div>
+        <div class="p-1 space-y-1">${dayJobs.map(j => `
+          <div class="p-2 border-l-[3px] text-xs" style="border-left-color:${leftBorderColor(j.status)}; background:#fafaf8;">
+            <div class="font-semibold text-navy">${j.property}</div>
+            <div class="text-gray-500">${j.tech} · ${j.time}</div>
+          </div>
+        `).join('')}</div>
+      </div>`;
+    });
+    weekHtml += '</div>';
+    document.getElementById('jobs-week-view-c5d6').innerHTML = weekHtml;
+  }
+  refreshIcons();
+}
+
+document.getElementById('job-status-filters-s5t6').addEventListener('click', (e) => {
+  if (e.target.classList.contains('filter-pill')) {
+    document.getElementById('job-status-filters-s5t6').querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
+    e.target.classList.add('active');
+    jobStatusFilter = e.target.dataset.filter;
+    renderJobs();
+  }
+});
+
+document.getElementById('job-date-filters-u7v8').addEventListener('click', (e) => {
+  if (e.target.classList.contains('filter-pill')) {
+    document.getElementById('job-date-filters-u7v8').querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
+    e.target.classList.add('active');
+    jobDateRange = e.target.dataset.range;
+    renderJobs();
+  }
+});
+
+document.getElementById('job-view-list-w9x0').addEventListener('click', () => {
+  jobViewMode = 'list';
+  document.getElementById('job-view-list-w9x0').classList.add('active');
+  document.getElementById('job-view-week-y1z2').classList.remove('active');
+  renderJobs();
+});
+document.getElementById('job-view-week-y1z2').addEventListener('click', () => {
+  jobViewMode = 'week';
+  document.getElementById('job-view-week-y1z2').classList.add('active');
+  document.getElementById('job-view-list-w9x0').classList.remove('active');
+  renderJobs();
+});
+
+document.getElementById('btn-add-job-q3r4').addEventListener('click', () => {
+  const propOptions = properties.map(p => `<option value="${p.nickname}">${p.nickname}</option>`).join('');
+  const techOptions = techs.filter(t => t.status === 'active').map(t => `<option value="${t.name}">${t.name}</option>`).join('');
+  openModal('Add Job', `
+    <div class="space-y-3">
+      <div><label class="text-xs font-semibold text-gray-500 block mb-1">Property</label><select id="aj-prop" class="w-full">${propOptions}</select></div>
+      <div><label class="text-xs font-semibold text-gray-500 block mb-1">Service Type</label><input id="aj-type" type="text" class="w-full" placeholder="e.g. STR Turnover" /></div>
+      <div class="grid grid-cols-2 gap-4">
+        <div><label class="text-xs font-semibold text-gray-500 block mb-1">Date</label><input id="aj-date" type="date" class="w-full" /></div>
+        <div><label class="text-xs font-semibold text-gray-500 block mb-1">Start Time</label><input id="aj-time" type="time" class="w-full" /></div>
+      </div>
+      <div><label class="text-xs font-semibold text-gray-500 block mb-1">Expected Check-in Time</label><input id="aj-checkin" type="time" class="w-full" /></div>
+      <div><label class="text-xs font-semibold text-gray-500 block mb-1">Tech</label><select id="aj-tech" class="w-full">${techOptions}</select></div>
+      <div><label class="text-xs font-semibold text-gray-500 block mb-1">Priority</label>
+        <select id="aj-priority" class="w-full"><option value="normal">Normal</option><option value="rush">Rush</option><option value="vip">VIP</option></select>
+      </div>
+      <div><label class="text-xs font-semibold text-gray-500 block mb-1">Notes</label><textarea id="aj-notes" class="w-full h-20" placeholder="Optional notes…"></textarea></div>
+    </div>
+  `, '<button class="btn-navy-outline modal-cancel-btn">Cancel</button><button class="btn-gold modal-save-job">Save Job</button>');
+  document.querySelector('.modal-cancel-btn').addEventListener('click', closeModal);
+  document.querySelector('.modal-save-job').addEventListener('click', () => {
+    const dateVal = document.getElementById('aj-date').value;
+    const d = dateVal ? new Date(dateVal+'T12:00:00') : null;
+    const dateStr = d ? d.toLocaleDateString('en-US', {month:'short', day:'numeric', year:'numeric'}) : 'TBD';
+    const timeEl = document.getElementById('aj-time');
+    const tVal = timeEl.value;
+    let timeStr = '12:00 PM';
+    if (tVal) { const [h,m] = tVal.split(':'); const hh = parseInt(h); timeStr = `${hh > 12 ? hh-12 : hh || 12}:${m} ${hh >= 12 ? 'PM':'AM'}`; }
+    const checkinEl = document.getElementById('aj-checkin');
+    const ciVal = checkinEl.value;
+    let ciStr = null;
+    if (ciVal) { const [h,m] = ciVal.split(':'); const hh = parseInt(h); ciStr = `${hh > 12 ? hh-12 : hh || 12}:${m} ${hh >= 12 ? 'PM':'AM'}`; }
+
+    jobs.push({
+      id: 'job' + Date.now(),
+      property: document.getElementById('aj-prop').value,
+      host: '',
+      tech: document.getElementById('aj-tech').value,
+      type: document.getElementById('aj-type').value || 'General',
+      date: dateStr,
+      time: timeStr,
+      checkIn: ciStr,
+      status: 'scheduled',
+      priority: document.getElementById('aj-priority').value
+    });
+    saveDemoState();
+    closeModal();
+    renderJobs();
+    showToast('Job added');
+  });
+});
+
+// ── SOPs ─────────────────────────────────────────────
+function renderSOPs() {
+  const html = properties.map(p => `
+    <div class="card p-4 flex flex-wrap justify-between items-center gap-3">
+      <div>
+        <span class="font-bold text-navy">${p.nickname}</span>
+        <span class="text-gray-400 text-xs ml-2">${p.hostName}</span>
+      </div>
+      <div class="flex items-center gap-2">
+        ${statusPill(p.sopStatus)}
+        <button class="btn-navy-outline btn-sm sop-review-btn" data-id="${p.id}">Review SOP</button>
+      </div>
+    </div>
+  `).join('');
+  document.getElementById('sops-list-e7f8').innerHTML = html;
+
+  document.querySelectorAll('.sop-review-btn').forEach(btn => btn.addEventListener('click', () => {
+    const p = properties.find(x => x.id === btn.dataset.id);
+    openModal(`Review SOP — ${p.nickname}`, `
+      <div class="space-y-3">
+        <div><span class="text-xs text-gray-400 font-semibold">PROPERTY</span><div class="font-bold text-navy">${p.nickname}</div></div>
+        <div><span class="text-xs text-gray-400 font-semibold">HOST</span><div>${p.hostName}</div></div>
+        <div><span class="text-xs text-gray-400 font-semibold">STATUS</span><div class="mt-1">${statusPill(p.sopStatus)}</div></div>
+        <div class="bg-paper p-4 text-sm text-gray-600">SOP content will load from Firestore when connected. In demo mode, use Approve / Request Revision below.</div>
+      </div>
+    `, `<button class="btn-red-outline sop-revision-btn" data-id="${p.id}">Request Revision</button><button class="btn-gold sop-approve-btn" data-id="${p.id}">Approve</button><button class="btn-navy-outline modal-cancel-btn">Close</button>`);
+    document.querySelector('.modal-cancel-btn').addEventListener('click', closeModal);
+    document.querySelector('.sop-approve-btn').addEventListener('click', () => {
+      p.sopStatus = 'approved'; saveDemoState(); closeModal(); renderSOPs(); showToast('SOP approved');
+    });
+    document.querySelector('.sop-revision-btn').addEventListener('click', () => {
+      p.sopStatus = 'needs_revision'; saveDemoState(); closeModal(); renderSOPs(); showToast('Revision requested');
+    });
+  }));
+}
+
+// ── REPORTS ──────────────────────────────────────────
+let rptFilter = 'all';
+
+function renderReports() {
+  let filtered = reports;
+  if (rptFilter !== 'all') filtered = filtered.filter(r => r.status === rptFilter);
+
+  const html = filtered.length === 0 ? '<div class="card p-6 text-center text-gray-400">No reports found</div>' : filtered.map(r => `
+    <div class="card p-4 border-l-4" style="border-left-color:${r.status === 'new' ? '#DC2626' : '#9ca3af'}">
+      <div class="flex flex-wrap justify-between items-start mb-1 gap-2">
+        <div class="flex items-center gap-2"><span class="badge-navy text-xs">${r.refId}</span><span class="font-bold text-navy">${r.property}</span></div>
+        <span class="text-gray-400 text-xs">${r.date}</span>
+      </div>
+      <div class="text-xs text-gray-500 mb-1"><i data-lucide="user" class="w-3 h-3 inline"></i> ${r.tech} · ${r.type} · ${severityBadge(r.severity)}</div>
+      <div class="text-xs text-gray-500 mb-1">${r.location}</div>
+      <div class="text-xs text-gray-600 mb-2 line-clamp-2">${r.description}</div>
+      <div class="flex gap-2">
+        ${r.status === 'new' ? `<button class="btn-gold btn-sm rpt-reviewed-btn" data-id="${r.id}">Mark Reviewed</button>` : ''}
+        ${r.status !== 'resolved' ? `<button class="btn-green-outline btn-sm rpt-resolved-btn" data-id="${r.id}">Mark Resolved</button>` : `<span class="badge-green">Resolved</span>`}
+      </div>
+    </div>
+  `).join('');
+  document.getElementById('reports-list-i1j2').innerHTML = html;
+
+  document.querySelectorAll('.rpt-reviewed-btn').forEach(btn => btn.addEventListener('click', () => {
+    const r = reports.find(x => x.id === btn.dataset.id);
+    if (r) { r.status = 'reviewed'; saveDemoState(); renderReports(); updateBadges(); showToast('Report marked reviewed'); }
+  }));
+  document.querySelectorAll('.rpt-resolved-btn').forEach(btn => btn.addEventListener('click', () => {
+    const r = reports.find(x => x.id === btn.dataset.id);
+    if (r) { r.status = 'resolved'; saveDemoState(); renderReports(); updateBadges(); showToast('Report resolved'); }
+  }));
+  refreshIcons();
+}
+
+document.getElementById('rpt-filters-g9h0').addEventListener('click', (e) => {
+  if (e.target.classList.contains('filter-pill')) {
+    document.getElementById('rpt-filters-g9h0').querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
+    e.target.classList.add('active');
+    rptFilter = e.target.dataset.filter;
+    renderReports();
+  }
+});
+
+// ── TECHS ────────────────────────────────────────────
+function renderTechs() {
+  const html = techs.map(t => {
+    const statusBadge = t.status === 'active' ? '<span class="badge-green">Active</span>' : '<span class="badge-gold">On Leave</span>';
+    const roleBadge = t.role === 'Lead Tech' ? '<span class="badge-navy">Lead Tech</span>' : '<span class="badge-gray">Tech</span>';
+    const stars = '★'.repeat(Math.floor(t.rating)) + (t.rating % 1 >= 0.5 ? '½' : '');
+    return `
+    <div class="card p-5">
+      <div class="flex justify-between items-start mb-2 flex-wrap gap-2">
+        <span class="font-bold text-navy text-lg">${t.name}</span>
+        <div class="flex gap-1">${roleBadge} ${statusBadge}</div>
+      </div>
+      <div class="text-sm text-gray-600 mb-1"><span class="font-semibold">${t.jobsThisMonth}</span> jobs this month</div>
+      <div class="text-gold text-sm mb-3 tabular-nums">${stars} <span class="text-gray-400 text-xs">${t.rating}</span></div>
+      <div class="text-xs space-y-1 mb-3">
+        <div><a href="tel:${t.phone}" class="text-navy underline">${t.phone}</a></div>
+        <div><a href="mailto:${t.email}" class="text-navy underline">${t.email}</a></div>
+      </div>
+      <button class="btn-gold btn-sm tech-assign-btn" data-name="${t.name}">Assign Job</button>
+    </div>`;
+  }).join('');
+  document.getElementById('techs-grid-k3l4').innerHTML = html;
+
+  document.querySelectorAll('.tech-assign-btn').forEach(btn => btn.addEventListener('click', () => {
+    const techName = btn.dataset.name;
+    const propOptions = properties.map(p => `<option value="${p.nickname}">${p.nickname}</option>`).join('');
+    openModal(`Assign Job — ${techName}`, `
+      <div class="space-y-3">
+        <div><label class="text-xs font-semibold text-gray-500 block mb-1">Property</label><select id="ta-prop" class="w-full">${propOptions}</select></div>
+        <div><label class="text-xs font-semibold text-gray-500 block mb-1">Date</label><input id="ta-date" type="date" class="w-full" /></div>
+        <div><label class="text-xs font-semibold text-gray-500 block mb-1">Time</label><input id="ta-time" type="time" class="w-full" /></div>
+      </div>
+    `, '<button class="btn-navy-outline modal-cancel-btn">Cancel</button><button class="btn-gold modal-assign-save">Assign</button>');
+    document.querySelector('.modal-cancel-btn').addEventListener('click', closeModal);
+    document.querySelector('.modal-assign-save').addEventListener('click', () => {
+      closeModal(); showToast(`Job assigned to ${techName}`);
+    });
+  }));
+}
+
+// ── SETTINGS ─────────────────────────────────────────
+// Load saved settings
+const savedName = localStorage.getItem('php_biz_name');
+const savedPhone = localStorage.getItem('php_biz_phone');
+const savedEmail = localStorage.getItem('php_biz_email');
+if (savedName) document.getElementById('set-name-m5n6').value = savedName;
+if (savedPhone) document.getElementById('set-phone-o7p8').value = savedPhone;
+if (savedEmail) document.getElementById('set-email-q9r0').value = savedEmail;
+
+document.getElementById('btn-save-settings-s1t2').addEventListener('click', () => {
+  localStorage.setItem('php_biz_name', document.getElementById('set-name-m5n6').value);
+  localStorage.setItem('php_biz_phone', document.getElementById('set-phone-o7p8').value);
+  localStorage.setItem('php_biz_email', document.getElementById('set-email-q9r0').value);
+  showToast('Settings saved');
+});
+
+document.getElementById('btn-export-csv-u3v4').addEventListener('click', () => {
+  const headers = ['Name','Phone','Email','Services','Property Type','Address','Bedrooms','Bathrooms','Frequency','Message','Status','Reference ID'];
+  const rows = inquiries.map(i => [i.name, i.phone, i.email, i.services.join('; '), i.propertyType, i.address, i.bedrooms, i.bathrooms, i.frequency, `"${i.message}"`, i.status, i.referenceId]);
+  let csv = headers.join(',') + '\n' + rows.map(r => r.join(',')).join('\n');
+  const blob = new Blob([csv], {type:'text/csv'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = 'php-inquiries-export.csv'; a.click();
+  URL.revokeObjectURL(url);
+  showToast('CSV exported');
+});
+
+// ── Lucide Icons Refresh ─────────────────────────────
+function refreshIcons() {
+  if (typeof lucide !== "undefined" && typeof lucide.createIcons === "function") {
+    lucide.createIcons();
+  }
+}
+
+// ── Initial Render ───────────────────────────────────
+renderOverview();
+
+</script>
+
+<script>
+// Lucide init — progressive enhancement guard
+if (typeof lucide !== "undefined" && typeof lucide.createIcons === "function") {
+  lucide.createIcons();
+}
+</script>
+</body>
+</html>

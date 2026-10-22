@@ -1,0 +1,1441 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Proper Home Prep — Property SOP Form</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,400;1,700&amp;family=Lato:wght@300;400;700;900&amp;display=swap" rel="stylesheet"/>
+<style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --navy:      #1B2A4A;
+      --navy-dark: #111E35;
+      --gold:      #D8B96A;
+      --gold-light:#E8C97A;
+      --slate:     #6B7D8F;
+      --cream:     #FAF7F2;
+      --charcoal:  #3D3D3D;
+      --white:     #FFFFFF;
+      --surface:   #F4F6F9;
+      --border:    rgba(27,42,74,0.12);
+      --success:   #27AE60;
+      --danger:    #E74C3C;
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Lato', sans-serif; background: var(--surface); color: var(--charcoal); min-height: 100vh; }
+
+    /* ── HEADER ── */
+    header {
+      background: var(--navy);
+      position: sticky; top: 0; z-index: 50;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.2);
+    }
+    .header-inner {
+      max-width: 1100px; margin: 0 auto;
+      padding: 0 1.5rem; height: 64px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .header-brand { display: flex; align-items: center; gap: 0.75rem; text-decoration: none; }
+    .brand-icon { width: 36px; height: 36px; background: var(--gold); border-radius: 7px; display: flex; align-items: center; justify-content: center; }
+    .brand-icon svg { width: 18px; height: 18px; fill: var(--navy); }
+    .brand-name { font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.05rem; font-weight: 700; color: var(--white); }
+    .header-title {
+      font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--gold); background: rgba(216,185,106,0.12); border: 1px solid rgba(216,185,106,0.25);
+      padding: 0.3rem 0.85rem; border-radius: 100px;
+    }
+    .header-back { color: rgba(255,255,255,0.6); text-decoration: none; font-size: 0.8rem; display: flex; align-items: center; gap: 0.4rem; transition: color 0.2s; }
+    .header-back:hover { color: var(--gold); }
+    .header-back svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+    /* ── PROGRESS BAR ── */
+    .progress-wrap { background: var(--white); border-bottom: 1px solid var(--border); padding: 1rem 1.5rem; position: sticky; top: 64px; z-index: 40; }
+    .progress-inner { max-width: 1100px; margin: 0 auto; }
+    .progress-steps { display: flex; gap: 0.25rem; margin-bottom: 0.6rem; overflow-x: auto; padding-bottom: 2px; }
+    .progress-step {
+      flex: 1; min-width: 60px; text-align: center;
+      font-size: 0.65rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase;
+      padding: 0.4rem 0.25rem; border-radius: 6px; cursor: pointer;
+      transition: background 0.2s, color 0.2s; white-space: nowrap;
+      color: var(--slate); background: var(--surface); border: 1.5px solid var(--border);
+    }
+    .progress-step.active { background: var(--navy); color: var(--white); border-color: var(--navy); }
+    .progress-step.done { background: rgba(39,174,96,0.1); color: var(--success); border-color: rgba(39,174,96,0.3); }
+    .progress-bar-track { height: 4px; background: var(--surface); border-radius: 2px; overflow: hidden; }
+    .progress-bar-fill { height: 100%; background: var(--gold); border-radius: 2px; transition: width 0.4s ease; }
+
+    /* ── LAYOUT ── */
+    .form-layout { max-width: 1100px; margin: 0 auto; padding: 2rem 1.5rem; display: grid; grid-template-columns: 220px 1fr; gap: 2rem; align-items: start; }
+    .sidebar { position: sticky; top: 140px; }
+    .sidebar-nav { background: var(--white); border-radius: 12px; border: 1.5px solid var(--border); overflow: hidden; }
+    .sidebar-nav a {
+      display: flex; align-items: center; gap: 0.75rem;
+      padding: 0.85rem 1rem; text-decoration: none;
+      font-size: 0.82rem; font-weight: 700; color: var(--slate);
+      border-bottom: 1px solid var(--border); transition: background 0.2s, color 0.2s;
+    }
+    .sidebar-nav a:last-child { border-bottom: none; }
+    .sidebar-nav a:hover { background: var(--cream); color: var(--navy); }
+    .sidebar-nav a.active { background: var(--navy); color: var(--white); }
+    .sidebar-nav a.done { color: var(--success); }
+    .sidebar-nav a .sec-letter {
+      width: 24px; height: 24px; border-radius: 6px; flex-shrink: 0;
+      background: rgba(27,42,74,0.08); display: flex; align-items: center; justify-content: center;
+      font-size: 0.72rem; font-weight: 900;
+    }
+    .sidebar-nav a.active .sec-letter { background: rgba(255,255,255,0.15); }
+    .sidebar-nav a.done .sec-letter { background: rgba(39,174,96,0.12); color: var(--success); }
+    .sidebar-save {
+      margin-top: 1rem; width: 100%;
+      background: var(--gold); color: var(--navy);
+      border: none; border-radius: 10px; padding: 0.85rem;
+      font-family: 'Lato', sans-serif; font-size: 0.85rem; font-weight: 900;
+      cursor: pointer; transition: background 0.2s, transform 0.15s;
+      display: flex; align-items: center; justify-content: center; gap: 0.5rem;
+    }
+    .sidebar-save:hover { background: var(--gold-light); transform: translateY(-1px); }
+    .sidebar-save svg { width: 15px; height: 15px; stroke: var(--navy); fill: none; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+
+    /* ── SECTIONS ── */
+    .form-section { display: none; }
+    .form-section.active { display: block; }
+    .section-card {
+      background: var(--white); border-radius: 14px;
+      border: 1.5px solid var(--border); padding: 2rem;
+      margin-bottom: 1.5rem;
+    }
+    .section-hdr { margin-bottom: 1.75rem; padding-bottom: 1.25rem; border-bottom: 1px solid var(--border); }
+    .section-eyebrow { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.4rem; }
+    .section-hdr h2 { font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.6rem; font-weight: 700; color: var(--navy); margin-bottom: 0.4rem; }
+    .section-hdr p { font-size: 0.85rem; color: var(--slate); line-height: 1.65; }
+    .subsection { margin-bottom: 2rem; }
+    .subsection-title { font-size: 0.9rem; font-weight: 900; color: var(--navy); letter-spacing: 0.03em; text-transform: uppercase; margin-bottom: 1.25rem; padding-bottom: 0.5rem; border-bottom: 2px solid var(--gold); display: inline-block; }
+
+    /* ── FORM ELEMENTS ── */
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .form-row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; }
+    .form-row-4 { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 1rem; }
+    .form-group { display: flex; flex-direction: column; gap: 0.35rem; margin-bottom: 1rem; }
+    .form-group label { font-size: 0.75rem; font-weight: 700; color: var(--navy); letter-spacing: 0.05em; text-transform: uppercase; }
+    .form-group label .req { color: var(--gold); margin-left: 2px; }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      padding: 0.7rem 0.9rem;
+      border: 1.5px solid var(--border); border-radius: 8px;
+      font-family: 'Lato', sans-serif; font-size: 0.9rem; color: var(--charcoal);
+      background: var(--white); outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(216,185,106,0.12); }
+    .form-group textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
+    .form-group input[type="time"] { cursor: pointer; }
+
+    /* ── CHECKBOXES & RADIOS ── */
+    .check-group { display: flex; flex-wrap: wrap; gap: 0.6rem; }
+    .check-item { display: flex; align-items: center; gap: 0.5rem; cursor: pointer; }
+    .check-item input[type="checkbox"],
+    .check-item input[type="radio"] { width: 16px; height: 16px; accent-color: var(--navy); cursor: pointer; }
+    .check-item label { font-size: 0.85rem; color: var(--charcoal); cursor: pointer; font-weight: 400; }
+    .check-pill {
+      display: flex; align-items: center; gap: 0.5rem;
+      padding: 0.45rem 0.9rem; border-radius: 100px;
+      border: 1.5px solid var(--border); background: var(--surface);
+      cursor: pointer; transition: all 0.2s; font-size: 0.82rem; font-weight: 700; color: var(--slate);
+    }
+    .check-pill input { display: none; }
+    .check-pill.selected { background: var(--navy); color: var(--white); border-color: var(--navy); }
+
+    /* ── TABLE ── */
+    .data-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+    .data-table th { background: var(--navy); color: var(--white); padding: 0.65rem 0.85rem; text-align: left; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; }
+    .data-table th:first-child { border-radius: 8px 0 0 0; }
+    .data-table th:last-child { border-radius: 0 8px 0 0; }
+    .data-table td { padding: 0.5rem 0.5rem; border-bottom: 1px solid var(--border); vertical-align: middle; }
+    .data-table tr:last-child td { border-bottom: none; }
+    .data-table tr:nth-child(even) td { background: var(--surface); }
+    .data-table input, .data-table select {
+      width: 100%; padding: 0.45rem 0.6rem;
+      border: 1.5px solid var(--border); border-radius: 6px;
+      font-family: 'Lato', sans-serif; font-size: 0.82rem; color: var(--charcoal);
+      background: var(--white); outline: none; transition: border-color 0.2s;
+    }
+    .data-table input:focus, .data-table select:focus { border-color: var(--gold); }
+
+    /* ── CALLOUT BOXES ── */
+    .callout {
+      padding: 1rem 1.25rem; border-radius: 8px; margin: 1rem 0;
+      display: flex; gap: 0.75rem; align-items: flex-start;
+      font-size: 0.85rem; line-height: 1.65;
+    }
+    .callout svg { width: 18px; height: 18px; flex-shrink: 0; margin-top: 1px; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    .callout.gold { background: rgba(216,185,106,0.1); border-left: 4px solid var(--gold); color: var(--charcoal); }
+    .callout.gold svg { stroke: var(--gold); }
+    .callout.navy { background: rgba(27,42,74,0.06); border-left: 4px solid var(--navy); color: var(--charcoal); }
+    .callout.navy svg { stroke: var(--navy); }
+    .callout.danger { background: rgba(231,76,60,0.08); border-left: 4px solid var(--danger); color: var(--charcoal); }
+    .callout.danger svg { stroke: var(--danger); }
+    .callout strong { color: var(--navy); }
+
+    /* ── ROOM BLOCK ── */
+    .room-block {
+      border: 1.5px solid var(--border); border-radius: 10px;
+      padding: 1.25rem; margin-bottom: 1rem; background: var(--surface);
+    }
+    .room-block-hdr { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; }
+    .room-block-hdr h4 { font-size: 0.9rem; font-weight: 900; color: var(--navy); }
+    .btn-remove { background: none; border: none; color: var(--danger); cursor: pointer; font-size: 0.78rem; font-weight: 700; display: flex; align-items: center; gap: 0.3rem; transition: opacity 0.2s; }
+    .btn-remove:hover { opacity: 0.7; }
+    .btn-add {
+      display: flex; align-items: center; gap: 0.5rem;
+      background: transparent; border: 1.5px dashed var(--border);
+      border-radius: 10px; padding: 0.85rem 1.25rem;
+      font-family: 'Lato', sans-serif; font-size: 0.85rem; font-weight: 700; color: var(--slate);
+      cursor: pointer; width: 100%; justify-content: center;
+      transition: border-color 0.2s, color 0.2s, background 0.2s;
+    }
+    .btn-add:hover { border-color: var(--gold); color: var(--gold); background: rgba(216,185,106,0.05); }
+    .btn-add svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+
+    /* ── CHECKLIST ITEMS ── */
+    .checklist { display: flex; flex-direction: column; gap: 0.5rem; }
+    .checklist-item {
+      display: flex; align-items: center; gap: 0.75rem;
+      padding: 0.6rem 0.85rem; background: var(--surface);
+      border-radius: 8px; border: 1px solid var(--border);
+      font-size: 0.85rem; color: var(--charcoal);
+    }
+    .checklist-item input[type="checkbox"] { width: 16px; height: 16px; accent-color: var(--navy); flex-shrink: 0; }
+
+    /* ── NAV BUTTONS ── */
+    .form-nav { display: flex; align-items: center; justify-content: space-between; margin-top: 1.5rem; }
+    .btn-prev, .btn-next, .btn-submit {
+      display: flex; align-items: center; gap: 0.5rem;
+      padding: 0.85rem 1.75rem; border-radius: 8px;
+      font-family: 'Lato', sans-serif; font-size: 0.88rem; font-weight: 700;
+      cursor: pointer; border: none; transition: all 0.2s;
+    }
+    .btn-prev { background: var(--surface); color: var(--slate); border: 1.5px solid var(--border); }
+    .btn-prev:hover { background: var(--border); color: var(--navy); }
+    .btn-next { background: var(--navy); color: var(--white); }
+    .btn-next:hover { background: var(--navy-dark); transform: translateY(-1px); }
+    .btn-submit { background: var(--gold); color: var(--navy); }
+    .btn-submit:hover { background: var(--gold-light); transform: translateY(-1px); }
+    .btn-prev svg, .btn-next svg, .btn-submit svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+    .step-indicator { font-size: 0.8rem; color: var(--slate); font-weight: 700; }
+
+    /* ── SIGN-OFF ── */
+    .sig-box {
+      border: 1.5px solid var(--border); border-radius: 8px;
+      padding: 1.25rem; background: var(--surface); text-align: center;
+      font-size: 0.85rem; color: var(--slate); min-height: 80px;
+      display: flex; align-items: center; justify-content: center;
+      font-style: italic;
+    }
+
+    /* ── SUCCESS SCREEN ── */
+    #successScreen {
+      display: none; text-align: center; padding: 4rem 2rem;
+      background: var(--white); border-radius: 14px; border: 1.5px solid var(--border);
+    }
+    .success-icon { width: 72px; height: 72px; background: rgba(39,174,96,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem; }
+    .success-icon svg { width: 36px; height: 36px; stroke: var(--success); fill: none; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+    #successScreen h2 { font-family: 'Playfair Display', serif; font-style: italic; font-size: 2rem; font-weight: 700; color: var(--navy); margin-bottom: 0.75rem; }
+    #successScreen p { font-size: 0.95rem; color: var(--slate); line-height: 1.7; max-width: 480px; margin: 0 auto 2rem; }
+
+    /* ── TOAST ── */
+    #toastContainer { position: fixed; bottom: 1.5rem; right: 1.5rem; z-index: 300; display: flex; flex-direction: column; gap: 0.5rem; pointer-events: none; }
+    .toast { background: var(--navy); color: var(--white); padding: 0.85rem 1.25rem; border-radius: 10px; border-left: 4px solid var(--gold); font-size: 0.85rem; font-weight: 700; box-shadow: 0 8px 24px rgba(0,0,0,0.2); transform: translateY(16px); opacity: 0; transition: all 0.3s; pointer-events: none; }
+    .toast.show { transform: translateY(0); opacity: 1; }
+    .toast.success { border-left-color: var(--success); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 860px) {
+      .form-layout { grid-template-columns: 1fr; }
+      .sidebar { position: static; }
+      .sidebar-nav { display: none; }
+    }
+    @media (max-width: 600px) {
+      .form-row, .form-row-3, .form-row-4 { grid-template-columns: 1fr; }
+      .section-card { padding: 1.25rem; }
+      .form-layout { padding: 1rem; }
+    }
+
+    /* ── PRINT ── */
+    @media print {
+      /* Critical: this form only shows one section at a time on screen —
+         force every section visible so the full 9-section SOP prints. */
+      .form-section { display: block !important; page-break-before: always; }
+      .form-section:first-of-type { page-break-before: avoid; }
+      header, .sidebar, .form-nav, .progress-bar-track,
+      #loginGate, #adminCreatePanel, #reviewPanel, #approvedPanel { display: none !important; }
+      body { background: #fff !important; }
+      .form-layout { grid-template-columns: 1fr !important; padding: 0 !important; max-width: 100% !important; }
+      .data-table th { background: #fff !important; color: var(--navy) !important; border-bottom: 2px solid var(--gold) !important; }
+      .check-pill.selected, .progress-step.active {
+        background: #fff !important; color: var(--navy) !important; border: 1.5px solid var(--gold) !important;
+      }
+      .form-section { border-top: 4px solid var(--gold); padding-top: 1rem; background: #fff !important; color: var(--navy) !important; }
+    }
+  </style>
+</head>
+<body>
+<!-- HEADER -->
+<header>
+<div class="header-inner">
+<a class="header-brand" href="../">
+<div class="brand-icon"><svg viewbox="0 0 24 24"><path d="M3 9.5L12 3l9 6.5V21H15v-5h-6v5H3V9.5z"></path></svg></div>
+<span class="brand-name">Proper Home Prep</span>
+</a>
+<span class="header-title">Property SOP Form</span>
+<a class="header-back" href="../">
+<svg viewbox="0 0 24 24"><path d="M19 12H5M12 5l-7 7 7 7"></path></svg>
+      Hub
+    </a>
+</div>
+</header>
+<div id="loginGate" style="position:fixed;inset:0;background:var(--navy-dark);z-index:999;display:none;align-items:center;justify-content:center;padding:24px;">
+  <div style="background:#fff;border-radius:14px;padding:28px 24px;width:100%;max-width:340px;">
+    <div style="font-family: 'Playfair Display', serif; font-style: italic;font-weight:700;font-size:20px;color:var(--navy);margin-bottom:4px;">Proper Home Prep</div>
+    <div style="font-size:13px;color:var(--slate);margin-bottom:18px;" id="loginGateMsg">Log in to continue</div>
+    <input id="lg-email" type="email" placeholder="Email" style="width:100%;padding:10px 12px;margin-bottom:10px;border:1.5px solid var(--border);border-radius:8px;font-size:15px;box-sizing:border-box;">
+    <input id="lg-pw" type="password" placeholder="Password" style="width:100%;padding:10px 12px;margin-bottom:14px;border:1.5px solid var(--border);border-radius:8px;font-size:15px;box-sizing:border-box;">
+    <button id="lg-btn" style="width:100%;padding:11px;background:var(--navy);color:#fff;border:none;border-radius:8px;font-weight:700;font-size:15px;cursor:pointer;">Log In</button>
+    <div id="lg-err" style="color:var(--danger);font-size:12px;margin-top:10px;min-height:14px;"></div>
+  </div>
+</div>
+
+<!-- ADMIN: CREATE PROPERTY LINK -->
+<div id="adminCreatePanel" style="display:none;max-width:520px;margin:48px auto;padding:0 20px;">
+  <div class="form-card" style="background:#fff;border:1.5px solid var(--border);border-radius:14px;padding:2rem;">
+    <h2 style="font-family: 'Playfair Display', serif; font-style: italic;color:var(--navy);margin-bottom:6px;">Start a Property SOP</h2>
+    <p style="font-size:0.85rem;color:var(--slate);margin-bottom:1.25rem;">Create a link and send it to your client — they'll fill in the property details themselves.</p>
+    <div class="form-group"><label>Client Email <span class="req">*</span></label><input id="ac-email" type="email" placeholder="client@example.com"></div>
+    <div class="form-group"><label>Property Nickname</label><input id="ac-nickname" type="text" placeholder='e.g. "The Brentwood Suite"'></div>
+    <div class="form-group"><label>Property Address</label><input id="ac-address" type="text" placeholder="123 Main St"></div>
+    <button class="btn-submit" id="ac-create-btn" style="margin-top:8px;">Generate Client Link →</button>
+    <div id="ac-linkbox" style="display:none;margin-top:1.25rem;padding:1rem;background:var(--surface);border-radius:8px;border:1px solid var(--border);">
+      <div style="font-size:0.78rem;font-weight:700;color:var(--navy);margin-bottom:8px;">✅ Send this link to your client:</div>
+      <input id="ac-link" readonly style="width:100%;padding:8px;font-size:0.8rem;border:1px solid var(--border);border-radius:6px;box-sizing:border-box;">
+      <button onclick="copyACLink()" style="margin-top:8px;background:var(--navy);color:#fff;border:none;padding:8px 16px;border-radius:6px;font-size:0.8rem;font-weight:700;cursor:pointer;">Copy Link</button>
+    </div>
+  </div>
+</div>
+
+<!-- ADMIN: REVIEW SUBMITTED SOP -->
+<div id="reviewPanel" style="display:none;max-width:720px;margin:48px auto;padding:0 20px;">
+  <div class="form-card" style="background:#fff;border:1.5px solid var(--border);border-radius:14px;padding:2rem;">
+    <h2 style="font-family: 'Playfair Display', serif; font-style: italic;color:var(--navy);margin-bottom:6px;">Review Submitted SOP</h2>
+    <p style="font-size:0.85rem;color:var(--slate);margin-bottom:1.25rem;">Submitted by the client — review below, then approve to save it as the official property profile.</p>
+    <div id="reviewContent" style="font-size:0.86rem;line-height:1.8;color:var(--charcoal);"></div>
+    <div style="margin-top:1.5rem;display:flex;gap:0.75rem;">
+      <button class="btn-submit" id="approve-btn" style="background:var(--success, #27AE60);">✓ Approve &amp; Save to Property Profile</button>
+    </div>
+  </div>
+</div>
+
+<!-- APPROVED READ-ONLY VIEW -->
+<div id="approvedPanel" style="display:none;max-width:520px;margin:80px auto;text-align:center;padding:0 20px;">
+  <div style="font-size:48px;margin-bottom:16px;">✅</div>
+  <h2 style="font-family: 'Playfair Display', serif; font-style: italic;color:var(--navy);">This property profile is approved</h2>
+  <p style="color:var(--slate);margin-top:10px;">The SOP for this property has been reviewed and saved. No further action needed.</p>
+</div>
+
+<div id="fillMode" style="display:none;">
+<!-- PROGRESS -->
+<div class="progress-wrap">
+<div class="progress-inner">
+<div class="progress-steps" id="progressSteps"></div>
+<div class="progress-bar-track"><div class="progress-bar-fill" id="progressFill" style="width:11%"></div></div>
+</div>
+</div>
+<!-- LAYOUT -->
+<div class="form-layout">
+<!-- SIDEBAR -->
+<aside class="sidebar">
+<nav class="sidebar-nav" id="sidebarNav"></nav>
+<button class="sidebar-save" onclick="saveDraft()">
+<svg viewbox="0 0 24 24"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
+      Save Draft
+    </button>
+</aside>
+<!-- FORM CONTENT -->
+<div id="formContent">
+<!-- ══ SECTION A ══ -->
+<div class="form-section active" id="section-0">
+<div class="section-card">
+<div class="section-hdr">
+<div class="section-eyebrow">Section A</div>
+<h2>Property Profile &amp; Access</h2>
+<p>This information populates your property's master profile in the Proper Home Prep dashboard and is referenced by every technician assigned to your property.</p>
+</div>
+<div class="subsection">
+<div class="subsection-title">A1 · Property Information</div>
+<div class="form-row">
+<div class="form-group">
+<label>Property Name / Nickname <span class="req">*</span></label>
+<input id="propNickname" placeholder='e.g. "The Brentwood Suite"' type="text"/>
+</div>
+<div class="form-group">
+<label>Property Address <span class="req">*</span></label>
+<input id="propAddress" placeholder="123 Main St" type="text"/>
+</div>
+</div>
+<div class="form-row-3">
+<div class="form-group">
+<label>City <span class="req">*</span></label>
+<input id="propCity" placeholder="Nashville" type="text"/>
+</div>
+<div class="form-group">
+<label>State</label>
+<input id="propState" type="text" value="TN"/>
+</div>
+<div class="form-group">
+<label>ZIP</label>
+<input id="propZip" placeholder="37201" type="text"/>
+</div>
+</div>
+<div class="form-group">
+<label>Property Type <span class="req">*</span></label>
+<div class="check-group" id="propTypeGroup">
+<label class="check-pill"><input name="propType" type="radio" value="condo"/> Condo</label>
+<label class="check-pill"><input name="propType" type="radio" value="townhome"/> Townhome</label>
+<label class="check-pill"><input name="propType" type="radio" value="single_family"/> Single Family</label>
+<label class="check-pill"><input name="propType" type="radio" value="cabin"/> Cabin / Chalet</label>
+<label class="check-pill"><input name="propType" type="radio" value="apartment"/> Apartment</label>
+<label class="check-pill"><input name="propType" type="radio" value="other"/> Other</label>
+</div>
+</div>
+<div class="form-row-4">
+<div class="form-group"><label>Bedrooms</label><input id="bedrooms" min="0" placeholder="3" type="number"/></div>
+<div class="form-group"><label>Bathrooms</label><input id="bathrooms" min="0" placeholder="2" step="0.5" type="number"/></div>
+<div class="form-group"><label>Half Baths</label><input id="halfBaths" min="0" placeholder="1" type="number"/></div>
+<div class="form-group"><label>Sq Ft (approx)</label><input id="sqFt" placeholder="1800" type="number"/></div>
+</div>
+<div class="form-row">
+<div class="form-group"><label>Max Guest Capacity</label><input id="maxGuests" min="1" placeholder="8" type="number"/></div>
+<div class="form-group"><label>Typical Booking Size</label><input id="typicalGuests" min="1" placeholder="4" type="number"/></div>
+</div>
+<div class="form-group">
+<label>STR Platform(s)</label>
+<div class="check-group">
+<label class="check-pill"><input name="platform" type="checkbox" value="airbnb"/> Airbnb</label>
+<label class="check-pill"><input name="platform" type="checkbox" value="vrbo"/> VRBO</label>
+<label class="check-pill"><input name="platform" type="checkbox" value="booking"/> Booking.com</label>
+<label class="check-pill"><input name="platform" type="checkbox" value="direct"/> Direct</label>
+<label class="check-pill"><input name="platform" type="checkbox" value="other"/> Other</label>
+</div>
+</div>
+<div class="form-row">
+<div class="form-group"><label>Average Nightly Rate ($)</label><input id="nightlyRate" placeholder="250" type="number"/></div>
+<div class="form-group"><label>Peak Season Months</label><input id="peakMonths" placeholder="June, July, August, December" type="text"/></div>
+</div>
+<div class="form-group">
+<label>Average Turnover Window (hours between checkout and next check-in)</label>
+<input id="turnoverWindow" max="24" min="1" placeholder="4" type="number"/>
+</div>
+</div>
+<div class="subsection">
+<div class="subsection-title">A2 · Host / Owner Information</div>
+<div class="form-row">
+<div class="form-group"><label>Host Name <span class="req">*</span></label><input id="hostName" placeholder="Jane Smith" type="text"/></div>
+<div class="form-group">
+<label>Preferred Contact Method</label>
+<div class="check-group">
+<label class="check-pill"><input name="contactMethod" type="radio" value="phone"/> Phone</label>
+<label class="check-pill"><input name="contactMethod" type="radio" value="text"/> Text</label>
+<label class="check-pill"><input name="contactMethod" type="radio" value="email"/> Email</label>
+<label class="check-pill"><input name="contactMethod" type="radio" value="dashboard"/> Dashboard</label>
+</div>
+</div>
+</div>
+<div class="form-row">
+<div class="form-group"><label>Phone <span class="req">*</span></label><input id="hostPhone" placeholder="(615) 000-0000" type="tel"/></div>
+<div class="form-group"><label>Email <span class="req">*</span></label><input id="hostEmail" placeholder="jane@example.com" type="email"/></div>
+</div>
+<div class="form-row">
+<div class="form-group"><label>Backup Contact Name &amp; Phone</label><input id="backupContact" placeholder="John Smith — (615) 000-0001" type="text"/></div>
+<div class="form-group"><label>Property Manager (if different)</label><input id="propManager" placeholder="Name &amp; contact" type="text"/></div>
+</div>
+</div>
+<div class="subsection">
+<div class="subsection-title">A3 · Access Information</div>
+<div class="callout navy">
+<svg viewbox="0 0 24 24"><rect height="11" rx="2" ry="2" width="18" x="3" y="11"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+<div><strong>Secure Access Notice:</strong> Access information is stored securely in the Proper Home Prep dashboard and is only visible to assigned technicians on the day of service. Codes are never shared via unsecured channels.</div>
+</div>
+<div class="form-group">
+<label>Key Access Method</label>
+<div class="check-group">
+<label class="check-pill"><input name="keyMethod" type="radio" value="lockbox"/> Lockbox</label>
+<label class="check-pill"><input name="keyMethod" type="radio" value="smart_lock"/> Smart Lock</label>
+<label class="check-pill"><input name="keyMethod" type="radio" value="keypad"/> Keypad</label>
+<label class="check-pill"><input name="keyMethod" type="radio" value="physical"/> Physical Key</label>
+<label class="check-pill"><input name="keyMethod" type="radio" value="other"/> Other</label>
+</div>
+</div>
+<div class="form-row">
+<div class="form-group"><label>Entry Code / Instructions</label><input id="entryCode" placeholder="Code or instructions" type="text"/></div>
+<div class="form-group"><label>Garage Code (if applicable)</label><input id="garageCode" placeholder="Code" type="text"/></div>
+</div>
+<div class="form-row">
+<div class="form-group"><label>Gate Code (if applicable)</label><input id="gateCode" placeholder="Code" type="text"/></div>
+<div class="form-group"><label>Parking Instructions for Tech Team</label><input id="parkingInstructions" placeholder="Street parking on Oak Ave" type="text"/></div>
+</div>
+<div class="form-group"><label>Special Access Notes (alarm, HOA, security cameras, etc.)</label><textarea id="accessNotes" placeholder="Any special instructions for accessing the property..."></textarea></div>
+</div>
+</div>
+<div class="form-nav">
+<span class="step-indicator">Step 1 of 9</span>
+<button class="btn-next" onclick="goTo(1)">Next: Room Layout <svg viewbox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"></path></svg></button>
+</div>
+</div>
+<!-- ══ SECTION B ══ -->
+<div class="form-section" id="section-1">
+<div class="section-card">
+<div class="section-hdr">
+<div class="section-eyebrow">Section B</div>
+<h2>Property Layout &amp; Room Inventory</h2>
+<p>Document the complete layout and inventory of your property so technicians understand the scope of each turnover.</p>
+</div>
+<div class="subsection">
+<div class="subsection-title">B1 · Room-by-Room Layout</div>
+<p style="font-size:0.85rem;color:var(--slate);margin-bottom:1rem;">Label each room as it will appear in the dashboard (e.g., "Master Suite", "Bunk Room", "Guest Bath 1").</p>
+<table class="data-table" style="margin-bottom:1rem;">
+<thead><tr><th>Room Type</th><th>Name / Label</th><th>Bed Size</th><th>Sleeping Cap.</th><th>Notes</th></tr></thead>
+<tbody id="roomLayoutBody">
+<tr><td><select><option>Bedroom</option><option>Bathroom</option><option>Kitchen</option><option>Living Room</option><option>Dining</option><option>Outdoor</option><option>Laundry</option><option>Other</option></select></td><td><input placeholder="Master Suite" type="text"/></td><td><select><option value="">N/A</option><option>King</option><option>Queen</option><option>Full</option><option>Twin</option><option>Twin XL</option><option>Sofa Bed</option></select></td><td><input min="0" placeholder="2" type="number"/></td><td><input placeholder="Notes" type="text"/></td></tr>
+<tr><td><select><option>Bedroom</option><option>Bathroom</option><option>Kitchen</option><option>Living Room</option><option>Dining</option><option>Outdoor</option><option>Laundry</option><option>Other</option></select></td><td><input placeholder="Guest Room" type="text"/></td><td><select><option value="">N/A</option><option>King</option><option>Queen</option><option>Full</option><option>Twin</option><option>Twin XL</option><option>Sofa Bed</option></select></td><td><input min="0" placeholder="2" type="number"/></td><td><input placeholder="Notes" type="text"/></td></tr>
+<tr><td><select><option selected="" value="bathroom">Bathroom</option><option>Bedroom</option><option>Kitchen</option><option>Living Room</option><option>Dining</option><option>Outdoor</option><option>Laundry</option><option>Other</option></select></td><td><input placeholder="Master Bath" type="text"/></td><td><select><option value="">N/A</option><option>King</option><option>Queen</option><option>Full</option><option>Twin</option><option>Twin XL</option><option>Sofa Bed</option></select></td><td><input min="0" placeholder="" type="number"/></td><td><input placeholder="Notes" type="text"/></td></tr>
+<tr><td><select><option selected="" value="kitchen">Kitchen</option><option>Bedroom</option><option>Bathroom</option><option>Living Room</option><option>Dining</option><option>Outdoor</option><option>Laundry</option><option>Other</option></select></td><td><input placeholder="Kitchen" type="text"/></td><td><select><option value="">N/A</option></select></td><td><input min="0" placeholder="" type="number"/></td><td><input placeholder="Notes" type="text"/></td></tr>
+</tbody>
+</table>
+<button class="btn-add" onclick="addRoomRow()">
+<svg viewbox="0 0 24 24"><line x1="12" x2="12" y1="5" y2="19"></line><line x1="5" x2="19" y1="12" y2="12"></line></svg>
+            Add Room
+          </button>
+</div>
+<div class="subsection">
+<div class="subsection-title">B2 · Linen Inventory</div>
+<table class="data-table" style="margin-bottom:1rem;">
+<thead><tr><th>Bed Location</th><th>Bed Size</th><th>Sheet Style</th><th>Pillows</th><th>Duvet</th><th>Dec. Pillows</th><th>Extra Blanket</th></tr></thead>
+<tbody id="linenBody">
+<tr><td><input placeholder="Master Bed" type="text"/></td><td><select><option>King</option><option>Queen</option><option>Full</option><option>Twin</option><option>Twin XL</option><option>Sofa Bed</option></select></td><td><select><option>White</option><option>Color</option></select></td><td><input min="0" placeholder="4" type="number"/></td><td><select><option>Yes</option><option>No</option></select></td><td><input min="0" placeholder="2" type="number"/></td><td><select><option>Yes</option><option>No</option></select></td></tr>
+<tr><td><input placeholder="Bedroom 2" type="text"/></td><td><select><option>King</option><option>Queen</option><option>Full</option><option>Twin</option><option>Twin XL</option><option>Sofa Bed</option></select></td><td><select><option>White</option><option>Color</option></select></td><td><input min="0" placeholder="2" type="number"/></td><td><select><option>Yes</option><option>No</option></select></td><td><input min="0" placeholder="0" type="number"/></td><td><select><option>Yes</option><option>No</option></select></td></tr>
+</tbody>
+</table>
+<button class="btn-add" onclick="addLinenRow()">
+<svg viewbox="0 0 24 24"><line x1="12" x2="12" y1="5" y2="19"></line><line x1="5" x2="19" y1="12" y2="12"></line></svg>
+            Add Bed
+          </button>
+<div class="form-row" style="margin-top:1rem;">
+<div class="form-group"><label>Linen Storage Location</label><input id="linenStorage" placeholder="Hall closet, second shelf" type="text"/></div>
+<div class="form-group">
+<label>Linen Service</label>
+<select id="linenService">
+<option value="">Select...</option>
+<option value="php">Provided by Proper Home Prep</option>
+<option value="host">Host provides linens</option>
+<option value="third_party">Third-party linen service</option>
+</select>
+</div>
+</div>
+</div>
+<div class="subsection">
+<div class="subsection-title">B3 · Towel Inventory &amp; Presentation</div>
+<div class="form-row-4">
+<div class="form-group"><label>Bath Towels / Guest</label><input id="bathTowels" min="0" placeholder="2" type="number"/></div>
+<div class="form-group"><label>Hand Towels / Bath</label><input id="handTowels" min="0" placeholder="1" type="number"/></div>
+<div class="form-group"><label>Washcloths / Guest</label><input id="washcloths" min="0" placeholder="2" type="number"/></div>
+<div class="form-group"><label>Pool Towels</label><input id="poolTowels" min="0" placeholder="0" type="number"/></div>
+</div>
+<div class="form-group">
+<label>Towel Folding Preference</label>
+<div class="check-group">
+<label class="check-pill"><input name="towelFold" type="radio" value="standard"/> Standard Fold</label>
+<label class="check-pill"><input name="towelFold" type="radio" value="hotel_roll"/> Hotel Roll</label>
+<label class="check-pill"><input name="towelFold" type="radio" value="fan_fold"/> Decorative Fan Fold</label>
+<label class="check-pill"><input name="towelFold" type="radio" value="no_pref"/> No Preference</label>
+</div>
+</div>
+<div class="form-row">
+<div class="form-group"><label>Towel Placement</label><input id="towelPlacement" placeholder="Bar, hook, or foot of bed" type="text"/></div>
+<div class="form-group"><label>Towel Storage Location</label><input id="towelStorage" placeholder="Bathroom cabinet under sink" type="text"/></div>
+</div>
+</div>
+</div>
+<div class="form-nav">
+<button class="btn-prev" onclick="goTo(0)"><svg viewbox="0 0 24 24"><path d="M19 12H5M12 5l-7 7 7 7"></path></svg> Back</button>
+<span class="step-indicator">Step 2 of 9</span>
+<button class="btn-next" onclick="goTo(2)">Next: Cleaning Standards <svg viewbox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"></path></svg></button>
+</div>
+</div>
+<!-- ══ SECTION C ══ -->
+<div class="form-section" id="section-2">
+<div class="section-card">
+<div class="section-hdr">
+<div class="section-eyebrow">Section C</div>
+<h2>Cleaning Standards &amp; Preferences</h2>
+<p>Every task listed below is loaded into your property's dashboard checklist. Technicians check off each item in real time, creating a verified, timestamped completion record for every turnover.</p>
+</div>
+<div class="subsection">
+<div class="subsection-title">C1 · Cleaning Products</div>
+<div class="form-group">
+<label>Products Supplied By</label>
+<div class="check-group">
+<label class="check-pill"><input name="productsBy" type="radio" value="php"/> Proper Home Prep (standard kit)</label>
+<label class="check-pill"><input name="productsBy" type="radio" value="host"/> Host supplies products</label>
+<label class="check-pill"><input name="productsBy" type="radio" value="mixed"/> Mix of both</label>
+</div>
+</div>
+<div class="form-row">
+<div class="form-group"><label>If Host-Supplied, Product Location</label><input id="productLocation" placeholder="Under kitchen sink" type="text"/></div>
+<div class="form-group"><label>Products That Must NOT Be Used</label><input id="restrictedProducts" placeholder="No bleach on marble surfaces" type="text"/></div>
+</div>
+<div class="form-group"><label>Preferred Floor Care by Surface</label></div>
+<div class="form-row-4">
+<div class="form-group"><label>Hardwood / LVP</label><input id="floorHardwood" placeholder="Bona cleaner" type="text"/></div>
+<div class="form-group"><label>Tile</label><input id="floorTile" placeholder="Standard mop" type="text"/></div>
+<div class="form-group"><label>Carpet</label><input id="floorCarpet" placeholder="Vacuum only" type="text"/></div>
+<div class="form-group"><label>Stone / Marble</label><input id="floorStone" placeholder="pH-neutral only" type="text"/></div>
+</div>
+</div>
+<div class="subsection">
+<div class="subsection-title">C2 · Kitchen SOP</div>
+<div class="form-group">
+<label>Priority Level</label>
+<div class="check-group">
+<label class="check-pill"><input name="kitchenPriority" type="radio" value="standard"/> Standard</label>
+<label class="check-pill"><input name="kitchenPriority" type="radio" value="deep_every"/> Deep Clean Every Turn</label>
+<label class="check-pill"><input name="kitchenPriority" type="radio" value="deep_periodic"/> Deep Clean Periodically</label>
+</div>
+</div>
+<div class="checklist">
+<div class="checklist-item"><input checked="" type="checkbox"/><span>Wipe all countertops and backsplash</span></div>
+<div class="checklist-item"><input checked="" type="checkbox"/><span>Clean stovetop — all burners and grates</span></div>
+<div class="checklist-item"><input checked="" type="checkbox"/><span>Clean oven exterior; interior per priority level</span></div>
+<div class="checklist-item"><input checked="" type="checkbox"/><span>Wipe microwave interior and exterior</span></div>
+<div class="checklist-item"><input checked="" type="checkbox"/><span>Clean refrigerator exterior; wipe interior shelves</span></div>
+<div class="checklist-item"><input checked="" type="checkbox"/><span>Empty and reline trash cans; replace bags</span></div>
+<div class="checklist-item"><input checked="" type="checkbox"/><span>Run and empty dishwasher; put away all clean dishes</span></div>
+<div class="checklist-item"><input checked="" type="checkbox"/><span>Wipe all cabinet fronts and drawer handles</span></div>
+<div class="checklist-item"><input checked="" type="checkbox"/><span>Clean sink and faucet; polish if stainless</span></div>
+<div class="checklist-item"><input checked="" type="checkbox"/><span>Wipe down all small appliances</span></div>
+<div class="checklist-item"><input checked="" type="checkbox"/><span>Mop / sanitize floor</span></div>
+<div class="checklist-item"><input checked="" type="checkbox"/><span>Final smell check — no odors</span></div>
+</div>
+<div class="form-group" style="margin-top:1rem;"><label>Host-Specific Kitchen Notes</label><textarea id="kitchenNotes" placeholder="Any special instructions for the kitchen..."></textarea></div>
+</div>
+<div class="subsection">
+<div class="subsection-title">C3 · Laundry &amp; Linens SOP</div>
+<div class="form-row">
+<div class="form-group"><label>Washer Location</label><input id="washerLocation" placeholder="Laundry room, first floor" type="text"/></div>
+<div class="form-group"><label>Dryer Location</label><input id="dryerLocation" placeholder="Same as washer" type="text"/></div>
+</div>
+<div class="form-row">
+<div class="form-group"><label>Washer Temperature</label><input id="washerTemp" placeholder="Cold" type="text"/></div>
+<div class="form-group"><label>Washer Cycle</label><input id="washerCycle" placeholder="Normal" type="text"/></div>
+</div>
+<div class="form-row">
+<div class="form-group"><label>Detergent Preference</label><input id="detergent" placeholder="Tide Free &amp; Gentle" type="text"/></div>
+<div class="form-group"><label>Dryer Settings</label><input id="dryerSettings" placeholder="Medium heat, 45 min" type="text"/></div>
+</div>
+<div class="form-row">
+<div class="form-group"><label>Fabrics That Cannot Go in Dryer</label><input id="noDryerFabrics" placeholder="Decorative pillow covers" type="text"/></div>
+<div class="form-group"><label>Soiled Linen Storage Location</label><input id="soiledLinenStorage" placeholder="Laundry basket in closet" type="text"/></div>
+</div>
+</div>
+</div>
+<div class="form-nav">
+<button class="btn-prev" onclick="goTo(1)"><svg viewbox="0 0 24 24"><path d="M19 12H5M12 5l-7 7 7 7"></path></svg> Back</button>
+<span class="step-indicator">Step 3 of 9</span>
+<button class="btn-next" onclick="goTo(3)">Next: Restocking <svg viewbox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"></path></svg></button>
+</div>
+</div>
+<!-- ══ SECTION D ══ -->
+<div class="form-section" id="section-3">
+<div class="section-card">
+<div class="section-hdr">
+<div class="section-eyebrow">Section D</div>
+<h2>Restocking &amp; Amenities</h2>
+<p>Specify the exact quantities and locations of every guest-facing supply. Consistent restocking = consistent reviews.</p>
+</div>
+<div class="subsection">
+<div class="subsection-title">D1 · Guest Supply Restocking List</div>
+<table class="data-table" style="margin-bottom:1rem;">
+<thead><tr><th>Item</th><th>Qty Per Turnover</th><th>Location on Property</th></tr></thead>
+<tbody>
+<tr><td>Toilet paper rolls (per bathroom)</td><td><input min="0" placeholder="2" type="number"/></td><td><input placeholder="Under bathroom sink" type="text"/></td></tr>
+<tr><td>Paper towels</td><td><input min="0" placeholder="1" type="number"/></td><td><input placeholder="Kitchen counter" type="text"/></td></tr>
+<tr><td>Trash bags — kitchen</td><td><input min="0" placeholder="2" type="number"/></td><td><input placeholder="Under kitchen sink" type="text"/></td></tr>
+<tr><td>Trash bags — bedroom / bathroom</td><td><input min="0" placeholder="4" type="number"/></td><td><input placeholder="Under kitchen sink" type="text"/></td></tr>
+<tr><td>Dish soap</td><td><input min="0" placeholder="1" type="number"/></td><td><input placeholder="Kitchen sink" type="text"/></td></tr>
+<tr><td>Dishwasher pods</td><td><input min="0" placeholder="4" type="number"/></td><td><input placeholder="Under kitchen sink" type="text"/></td></tr>
+<tr><td>Hand soap (per sink)</td><td><input min="0" placeholder="1" type="number"/></td><td><input placeholder="Each sink" type="text"/></td></tr>
+<tr><td>Body wash</td><td><input min="0" placeholder="1" type="number"/></td><td><input placeholder="Each shower" type="text"/></td></tr>
+<tr><td>Shampoo</td><td><input min="0" placeholder="1" type="number"/></td><td><input placeholder="Each shower" type="text"/></td></tr>
+<tr><td>Conditioner</td><td><input min="0" placeholder="1" type="number"/></td><td><input placeholder="Each shower" type="text"/></td></tr>
+<tr><td>Coffee pods / ground coffee</td><td><input min="0" placeholder="6" type="number"/></td><td><input placeholder="Coffee station" type="text"/></td></tr>
+<tr><td>Welcome snack / treat (if provided)</td><td><input min="0" placeholder="1" type="number"/></td><td><input placeholder="Kitchen counter" type="text"/></td></tr>
+</tbody>
+</table>
+<div class="form-row">
+<div class="form-group"><label>Restocking Supplies Stored At</label><input id="restockLocation" placeholder="Hall closet, top shelf" type="text"/></div>
+<div class="form-group">
+<label>Restocking Supplied By</label>
+<select id="restockBy">
+<option value="">Select...</option>
+<option value="host">Host (supplies left on property)</option>
+<option value="php">Proper Home Prep restocking service</option>
+<option value="third_party">Third-party delivery</option>
+</select>
+</div>
+</div>
+<div class="form-group"><label>Low Supply Alert — Notify Host Via Dashboard When</label><textarea id="lowStockThreshold" placeholder="e.g. When toilet paper drops below 2 rolls per bathroom, when coffee pods below 4..." style="min-height:70px;"></textarea></div>
+</div>
+<div class="subsection">
+<div class="subsection-title">D2 · Welcome Presentation Preferences</div>
+<div class="callout gold">
+<svg viewbox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+<div>The welcome presentation is the first thing a guest sees when they walk in. Specify exactly how you want it staged so it is consistent across every technician and every visit.</div>
+</div>
+<div class="form-row">
+<div class="form-group">
+<label>Welcome Note / Card</label>
+<div class="check-group">
+<label class="check-pill"><input name="welcomeNote" type="radio" value="yes"/> Yes</label>
+<label class="check-pill"><input name="welcomeNote" type="radio" value="no"/> No</label>
+</div>
+</div>
+<div class="form-group"><label>Welcome Note Location</label><input id="welcomeNoteLocation" placeholder="Kitchen island" type="text"/></div>
+</div>
+<div class="form-row">
+<div class="form-group">
+<label>Welcome Basket / Amenity Setup</label>
+<div class="check-group">
+<label class="check-pill"><input name="welcomeBasket" type="radio" value="yes"/> Yes</label>
+<label class="check-pill"><input name="welcomeBasket" type="radio" value="no"/> No</label>
+</div>
+</div>
+<div class="form-group"><label>Welcome Basket Instructions</label><input id="welcomeBasketInstructions" placeholder="Place on kitchen counter, centered" type="text"/></div>
+</div>
+<div class="form-group"><label>Seasonal or Special Occasion Adjustments</label><textarea id="seasonalAdjustments" placeholder="Holiday decorations, seasonal welcome items, etc." style="min-height:70px;"></textarea></div>
+</div>
+</div>
+<div class="form-nav">
+<button class="btn-prev" onclick="goTo(2)"><svg viewbox="0 0 24 24"><path d="M19 12H5M12 5l-7 7 7 7"></path></svg> Back</button>
+<span class="step-indicator">Step 4 of 9</span>
+<button class="btn-next" onclick="goTo(4)">Next: Damage Reporting <svg viewbox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"></path></svg></button>
+</div>
+</div>
+<!-- ══ SECTION E ══ -->
+<div class="form-section" id="section-4">
+<div class="section-card">
+<div class="section-hdr">
+<div class="section-eyebrow">Section E</div>
+<h2>Inspection &amp; Damage Reporting</h2>
+<p>Every technician conducts a thorough walkthrough at each turnover. Issues are documented with timestamped photos and flagged to the host within the turnover window.</p>
+</div>
+<div class="subsection">
+<div class="subsection-title">E1 · Damage Inspection Checklist</div>
+<p style="font-size:0.85rem;color:var(--slate);margin-bottom:1rem;">At every turnover, technicians perform a systematic walkthrough and flag any of the following via photo report in the dashboard.</p>
+<div class="checklist">
+<div class="checklist-item"><input checked="" type="checkbox"/><span>Broken or damaged furniture</span></div>
+<div class="checklist-item"><input checked="" type="checkbox"/><span>Stained or damaged linens / towels</span></div>
+<div class="checklist-item"><input checked="" type="checkbox"/><span>Broken dishes, glassware, or cookware</span></div>
+<div class="checklist-item"><input checked="" type="checkbox"/><span>Damaged appliances (note make / model in report)</span></div>
+<div class="checklist-item"><input checked="" type="checkbox"/><span>Wall damage — scuffs, holes, marks</span></div>
+<div class="checklist-item"><input checked="" type="checkbox"/><span>Floor damage — scratches, stains, broken tile</span></div>
+<div class="checklist-item"><input checked="" type="checkbox"/><span>Broken fixtures — light switches, faucets, curtain rods</span></div>
+<div class="checklist-item"><input checked="" type="checkbox"/><span>Missing items from inventory</span></div>
+<div class="checklist-item"><input checked="" type="checkbox"/><span>Evidence of unauthorized pet(s)</span></div>
+<div class="checklist-item"><input checked="" type="checkbox"/><span>Evidence of smoking</span></div>
+<div class="checklist-item"><input checked="" type="checkbox"/><span>Excessive trash or cleaning beyond standard scope</span></div>
+<div class="checklist-item"><input checked="" type="checkbox"/><span>Maintenance issues — leaks, HVAC, plumbing, pest evidence</span></div>
+<div class="checklist-item"><input checked="" type="checkbox"/><span>Exterior damage (if applicable)</span></div>
+</div>
+</div>
+<div class="subsection">
+<div class="subsection-title">E2 · Host Damage Report Preferences</div>
+<div class="form-group">
+<label>Notify Host of Any Damage</label>
+<div class="check-group">
+<label class="check-pill"><input name="damageNotify" type="radio" value="immediate"/> Immediately via dashboard + text</label>
+<label class="check-pill"><input name="damageNotify" type="radio" value="dashboard"/> Dashboard only</label>
+<label class="check-pill"><input name="damageNotify" type="radio" value="end_of_job"/> End of job summary</label>
+</div>
+</div>
+<div class="form-group">
+<label>For Damage Requiring a Maintenance Call</label>
+<div class="check-group">
+<label class="check-pill"><input name="maintenanceHandler" type="radio" value="host"/> Host handles all maintenance</label>
+<label class="check-pill"><input name="maintenanceHandler" type="radio" value="php"/> Proper Home Prep light repair service</label>
+<label class="check-pill"><input name="maintenanceHandler" type="radio" value="vendor"/> Host's designated vendor</label>
+</div>
+</div>
+<div class="form-group"><label>Vendor Contact for Maintenance</label><input id="vendorContact" placeholder="Name &amp; phone number" type="text"/></div>
+<div class="form-group">
+<label>For Missing Items</label>
+<div class="check-group">
+<label class="check-pill"><input name="missingItems" type="radio" value="note_only"/> Note in report only</label>
+<label class="check-pill"><input name="missingItems" type="radio" value="host_claim"/> Host will file claim</label>
+<label class="check-pill"><input name="missingItems" type="radio" value="php_replace"/> Proper Home Prep to replace and bill</label>
+</div>
+</div>
+</div>
+<div class="subsection">
+<div class="subsection-title">E3 · Inventory Log</div>
+<p style="font-size:0.85rem;color:var(--slate);margin-bottom:1rem;">Document your key inventory items. This log is the baseline technicians use to identify missing items during their turnover walkthrough.</p>
+<table class="data-table" style="margin-bottom:1rem;">
+<thead><tr><th>Item</th><th>Location</th><th>Quantity</th><th>Notes</th></tr></thead>
+<tbody id="inventoryBody">
+<tr><td><input type="text" value="Wine glasses"/></td><td><input type="text" value="Kitchen cabinet"/></td><td><input type="number" value="8"/></td><td><input placeholder="Notes" type="text"/></td></tr>
+<tr><td><input type="text" value="Coffee mugs"/></td><td><input type="text" value="Kitchen cabinet"/></td><td><input type="number" value="6"/></td><td><input placeholder="Notes" type="text"/></td></tr>
+<tr><td><input type="text" value="Plates (full set)"/></td><td><input type="text" value="Kitchen cabinet"/></td><td><input type="number" value="8"/></td><td><input placeholder="Notes" type="text"/></td></tr>
+<tr><td><input type="text" value="TV remotes"/></td><td><input type="text" value="Living room"/></td><td><input type="number" value="2"/></td><td><input placeholder="Notes" type="text"/></td></tr>
+<tr><td><input type="text" value="Pool towels"/></td><td><input type="text" value="Hall closet"/></td><td><input type="number" value="8"/></td><td><input placeholder="Notes" type="text"/></td></tr>
+<tr><td><input type="text" value="Extra blankets"/></td><td><input type="text" value="Hall closet"/></td><td><input type="number" value="4"/></td><td><input placeholder="Notes" type="text"/></td></tr>
+</tbody>
+</table>
+<button class="btn-add" onclick="addInventoryRow()">
+<svg viewbox="0 0 24 24"><line x1="12" x2="12" y1="5" y2="19"></line><line x1="5" x2="19" y1="12" y2="12"></line></svg>
+            Add Item
+          </button>
+</div>
+</div>
+<div class="form-nav">
+<button class="btn-prev" onclick="goTo(3)"><svg viewbox="0 0 24 24"><path d="M19 12H5M12 5l-7 7 7 7"></path></svg> Back</button>
+<span class="step-indicator">Step 5 of 9</span>
+<button class="btn-next" onclick="goTo(5)">Next: Scheduling <svg viewbox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"></path></svg></button>
+</div>
+</div>
+<!-- ══ SECTION F ══ -->
+<div class="form-section" id="section-5">
+<div class="section-card">
+<div class="section-hdr">
+<div class="section-eyebrow">Section F</div>
+<h2>Timing &amp; Scheduling Preferences</h2>
+<p>Define your turnover window parameters and scheduling workflow. This information configures automated scheduling in the Proper Home Prep dashboard.</p>
+</div>
+<div class="subsection">
+<div class="subsection-title">F1 · Turnover Window</div>
+<div class="form-row-4">
+<div class="form-group"><label>Checkout Time</label><input id="checkoutTime" type="time"/></div>
+<div class="form-group"><label>Check-in Time</label><input id="checkinTime" type="time"/></div>
+<div class="form-group"><label>Standard Window (hrs)</label><input id="standardWindow" max="24" min="1" placeholder="4" type="number"/></div>
+<div class="form-group"><label>Minimum Window (hrs)</label><input id="minWindow" max="24" min="1" placeholder="2" type="number"/></div>
+</div>
+<div class="form-group">
+<label>If Window Is Under Minimum, Preferred Response</label>
+<div class="check-group">
+<label class="check-pill"><input name="shortWindow" type="radio" value="contact_host"/> Contact host immediately</label>
+<label class="check-pill"><input name="shortWindow" type="radio" value="flag_dashboard"/> Flag in dashboard</label>
+<label class="check-pill"><input name="shortWindow" type="radio" value="proceed"/> Proceed and note in job report</label>
+</div>
+</div>
+</div>
+<div class="subsection">
+<div class="subsection-title">F2 · Scheduling Preferences</div>
+<div class="form-group">
+<label>Platform Calendar Sync</label>
+<div class="check-group">
+<label class="check-pill"><input name="calSync" type="checkbox" value="airbnb"/> Airbnb</label>
+<label class="check-pill"><input name="calSync" type="checkbox" value="vrbo"/> VRBO</label>
+<label class="check-pill"><input name="calSync" type="checkbox" value="google"/> Google Calendar</label>
+<label class="check-pill"><input name="calSync" type="checkbox" value="ical"/> iCal Link</label>
+<label class="check-pill"><input name="calSync" type="checkbox" value="manual"/> Manual Notification</label>
+</div>
+</div>
+<div class="form-group"><label>iCal or Sync Link (if applicable)</label><input id="icalLink" placeholder="https://..." type="url"/></div>
+<div class="form-group">
+<label>Preferred Notification Lead Time Before Turnover</label>
+<div class="check-group">
+<label class="check-pill"><input name="notifLead" type="radio" value="24h"/> 24 Hours</label>
+<label class="check-pill"><input name="notifLead" type="radio" value="48h"/> 48 Hours</label>
+<label class="check-pill"><input name="notifLead" type="radio" value="week"/> Week Ahead</label>
+</div>
+</div>
+<div class="form-group">
+<label>Same-Day Booking Turnovers</label>
+<div class="check-group">
+<label class="check-pill"><input name="sameDay" type="radio" value="contact_first"/> Contact host first</label>
+<label class="check-pill"><input name="sameDay" type="radio" value="proceed"/> Proceed if team available</label>
+<label class="check-pill"><input name="sameDay" type="radio" value="not_accepted"/> Not accepted</label>
+</div>
+</div>
+</div>
+<div class="subsection">
+<div class="subsection-title">F3 · Priority &amp; Escalation</div>
+<div class="form-group">
+<label>If Turnover Is at Risk of Not Completing Before Check-in</label>
+<div class="check-group">
+<label class="check-pill"><input name="escalation" type="radio" value="call_host"/> Call host immediately</label>
+<label class="check-pill"><input name="escalation" type="radio" value="text_flag"/> Text + dashboard flag</label>
+<label class="check-pill"><input name="escalation" type="radio" value="dashboard_only"/> Dashboard flag only</label>
+</div>
+</div>
+<div class="form-group"><label>Emergency Contact for Day-of Issues</label><input id="emergencyContact" placeholder="Name &amp; phone number" type="text"/></div>
+</div>
+</div>
+<div class="form-nav">
+<button class="btn-prev" onclick="goTo(4)"><svg viewbox="0 0 24 24"><path d="M19 12H5M12 5l-7 7 7 7"></path></svg> Back</button>
+<span class="step-indicator">Step 6 of 9</span>
+<button class="btn-next" onclick="goTo(6)">Next: Special Instructions <svg viewbox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"></path></svg></button>
+</div>
+</div>
+<!-- ══ SECTION G ══ -->
+<div class="form-section" id="section-6">
+<div class="section-card">
+<div class="section-hdr">
+<div class="section-eyebrow">Section G</div>
+<h2>Special Instructions &amp; Property Quirks</h2>
+<p>No two properties are exactly alike. The more detail you provide here, the better every turnover will go.</p>
+</div>
+<div class="subsection">
+<div class="subsection-title">G1 · Appliances &amp; Systems</div>
+<div class="form-group">
+<label>HVAC Thermostat Setting Between Guests</label>
+<div class="check-group">
+<label class="check-pill"><input name="hvac" type="radio" value="cool"/> Cool</label>
+<label class="check-pill"><input name="hvac" type="radio" value="heat"/> Heat</label>
+<label class="check-pill"><input name="hvac" type="radio" value="off"/> Off</label>
+<label class="check-pill"><input name="hvac" type="radio" value="auto"/> Auto</label>
+</div>
+</div>
+<div class="form-row">
+<div class="form-group"><label>Target Temperature (°F)</label><input id="hvacTemp" max="85" min="60" placeholder="72" type="number"/></div>
+<div class="form-group"><label>Water Heater Notes</label><input id="waterHeaterNotes" placeholder="Set to 120°F" type="text"/></div>
+</div>
+<div class="form-group"><label>Appliances Requiring Special Instructions</label><textarea id="applianceNotes" placeholder="e.g. Induction cooktop — use only flat-bottom pans. Washer — run clean cycle monthly." style="min-height:80px;"></textarea></div>
+<div class="form-group"><label>Smart Home Devices (Alexa, Ring, Nest, etc.) — Tech Interaction Instructions</label><textarea id="smartHomeNotes" placeholder="e.g. Do not adjust Ring doorbell settings. Nest thermostat — use only the physical dial." style="min-height:80px;"></textarea></div>
+</div>
+<div class="subsection">
+<div class="subsection-title">G2 · Pet Policy</div>
+<div class="form-group">
+<label>Pets Allowed by Host</label>
+<div class="check-group">
+<label class="check-pill"><input name="petsAllowed" type="radio" value="yes"/> Yes</label>
+<label class="check-pill"><input name="petsAllowed" type="radio" value="no"/> No</label>
+</div>
+</div>
+<div class="form-row">
+<div class="form-group"><label>Pet-Specific Cleaning Needs</label><input id="petCleaning" placeholder="Extra vacuuming, enzyme cleaner on upholstery" type="text"/></div>
+<div class="form-group">
+<label>Pet Hair / Odor Treatment</label>
+<div class="check-group">
+<label class="check-pill"><input name="petTreatment" type="radio" value="standard"/> Standard</label>
+<label class="check-pill"><input name="petTreatment" type="radio" value="premium"/> Premium Pet Treatment (+ fee)</label>
+</div>
+</div>
+</div>
+<div class="form-group"><label>Pet Items to Reset (beds, bowls, gates, etc.)</label><input id="petItems" placeholder="Dog bed in master bedroom corner, water bowl by back door" type="text"/></div>
+</div>
+<div class="subsection">
+<div class="subsection-title">G3 · Neighbor &amp; HOA Considerations</div>
+<div class="form-row">
+<div class="form-group"><label>Parking Rules</label><input id="parkingRules" placeholder="2 cars max in driveway, no street parking after 10pm" type="text"/></div>
+<div class="form-group"><label>Noise Restrictions During Turnover</label><input id="noiseRestrictions" placeholder="No loud equipment before 9am" type="text"/></div>
+</div>
+<div class="form-row">
+<div class="form-group"><label>HOA Contact (if tech needs access)</label><input id="hoaContact" placeholder="Name &amp; phone" type="text"/></div>
+<div class="form-group"><label>Neighbor Considerations</label><input id="neighborNotes" placeholder="Shared driveway with unit 2B" type="text"/></div>
+</div>
+</div>
+<div class="subsection">
+<div class="subsection-title">G4 · Anything Else We Should Know</div>
+<div class="form-group"><label>Additional Notes, Quirks, or Property-Specific Details</label><textarea id="additionalNotes" placeholder="Use this space to document any quirks, recurring issues, preferences, or details about your property not covered elsewhere in this SOP. This is your free-form communication directly to every technician who will ever service your property." style="min-height:120px;"></textarea></div>
+</div>
+</div>
+<div class="form-nav">
+<button class="btn-prev" onclick="goTo(5)"><svg viewbox="0 0 24 24"><path d="M19 12H5M12 5l-7 7 7 7"></path></svg> Back</button>
+<span class="step-indicator">Step 7 of 9</span>
+<button class="btn-next" onclick="goTo(7)">Next: Photo Requirements <svg viewbox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"></path></svg></button>
+</div>
+</div>
+<!-- ══ SECTION H ══ -->
+<div class="form-section" id="section-7">
+<div class="section-card">
+<div class="section-hdr">
+<div class="section-eyebrow">Section H</div>
+<h2>Photo Documentation Requirements</h2>
+<p>Timestamped photo documentation is a mandatory, non-negotiable component of every Proper Home Prep service. Photos are permanently linked to the job record.</p>
+</div>
+<div class="callout navy" style="margin-bottom:1.5rem;">
+<svg viewbox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
+<div><strong>Non-Negotiable Standard:</strong> Photo documentation protects the host, the technician, and the Proper Home Prep standard. Every job is fully documented. No exceptions. Jobs without complete photo documentation are flagged and reviewed before the job is marked closed.</div>
+</div>
+<table class="data-table" style="margin-bottom:1.5rem;">
+<thead><tr><th>Checkpoint</th><th>Required Photos</th><th>Uploaded By</th></tr></thead>
+<tbody>
+<tr><td><strong>Job Start (Before)</strong></td><td>Front of property, each bedroom, each bathroom, kitchen, living room — before any work begins</td><td>Technician — upon arrival</td></tr>
+<tr><td><strong>Mid-Job Milestone</strong></td><td>Beds made and staged, towels set per host preference, kitchen reset and restocked</td><td>Technician — as each milestone is completed</td></tr>
+<tr><td><strong>Damage or Flag</strong></td><td>Any damaged or missing items, maintenance issues, rule violations — close-up and wide-angle required</td><td>Technician — immediately upon discovery</td></tr>
+<tr><td><strong>Job Complete (After)</strong></td><td>Front of property, each bedroom (final staged), each bathroom (final), kitchen (final), living room (final), outdoor space</td><td>Technician — before clocking out</td></tr>
+</tbody>
+</table>
+<div class="form-group"><label>Host Photo Preferences / Additional Photo Requests</label><textarea id="photoPreferences" placeholder="e.g. Always photograph the welcome basket from above. Include a photo of the front door mat. Capture the view from the master bedroom window." style="min-height:100px;"></textarea></div>
+</div>
+<div class="form-nav">
+<button class="btn-prev" onclick="goTo(6)"><svg viewbox="0 0 24 24"><path d="M19 12H5M12 5l-7 7 7 7"></path></svg> Back</button>
+<span class="step-indicator">Step 8 of 9</span>
+<button class="btn-next" onclick="goTo(8)">Next: Sign-Off <svg viewbox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"></path></svg></button>
+</div>
+</div>
+<!-- ══ SECTION I ══ -->
+<div class="form-section" id="section-8">
+<div class="section-card">
+<div class="section-hdr">
+<div class="section-eyebrow">Section I</div>
+<h2>SOP Approval &amp; Sign-Off</h2>
+<p>By completing and signing this SOP, the host confirms that all information provided accurately reflects their property standards and preferences.</p>
+</div>
+<div class="callout gold" style="margin-bottom:1.5rem;">
+<svg viewbox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+<div>This SOP becomes the binding operational standard for all future service visits. Proper Home Prep will use this document to configure the property profile in the Proper Dashboard and to onboard every technician assigned to this property.</div>
+</div>
+<div class="subsection">
+<div class="subsection-title">I1 · SOP Confirmation</div>
+<div class="form-row">
+<div class="form-group"><label>Host Name (Print) <span class="req">*</span></label><input id="signHostName" placeholder="Full legal name" type="text"/></div>
+<div class="form-group"><label>Date <span class="req">*</span></label><input id="signDate" type="date"/></div>
+</div>
+<div class="form-group">
+<label>Host Signature</label>
+<div class="sig-box" id="sigBox" onclick="signSOP()">Click to sign digitally</div>
+<p style="font-size:0.75rem;color:var(--slate);margin-top:0.4rem;">By clicking above, you confirm your digital signature and agreement to this SOP.</p>
+</div>
+<div class="form-row">
+<div class="form-group"><label>Proper Home Prep Onboarding Coordinator</label><input id="coordinatorName" placeholder="Coordinator name" type="text"/></div>
+<div class="form-group"><label>SOP ID (assigned by system)</label><input id="sopId" placeholder="Auto-generated on submission" readonly="" style="background:var(--surface);color:var(--slate);" type="text"/></div>
+</div>
+</div>
+<div class="subsection">
+<div class="subsection-title">I2 · SOP Review Schedule</div>
+<p style="font-size:0.85rem;color:var(--slate);margin-bottom:1rem;">This SOP is a living document. It should be updated any time property details, host preferences, or service scope change.</p>
+<div class="form-group">
+<label>This SOP Should Be Reviewed and Updated</label>
+<div class="check-group">
+<label class="check-pill"><input name="reviewSchedule" type="radio" value="quarterly"/> Quarterly</label>
+<label class="check-pill"><input name="reviewSchedule" type="radio" value="biannual"/> Every 6 Months</label>
+<label class="check-pill"><input name="reviewSchedule" type="radio" value="major_change"/> After Any Major Property Change</label>
+<label class="check-pill"><input name="reviewSchedule" type="radio" value="on_request"/> Upon Host Request</label>
+</div>
+</div>
+<div class="form-group"><label>Change Log (note what changed and when)</label><textarea id="changeLog" placeholder="Initial SOP created — [date]" style="min-height:80px;"></textarea></div>
+</div>
+<div class="callout navy" style="margin-top:1rem;">
+<svg viewbox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+<div><strong>Thank you for trusting Proper Home Prep with your property.</strong> Every technician who walks through your door will deliver the same exceptional, hospitality-grade result. <em>"Where Every Detail Matters."</em></div>
+</div>
+</div>
+<div class="form-nav">
+<button class="btn-prev" onclick="goTo(7)"><svg viewbox="0 0 24 24"><path d="M19 12H5M12 5l-7 7 7 7"></path></svg> Back</button>
+<span class="step-indicator">Step 9 of 9</span>
+<button class="btn-submit" onclick="submitSOP()">
+<svg viewbox="0 0 24 24"><path d="M9 11l3 3L22 4"></path><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
+          Submit SOP to Dashboard
+        </button>
+</div>
+</div>
+<!-- SUCCESS SCREEN -->
+<div id="successScreen">
+<div class="success-icon">
+<svg viewbox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+</div>
+<h2>SOP Submitted for Review!</h2>
+<p>Thank you! Your property SOP has been sent to Proper Home Prep for review. Once approved, it becomes your property's official profile that every assigned technician follows.</p>
+<div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;">
+<a href="../" style="display:inline-flex;align-items:center;gap:0.5rem;background:var(--navy);color:var(--white);padding:0.85rem 1.75rem;border-radius:8px;text-decoration:none;font-weight:700;font-size:0.88rem;">← Back to Hub</a>
+<button onclick="printSOP()" style="display:inline-flex;align-items:center;gap:0.5rem;background:var(--gold);color:var(--navy);padding:0.85rem 1.75rem;border-radius:8px;border:none;font-family:Lato,sans-serif;font-weight:700;font-size:0.88rem;cursor:pointer;">🖨 Print / Save PDF</button>
+<button onclick="resetForm()" style="display:inline-flex;align-items:center;gap:0.5rem;background:var(--surface);color:var(--slate);padding:0.85rem 1.75rem;border-radius:8px;border:1.5px solid var(--border);font-family:Lato,sans-serif;font-weight:700;font-size:0.88rem;cursor:pointer;">+ New Property SOP</button>
+</div>
+<div style="margin-top:2rem;padding:1.25rem;background:var(--cream);border-radius:10px;border:1px solid var(--border);max-width:480px;margin-left:auto;margin-right:auto;">
+<p style="font-size:0.78rem;color:var(--slate);font-weight:700;letter-spacing:0.06em;text-transform:uppercase;margin-bottom:0.4rem;">SOP Reference ID</p>
+<p id="successSopId" style="font-family: 'Playfair Display', serif; font-style: italic;font-size:1.4rem;font-weight:700;color:var(--navy);"></p>
+<p style="font-size:0.78rem;color:var(--slate);margin-top:0.25rem;">Save this ID for your records.</p>
+</div>
+</div>
+</div><!-- /formContent -->
+</div><!-- /form-layout -->
+</div><!-- /fillMode -->
+<div id="toastContainer"></div>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js";
+import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, isSignInWithEmailLink, signInWithEmailLink, sendSignInLinkToEmail } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-auth.js";
+import { getFirestore, doc, getDoc, setDoc, collection } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBKWf4Js9_pUs1kE5LBybhWKInF4uMFHUU",
+  authDomain: "php--claude.firebaseapp.com",
+  projectId: "php--claude",
+  storageBucket: "php--claude.firebasestorage.app",
+  messagingSenderId: "91666340651",
+  appId: "1:91666340651:web:a9c53f4c8b53026909036e"
+};
+const fbApp = initializeApp(firebaseConfig);
+const auth = getAuth(fbApp);
+const db = getFirestore(fbApp);
+
+const params = new URLSearchParams(location.search);
+const propId = params.get('id');
+let curUser = null, curRole = null, propDoc = null;
+
+function showOnly(id){
+  ['adminCreatePanel','reviewPanel','approvedPanel','fillMode'].forEach(function(x){
+    document.getElementById(x).style.display = (x===id) ? (x==='fillMode'?'block':'block') : 'none';
+  });
+}
+
+// ── GENERIC FORM SERIALIZER ──
+// Walks every .form-group in the form and captures label -> value.
+// Also captures the three dynamic tables (rooms, linens, inventory) as row arrays.
+function serializeForm(){
+  var data = [];
+  document.querySelectorAll('#formContent .form-group').forEach(function(fg){
+    var labelEl = fg.querySelector('label');
+    if(!labelEl) return;
+    var label = labelEl.textContent.replace('*','').trim();
+    var radios = fg.querySelectorAll('input[type=radio]:checked');
+    var checks = fg.querySelectorAll('input[type=checkbox]:checked');
+    var val;
+    if(radios.length){ val = radios[0].closest('label').textContent.trim(); }
+    else if(checks.length){ val = Array.from(checks).map(function(c){return c.closest('label').textContent.trim();}).join(', '); }
+    else {
+      var input = fg.querySelector('input:not([type=radio]):not([type=checkbox]), select, textarea');
+      if(input) val = input.value;
+    }
+    if(val) data.push({label:label, value:val});
+  });
+  function tableRows(tbodyId, headers){
+    var rows = [];
+    document.querySelectorAll('#'+tbodyId+' tr').forEach(function(tr){
+      var cells = tr.querySelectorAll('input, select');
+      var row = {};
+      cells.forEach(function(c,i){ row[headers[i]||('col'+i)] = c.value; });
+      if(Object.values(row).some(function(v){return v;})) rows.push(row);
+    });
+    return rows;
+  }
+  return {
+    fields: data,
+    rooms: tableRows('roomLayoutBody', ['type','label','bedSize','qty','notes']),
+    linens: tableRows('linenBody', ['location','size','color','qty','extra','extraQty','used']),
+    inventory: tableRows('inventoryBody', ['item','location','qty','notes'])
+  };
+}
+
+function renderReview(payload){
+  var html = '<h3 style="font-family:\'Playfair Display\',serif;font-style:italic;color:var(--navy);margin-bottom:10px;">Fields</h3><table style="width:100%;border-collapse:collapse;">';
+  payload.fields.forEach(function(f){
+    html += '<tr><td style="padding:6px 10px 6px 0;color:var(--slate);font-weight:700;width:40%;vertical-align:top;">'+f.label+'</td><td style="padding:6px 0;">'+f.value+'</td></tr>';
+  });
+  html += '</table>';
+  if(payload.rooms && payload.rooms.length){
+    html += '<h3 style="font-family:\'Playfair Display\',serif;font-style:italic;color:var(--navy);margin:18px 0 8px;">Room Layout</h3><ul>';
+    payload.rooms.forEach(function(r){ html += '<li>'+Object.values(r).filter(Boolean).join(' — ')+'</li>'; });
+    html += '</ul>';
+  }
+  if(payload.linens && payload.linens.length){
+    html += '<h3 style="font-family:\'Playfair Display\',serif;font-style:italic;color:var(--navy);margin:18px 0 8px;">Linens</h3><ul>';
+    payload.linens.forEach(function(r){ html += '<li>'+Object.values(r).filter(Boolean).join(' — ')+'</li>'; });
+    html += '</ul>';
+  }
+  if(payload.inventory && payload.inventory.length){
+    html += '<h3 style="font-family:\'Playfair Display\',serif;font-style:italic;color:var(--navy);margin:18px 0 8px;">Supply Inventory</h3><ul>';
+    payload.inventory.forEach(function(r){ html += '<li>'+Object.values(r).filter(Boolean).join(' — ')+'</li>'; });
+    html += '</ul>';
+  }
+  if(payload.signatureImg){
+    html += '<h3 style="font-family:\'Playfair Display\',serif;font-style:italic;color:var(--navy);margin:18px 0 8px;">Signature</h3><img src="'+payload.signatureImg+'" style="max-width:300px;border:1px solid var(--border);border-radius:6px;">';
+  }
+  document.getElementById('reviewContent').innerHTML = html;
+}
+
+async function boot(){
+  if(!propId){
+    // ADMIN: create a new property SOP request
+    if(!curRole || curRole!=='admin'){
+      document.getElementById('loginGateMsg').textContent = 'Log in to create a property SOP link.';
+      document.getElementById('loginGate').style.display = 'flex';
+      return;
+    }
+    document.getElementById('loginGate').style.display = 'none';
+    showOnly('adminCreatePanel');
+    return;
+  }
+  const snap = await getDoc(doc(db,'properties',propId));
+  if(!snap.exists()){
+    document.body.innerHTML = '<p style="padding:40px;text-align:center;color:#6b7280;">This SOP link is invalid or was not found.</p>';
+    return;
+  }
+  propDoc = snap.data();
+  if(propDoc.status === 'awaiting_client'){
+    document.getElementById('loginGate').style.display = 'none';
+    if(propDoc.nickname) document.getElementById('propNickname').value = propDoc.nickname;
+    if(propDoc.address) document.getElementById('propAddress').value = propDoc.address;
+    showOnly('fillMode');
+  } else if(propDoc.status === 'pending_review'){
+    if(!curRole || curRole!=='admin'){
+      document.getElementById('loginGateMsg').textContent = 'Log in to review this submitted SOP.';
+      document.getElementById('loginGate').style.display = 'flex';
+      return;
+    }
+    document.getElementById('loginGate').style.display = 'none';
+    renderReview(propDoc);
+    showOnly('reviewPanel');
+  } else if(propDoc.status === 'approved'){
+    document.getElementById('loginGate').style.display = 'none';
+    showOnly('approvedPanel');
+  }
+}
+
+// ── ADMIN: CREATE PROPERTY LINK ──
+document.getElementById('ac-create-btn').addEventListener('click', async function(){
+  var email = document.getElementById('ac-email').value.trim();
+  if(!email){ showToast('Please enter the client email.', 'danger'); return; }
+  var id = 'PROP-' + Date.now() + '-' + Math.random().toString(36).slice(2,8);
+  await setDoc(doc(db,'properties',id), {
+    clientEmail: email,
+    nickname: document.getElementById('ac-nickname').value.trim(),
+    address: document.getElementById('ac-address').value.trim(),
+    status: 'awaiting_client',
+    createdAt: new Date().toISOString()
+  });
+  var url = location.origin + location.pathname + '?id=' + id;
+  document.getElementById('ac-link').value = url;
+  document.getElementById('ac-linkbox').style.display = 'block';
+});
+window.copyACLink = function(){
+  var el = document.getElementById('ac-link');
+  el.select(); document.execCommand('copy');
+};
+
+// ── ADMIN: APPROVE ──
+document.getElementById('approve-btn').addEventListener('click', async function(){
+  this.disabled = true; this.textContent = 'Saving...';
+  await setDoc(doc(db,'properties',propId), {
+    status: 'approved',
+    approvedAt: new Date().toISOString(),
+    approvedBy: curUser.email
+  }, {merge:true});
+  // Automation: send the client a passwordless sign-in link so their account
+  // gets created automatically the moment they click it — no manual Console step.
+  try{
+    var actionCodeSettings = { url: location.origin + '/fieldops.html', handleCodeInApp: true };
+    await sendSignInLinkToEmail(auth, propDoc.clientEmail, actionCodeSettings);
+  } catch(e) { /* non-fatal — admin can still add them manually if this fails */ }
+  showOnly('approvedPanel');
+});
+
+window.fbSubmitSOP = async function(){
+  if(!propId){ showToast('Missing property link — please use the link sent by Proper Home Prep.', 'danger'); return false; }
+  var payload = serializeForm();
+  payload.status = 'pending_review';
+  payload.submittedAt = new Date().toISOString();
+  await setDoc(doc(db,'properties',propId), payload, {merge:true});
+  return true;
+};
+
+onAuthStateChanged(auth, async function(user){
+  curUser = user;
+  if(user){
+    var uSnap = await getDoc(doc(db,'users',user.uid));
+    curRole = uSnap.exists() ? uSnap.data().role : null;
+  } else { curRole = null; }
+  boot();
+});
+document.getElementById('lg-btn').addEventListener('click', function(){
+  var email = document.getElementById('lg-email').value.trim();
+  var pw = document.getElementById('lg-pw').value;
+  signInWithEmailAndPassword(auth, email, pw).catch(function(err){
+    document.getElementById('lg-err').textContent = err.message.replace('Firebase: ','');
+  });
+});
+</script>
+<script>
+  // ── SECTIONS CONFIG ──
+  const SECTIONS = [
+    { letter: 'A', label: 'Property Profile' },
+    { letter: 'B', label: 'Room Layout' },
+    { letter: 'C', label: 'Cleaning Standards' },
+    { letter: 'D', label: 'Restocking' },
+    { letter: 'E', label: 'Damage Reporting' },
+    { letter: 'F', label: 'Scheduling' },
+    { letter: 'G', label: 'Special Instructions' },
+    { letter: 'H', label: 'Photo Requirements' },
+    { letter: 'I', label: 'Sign-Off' }
+  ];
+  let currentSection = 0;
+  const completedSections = new Set();
+
+  // ── BUILD NAV ──
+  function buildNav() {
+    const sidebar = document.getElementById('sidebarNav');
+    const steps = document.getElementById('progressSteps');
+    sidebar.innerHTML = '';
+    steps.innerHTML = '';
+    SECTIONS.forEach((s, i) => {
+      // Sidebar
+      const a = document.createElement('a');
+      a.href = '#';
+      a.onclick = (e) => { e.preventDefault(); goTo(i); };
+      a.className = (i === currentSection ? 'active' : '') + (completedSections.has(i) && i !== currentSection ? ' done' : '');
+      a.innerHTML = `<span class="sec-letter">${s.letter}</span>${s.label}`;
+      sidebar.appendChild(a);
+      // Progress steps
+      const btn = document.createElement('button');
+      btn.className = 'progress-step' + (i === currentSection ? ' active' : '') + (completedSections.has(i) && i !== currentSection ? ' done' : '');
+      btn.textContent = s.letter + ' · ' + s.label;
+      btn.onclick = () => goTo(i);
+      steps.appendChild(btn);
+    });
+    // Progress bar
+    const pct = ((currentSection) / (SECTIONS.length - 1)) * 100;
+    document.getElementById('progressFill').style.width = Math.max(5, pct) + '%';
+  }
+  buildNav();
+
+  // ── NAVIGATION ──
+  function goTo(idx) {
+    if (idx < 0 || idx >= SECTIONS.length) return;
+    completedSections.add(currentSection);
+    document.getElementById('section-' + currentSection).classList.remove('active');
+    currentSection = idx;
+    document.getElementById('section-' + currentSection).classList.add('active');
+    buildNav();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // ── PILL CHECKBOXES ──
+  document.querySelectorAll('.check-pill').forEach(pill => {
+    const input = pill.querySelector('input');
+    function update() { pill.classList.toggle('selected', input.checked); }
+    input.addEventListener('change', update);
+    update();
+  });
+
+  // ── ADD ROOM ROW ──
+  function addRoomRow() {
+    const tbody = document.getElementById('roomLayoutBody');
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td><select><option>Bedroom</option><option>Bathroom</option><option>Kitchen</option><option>Living Room</option><option>Dining</option><option>Outdoor</option><option>Laundry</option><option>Other</option></select></td><td><input type="text" placeholder="Room label" /></td><td><select><option value="">N/A</option><option>King</option><option>Queen</option><option>Full</option><option>Twin</option><option>Twin XL</option><option>Sofa Bed</option></select></td><td><input type="number" min="0" placeholder="" /></td><td><input type="text" placeholder="Notes" /></td>`;
+    tbody.appendChild(tr);
+    showToast('Room added!', 'success');
+  }
+
+  // ── ADD LINEN ROW ──
+  function addLinenRow() {
+    const tbody = document.getElementById('linenBody');
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td><input type="text" placeholder="Bed location" /></td><td><select><option>King</option><option>Queen</option><option>Full</option><option>Twin</option><option>Twin XL</option><option>Sofa Bed</option></select></td><td><select><option>White</option><option>Color</option></select></td><td><input type="number" min="0" placeholder="2" /></td><td><select><option>Yes</option><option>No</option></select></td><td><input type="number" min="0" placeholder="0" /></td><td><select><option>Yes</option><option>No</option></select></td>`;
+    tbody.appendChild(tr);
+    showToast('Bed added!', 'success');
+  }
+
+  // ── ADD INVENTORY ROW ──
+  function addInventoryRow() {
+    const tbody = document.getElementById('inventoryBody');
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td><input type="text" placeholder="Item name" /></td><td><input type="text" placeholder="Location" /></td><td><input type="number" min="0" placeholder="0" /></td><td><input type="text" placeholder="Notes" /></td>`;
+    tbody.appendChild(tr);
+    showToast('Item added!', 'success');
+  }
+
+  // ── DIGITAL SIGNATURE ──
+  let signed = false;
+  function signSOP() {
+    if (signed) return;
+    const name = document.getElementById('signHostName').value.trim();
+    const date = document.getElementById('signDate').value;
+    if (!name) { showToast('Please enter your name before signing.', 'danger'); document.getElementById('signHostName').focus(); return; }
+    signed = true;
+    const sigBox = document.getElementById('sigBox');
+    const d = date ? new Date(date + 'T12:00:00').toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) : new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+    sigBox.innerHTML = `<div style="text-align:center;"><div style="font-family: 'Playfair Display', serif;font-size:1.6rem;font-style:italic;color:var(--navy);border-bottom:2px solid var(--navy);padding-bottom:0.25rem;margin-bottom:0.4rem;">${name}</div><div style="font-size:0.75rem;color:var(--slate);">Digitally signed · ${d}</div></div>`;
+    sigBox.style.background = 'rgba(39,174,96,0.05)';
+    sigBox.style.borderColor = 'rgba(39,174,96,0.3)';
+    sigBox.style.cursor = 'default';
+    showToast('Signature applied!', 'success');
+  }
+
+  // ── GENERATE SOP ID ──
+  function generateSopId() {
+    const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+    let id = 'PHP-SOP-';
+    for (let i = 0; i < 6; i++) id += chars[Math.floor(Math.random() * chars.length)];
+    return id;
+  }
+
+  // ── SAVE DRAFT ──
+  function saveDraft() {
+    const data = { savedAt: new Date().toISOString(), propNickname: document.getElementById('propNickname')?.value, hostName: document.getElementById('hostName')?.value };
+    localStorage.setItem('php_sop_draft', JSON.stringify(data));
+    showToast('Draft saved! (Ctrl+S)', 'success');
+  }
+  document.addEventListener('keydown', e => { if ((e.ctrlKey || e.metaKey) && e.key === 's') { e.preventDefault(); saveDraft(); } });
+
+  // ── SUBMIT ──
+  async function submitSOP() {
+    const hostName = document.getElementById('signHostName').value.trim();
+    const propName = document.getElementById('propNickname').value.trim();
+    if (!hostName) { showToast('Please enter host name in Section I before submitting.', 'danger'); return; }
+    if (!propName) { showToast('Please enter property name in Section A before submitting.', 'danger'); return; }
+    if (!signed) { showToast('Please apply your digital signature before submitting.', 'danger'); return; }
+    const sopId = generateSopId();
+    document.getElementById('sopId').value = sopId;
+    document.getElementById('successSopId').textContent = sopId;
+
+    var submitBtn = document.querySelector('.btn-submit');
+    if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = 'Saving...'; }
+    try {
+      var ok = await window.fbSubmitSOP();
+      if (!ok) { if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = 'Submit SOP to Dashboard'; } return; }
+    } catch(err) {
+      showToast('Save failed: ' + err.message, 'danger');
+      if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = 'Submit SOP to Dashboard'; }
+      return;
+    }
+
+    // Show success
+    document.querySelectorAll('.form-section').forEach(s => s.classList.remove('active'));
+    document.getElementById('successScreen').style.display = 'block';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    showToast('SOP submitted for review!', 'success');
+  }
+
+  // ── RESET ──
+  function resetForm() {
+    signed = false;
+    currentSection = 0;
+    completedSections.clear();
+    document.getElementById('successScreen').style.display = 'none';
+    document.querySelectorAll('.form-section').forEach((s, i) => s.classList.toggle('active', i === 0));
+    buildNav();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // ── PRINT ──
+  function printSOP() { window.print(); }
+
+  // ── TOAST ──
+  function showToast(msg, type = 'info') {
+    const c = document.getElementById('toastContainer');
+    const t = document.createElement('div');
+    t.className = 'toast' + (type !== 'info' ? ' ' + type : '');
+    t.textContent = msg;
+    c.appendChild(t);
+    requestAnimationFrame(() => t.classList.add('show'));
+    setTimeout(() => { t.classList.remove('show'); setTimeout(() => t.remove(), 300); }, 3000);
+  }
+
+  // ── SET TODAY'S DATE ──
+  const today = new Date().toISOString().split('T')[0];
+  document.getElementById('signDate').value = today;
+</script>
+</body>
+</html>

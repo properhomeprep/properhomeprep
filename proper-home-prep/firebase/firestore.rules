@@ -1,0 +1,157 @@
+rules_version = '2';
+
+// Proper Home Prep — Firestore security rules (draft v1, matches the Firebase Backend Design doc)
+//
+// Roles come from a Firebase Auth custom claim named `role` ('admin' | 'tech' | 'host').
+// Only the server (Admin SDK) can set it, so a user can never promote themselves.
+// Anything not explicitly allowed below is denied.
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ---------- who is asking ----------
+    function isRole(r) {
+      return request.auth != null && request.auth.token.get('role', '') == r;
+    }
+    function isAdmin() { return isRole('admin'); }
+    function isTech()  { return isRole('tech'); }
+    function isHost()  { return isRole('host'); }
+
+    // ---------- job helpers ----------
+    function jobOf(jobId) {
+      return get(/databases/$(database)/documents/jobs/$(jobId)).data;
+    }
+    function isAssignedTech(job) { return isTech() && job.techUid == request.auth.uid; }
+    function isJobHost(job)      { return isHost() && request.auth.uid in job.clientUids; }
+    function canReadJob(jobId) {
+      return isAdmin()
+        || ((isTech() || isHost())
+            && (isAssignedTech(jobOf(jobId)) || isJobHost(jobOf(jobId))));
+    }
+
+    // ---------- users: readable by yourself (and admins); written only by the server ----------
+    match /users/{uid} {
+      allow read: if isAdmin() || (request.auth != null && request.auth.uid == uid);
+      allow write: if false;
+    }
+
+    // ---------- properties ----------
+    // Profile + SOP: admins and techs can read all; a host reads only properties that list them.
+    // Entry codes and host contact details live under /private and are admin-only.
+    match /properties/{pid} {
+      allow read: if isAdmin() || isTech()
+                  || (isHost() && request.auth.uid in resource.data.clientUids);
+      allow create, update, delete: if isAdmin();
+
+      match /private/{docId} {
+        allow read, write: if isAdmin();
+      }
+    }
+
+    // ---------- jobs ----------
+    match /jobs/{jobId} {
+
+      // A tech may only: clock in (not_started -> in_progress, with a server timestamp)
+      // and toggle laundryStarted. Completing a job is server-only.
+      function techMayUpdateJob() {
+        let before = resource.data;
+        let after = request.resource.data;
+        let changed = after.diff(before).affectedKeys();
+        return isAssignedTech(before)
+          && before.status != 'complete'
+          && changed.hasOnly(['status', 'clockIn', 'laundryStarted'])
+          && (after.status == before.status
+              || (before.status == 'not_started'
+                  && after.status == 'in_progress'
+                  && changed.hasAll(['status', 'clockIn'])))
+          && (!changed.hasAny(['clockIn']) || after.clockIn == request.time);
+      }
+
+      // A tech may only check/uncheck tasks, with a server timestamp, while the job is in progress.
+      function techMayCheckTask(job) {
+        let after = request.resource.data;
+        return isAssignedTech(job)
+          && job.status == 'in_progress'
+          && after.diff(resource.data).affectedKeys().hasOnly(['done', 'doneAt'])
+          && after.done is bool
+          && ((after.done == true && after.doneAt == request.time)
+              || (after.done == false && after.doneAt == null));
+      }
+
+      function photoCreateOk(job) {
+        let d = request.resource.data;
+        return isAssignedTech(job)
+          && job.status == 'in_progress'
+          && d.keys().hasOnly(['area', 'phase', 'taskId', 'storagePath', 'takenAt', 'takenBy'])
+          && d.keys().hasAll(['area', 'phase', 'storagePath', 'takenAt', 'takenBy'])
+          && d.phase in ['before', 'after', 'task']
+          && d.area is string && d.area.size() > 0 && d.area.size() <= 60
+          && d.storagePath is string
+          && d.storagePath.matches('jobs/' + jobId + '/photos/[^/]+')
+          && d.takenBy == request.auth.uid
+          && d.takenAt == request.time;
+      }
+
+      function flagCreateOk(job) {
+        let d = request.resource.data;
+        return isAssignedTech(job)
+          && job.status != 'complete'
+          && d.keys().hasOnly(['severity', 'description', 'tags', 'photoPath', 'createdAt', 'createdBy'])
+          && d.keys().hasAll(['severity', 'description', 'createdAt', 'createdBy'])
+          && d.severity in ['routine', 'attention', 'urgent']
+          && d.description is string && d.description.size() > 0 && d.description.size() <= 2000
+          && (!('tags' in d) || d.tags is list)
+          && (!('photoPath' in d)
+              || (d.photoPath is string && d.photoPath.matches('jobs/' + jobId + '/.*')))
+          && d.createdBy == request.auth.uid
+          && d.createdAt == request.time;
+      }
+
+      allow read: if isAdmin()
+                  || isAssignedTech(resource.data)
+                  || isJobHost(resource.data);
+      allow create, delete: if isAdmin();
+      allow update: if isAdmin() || techMayUpdateJob();
+
+      // Entry info snapshot: the assigned tech can read it until the job is signed off.
+      match /private/{docId} {
+        allow read: if isAdmin()
+                    || (isTech() && isAssignedTech(jobOf(jobId)) && jobOf(jobId).status != 'complete');
+        allow write: if isAdmin();
+      }
+
+      match /tasks/{taskId} {
+        allow read: if canReadJob(jobId);
+        allow create, delete: if isAdmin();
+        allow update: if isAdmin() || (isTech() && techMayCheckTask(jobOf(jobId)));
+      }
+
+      match /photos/{photoId} {
+        allow read: if canReadJob(jobId);
+        allow create: if isAdmin() || (isTech() && photoCreateOk(jobOf(jobId)));
+        allow update, delete: if isAdmin();
+      }
+
+      match /flags/{flagId} {
+        allow read: if canReadJob(jobId);
+        allow create: if isAdmin() || (isTech() && flagCreateOk(jobOf(jobId)));
+        allow update, delete: if isAdmin();
+      }
+    }
+
+    // ---------- leads: admin only (the public quote form will write through a server function) ----------
+    match /inquiries/{id} {
+      allow read, write: if isAdmin();
+    }
+
+    // ---------- onboarding codes: server only ----------
+    match /onboardingCodes/{code} {
+      allow read, write: if false;
+    }
+
+    // ---------- everything else is denied ----------
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

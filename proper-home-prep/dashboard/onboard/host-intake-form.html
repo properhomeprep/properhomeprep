@@ -1,0 +1,1797 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Proper Home Prep — Host Intake Form</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://unpkg.com/lucide@latest" defer></script>
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      fontFamily: { sans: ['Inter', 'sans-serif'] },
+      colors: {
+        navy: '#1A2E4A',
+        gold: '#D8B96A',
+        cream: '#FDF6E3',
+        paper: '#f5f4f0',
+        'navy-light': '#243d63',
+        'gold-dark': '#b0912e',
+        'gold-light': '#e8d9a0',
+      }
+    }
+  }
+}
+</script>
+<style>
+  :root {
+    --navy: #1A2E4A;
+    --gold: #D8B96A;
+    --cream: #FDF6E3;
+    --paper: #f5f4f0;
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+  body { background: var(--paper); font-family: 'Inter', sans-serif; margin: 0; padding: 0; color: #2a2a2a; }
+
+  .php-checkbox { display: flex; align-items: flex-start; gap: 10px; cursor: pointer; user-select: none; }
+  .php-checkbox input { display: none; }
+  .php-checkbox .check-box {
+    width: 20px; height: 20px; min-width: 20px; border: 2px solid var(--navy);
+    display: flex; align-items: center; justify-content: center; background: #fff; transition: all 0.15s;
+  }
+  .php-checkbox input:checked + .check-box { background: var(--gold); }
+  .php-checkbox input:checked + .check-box svg { display: block; }
+  .php-checkbox .check-box svg { display: none; width: 14px; height: 14px; }
+
+  .radio-pills { display: flex; flex-wrap: wrap; gap: 8px; }
+  .radio-pill { cursor: pointer; user-select: none; }
+  .radio-pill input { display: none; }
+  .radio-pill span {
+    display: inline-block; padding: 8px 18px; border: 1.5px solid var(--navy);
+    font-size: 13px; font-weight: 500; color: var(--navy); background: #fff; transition: all 0.15s;
+  }
+  .radio-pill input:checked + span { background: var(--navy); color: #fff; }
+
+  .check-pill { cursor: pointer; user-select: none; }
+  .check-pill input { display: none; }
+  .check-pill span {
+    display: inline-block; padding: 8px 18px; border: 1.5px solid var(--navy);
+    font-size: 13px; font-weight: 500; color: var(--navy); background: #fff; transition: all 0.15s;
+  }
+  .check-pill input:checked + span { background: var(--navy); color: #fff; }
+
+  .form-label {
+    display: block; font-size: 11px; font-weight: 600; text-transform: uppercase;
+    letter-spacing: 0.08em; color: var(--navy); margin-bottom: 5px;
+  }
+  .form-input {
+    width: 100%; padding: 10px 12px; border: 1px solid #c5c5c5; background: #fff;
+    font-size: 14px; font-family: 'Inter', sans-serif; color: #1a1a1a;
+    border-radius: 0; outline: none; transition: border-color 0.15s;
+  }
+  .form-input:focus { border-color: var(--gold); }
+  .form-input::placeholder { color: #aaa; font-style: italic; font-size: 13px; }
+  .form-input.error { border-color: #cc3a38; }
+  textarea.form-input { resize: vertical; min-height: 80px; }
+
+  .section-header {
+    background: var(--navy); color: #fff; padding: 14px 20px; display: flex;
+    align-items: center; cursor: pointer; user-select: none; transition: background 0.15s;
+  }
+  .section-header:hover { background: #243d63; }
+  .section-badge {
+    background: var(--gold); color: var(--navy); font-weight: 700; font-size: 14px;
+    padding: 4px 10px; margin-right: 14px; min-width: 38px; text-align: center;
+  }
+  .section-title { font-size: 15px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; flex: 1; }
+  .section-chevron { color: var(--gold); transition: transform 0.25s; }
+  .section-chevron.open { transform: rotate(180deg); }
+  .section-body { padding: 28px 24px; border: 1px solid #e0e0e0; border-top: none; background: #fff; }
+
+  .callout-gold { background: var(--cream); border-left: 4px solid var(--gold); padding: 16px 20px; font-size: 13px; color: #4a4a2a; }
+  .callout-navy { background: var(--navy); border-left: 4px solid var(--gold); padding: 16px 20px; font-size: 13px; color: #fff; }
+
+  .progress-track { height: 6px; background: #e0ddd8; width: 100%; }
+  .progress-fill { height: 6px; background: var(--gold); transition: width 0.4s ease; }
+
+  .sticky-footer {
+    position: fixed; bottom: 0; left: 0; right: 0; background: #fff;
+    border-top: 2px solid var(--gold); padding: 10px 20px; z-index: 100;
+    display: flex; align-items: center; justify-content: center; gap: 16px;
+    box-shadow: 0 -4px 16px rgba(0,0,0,0.08);
+  }
+
+  .pw-wrap { position: relative; }
+  .pw-wrap .toggle-pw {
+    position: absolute; right: 10px; top: 50%; transform: translateY(-50%);
+    background: none; border: none; cursor: pointer; color: #888; padding: 4px;
+  }
+
+  .modal-overlay {
+    display: none; position: fixed; inset: 0; background: rgba(26,46,74,0.55);
+    z-index: 200; align-items: center; justify-content: center;
+  }
+  .modal-overlay.active { display: flex; }
+  .modal-box { background: #fff; max-width: 520px; width: 90%; box-shadow: 0 12px 40px rgba(0,0,0,0.2); }
+
+  .draft-banner {
+    background: var(--cream); border-bottom: 2px solid var(--gold); padding: 12px 20px;
+    display: flex; align-items: center; justify-content: center; gap: 12px; font-size: 13px; color: #4a4a2a;
+  }
+
+  /* SOP room sub-section */
+  .room-header {
+    background: #f0efeb; color: var(--navy); padding: 12px 16px; display: flex;
+    align-items: center; cursor: pointer; user-select: none; border-left: 4px solid var(--gold);
+    transition: background 0.15s; margin-top: 12px;
+  }
+  .room-header:first-child { margin-top: 0; }
+  .room-header:hover { background: #e8e7e2; }
+  .room-title { font-size: 14px; font-weight: 600; flex: 1; }
+  .room-chevron { color: var(--navy); transition: transform 0.25s; width: 16px; height: 16px; }
+  .room-chevron.open { transform: rotate(180deg); }
+  .room-body { padding: 16px 20px; border: 1px solid #e8e7e2; border-top: none; border-left: 4px solid var(--gold); background: #fafaf8; }
+
+  .sop-task-item { display: flex; align-items: flex-start; gap: 10px; padding: 6px 0; }
+  .sop-task-item + .sop-task-item { border-top: 1px solid #f0efeb; }
+
+  .custom-task-item { display: flex; align-items: flex-start; gap: 10px; padding: 6px 0; }
+  .custom-task-item + .custom-task-item { border-top: 1px solid #f0efeb; }
+
+  .sop-add-row { display: flex; gap: 8px; margin-top: 12px; }
+  .sop-add-row input { flex: 1; }
+  .sop-add-btn {
+    background: var(--gold); color: var(--navy); border: none; padding: 8px 14px;
+    font-size: 18px; font-weight: 700; cursor: pointer; min-width: 40px; display: flex;
+    align-items: center; justify-content: center; transition: background 0.15s;
+  }
+  .sop-add-btn:hover { background: #b0912e; }
+
+  .sop-remove-btn {
+    background: none; border: none; color: #cc3a38; font-size: 16px; font-weight: 700;
+    cursor: pointer; padding: 2px 6px; line-height: 1; min-width: 24px;
+  }
+  .sop-remove-btn:hover { color: #a82020; }
+
+  .gold-star { color: var(--gold); font-size: 14px; margin-right: 2px; }
+
+  .status-pill {
+    display: inline-block; padding: 6px 16px; font-size: 12px; font-weight: 700;
+    letter-spacing: 0.06em; text-transform: uppercase;
+  }
+  .status-draft { background: var(--cream); color: #8a7a30; border: 1.5px solid var(--gold); }
+  .status-approved { background: #e6f5ec; color: #1a6b3a; border: 1.5px solid #2d9b58; }
+
+  .sop-progress-track { height: 5px; background: #e0ddd8; width: 100%; margin-top: 8px; }
+  .sop-progress-fill { height: 5px; background: var(--gold); transition: width 0.4s ease; }
+
+  .sop-summary-panel { background: #fafaf8; border: 1px solid #e0e0e0; padding: 24px; margin-top: 16px; }
+  .sop-summary-room { margin-bottom: 16px; }
+  .sop-summary-room:last-child { margin-bottom: 0; }
+  .sop-summary-room-title { font-size: 13px; font-weight: 700; color: var(--navy); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.04em; }
+  .sop-summary-task { font-size: 13px; color: #333; padding: 2px 0; padding-left: 20px; position: relative; }
+  .sop-summary-task::before { content: '✓'; position: absolute; left: 2px; color: var(--navy); font-weight: 700; font-size: 12px; }
+  .sop-summary-task.custom-highlight { color: #8a7a30; }
+  .sop-summary-task.custom-highlight::before { content: '★'; color: var(--gold); }
+  .sop-summary-note { font-size: 12px; color: #777; font-style: italic; padding-left: 20px; margin-top: 2px; }
+
+  .linen-sub-header {
+    background: var(--navy); color: #fff; padding: 10px 16px; font-size: 13px;
+    font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; margin-top: 24px;
+  }
+  .linen-sub-body { padding: 20px; border: 1px solid #e0e0e0; border-top: none; background: #fff; }
+
+  @media print {
+    .sticky-footer, .draft-banner, .no-print, button[type="submit"] { display: none !important; }
+    .section-body { display: block !important; border: 1px solid #ccc !important; }
+    .section-chevron { display: none !important; }
+    .room-body { display: block !important; }
+    .room-chevron { display: none !important; }
+    body { background: #fff !important; }
+    .paper-card { box-shadow: none !important; max-width: 100% !important; }
+    .modal-overlay { display: none !important; }
+    .section-header { background: #fff !important; color: var(--navy) !important; border: 1px solid #ccc !important; border-bottom: 2px solid var(--gold) !important; }
+    .section-badge { background: #fff !important; color: var(--navy) !important; border: 1.5px solid var(--gold) !important; }
+    .callout-navy { background: var(--cream) !important; color: var(--navy) !important; }
+    .linen-sub-header { background: #fff !important; color: var(--navy) !important; border: 1px solid #e0e0e0 !important; border-left: 3px solid var(--gold) !important; }
+    header { background: #fff !important; border-bottom: none !important; }
+    header svg { stroke: var(--navy) !important; }
+    header span { color: var(--navy) !important; }
+    .section-header { break-inside: avoid; }
+    .section-body { break-inside: avoid; }
+    .form-input { border: none !important; border-bottom: 1px solid #999 !important; padding-left: 0 !important; }
+  }
+
+  @media (max-width: 640px) {
+    .section-body { padding: 20px 16px; }
+    .inline-row { flex-direction: column; }
+    .sticky-footer { flex-wrap: wrap; gap: 8px; padding: 8px 12px; }
+    .room-body { padding: 12px 14px; }
+    .sop-summary-panel { padding: 16px; }
+  }
+</style>
+</head>
+<body data-id="0" class="pb-20">
+<app-icon data-id="1" hidden data-icon="home" data-palette="Blue"></app-icon>
+
+<!-- DRAFT BANNER (hidden by default) -->
+<div data-id="2" id="draft-banner" class="draft-banner" style="display:none;">
+  <span data-id="3">📄 Draft restored from your last session</span>
+  <button data-id="4" id="clear-draft-btn" class="no-print" style="background:var(--navy);color:#fff;padding:5px 14px;font-size:12px;font-weight:600;border:none;cursor:pointer;">Clear &amp; Start Over</button>
+</div>
+
+<!-- TOP NAVY BAR -->
+<header data-id="5" style="background:var(--navy);padding:14px 24px;display:flex;align-items:center;gap:12px;">
+  <svg data-id="6" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path data-id="7" d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path data-id="8" d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+  <span data-id="9" style="color:#fff;font-weight:700;font-size:18px;letter-spacing:0.12em;text-transform:uppercase;">Proper Home Prep</span>
+</header>
+<div data-id="10" style="height:4px;background:var(--gold);"></div>
+
+<!-- MAIN PAPER CARD -->
+<main data-id="11" class="paper-card" style="max-width:850px;margin:28px auto 100px;background:#fff;box-shadow:0 2px 24px rgba(0,0,0,0.08);padding:0;">
+
+  <!-- DOCUMENT HEADER -->
+  <div data-id="12" style="padding:36px 36px 28px;position:relative;">
+    <div data-id="13" style="position:absolute;top:28px;right:36px;width:56px;height:56px;background:var(--navy);display:flex;align-items:center;justify-content:center;">
+      <span data-id="14" style="color:var(--gold);font-weight:700;font-size:16px;letter-spacing:0.06em;">PHP</span>
+    </div>
+    <h1 data-id="15" style="font-size:30px;font-weight:700;color:var(--navy);margin:0 0 6px;">Host Intake Form</h1>
+    <p data-id="16" style="font-size:15px;color:var(--gold);font-style:italic;margin:0 0 24px;">The Proper Standard — New Client Onboarding</p>
+    <div data-id="17" style="display:flex;flex-wrap:wrap;gap:20px;margin-bottom:16px;">
+      <div data-id="18" style="flex:1;min-width:180px;">
+        <label data-id="19" class="form-label">Date Submitted:</label>
+        <input data-id="20" type="text" id="meta-date" class="form-input" readonly />
+      </div>
+      <div data-id="21" style="flex:1;min-width:180px;">
+        <label data-id="22" class="form-label">Intake ID:</label>
+        <input data-id="23" type="text" id="meta-intake-id" class="form-input" readonly />
+      </div>
+      <div data-id="24" style="flex:1;min-width:180px;">
+        <label data-id="25" class="form-label">Coordinator:</label>
+        <input data-id="26" type="text" id="meta-coordinator" class="form-input" value="Brittany" />
+      </div>
+    </div>
+    <div data-id="27" style="height:2px;background:var(--navy);"></div>
+  </div>
+
+  <!-- PROGRESS BAR -->
+  <div data-id="28" style="padding:0 36px 20px;" id="progress-area">
+    <div data-id="29" style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
+      <span data-id="30" style="font-size:12px;font-weight:600;color:var(--navy);text-transform:uppercase;letter-spacing:0.06em;" id="progress-label">Section 0 of 8 completed</span>
+      <span data-id="31" style="font-size:12px;font-weight:600;color:var(--gold);" id="progress-pct">0%</span>
+    </div>
+    <div data-id="32" class="progress-track"><div data-id="33" class="progress-fill" id="progress-fill" style="width:0%;"></div></div>
+  </div>
+
+  <!-- FORM -->
+  <form data-id="34" id="intake-form" style="padding:0 36px 36px;" novalidate>
+
+    <!-- ============== SECTION 1 ============== -->
+    <div data-id="35" class="form-section" data-section="1" style="margin-bottom:20px;">
+      <div data-id="36" class="section-header" data-toggle="sec1">
+        <span data-id="37" class="section-badge">§1</span>
+        <span data-id="38" class="section-title">Host Information</span>
+        <i data-id="39" data-lucide="chevron-down" class="w-5 h-5 section-chevron open"></i>
+      </div>
+      <div data-id="40" class="section-body" id="sec1">
+        <div data-id="41" style="display:flex;flex-wrap:wrap;gap:16px;margin-bottom:16px;" class="inline-row">
+          <div data-id="42" style="flex:1;min-width:200px;">
+            <label data-id="43" class="form-label">First Name <span data-id="44" style="color:#cc3a38;">*</span></label>
+            <input data-id="45" type="text" class="form-input" id="first-name" data-required="true" />
+          </div>
+          <div data-id="46" style="flex:1;min-width:200px;">
+            <label data-id="47" class="form-label">Last Name <span data-id="48" style="color:#cc3a38;">*</span></label>
+            <input data-id="49" type="text" class="form-input" id="last-name" data-required="true" />
+          </div>
+        </div>
+        <div data-id="50" style="display:flex;flex-wrap:wrap;gap:16px;margin-bottom:16px;" class="inline-row">
+          <div data-id="51" style="flex:1;min-width:200px;">
+            <label data-id="52" class="form-label">Email Address <span data-id="53" style="color:#cc3a38;">*</span></label>
+            <input data-id="54" type="email" class="form-input" id="email" data-required="true" />
+          </div>
+          <div data-id="55" style="flex:1;min-width:200px;">
+            <label data-id="56" class="form-label">Phone Number <span data-id="57" style="color:#cc3a38;">*</span></label>
+            <input data-id="58" type="tel" class="form-input" id="phone" data-required="true" />
+          </div>
+        </div>
+        <div data-id="59" style="margin-bottom:16px;">
+          <label data-id="60" class="form-label">Preferred Contact Method</label>
+          <div data-id="61" class="radio-pills">
+            <label data-id="62" class="radio-pill"><input data-id="63" type="radio" name="contact-method" value="Text" /><span data-id="64">Text</span></label>
+            <label data-id="65" class="radio-pill"><input data-id="66" type="radio" name="contact-method" value="Call" /><span data-id="67">Call</span></label>
+            <label data-id="68" class="radio-pill"><input data-id="69" type="radio" name="contact-method" value="Email" /><span data-id="70">Email</span></label>
+          </div>
+        </div>
+        <div data-id="71" style="margin-bottom:16px;">
+          <label data-id="72" class="form-label">Best Time to Reach You</label>
+          <div data-id="73" class="radio-pills">
+            <label data-id="74" class="radio-pill"><input data-id="75" type="radio" name="best-time" value="Morning" /><span data-id="76">Morning</span></label>
+            <label data-id="77" class="radio-pill"><input data-id="78" type="radio" name="best-time" value="Afternoon" /><span data-id="79">Afternoon</span></label>
+            <label data-id="80" class="radio-pill"><input data-id="81" type="radio" name="best-time" value="Evening" /><span data-id="82">Evening</span></label>
+          </div>
+        </div>
+        <div data-id="83" style="margin-bottom:16px;">
+          <label data-id="84" class="form-label">How Did You Hear About Proper Home Prep?</label>
+          <select data-id="85" class="form-input" id="hear-about" style="cursor:pointer;">
+            <option data-id="86" value="">— Select —</option>
+            <option data-id="87" value="Google">Google</option>
+            <option data-id="88" value="Instagram">Instagram</option>
+            <option data-id="89" value="Referral">Referral</option>
+            <option data-id="90" value="Airbnb Community">Airbnb Community</option>
+            <option data-id="91" value="Other">Other</option>
+          </select>
+        </div>
+        <div data-id="92" id="referral-field" style="margin-bottom:16px;display:none;">
+          <label data-id="93" class="form-label">Who Referred You?</label>
+          <input data-id="94" type="text" class="form-input" id="referral-name" />
+        </div>
+      </div>
+    </div>
+
+    <!-- ============== SECTION 2 ============== -->
+    <div data-id="95" class="form-section" data-section="2" style="margin-bottom:20px;">
+      <div data-id="96" class="section-header" data-toggle="sec2">
+        <span data-id="97" class="section-badge">§2</span>
+        <span data-id="98" class="section-title">Property Details</span>
+        <i data-id="99" data-lucide="chevron-down" class="w-5 h-5 section-chevron open"></i>
+      </div>
+      <div data-id="100" class="section-body" id="sec2">
+        <div data-id="101" id="properties-container"></div>
+        <button data-id="102" type="button" id="add-property-btn" class="no-print" style="margin-top:16px;background:#fff;border:2px solid var(--navy);color:var(--navy);padding:10px 22px;font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:8px;">
+          <i data-id="103" data-lucide="plus" class="w-4 h-4"></i> Add Another Property
+        </button>
+        <div data-id="104" class="callout-gold" style="margin-top:20px;">
+          📋 You can add additional properties after onboarding. We'll build a custom SOP for each one.
+        </div>
+      </div>
+    </div>
+
+    <!-- ============== SECTION 3 ============== -->
+    <div data-id="105" class="form-section" data-section="3" style="margin-bottom:20px;">
+      <div data-id="106" class="section-header" data-toggle="sec3">
+        <span data-id="107" class="section-badge">§3</span>
+        <span data-id="108" class="section-title">Service Preferences</span>
+        <i data-id="109" data-lucide="chevron-down" class="w-5 h-5 section-chevron open"></i>
+      </div>
+      <div data-id="110" class="section-body" id="sec3">
+        <div data-id="111" style="margin-bottom:16px;">
+          <label data-id="112" class="form-label">Service Needed (select all that apply)</label>
+          <div data-id="113" class="radio-pills">
+            <label data-id="114" class="check-pill"><input data-id="115" type="checkbox" name="service-needed" value="Standard Turnover" /><span data-id="116">Standard Turnover</span></label>
+            <label data-id="117" class="check-pill"><input data-id="118" type="checkbox" name="service-needed" value="Premium Turnover" /><span data-id="119">Premium Turnover</span></label>
+            <label data-id="120" class="check-pill"><input data-id="121" type="checkbox" name="service-needed" value="Deep Clean" /><span data-id="122">Deep Clean</span></label>
+            <label data-id="123" class="check-pill"><input data-id="124" type="checkbox" name="service-needed" value="Linen Service" /><span data-id="125">Linen Service</span></label>
+            <label data-id="126" class="check-pill"><input data-id="127" type="checkbox" name="service-needed" value="Supply Restocking" /><span data-id="128">Supply Restocking</span></label>
+          </div>
+        </div>
+        <div data-id="129" style="margin-bottom:16px;">
+          <label data-id="130" class="form-label">Preferred Service Day(s)</label>
+          <div data-id="131" class="radio-pills">
+            <label data-id="132" class="check-pill"><input data-id="133" type="checkbox" name="service-days" value="Mon" /><span data-id="134">Mon</span></label>
+            <label data-id="135" class="check-pill"><input data-id="136" type="checkbox" name="service-days" value="Tue" /><span data-id="137">Tue</span></label>
+            <label data-id="138" class="check-pill"><input data-id="139" type="checkbox" name="service-days" value="Wed" /><span data-id="140">Wed</span></label>
+            <label data-id="141" class="check-pill"><input data-id="142" type="checkbox" name="service-days" value="Thu" /><span data-id="143">Thu</span></label>
+            <label data-id="144" class="check-pill"><input data-id="145" type="checkbox" name="service-days" value="Fri" /><span data-id="146">Fri</span></label>
+            <label data-id="147" class="check-pill"><input data-id="148" type="checkbox" name="service-days" value="Sat" /><span data-id="149">Sat</span></label>
+            <label data-id="150" class="check-pill"><input data-id="151" type="checkbox" name="service-days" value="Sun" /><span data-id="152">Sun</span></label>
+            <label data-id="153" class="check-pill"><input data-id="154" type="checkbox" name="service-days" value="Flexible" /><span data-id="155">Flexible</span></label>
+          </div>
+        </div>
+        <div data-id="156" style="display:flex;flex-wrap:wrap;gap:16px;margin-bottom:8px;" class="inline-row">
+          <div data-id="157" style="flex:1;min-width:180px;">
+            <label data-id="158" class="form-label">Typical Checkout Time</label>
+            <input data-id="159" type="time" class="form-input" id="checkout-time" />
+          </div>
+          <div data-id="160" style="flex:1;min-width:180px;">
+            <label data-id="161" class="form-label">Typical Check-in Time</label>
+            <input data-id="162" type="time" class="form-input" id="checkin-time" />
+          </div>
+          <div data-id="163" style="flex:1;min-width:180px;">
+            <label data-id="164" class="form-label">Turnover Window</label>
+            <input data-id="165" type="text" class="form-input" id="turnover-window" readonly placeholder="Auto-calculated" />
+          </div>
+        </div>
+        <div data-id="166" style="margin-bottom:16px;margin-top:16px;">
+          <label data-id="167" class="form-label">Do You Require Same-Day Turnovers?</label>
+          <div data-id="168" class="radio-pills">
+            <label data-id="169" class="radio-pill"><input data-id="170" type="radio" name="same-day" value="Yes" /><span data-id="171">Yes</span></label>
+            <label data-id="172" class="radio-pill"><input data-id="173" type="radio" name="same-day" value="Sometimes" /><span data-id="174">Sometimes</span></label>
+            <label data-id="175" class="radio-pill"><input data-id="176" type="radio" name="same-day" value="No" /><span data-id="177">No</span></label>
+          </div>
+        </div>
+        <div data-id="178" style="margin-bottom:16px;">
+          <label data-id="179" class="form-label">Do You Provide Linens?</label>
+          <div data-id="180" class="radio-pills">
+            <label data-id="181" class="radio-pill"><input data-id="182" type="radio" name="provide-linens" value="Yes" /><span data-id="183">Yes</span></label>
+            <label data-id="184" class="radio-pill"><input data-id="185" type="radio" name="provide-linens" value="No" /><span data-id="186">No</span></label>
+            <label data-id="187" class="radio-pill"><input data-id="188" type="radio" name="provide-linens" value="Mix" /><span data-id="189">Mix</span></label>
+          </div>
+        </div>
+        <div data-id="190" style="margin-bottom:16px;">
+          <label data-id="191" class="form-label">Do You Provide Cleaning Supplies?</label>
+          <div data-id="192" class="radio-pills">
+            <label data-id="193" class="radio-pill"><input data-id="194" type="radio" name="provide-supplies" value="Yes" /><span data-id="195">Yes</span></label>
+            <label data-id="196" class="radio-pill"><input data-id="197" type="radio" name="provide-supplies" value="No" /><span data-id="198">No</span></label>
+            <label data-id="199" class="radio-pill"><input data-id="200" type="radio" name="provide-supplies" value="Mix" /><span data-id="201">Mix</span></label>
+          </div>
+        </div>
+        <div data-id="202" style="margin-bottom:16px;">
+          <label data-id="203" class="form-label">Supply Storage Location at Property</label>
+          <input data-id="204" type="text" class="form-input" id="supply-storage" />
+        </div>
+        <div data-id="205" style="margin-bottom:0;">
+          <label data-id="206" class="form-label">Anything Specific About Your Cleaning Needs?</label>
+          <textarea data-id="207" class="form-input" id="cleaning-notes" placeholder="e.g. specific products required, allergy considerations"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============== SECTION 4 ============== -->
+    <div data-id="208" class="form-section" data-section="4" style="margin-bottom:20px;">
+      <div data-id="209" class="section-header" data-toggle="sec4">
+        <span data-id="210" class="section-badge">§4</span>
+        <span data-id="211" class="section-title">Access &amp; Property Info</span>
+        <i data-id="212" data-lucide="chevron-down" class="w-5 h-5 section-chevron open"></i>
+      </div>
+      <div data-id="213" class="section-body" id="sec4">
+        <div data-id="214" style="margin-bottom:16px;">
+          <label data-id="215" class="form-label">Entry Method</label>
+          <div data-id="216" class="radio-pills">
+            <label data-id="217" class="radio-pill"><input data-id="218" type="radio" name="entry-method" value="Lockbox" /><span data-id="219">Lockbox</span></label>
+            <label data-id="220" class="radio-pill"><input data-id="221" type="radio" name="entry-method" value="Smart Lock" /><span data-id="222">Smart Lock</span></label>
+            <label data-id="223" class="radio-pill"><input data-id="224" type="radio" name="entry-method" value="Keypad" /><span data-id="225">Keypad</span></label>
+            <label data-id="226" class="radio-pill"><input data-id="227" type="radio" name="entry-method" value="Key with Coordinator" /><span data-id="228">Key with Coordinator</span></label>
+            <label data-id="229" class="radio-pill"><input data-id="230" type="radio" name="entry-method" value="Other" /><span data-id="231">Other</span></label>
+          </div>
+        </div>
+        <div data-id="232" style="display:flex;flex-wrap:wrap;gap:16px;margin-bottom:16px;" class="inline-row">
+          <div data-id="233" style="flex:1;min-width:200px;" class="pw-wrap">
+            <label data-id="234" class="form-label">Entry Code</label>
+            <input data-id="235" type="password" class="form-input" id="entry-code" style="padding-right:40px;" />
+            <button data-id="236" type="button" class="toggle-pw no-print" data-target="entry-code"><i data-id="237" data-lucide="eye" class="w-4 h-4"></i></button>
+          </div>
+          <div data-id="238" style="flex:1;min-width:200px;">
+            <label data-id="239" class="form-label">Lockbox Location</label>
+            <input data-id="240" type="text" class="form-input" id="lockbox-location" />
+          </div>
+        </div>
+        <div data-id="241" style="margin-bottom:16px;">
+          <label data-id="242" class="form-label">Gate / Community Code</label>
+          <input data-id="243" type="text" class="form-input" id="gate-code" />
+        </div>
+        <div data-id="244" style="margin-bottom:16px;">
+          <label data-id="245" class="form-label">Parking Instructions for Our Team</label>
+          <textarea data-id="246" class="form-input" id="parking-instructions" placeholder="Where should our team park?"></textarea>
+        </div>
+        <div data-id="247" style="margin-bottom:16px;">
+          <label data-id="248" class="form-label">Alarm System Present?</label>
+          <div data-id="249" class="radio-pills">
+            <label data-id="250" class="radio-pill"><input data-id="251" type="radio" name="alarm-present" value="Yes" /><span data-id="252">Yes</span></label>
+            <label data-id="253" class="radio-pill"><input data-id="254" type="radio" name="alarm-present" value="No" /><span data-id="255">No</span></label>
+          </div>
+        </div>
+        <div data-id="256" id="alarm-details" style="display:none;margin-bottom:16px;padding:16px;background:var(--cream);">
+          <div data-id="257" style="display:flex;flex-wrap:wrap;gap:16px;margin-bottom:12px;" class="inline-row">
+            <div data-id="258" style="flex:1;min-width:180px;" class="pw-wrap">
+              <label data-id="259" class="form-label">Alarm Code</label>
+              <input data-id="260" type="password" class="form-input" id="alarm-code" style="padding-right:40px;" />
+              <button data-id="261" type="button" class="toggle-pw no-print" data-target="alarm-code"><i data-id="262" data-lucide="eye" class="w-4 h-4"></i></button>
+            </div>
+            <div data-id="263" style="flex:1;min-width:180px;">
+              <label data-id="264" class="form-label">Alarm Company Name</label>
+              <input data-id="265" type="text" class="form-input" id="alarm-company" />
+            </div>
+          </div>
+          <label data-id="266" class="form-label">Alarm Notes</label>
+          <textarea data-id="267" class="form-input" id="alarm-notes" placeholder="Disarm/arm instructions"></textarea>
+        </div>
+        <div data-id="268" style="margin-bottom:16px;">
+          <label data-id="269" class="form-label">Security Cameras on Property?</label>
+          <div data-id="270" class="radio-pills">
+            <label data-id="271" class="radio-pill"><input data-id="272" type="radio" name="cameras" value="Yes" /><span data-id="273">Yes</span></label>
+            <label data-id="274" class="radio-pill"><input data-id="275" type="radio" name="cameras" value="No" /><span data-id="276">No</span></label>
+          </div>
+        </div>
+        <div data-id="277" style="margin-bottom:16px;">
+          <label data-id="278" class="form-label">Pets on Property Between Stays?</label>
+          <div data-id="279" class="radio-pills">
+            <label data-id="280" class="radio-pill"><input data-id="281" type="radio" name="pets" value="Yes" /><span data-id="282">Yes</span></label>
+            <label data-id="283" class="radio-pill"><input data-id="284" type="radio" name="pets" value="No" /><span data-id="285">No</span></label>
+          </div>
+        </div>
+        <div data-id="286" id="pet-details" style="display:none;margin-bottom:16px;">
+          <label data-id="287" class="form-label">Pet Details</label>
+          <textarea data-id="288" class="form-input" id="pet-notes" placeholder="Type, breed, where they stay, etc."></textarea>
+        </div>
+        <div data-id="289" style="margin-bottom:16px;">
+          <label data-id="290" class="form-label">Any Known Property Quirks We Should Know About?</label>
+          <textarea data-id="291" class="form-input" id="property-quirks" placeholder="e.g. back door sticks, water heater is loud"></textarea>
+        </div>
+        <div data-id="292" class="callout-navy">
+          🔒 All access information is stored securely and shared only with assigned technicians.
+        </div>
+      </div>
+    </div>
+
+    <!-- ============== SECTION 5 ============== -->
+    <div data-id="293" class="form-section" data-section="5" style="margin-bottom:20px;">
+      <div data-id="294" class="section-header" data-toggle="sec5">
+        <span data-id="295" class="section-badge">§5</span>
+        <span data-id="296" class="section-title">Billing &amp; Agreements</span>
+        <i data-id="297" data-lucide="chevron-down" class="w-5 h-5 section-chevron open"></i>
+      </div>
+      <div data-id="298" class="section-body" id="sec5">
+        <div data-id="299" style="margin-bottom:16px;">
+          <label data-id="300" class="form-label">Billing Contact</label>
+          <div data-id="301" class="radio-pills">
+            <label data-id="302" class="radio-pill"><input data-id="303" type="radio" name="billing-contact" value="Same as host" /><span data-id="304">Same as Host</span></label>
+            <label data-id="305" class="radio-pill"><input data-id="306" type="radio" name="billing-contact" value="Different person" /><span data-id="307">Different Person</span></label>
+          </div>
+        </div>
+        <div data-id="308" id="billing-diff" style="display:none;margin-bottom:16px;padding:16px;background:var(--cream);">
+          <div data-id="309" style="display:flex;flex-wrap:wrap;gap:16px;" class="inline-row">
+            <div data-id="310" style="flex:1;min-width:160px;">
+              <label data-id="311" class="form-label">Billing Name</label>
+              <input data-id="312" type="text" class="form-input" id="billing-name" />
+            </div>
+            <div data-id="313" style="flex:1;min-width:160px;">
+              <label data-id="314" class="form-label">Billing Email</label>
+              <input data-id="315" type="email" class="form-input" id="billing-email" />
+            </div>
+            <div data-id="316" style="flex:1;min-width:140px;">
+              <label data-id="317" class="form-label">Billing Phone</label>
+              <input data-id="318" type="tel" class="form-input" id="billing-phone" />
+            </div>
+          </div>
+        </div>
+        <div data-id="319" style="margin-bottom:16px;">
+          <label data-id="320" class="form-label">Preferred Invoice Delivery</label>
+          <div data-id="321" class="radio-pills">
+            <label data-id="322" class="radio-pill"><input data-id="323" type="radio" name="invoice-delivery" value="Email" /><span data-id="324">Email</span></label>
+            <label data-id="325" class="radio-pill"><input data-id="326" type="radio" name="invoice-delivery" value="Text" /><span data-id="327">Text</span></label>
+            <label data-id="328" class="radio-pill"><input data-id="329" type="radio" name="invoice-delivery" value="Both" /><span data-id="330">Both</span></label>
+          </div>
+        </div>
+        <div data-id="331" style="margin-bottom:16px;">
+          <label data-id="332" class="form-label">Billing Cycle Preference</label>
+          <div data-id="333" class="radio-pills">
+            <label data-id="334" class="radio-pill"><input data-id="335" type="radio" name="billing-cycle" value="Per turnover" /><span data-id="336">Per Turnover</span></label>
+            <label data-id="337" class="radio-pill"><input data-id="338" type="radio" name="billing-cycle" value="Weekly" /><span data-id="339">Weekly</span></label>
+            <label data-id="340" class="radio-pill"><input data-id="341" type="radio" name="billing-cycle" value="Monthly" /><span data-id="342">Monthly</span></label>
+          </div>
+        </div>
+        <div data-id="343" style="margin-bottom:20px;">
+          <label data-id="344" class="form-label">Payment Method on File</label>
+          <div data-id="345" class="radio-pills">
+            <label data-id="346" class="radio-pill"><input data-id="347" type="radio" name="payment-method" value="Credit Card" /><span data-id="348">Credit Card</span></label>
+            <label data-id="349" class="radio-pill"><input data-id="350" type="radio" name="payment-method" value="ACH" /><span data-id="351">ACH</span></label>
+            <label data-id="352" class="radio-pill"><input data-id="353" type="radio" name="payment-method" value="Zelle" /><span data-id="354">Zelle</span></label>
+            <label data-id="355" class="radio-pill"><input data-id="356" type="radio" name="payment-method" value="Venmo" /><span data-id="357">Venmo</span></label>
+            <label data-id="358" class="radio-pill"><input data-id="359" type="radio" name="payment-method" value="Check" /><span data-id="360">Check</span></label>
+          </div>
+        </div>
+        <div data-id="361" style="margin-bottom:6px;">
+          <label data-id="362" class="form-label" style="margin-bottom:12px;">Service Agreement Acknowledgments <span data-id="363" style="color:#cc3a38;">*</span></label>
+          <div data-id="364" style="display:flex;flex-direction:column;gap:12px;">
+            <label data-id="365" class="php-checkbox">
+              <input data-id="366" type="checkbox" name="agree-cancel" data-agreement="true" />
+              <span data-id="367" class="check-box"><svg data-id="368" viewBox="0 0 16 16" fill="none" stroke="#1A2E4A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline data-id="369" points="3.5 8.5 6.5 11.5 12.5 5"/></svg></span>
+              <span data-id="370" style="font-size:13px;line-height:1.5;">I understand that Proper Home Prep requires 24-hour notice for cancellations</span>
+            </label>
+            <label data-id="371" class="php-checkbox">
+              <input data-id="372" type="checkbox" name="agree-pricing" data-agreement="true" />
+              <span data-id="373" class="check-box"><svg data-id="374" viewBox="0 0 16 16" fill="none" stroke="#1A2E4A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline data-id="375" points="3.5 8.5 6.5 11.5 12.5 5"/></svg></span>
+              <span data-id="376" style="font-size:13px;line-height:1.5;">I understand that pricing may vary based on property condition at time of service</span>
+            </label>
+            <label data-id="377" class="php-checkbox">
+              <input data-id="378" type="checkbox" name="agree-access" data-agreement="true" />
+              <span data-id="379" class="check-box"><svg data-id="380" viewBox="0 0 16 16" fill="none" stroke="#1A2E4A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline data-id="381" points="3.5 8.5 6.5 11.5 12.5 5"/></svg></span>
+              <span data-id="382" style="font-size:13px;line-height:1.5;">I authorize Proper Home Prep to access my property for scheduled services</span>
+            </label>
+            <label data-id="383" class="php-checkbox">
+              <input data-id="384" type="checkbox" name="agree-terms" data-agreement="true" />
+              <span data-id="385" class="check-box"><svg data-id="386" viewBox="0 0 16 16" fill="none" stroke="#1A2E4A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline data-id="387" points="3.5 8.5 6.5 11.5 12.5 5"/></svg></span>
+              <span data-id="388" style="font-size:13px;line-height:1.5;">I have reviewed and agree to Proper Home Prep's service terms</span>
+            </label>
+          </div>
+        </div>
+        <div data-id="389" class="callout-gold" style="margin-top:20px;">
+          📄 A formal service agreement will be sent to your email after this intake is submitted.
+        </div>
+      </div>
+    </div>
+
+    <!-- ============== SECTION 6 ============== -->
+    <div data-id="390" class="form-section" data-section="6" style="margin-bottom:20px;">
+      <div data-id="391" class="section-header" data-toggle="sec6">
+        <span data-id="392" class="section-badge">§6</span>
+        <span data-id="393" class="section-title">Additional Notes</span>
+        <i data-id="394" data-lucide="chevron-down" class="w-5 h-5 section-chevron open"></i>
+      </div>
+      <div data-id="395" class="section-body" id="sec6">
+        <div data-id="396" style="margin-bottom:16px;">
+          <label data-id="397" class="form-label">Staging Photos Available to Share?</label>
+          <div data-id="398" class="radio-pills">
+            <label data-id="399" class="radio-pill"><input data-id="400" type="radio" name="staging-photos" value="Yes" /><span data-id="401">Yes</span></label>
+            <label data-id="402" class="radio-pill"><input data-id="403" type="radio" name="staging-photos" value="No" /><span data-id="404">No</span></label>
+          </div>
+        </div>
+        <div data-id="405" id="staging-location" style="display:none;margin-bottom:16px;">
+          <label data-id="406" class="form-label">Where Are They Stored?</label>
+          <input data-id="407" type="text" class="form-input" id="staging-stored" placeholder="e.g. Google Drive link, Dropbox folder" />
+        </div>
+        <div data-id="408" style="margin-bottom:16px;">
+          <label data-id="409" class="form-label">Welcome Items for Guests</label>
+          <textarea data-id="410" class="form-input" id="welcome-items" placeholder="e.g. wine bottle, snack basket, welcome card"></textarea>
+        </div>
+        <div data-id="411" style="margin-bottom:16px;">
+          <label data-id="412" class="form-label">Host Notes for Our Team</label>
+          <textarea data-id="413" class="form-input" id="host-notes" placeholder="Anything else you'd like us to know"></textarea>
+        </div>
+        <div data-id="414" style="display:flex;flex-wrap:wrap;gap:16px;margin-bottom:16px;" class="inline-row">
+          <div data-id="415" style="flex:1;min-width:200px;">
+            <label data-id="416" class="form-label">Emergency Contact Name (if different from host)</label>
+            <input data-id="417" type="text" class="form-input" id="emergency-name" />
+          </div>
+          <div data-id="418" style="flex:1;min-width:200px;">
+            <label data-id="419" class="form-label">Emergency Contact Phone</label>
+            <input data-id="420" type="tel" class="form-input" id="emergency-phone" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============== SECTION 7 — PROPERTY SOP BUILDER ============== -->
+    <div data-id="421" class="form-section" data-section="7" style="margin-bottom:20px;">
+      <div data-id="422" class="section-header" data-toggle="sec7">
+        <span data-id="423" class="section-badge">§7</span>
+        <span data-id="424" class="section-title">Property SOP Builder</span>
+        <i data-id="425" data-lucide="chevron-down" class="w-5 h-5 section-chevron open"></i>
+      </div>
+      <div data-id="426" class="section-body" id="sec7">
+
+        <div data-id="427" class="callout-gold" style="margin-bottom:16px;">
+          📋 Your property has a default cleaning checklist built on <strong data-id="428">The Proper Standard</strong>. Review each room below — check off tasks that apply, uncheck any that don't, and add your own custom tasks. Your coordinator will review this with you before it's finalized.
+        </div>
+        <div data-id="429" class="callout-navy" style="margin-bottom:20px;">
+          🔒 This SOP will be reviewed and approved by your Proper Home Prep coordinator before it goes live. You will not be able to make changes after approval without contacting your coordinator.
+        </div>
+
+        <!-- Status Badge & SOP Progress -->
+        <div data-id="430" style="display:flex;flex-wrap:wrap;align-items:center;gap:16px;margin-bottom:8px;">
+          <span data-id="431" class="form-label" style="margin-bottom:0;">SOP Status:</span>
+          <span data-id="432" id="sop-status-pill" class="status-pill status-draft">Draft — Pending Coordinator Review</span>
+        </div>
+        <div data-id="433" style="margin-bottom:24px;">
+          <div data-id="434" style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;">
+            <span data-id="435" style="font-size:12px;font-weight:500;color:#666;" id="sop-progress-text">0 of 0 standard tasks included + 0 custom tasks added</span>
+          </div>
+          <div data-id="436" class="sop-progress-track"><div data-id="437" class="sop-progress-fill" id="sop-progress-fill" style="width:0%;"></div></div>
+        </div>
+
+        <!-- Room containers rendered by JS -->
+        <div data-id="438" id="sop-rooms-container"></div>
+
+        <!-- LINEN & STAGING PREFERENCES -->
+        <div data-id="439" class="linen-sub-header" style="margin-top:28px;">Linen &amp; Staging Preferences</div>
+        <div data-id="440" class="linen-sub-body">
+          <div data-id="441" style="margin-bottom:16px;">
+            <label data-id="442" class="form-label">Bed Making Style</label>
+            <div data-id="443" class="radio-pills">
+              <label data-id="444" class="radio-pill"><input data-id="445" type="radio" name="bed-style" value="Flat sheet + duvet" /><span data-id="446">Flat sheet + duvet</span></label>
+              <label data-id="447" class="radio-pill"><input data-id="448" type="radio" name="bed-style" value="Fitted only" /><span data-id="449">Fitted only</span></label>
+              <label data-id="450" class="radio-pill"><input data-id="451" type="radio" name="bed-style" value="Custom" /><span data-id="452">Custom</span></label>
+            </div>
+          </div>
+          <div data-id="453" id="bed-style-custom" style="display:none;margin-bottom:16px;">
+            <label data-id="454" class="form-label">Describe Your Preferred Bed Making Style</label>
+            <textarea data-id="455" class="form-input" id="bed-style-custom-text" placeholder="e.g. hospital corners, specific pillow arrangement"></textarea>
+          </div>
+          <div data-id="456" style="margin-bottom:16px;">
+            <label data-id="457" class="form-label">Towel Fold Style</label>
+            <div data-id="458" class="radio-pills">
+              <label data-id="459" class="radio-pill"><input data-id="460" type="radio" name="towel-style" value="Standard fold" /><span data-id="461">Standard fold</span></label>
+              <label data-id="462" class="radio-pill"><input data-id="463" type="radio" name="towel-style" value="Spa roll" /><span data-id="464">Spa roll</span></label>
+              <label data-id="465" class="radio-pill"><input data-id="466" type="radio" name="towel-style" value="Decorative fan" /><span data-id="467">Decorative fan</span></label>
+              <label data-id="468" class="radio-pill"><input data-id="469" type="radio" name="towel-style" value="Custom" /><span data-id="470">Custom</span></label>
+            </div>
+          </div>
+          <div data-id="471" id="towel-style-custom" style="display:none;margin-bottom:16px;">
+            <label data-id="472" class="form-label">Describe Your Preferred Towel Fold</label>
+            <textarea data-id="473" class="form-input" id="towel-style-custom-text" placeholder="e.g. swan fold on master bed, rolled in baskets"></textarea>
+          </div>
+          <div data-id="474" style="margin-bottom:16px;">
+            <label data-id="475" class="form-label">Towel Sets Per Bathroom</label>
+            <div data-id="476" style="display:flex;flex-wrap:wrap;gap:12px;" class="inline-row">
+              <div data-id="477" style="min-width:100px;">
+                <label data-id="478" class="form-label" style="font-size:10px;">Bath Towels</label>
+                <input data-id="479" type="number" class="form-input sop-linen-field" id="towel-bath" min="0" value="2" style="width:80px;" />
+              </div>
+              <div data-id="480" style="min-width:100px;">
+                <label data-id="481" class="form-label" style="font-size:10px;">Hand Towels</label>
+                <input data-id="482" type="number" class="form-input sop-linen-field" id="towel-hand" min="0" value="2" style="width:80px;" />
+              </div>
+              <div data-id="483" style="min-width:100px;">
+                <label data-id="484" class="form-label" style="font-size:10px;">Washcloths</label>
+                <input data-id="485" type="number" class="form-input sop-linen-field" id="towel-washcloth" min="0" value="2" style="width:80px;" />
+              </div>
+            </div>
+          </div>
+          <div data-id="486" style="margin-bottom:16px;">
+            <label data-id="487" class="form-label">Staging Photo Link</label>
+            <input data-id="488" type="text" class="form-input" id="sop-staging-link" placeholder="Paste a link to your staging reference photos (Google Drive, Dropbox, etc.)" />
+          </div>
+          <div data-id="489" style="margin-bottom:16px;">
+            <label data-id="490" class="form-label">Staging Notes</label>
+            <textarea data-id="491" class="form-input" id="sop-staging-notes" placeholder="e.g. throw blanket always on left side of couch, candles centered on coffee table"></textarea>
+          </div>
+          <div data-id="492" style="margin-bottom:0;">
+            <label data-id="493" class="form-label">Welcome Items for Guests</label>
+            <textarea data-id="494" class="form-input" id="sop-welcome-items" placeholder="e.g. wine bottle, snack basket, handwritten welcome card"></textarea>
+          </div>
+        </div>
+
+        <!-- SOP SUMMARY PANEL -->
+        <div data-id="495" style="margin-top:24px;">
+          <div data-id="496" class="room-header" id="sop-summary-toggle" style="background:#e8e7e2;">
+            <span data-id="497" class="room-title" style="font-size:14px;">📋 View My Full SOP Summary</span>
+            <svg data-id="498" class="room-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline data-id="499" points="6 9 12 15 18 9"/></svg>
+          </div>
+          <div data-id="500" id="sop-summary-body" class="sop-summary-panel" style="display:none;">
+            <div data-id="501" id="sop-summary-content"></div>
+            <button data-id="502" type="button" id="print-sop-btn" class="no-print" style="margin-top:20px;width:100%;padding:12px;background:#fff;border:2px solid var(--navy);color:var(--navy);font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;">
+              Print My SOP Draft
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ============== SECTION 8 — SIGN-OFF ============== -->
+    <div data-id="503" class="form-section" data-section="8" style="margin-bottom:20px;">
+      <div data-id="504" class="section-header" data-toggle="sec8">
+        <span data-id="505" class="section-badge">§8</span>
+        <span data-id="506" class="section-title">Sign-Off</span>
+        <i data-id="507" data-lucide="chevron-down" class="w-5 h-5 section-chevron open"></i>
+      </div>
+      <div data-id="508" class="section-body" id="sec8">
+        <div data-id="509" style="display:flex;flex-wrap:wrap;gap:16px;margin-bottom:20px;" class="inline-row">
+          <div data-id="510" style="flex:1;min-width:220px;">
+            <label data-id="511" class="form-label">Submitted By <span data-id="512" style="color:#cc3a38;">*</span></label>
+            <input data-id="513" type="text" class="form-input" id="submitted-by" data-required="true" />
+          </div>
+          <div data-id="514" style="flex:1;min-width:180px;">
+            <label data-id="515" class="form-label">Date</label>
+            <input data-id="516" type="text" class="form-input" id="signoff-date" readonly />
+          </div>
+        </div>
+        <div data-id="517" class="callout-gold" style="border-left-width:4px;padding:20px 24px;text-align:center;">
+          <div data-id="518" style="font-size:16px;font-weight:700;color:var(--navy);margin-bottom:6px;">Welcome to Proper Home Prep!</div>
+          <div data-id="519" style="font-size:13px;color:#4a4a2a;">Our coordinator will reach out within 24 hours to confirm your onboarding, review your custom SOP, and schedule your first service.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SUBMIT BUTTON -->
+    <button data-id="520" type="submit" id="main-submit-btn" class="no-print" style="width:100%;padding:16px;background:var(--gold);color:var(--navy);font-size:16px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;border:none;cursor:pointer;transition:background 0.15s;">
+      SUBMIT INTAKE FORM
+    </button>
+  </form>
+</main>
+
+<!-- SUCCESS MODAL -->
+<div data-id="521" class="modal-overlay" id="success-modal">
+  <div data-id="522" class="modal-box">
+    <div data-id="523" style="background:var(--navy);padding:18px 24px;display:flex;align-items:center;gap:10px;">
+      <span data-id="524" style="font-size:20px;">✅</span>
+      <span data-id="525" style="color:#fff;font-size:16px;font-weight:700;">Intake Submitted Successfully!</span>
+    </div>
+    <div data-id="526" style="padding:28px 24px;">
+      <p data-id="527" style="font-size:15px;color:#333;line-height:1.6;margin:0 0 20px;" id="modal-message"></p>
+      <div data-id="528" style="display:flex;gap:12px;flex-wrap:wrap;">
+        <button data-id="529" type="button" id="print-confirm-btn" style="flex:1;min-width:140px;padding:12px;background:#fff;border:2px solid var(--navy);color:var(--navy);font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;">
+          <i data-id="530" data-lucide="printer" class="w-4 h-4"></i> Print Confirmation
+        </button>
+        <button data-id="531" type="button" id="new-intake-btn" style="flex:1;min-width:140px;padding:12px;background:var(--gold);border:none;color:var(--navy);font-size:13px;font-weight:700;cursor:pointer;">
+          Start New Intake
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- STICKY FOOTER -->
+<div data-id="532" class="sticky-footer no-print">
+  <span data-id="533" style="font-size:12px;font-weight:600;color:var(--navy);white-space:nowrap;" id="footer-progress">0 of 8</span>
+  <div data-id="534" class="progress-track" style="flex:1;max-width:300px;"><div data-id="535" class="progress-fill" id="footer-fill" style="width:0%;"></div></div>
+  <div data-id="536" style="display:flex;gap:8px;">
+    <button data-id="537" type="button" id="save-draft-btn" style="padding:8px 18px;background:#fff;border:2px solid var(--navy);color:var(--navy);font-size:12px;font-weight:600;cursor:pointer;">Save Draft</button>
+    <button data-id="538" type="button" id="footer-submit-btn" style="padding:8px 18px;background:var(--gold);border:none;color:var(--navy);font-size:12px;font-weight:700;cursor:pointer;">Submit</button>
+  </div>
+</div>
+
+<footer data-id="539" class="py-8 text-center no-print" style="margin-bottom:60px;">
+  <p data-id="540" style="font-size:11px;color:#999;">Made by Copilot</p>
+</footer>
+
+<script>
+// Guard Lucide icons
+if (typeof lucide !== "undefined" && typeof lucide.createIcons === "function") {
+  lucide.createIcons();
+}
+
+// ===== UTILITIES =====
+const $ = id => document.getElementById(id);
+const now = new Date();
+const pad = n => String(n).padStart(2, '0');
+const dateStr = `${pad(now.getMonth()+1)}/${pad(now.getDate())}/${now.getFullYear()}`;
+const intakeId = `INT-${now.getFullYear()}${pad(now.getMonth()+1)}${pad(now.getDate())}-${String(Math.floor(1000+Math.random()*9000))}`;
+
+$('meta-date').value = dateStr;
+$('meta-intake-id').value = intakeId;
+$('signoff-date').value = dateStr;
+
+// ===== SOP ROOM DATA =====
+const SOP_ROOMS = [
+  {
+    id: 'kitchen', icon: '🍳', name: 'Kitchen',
+    tasks: [
+      'Wipe all countertops and backsplash',
+      'Clean stovetop and oven exterior',
+      'Clean microwave inside and out',
+      'Wipe all appliance exteriors',
+      'Empty and sanitize sink',
+      'Run or unload dishwasher',
+      'Sweep and mop floor',
+      'Empty and reline trash',
+      'Restock dish soap, hand soap, sponge'
+    ]
+  },
+  {
+    id: 'living-room', icon: '🛋️', name: 'Living Room',
+    tasks: [
+      'Dust all surfaces',
+      'Fluff and arrange pillows and cushions',
+      'Wipe remotes and electronics',
+      'Vacuum upholstery and floors',
+      'Stage throw blankets and pillows per host preference'
+    ]
+  },
+  {
+    id: 'master-bedroom', icon: '🛏️', name: 'Master Bedroom',
+    tasks: [
+      'Strip and remake bed with fresh linens',
+      'Dust all surfaces and nightstands',
+      'Vacuum floors and under bed',
+      'Check closet and drawers for left items',
+      'Set blinds/curtains per host preference'
+    ]
+  },
+  {
+    id: 'bedroom-2', icon: '🛏️', name: 'Bedroom 2',
+    tasks: [
+      'Strip and remake bed with fresh linens',
+      'Dust all surfaces',
+      'Vacuum floors',
+      'Check closet and drawers'
+    ]
+  },
+  {
+    id: 'bedroom-3', icon: '🛏️', name: 'Bedroom 3',
+    tasks: [
+      'Strip and remake bed with fresh linens',
+      'Dust all surfaces',
+      'Vacuum floors',
+      'Check closet and drawers'
+    ]
+  },
+  {
+    id: 'master-bath', icon: '🚿', name: 'Master Bathroom',
+    tasks: [
+      'Scrub toilet inside and out — seat down',
+      'Clean sink, faucet, and vanity',
+      'Scrub shower/tub — no soap scum or hair',
+      'Squeegee glass doors streak-free',
+      'Clean mirror streak-free',
+      'Stage towels per host preference',
+      'Restock toiletries',
+      'Sweep and mop floor — reline trash'
+    ]
+  },
+  {
+    id: 'bathroom-2', icon: '🚿', name: 'Bathroom 2',
+    tasks: [
+      'Scrub toilet inside and out',
+      'Clean sink and vanity',
+      'Clean shower/tub',
+      'Clean mirror',
+      'Stage towels',
+      'Restock toiletries',
+      'Sweep and mop — reline trash'
+    ]
+  },
+  {
+    id: 'outdoor', icon: '🌿', name: 'Outdoor / Patio',
+    tasks: [
+      'Clear debris from porch and patio',
+      'Wipe outdoor furniture',
+      'Check grill (if applicable)',
+      'Empty outdoor trash bins'
+    ]
+  },
+  {
+    id: 'laundry', icon: '🧺', name: 'Laundry',
+    tasks: [
+      'Wash and dry all linens',
+      'Fold and stage per host preference',
+      'Clean lint trap',
+      'Wipe washer/dryer exteriors'
+    ]
+  }
+];
+
+// SOP state: { roomId: { standard: { taskText: bool }, custom: [ { text, checked } ], notes: '' } }
+let sopState = {};
+
+function initSopState() {
+  SOP_ROOMS.forEach(room => {
+    if (!sopState[room.id]) {
+      sopState[room.id] = { standard: {}, custom: [], notes: '' };
+      room.tasks.forEach(t => { sopState[room.id].standard[t] = true; });
+    }
+  });
+}
+initSopState();
+
+function buildSopRooms() {
+  const container = $('sop-rooms-container');
+  container.innerHTML = '';
+  SOP_ROOMS.forEach(room => {
+    const state = sopState[room.id];
+    const roomDiv = document.createElement('div');
+    roomDiv.className = 'sop-room-block';
+    roomDiv.setAttribute('data-room', room.id);
+
+    // Room header
+    const header = document.createElement('div');
+    header.className = 'room-header';
+    header.setAttribute('data-room-toggle', room.id);
+    header.innerHTML = `
+      <span class="room-title">${room.icon} ${room.name}</span>
+      <svg class="room-chevron open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+    `;
+
+    // Room body
+    const body = document.createElement('div');
+    body.className = 'room-body';
+    body.setAttribute('id', 'room-body-' + room.id);
+
+    // Standard tasks
+    let tasksHtml = '<div class="sop-standard-tasks">';
+    room.tasks.forEach((task, idx) => {
+      const checked = state.standard[task] !== false ? 'checked' : '';
+      tasksHtml += `
+        <div class="sop-task-item">
+          <label class="php-checkbox" style="flex:1;">
+            <input type="checkbox" name="sop-${room.id}" value="${idx}" data-task-text="${task.replace(/"/g, '&quot;')}" ${checked} />
+            <span class="check-box"><svg viewBox="0 0 16 16" fill="none" stroke="#1A2E4A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3.5 8.5 6.5 11.5 12.5 5"/></svg></span>
+            <span style="font-size:13px;line-height:1.5;">${task}</span>
+          </label>
+        </div>
+      `;
+    });
+    tasksHtml += '</div>';
+
+    // Custom tasks
+    tasksHtml += `<div class="sop-custom-tasks" id="custom-tasks-${room.id}"></div>`;
+
+    // Add custom task row
+    tasksHtml += `
+      <div class="sop-add-row">
+        <input type="text" class="form-input" id="custom-input-${room.id}" placeholder="Add a custom task for ${room.name}..." style="font-size:13px;" />
+        <button type="button" class="sop-add-btn" data-add-room="${room.id}">+</button>
+      </div>
+    `;
+
+    // Room notes
+    tasksHtml += `
+      <div style="margin-top:14px;">
+        <label class="form-label">Special Notes for ${room.name}</label>
+        <textarea class="form-input sop-room-notes" id="sop-notes-${room.id}" placeholder="Any special instructions for this room..." style="min-height:60px;">${state.notes || ''}</textarea>
+      </div>
+    `;
+
+    body.innerHTML = tasksHtml;
+    roomDiv.appendChild(header);
+    roomDiv.appendChild(body);
+    container.appendChild(roomDiv);
+
+    // Render existing custom tasks
+    renderCustomTasks(room.id);
+  });
+
+  // Attach room toggle events
+  container.querySelectorAll('.room-header').forEach(h => {
+    h.addEventListener('click', function() {
+      const rid = this.getAttribute('data-room-toggle');
+      const body = $('room-body-' + rid);
+      const chevron = this.querySelector('.room-chevron');
+      if (body.style.display === 'none') {
+        body.style.display = 'block';
+        chevron.classList.add('open');
+      } else {
+        body.style.display = 'none';
+        chevron.classList.remove('open');
+      }
+    });
+  });
+
+  // Attach add custom task buttons
+  container.querySelectorAll('.sop-add-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+      const rid = this.getAttribute('data-add-room');
+      addCustomTask(rid);
+    });
+  });
+
+  // Attach enter key on custom inputs
+  container.querySelectorAll('[id^="custom-input-"]').forEach(inp => {
+    inp.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        const rid = this.id.replace('custom-input-', '');
+        addCustomTask(rid);
+      }
+    });
+  });
+
+  // Attach standard task checkbox change
+  container.querySelectorAll('[name^="sop-"]').forEach(cb => {
+    cb.addEventListener('change', function() {
+      const roomId = this.name.replace('sop-', '');
+      const taskText = this.getAttribute('data-task-text');
+      if (taskText && sopState[roomId]) {
+        sopState[roomId].standard[taskText] = this.checked;
+      }
+      updateSopProgress();
+      sopAutoSave();
+    });
+  });
+
+  // Attach notes change
+  container.querySelectorAll('.sop-room-notes').forEach(ta => {
+    ta.addEventListener('input', function() {
+      const rid = this.id.replace('sop-notes-', '');
+      if (sopState[rid]) sopState[rid].notes = this.value;
+      sopAutoSave();
+    });
+  });
+}
+
+function addCustomTask(roomId) {
+  const input = $('custom-input-' + roomId);
+  const text = input.value.trim();
+  if (!text) return;
+  if (!sopState[roomId]) return;
+  sopState[roomId].custom.push({ text: text, checked: true });
+  input.value = '';
+  renderCustomTasks(roomId);
+  updateSopProgress();
+  sopAutoSave();
+}
+
+function renderCustomTasks(roomId) {
+  const container = $('custom-tasks-' + roomId);
+  if (!container || !sopState[roomId]) return;
+  container.innerHTML = '';
+  sopState[roomId].custom.forEach((ct, idx) => {
+    const div = document.createElement('div');
+    div.className = 'custom-task-item';
+    div.innerHTML = `
+      <label class="php-checkbox" style="flex:1;">
+        <input type="checkbox" data-custom-room="${roomId}" data-custom-idx="${idx}" ${ct.checked ? 'checked' : ''} />
+        <span class="check-box"><svg viewBox="0 0 16 16" fill="none" stroke="#1A2E4A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3.5 8.5 6.5 11.5 12.5 5"/></svg></span>
+        <span style="font-size:13px;line-height:1.5;"><span class="gold-star">★</span> ${ct.text}</span>
+      </label>
+      <button type="button" class="sop-remove-btn" data-remove-room="${roomId}" data-remove-idx="${idx}">×</button>
+    `;
+    container.appendChild(div);
+  });
+
+  // Attach events
+  container.querySelectorAll('[data-custom-room]').forEach(cb => {
+    cb.addEventListener('change', function() {
+      const rid = this.getAttribute('data-custom-room');
+      const cidx = parseInt(this.getAttribute('data-custom-idx'));
+      if (sopState[rid] && sopState[rid].custom[cidx] !== undefined) {
+        sopState[rid].custom[cidx].checked = this.checked;
+      }
+      updateSopProgress();
+      sopAutoSave();
+    });
+  });
+  container.querySelectorAll('.sop-remove-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+      const rid = this.getAttribute('data-remove-room');
+      const cidx = parseInt(this.getAttribute('data-remove-idx'));
+      if (sopState[rid]) {
+        sopState[rid].custom.splice(cidx, 1);
+        renderCustomTasks(rid);
+        updateSopProgress();
+        sopAutoSave();
+      }
+    });
+  });
+}
+
+function updateSopProgress() {
+  let totalStandard = 0, checkedStandard = 0, totalCustom = 0;
+  SOP_ROOMS.forEach(room => {
+    const state = sopState[room.id];
+    if (!state) return;
+    room.tasks.forEach(t => {
+      totalStandard++;
+      if (state.standard[t] !== false) checkedStandard++;
+    });
+    state.custom.forEach(ct => { if (ct.checked) totalCustom++; });
+  });
+  const pct = totalStandard > 0 ? Math.round((checkedStandard / totalStandard) * 100) : 0;
+  $('sop-progress-fill').style.width = pct + '%';
+  $('sop-progress-text').textContent = `${checkedStandard} of ${totalStandard} standard tasks included + ${totalCustom} custom task${totalCustom !== 1 ? 's' : ''} added`;
+}
+
+function buildSopSummary() {
+  const content = $('sop-summary-content');
+  let html = '';
+
+  SOP_ROOMS.forEach(room => {
+    const state = sopState[room.id];
+    if (!state) return;
+
+    let roomTasks = '';
+    // Standard tasks that are checked
+    room.tasks.forEach(t => {
+      if (state.standard[t] !== false) {
+        roomTasks += `<div class="sop-summary-task">${t}</div>`;
+      }
+    });
+    // Custom tasks that are checked
+    state.custom.forEach(ct => {
+      if (ct.checked) {
+        roomTasks += `<div class="sop-summary-task custom-highlight">★ ${ct.text}</div>`;
+      }
+    });
+
+    if (roomTasks) {
+      html += `<div class="sop-summary-room">`;
+      html += `<div class="sop-summary-room-title">${room.icon} ${room.name}</div>`;
+      html += roomTasks;
+      if (state.notes && state.notes.trim()) {
+        html += `<div class="sop-summary-note">Note: ${state.notes.trim()}</div>`;
+      }
+      html += `</div>`;
+    }
+  });
+
+  // Linen & Staging summary
+  const bedStyle = document.querySelector('input[name="bed-style"]:checked');
+  const towelStyle = document.querySelector('input[name="towel-style"]:checked');
+  const towelBath = $('towel-bath').value;
+  const towelHand = $('towel-hand').value;
+  const towelWash = $('towel-washcloth').value;
+  const stagingLink = $('sop-staging-link').value.trim();
+  const stagingNotes = $('sop-staging-notes').value.trim();
+  const welcomeItems = $('sop-welcome-items').value.trim();
+
+  let linenHtml = '';
+  if (bedStyle) {
+    let bedVal = bedStyle.value;
+    if (bedVal === 'Custom') {
+      const customText = $('bed-style-custom-text').value.trim();
+      bedVal = customText ? `Custom: ${customText}` : 'Custom (not specified)';
+    }
+    linenHtml += `<div class="sop-summary-task">Bed making style: ${bedVal}</div>`;
+  }
+  if (towelStyle) {
+    let towelVal = towelStyle.value;
+    if (towelVal === 'Custom') {
+      const customText = $('towel-style-custom-text').value.trim();
+      towelVal = customText ? `Custom: ${customText}` : 'Custom (not specified)';
+    }
+    linenHtml += `<div class="sop-summary-task">Towel fold style: ${towelVal}</div>`;
+  }
+  linenHtml += `<div class="sop-summary-task">Towel sets/bathroom: ${towelBath} bath, ${towelHand} hand, ${towelWash} washcloth</div>`;
+  if (stagingLink) linenHtml += `<div class="sop-summary-task">Staging photos: ${stagingLink}</div>`;
+  if (stagingNotes) linenHtml += `<div class="sop-summary-note">${stagingNotes}</div>`;
+  if (welcomeItems) linenHtml += `<div class="sop-summary-task">Welcome items: ${welcomeItems}</div>`;
+
+  if (linenHtml) {
+    html += `<div class="sop-summary-room">`;
+    html += `<div class="sop-summary-room-title">🛏️ Linen &amp; Staging Preferences</div>`;
+    html += linenHtml;
+    html += `</div>`;
+  }
+
+  if (!html) {
+    html = '<p style="font-size:13px;color:#888;font-style:italic;">No tasks selected yet. Check off tasks above to build your SOP.</p>';
+  }
+
+  content.innerHTML = html;
+}
+
+// SOP localStorage helpers
+const SOP_STORAGE_KEY = 'php_sop_draft';
+function sopAutoSave() {
+  const data = {
+    sopState: sopState,
+    bedStyle: document.querySelector('input[name="bed-style"]:checked')?.value || '',
+    bedStyleCustom: $('bed-style-custom-text').value,
+    towelStyle: document.querySelector('input[name="towel-style"]:checked')?.value || '',
+    towelStyleCustom: $('towel-style-custom-text').value,
+    towelBath: $('towel-bath').value,
+    towelHand: $('towel-hand').value,
+    towelWashcloth: $('towel-washcloth').value,
+    stagingLink: $('sop-staging-link').value,
+    stagingNotes: $('sop-staging-notes').value,
+    welcomeItems: $('sop-welcome-items').value,
+    sopStatus: $('sop-status-pill').classList.contains('status-approved') ? 'approved' : 'draft'
+  };
+  try { localStorage.setItem(SOP_STORAGE_KEY, JSON.stringify(data)); } catch(e) {}
+}
+
+function sopRestore() {
+  let raw;
+  try { raw = localStorage.getItem(SOP_STORAGE_KEY); } catch(e) { return false; }
+  if (!raw) return false;
+  const data = JSON.parse(raw);
+
+  if (data.sopState) {
+    // Merge saved state
+    SOP_ROOMS.forEach(room => {
+      if (data.sopState[room.id]) {
+        sopState[room.id] = data.sopState[room.id];
+        // Ensure new default tasks added after save are present
+        room.tasks.forEach(t => {
+          if (sopState[room.id].standard[t] === undefined) {
+            sopState[room.id].standard[t] = true;
+          }
+        });
+      }
+    });
+  }
+
+  if (data.bedStyle) {
+    const r = document.querySelector(`input[name="bed-style"][value="${data.bedStyle}"]`);
+    if (r) r.checked = true;
+    if (data.bedStyle === 'Custom') $('bed-style-custom').style.display = 'block';
+  }
+  if (data.bedStyleCustom) $('bed-style-custom-text').value = data.bedStyleCustom;
+  if (data.towelStyle) {
+    const r = document.querySelector(`input[name="towel-style"][value="${data.towelStyle}"]`);
+    if (r) r.checked = true;
+    if (data.towelStyle === 'Custom') $('towel-style-custom').style.display = 'block';
+  }
+  if (data.towelStyleCustom) $('towel-style-custom-text').value = data.towelStyleCustom;
+  if (data.towelBath) $('towel-bath').value = data.towelBath;
+  if (data.towelHand) $('towel-hand').value = data.towelHand;
+  if (data.towelWashcloth) $('towel-washcloth').value = data.towelWashcloth;
+  if (data.stagingLink) $('sop-staging-link').value = data.stagingLink;
+  if (data.stagingNotes) $('sop-staging-notes').value = data.stagingNotes;
+  if (data.welcomeItems) $('sop-welcome-items').value = data.welcomeItems;
+  if (data.sopStatus === 'approved') {
+    $('sop-status-pill').className = 'status-pill status-approved';
+    $('sop-status-pill').textContent = 'Approved';
+  }
+  return true;
+}
+
+// Build SOP rooms
+buildSopRooms();
+sopRestore();
+updateSopProgress();
+
+// SOP summary toggle
+$('sop-summary-toggle').addEventListener('click', function() {
+  const body = $('sop-summary-body');
+  const chevron = this.querySelector('.room-chevron');
+  if (body.style.display === 'none') {
+    buildSopSummary();
+    body.style.display = 'block';
+    chevron.classList.add('open');
+  } else {
+    body.style.display = 'none';
+    chevron.classList.remove('open');
+  }
+});
+
+// Print SOP
+$('print-sop-btn').addEventListener('click', function() {
+  buildSopSummary();
+  window.print();
+});
+
+// Bed style conditional
+document.querySelectorAll('input[name="bed-style"]').forEach(r => {
+  r.addEventListener('change', function() {
+    $('bed-style-custom').style.display = this.value === 'Custom' ? 'block' : 'none';
+    sopAutoSave();
+  });
+});
+
+// Towel style conditional
+document.querySelectorAll('input[name="towel-style"]').forEach(r => {
+  r.addEventListener('change', function() {
+    $('towel-style-custom').style.display = this.value === 'Custom' ? 'block' : 'none';
+    sopAutoSave();
+  });
+});
+
+// SOP linen/staging fields auto-save
+document.querySelectorAll('#sop-staging-link, #sop-staging-notes, #sop-welcome-items, #bed-style-custom-text, #towel-style-custom-text, #towel-bath, #towel-hand, #towel-washcloth').forEach(el => {
+  el.addEventListener('input', function() { sopAutoSave(); });
+});
+
+// ===== PROPERTY TEMPLATE =====
+let propertyCount = 0;
+function createPropertyBlock() {
+  propertyCount++;
+  const n = propertyCount;
+  const div = document.createElement('div');
+  div.className = 'property-block';
+  div.setAttribute('data-prop', n);
+  div.style.cssText = 'border:1px solid #ddd;padding:20px;margin-bottom:16px;background:#fafaf8;';
+  div.innerHTML = `
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+      <span style="font-size:14px;font-weight:700;color:var(--navy);">Property #${n}</span>
+      ${n > 1 ? '<button type="button" class="remove-prop no-print" style="background:none;border:none;color:#cc3a38;font-size:12px;font-weight:600;cursor:pointer;">Remove</button>' : ''}
+    </div>
+    <div style="margin-bottom:12px;">
+      <label class="form-label">Property Nickname</label>
+      <input type="text" class="form-input prop-field" placeholder="e.g. The Gulch Getaway" data-field="nickname" />
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:12px;margin-bottom:12px;" class="inline-row">
+      <div style="flex:2;min-width:200px;"><label class="form-label">Full Address</label><input type="text" class="form-input prop-field" data-field="address" /></div>
+      <div style="flex:1;min-width:120px;"><label class="form-label">City</label><input type="text" class="form-input prop-field" data-field="city" /></div>
+      <div style="flex:0.5;min-width:70px;"><label class="form-label">State</label><input type="text" class="form-input prop-field" data-field="state" /></div>
+      <div style="flex:0.5;min-width:80px;"><label class="form-label">Zip</label><input type="text" class="form-input prop-field" data-field="zip" /></div>
+    </div>
+    <div style="margin-bottom:12px;">
+      <label class="form-label">Property Type</label>
+      <div class="radio-pills">
+        <label class="radio-pill"><input type="radio" name="prop-type-${n}" value="Single Family" /><span>Single Family</span></label>
+        <label class="radio-pill"><input type="radio" name="prop-type-${n}" value="Condo" /><span>Condo</span></label>
+        <label class="radio-pill"><input type="radio" name="prop-type-${n}" value="Townhouse" /><span>Townhouse</span></label>
+        <label class="radio-pill"><input type="radio" name="prop-type-${n}" value="Cabin" /><span>Cabin</span></label>
+        <label class="radio-pill"><input type="radio" name="prop-type-${n}" value="Other" /><span>Other</span></label>
+      </div>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:12px;margin-bottom:12px;" class="inline-row">
+      <div style="flex:1;min-width:100px;"><label class="form-label">Bedrooms</label><input type="number" class="form-input prop-field" min="0" data-field="bedrooms" /></div>
+      <div style="flex:1;min-width:100px;"><label class="form-label">Bathrooms</label><input type="number" class="form-input prop-field" min="0" step="0.5" data-field="bathrooms" /></div>
+      <div style="flex:1;min-width:120px;"><label class="form-label">Square Footage</label><input type="number" class="form-input prop-field" min="0" data-field="sqft" /></div>
+      <div style="flex:1;min-width:100px;"><label class="form-label">Max Guests</label><input type="number" class="form-input prop-field" min="0" data-field="maxguests" /></div>
+    </div>
+    <div style="margin-bottom:12px;">
+      <label class="form-label">Platforms Listed On</label>
+      <div class="radio-pills">
+        <label class="check-pill"><input type="checkbox" name="platforms-${n}" value="Airbnb" /><span>Airbnb</span></label>
+        <label class="check-pill"><input type="checkbox" name="platforms-${n}" value="VRBO" /><span>VRBO</span></label>
+        <label class="check-pill"><input type="checkbox" name="platforms-${n}" value="Booking.com" /><span>Booking.com</span></label>
+        <label class="check-pill"><input type="checkbox" name="platforms-${n}" value="Direct" /><span>Direct</span></label>
+        <label class="check-pill"><input type="checkbox" name="platforms-${n}" value="Other" /><span>Other</span></label>
+      </div>
+    </div>
+    <div style="margin-bottom:12px;">
+      <label class="form-label">Average Turnovers per Month</label>
+      <div class="radio-pills">
+        <label class="radio-pill"><input type="radio" name="turnovers-${n}" value="1-4" /><span>1–4</span></label>
+        <label class="radio-pill"><input type="radio" name="turnovers-${n}" value="5-10" /><span>5–10</span></label>
+        <label class="radio-pill"><input type="radio" name="turnovers-${n}" value="11-20" /><span>11–20</span></label>
+        <label class="radio-pill"><input type="radio" name="turnovers-${n}" value="20+" /><span>20+</span></label>
+      </div>
+    </div>
+    <div>
+      <label class="form-label">Is This Property Currently Active?</label>
+      <div class="radio-pills">
+        <label class="radio-pill"><input type="radio" name="active-${n}" value="Yes" /><span>Yes</span></label>
+        <label class="radio-pill"><input type="radio" name="active-${n}" value="No" /><span>No</span></label>
+      </div>
+    </div>
+  `;
+  return div;
+}
+
+// Init first property
+const propContainer = $('properties-container');
+propContainer.appendChild(createPropertyBlock());
+
+// Add property button
+$('add-property-btn').addEventListener('click', function() {
+  const block = createPropertyBlock();
+  propContainer.appendChild(block);
+  block.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  autoSave();
+});
+
+// Remove property (delegated)
+propContainer.addEventListener('click', function(e) {
+  if (e.target.classList.contains('remove-prop')) {
+    e.target.closest('.property-block').remove();
+    autoSave();
+  }
+});
+
+// ===== ACCORDION TOGGLE =====
+document.querySelectorAll('.section-header').forEach(header => {
+  header.addEventListener('click', function() {
+    const targetId = this.getAttribute('data-toggle');
+    if (!targetId) return;
+    const body = $(targetId);
+    const chevron = this.querySelector('.section-chevron');
+    if (!body || !chevron) return;
+    if (body.style.display === 'none') {
+      body.style.display = 'block';
+      chevron.classList.add('open');
+    } else {
+      body.style.display = 'none';
+      chevron.classList.remove('open');
+    }
+  });
+});
+
+// ===== CONDITIONAL FIELDS =====
+$('hear-about').addEventListener('change', function() {
+  $('referral-field').style.display = this.value === 'Referral' ? 'block' : 'none';
+});
+
+document.querySelectorAll('input[name="alarm-present"]').forEach(r => {
+  r.addEventListener('change', function() {
+    $('alarm-details').style.display = this.value === 'Yes' ? 'block' : 'none';
+  });
+});
+
+document.querySelectorAll('input[name="pets"]').forEach(r => {
+  r.addEventListener('change', function() {
+    $('pet-details').style.display = this.value === 'Yes' ? 'block' : 'none';
+  });
+});
+
+document.querySelectorAll('input[name="billing-contact"]').forEach(r => {
+  r.addEventListener('change', function() {
+    $('billing-diff').style.display = this.value === 'Different person' ? 'block' : 'none';
+  });
+});
+
+document.querySelectorAll('input[name="staging-photos"]').forEach(r => {
+  r.addEventListener('change', function() {
+    $('staging-location').style.display = this.value === 'Yes' ? 'block' : 'none';
+  });
+});
+
+// ===== PASSWORD TOGGLE =====
+document.querySelectorAll('.toggle-pw').forEach(btn => {
+  btn.addEventListener('click', function() {
+    const target = $(this.getAttribute('data-target'));
+    const isPassword = target.type === 'password';
+    target.type = isPassword ? 'text' : 'password';
+    const icon = this.querySelector('i');
+    if (icon) {
+      icon.setAttribute('data-lucide', isPassword ? 'eye-off' : 'eye');
+      if (typeof lucide !== "undefined" && typeof lucide.createIcons === "function") {
+        lucide.createIcons();
+      }
+    }
+  });
+});
+
+// ===== TURNOVER WINDOW CALCULATOR =====
+function calcTurnover() {
+  const checkout = $('checkout-time').value;
+  const checkin = $('checkin-time').value;
+  if (checkout && checkin) {
+    const [ch, cm] = checkout.split(':').map(Number);
+    const [ih, im] = checkin.split(':').map(Number);
+    let diff = (ih * 60 + im) - (ch * 60 + cm);
+    if (diff < 0) diff += 24 * 60;
+    const hours = Math.floor(diff / 60);
+    const mins = diff % 60;
+    $('turnover-window').value = mins > 0 ? `${hours}h ${mins}m` : `${hours} hours`;
+  } else {
+    $('turnover-window').value = '';
+  }
+}
+$('checkout-time').addEventListener('change', calcTurnover);
+$('checkin-time').addEventListener('change', calcTurnover);
+
+// ===== PROGRESS TRACKING (8 sections) =====
+const TOTAL_SECTIONS = 8;
+function updateProgress() {
+  let completed = 0;
+  const sections = document.querySelectorAll('.form-section');
+  sections.forEach(sec => {
+    const num = sec.getAttribute('data-section');
+    let filled = false;
+    if (num === '1') {
+      filled = $('first-name').value.trim() && $('last-name').value.trim() && $('email').value.trim();
+    } else if (num === '2') {
+      const firstProp = propContainer.querySelector('.property-block');
+      if (firstProp) {
+        const nickname = firstProp.querySelector('[data-field="nickname"]');
+        const address = firstProp.querySelector('[data-field="address"]');
+        filled = nickname && nickname.value.trim() && address && address.value.trim();
+      }
+    } else if (num === '3') {
+      filled = document.querySelectorAll('input[name="service-needed"]:checked').length > 0;
+    } else if (num === '4') {
+      filled = document.querySelector('input[name="entry-method"]:checked') !== null;
+    } else if (num === '5') {
+      const agreements = document.querySelectorAll('[data-agreement]');
+      let allChecked = true;
+      agreements.forEach(a => { if (!a.checked) allChecked = false; });
+      filled = allChecked;
+    } else if (num === '6') {
+      // Additional notes — filled if host notes has content
+      filled = $('host-notes').value.trim().length > 0 || $('welcome-items').value.trim().length > 0;
+    } else if (num === '7') {
+      // SOP Builder — considered filled if at least one room has been reviewed (any standard task unchecked or any custom added)
+      let hasCustomization = false;
+      SOP_ROOMS.forEach(room => {
+        const state = sopState[room.id];
+        if (!state) return;
+        if (state.custom.length > 0) hasCustomization = true;
+        room.tasks.forEach(t => { if (state.standard[t] === false) hasCustomization = true; });
+        if (state.notes && state.notes.trim()) hasCustomization = true;
+      });
+      // Also count linen prefs
+      if (document.querySelector('input[name="bed-style"]:checked') || document.querySelector('input[name="towel-style"]:checked')) hasCustomization = true;
+      filled = hasCustomization;
+    } else if (num === '8') {
+      filled = $('submitted-by').value.trim().length > 0;
+    }
+    if (filled) completed++;
+  });
+  const pct = Math.round((completed / TOTAL_SECTIONS) * 100);
+  $('progress-fill').style.width = pct + '%';
+  $('progress-label').textContent = `Section ${completed} of ${TOTAL_SECTIONS} completed`;
+  $('progress-pct').textContent = pct + '%';
+  $('footer-fill').style.width = pct + '%';
+  $('footer-progress').textContent = `${completed} of ${TOTAL_SECTIONS}`;
+}
+
+// Listen for changes
+document.querySelectorAll('input, select, textarea').forEach(el => {
+  el.addEventListener('input', () => { updateProgress(); debouncedSave(); });
+  el.addEventListener('change', () => { updateProgress(); debouncedSave(); });
+});
+propContainer.addEventListener('input', () => { updateProgress(); debouncedSave(); });
+
+// ===== AUTO-SAVE / RESTORE =====
+const STORAGE_KEY = 'php_intake_draft';
+let saveTimer;
+function debouncedSave() {
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(autoSave, 800);
+}
+
+function autoSave() {
+  const data = {};
+  document.querySelectorAll('.form-input').forEach(el => {
+    if (el.id && !el.readOnly && !el.classList.contains('sop-room-notes') && !el.classList.contains('sop-linen-field')) data['input_' + el.id] = el.value;
+  });
+  document.querySelectorAll('input[type="radio"]:checked').forEach(r => {
+    if (!r.name.startsWith('sop-')) data['radio_' + r.name] = r.value;
+  });
+  document.querySelectorAll('input[type="checkbox"]:checked').forEach(c => {
+    if (c.name.startsWith('sop-') || c.hasAttribute('data-custom-room')) return;
+    if (!data['checks']) data['checks'] = [];
+    data['checks'].push(c.name + '::' + c.value);
+  });
+  const props = [];
+  propContainer.querySelectorAll('.property-block').forEach(block => {
+    const p = {};
+    block.querySelectorAll('.prop-field').forEach(f => { p[f.getAttribute('data-field')] = f.value; });
+    block.querySelectorAll('input[type="radio"]:checked').forEach(r => { p['radio_' + r.name] = r.value; });
+    block.querySelectorAll('input[type="checkbox"]:checked').forEach(c => {
+      if (!p['checks']) p['checks'] = [];
+      p['checks'].push(c.name + '::' + c.value);
+    });
+    props.push(p);
+  });
+  data.properties = props;
+  data.propertyCount = props.length;
+  data.intakeId = $('meta-intake-id').value;
+  data.coordinator = $('meta-coordinator').value;
+
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); } catch(e) {}
+  // Also save SOP
+  sopAutoSave();
+}
+
+function restoreDraft() {
+  let raw;
+  try { raw = localStorage.getItem(STORAGE_KEY); } catch(e) { return false; }
+  if (!raw) return false;
+  const data = JSON.parse(raw);
+
+  if (data.propertyCount && data.propertyCount > 1) {
+    for (let i = 1; i < data.propertyCount; i++) {
+      propContainer.appendChild(createPropertyBlock());
+    }
+  }
+  if (data.properties) {
+    const blocks = propContainer.querySelectorAll('.property-block');
+    data.properties.forEach((p, i) => {
+      if (!blocks[i]) return;
+      const block = blocks[i];
+      Object.keys(p).forEach(key => {
+        if (key === 'checks') {
+          p.checks.forEach(cv => {
+            const [name, val] = cv.split('::');
+            const cb = block.querySelector(`input[type="checkbox"][name="${name}"][value="${val}"]`);
+            if (cb) cb.checked = true;
+          });
+        } else if (key.startsWith('radio_')) {
+          const rname = key.replace('radio_', '');
+          const r = block.querySelector(`input[type="radio"][name="${rname}"][value="${p[key]}"]`);
+          if (r) r.checked = true;
+        } else {
+          const f = block.querySelector(`[data-field="${key}"]`);
+          if (f) f.value = p[key];
+        }
+      });
+    });
+  }
+
+  Object.keys(data).forEach(key => {
+    if (key.startsWith('input_')) {
+      const el = $(key.replace('input_', ''));
+      if (el && !el.readOnly) el.value = data[key];
+    } else if (key.startsWith('radio_')) {
+      const rname = key.replace('radio_', '');
+      const r = document.querySelector(`input[type="radio"][name="${rname}"][value="${data[key]}"]`);
+      if (r) r.checked = true;
+    }
+  });
+  if (data.checks) {
+    data.checks.forEach(cv => {
+      const [name, val] = cv.split('::');
+      const cb = document.querySelector(`input[type="checkbox"][name="${name}"][value="${val}"]`);
+      if (cb) cb.checked = true;
+    });
+  }
+  if (data.intakeId) $('meta-intake-id').value = data.intakeId;
+  if (data.coordinator) $('meta-coordinator').value = data.coordinator;
+
+  $('hear-about').dispatchEvent(new Event('change'));
+  document.querySelectorAll('input[name="alarm-present"]:checked, input[name="pets"]:checked, input[name="billing-contact"]:checked, input[name="staging-photos"]:checked').forEach(r => {
+    r.dispatchEvent(new Event('change'));
+  });
+  calcTurnover();
+
+  // Rebuild SOP rooms with restored state
+  buildSopRooms();
+  updateSopProgress();
+  updateProgress();
+  return true;
+}
+
+const hadDraft = restoreDraft();
+if (hadDraft) {
+  $('draft-banner').style.display = 'flex';
+}
+
+$('clear-draft-btn').addEventListener('click', function() {
+  try { localStorage.removeItem(STORAGE_KEY); localStorage.removeItem(SOP_STORAGE_KEY); } catch(e) {}
+  location.reload();
+});
+
+$('save-draft-btn').addEventListener('click', function() {
+  autoSave();
+  this.textContent = '✓ Saved';
+  setTimeout(() => { this.textContent = 'Save Draft'; }, 1500);
+});
+
+// ===== VALIDATION & SUBMIT =====
+function validateForm() {
+  let valid = true;
+  const errors = [];
+  ['first-name', 'last-name', 'email', 'submitted-by'].forEach(id => {
+    const el = $(id);
+    if (!el.value.trim()) {
+      el.classList.add('error');
+      valid = false;
+      errors.push(id);
+    } else {
+      el.classList.remove('error');
+    }
+  });
+  const emailEl = $('email');
+  if (emailEl.value.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailEl.value.trim())) {
+    emailEl.classList.add('error');
+    valid = false;
+    errors.push('email-format');
+  }
+  const phoneEl = $('phone');
+  if (!phoneEl.value.trim()) {
+    phoneEl.classList.add('error');
+    valid = false;
+    errors.push('phone');
+  } else {
+    phoneEl.classList.remove('error');
+  }
+  const agreements = document.querySelectorAll('[data-agreement]');
+  let allAgreed = true;
+  agreements.forEach(a => { if (!a.checked) allAgreed = false; });
+  if (!allAgreed) {
+    valid = false;
+    errors.push('agreements');
+  }
+
+  if (!valid) {
+    const firstErr = errors[0];
+    if (firstErr === 'agreements') {
+      document.querySelector('[data-agreement]').closest('.form-section').querySelector('.section-header').click();
+      document.querySelector('[data-agreement]').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    } else {
+      const el = $(firstErr) || $(firstErr.replace('-format', ''));
+      if (el) {
+        const sec = el.closest('.section-body');
+        if (sec && sec.style.display === 'none') {
+          sec.previousElementSibling.click();
+        }
+        el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        el.focus();
+      }
+    }
+  }
+  return valid;
+}
+
+function handleSubmit(e) {
+  if (e) e.preventDefault();
+  if (!validateForm()) return;
+
+  const firstName = $('first-name').value.trim();
+  const id = $('meta-intake-id').value;
+
+  // Count SOP tasks for summary
+  let sopStandardCount = 0, sopCustomCount = 0;
+  SOP_ROOMS.forEach(room => {
+    const state = sopState[room.id];
+    if (!state) return;
+    room.tasks.forEach(t => { if (state.standard[t] !== false) sopStandardCount++; });
+    state.custom.forEach(ct => { if (ct.checked) sopCustomCount++; });
+  });
+
+  $('modal-message').textContent = `Thank you, ${firstName}! Your Intake ID is ${id}. Your custom SOP includes ${sopStandardCount} standard tasks and ${sopCustomCount} custom tasks across ${SOP_ROOMS.length} rooms. Brittany will be in touch within 24 hours to review everything with you.`;
+  $('success-modal').classList.add('active');
+
+  try { localStorage.removeItem(STORAGE_KEY); localStorage.removeItem(SOP_STORAGE_KEY); } catch(e) {}
+}
+
+$('intake-form').addEventListener('submit', handleSubmit);
+$('footer-submit-btn').addEventListener('click', handleSubmit);
+
+$('print-confirm-btn').addEventListener('click', function() {
+  window.print();
+});
+
+$('new-intake-btn').addEventListener('click', function() {
+  try { localStorage.removeItem(STORAGE_KEY); localStorage.removeItem(SOP_STORAGE_KEY); } catch(e) {}
+  location.reload();
+});
+
+$('success-modal').addEventListener('click', function(e) {
+  if (e.target === this) this.classList.remove('active');
+});
+
+// Initial progress
+updateProgress();
+</script>
+</body>
+</html>
